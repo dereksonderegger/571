@@ -152,7 +152,7 @@ anova(M.s, M.c)
 
 We find a large p-value associated with this test and can safely stay with the null hypothesis, that the simple model is sufficient to explain the observed variability in the number of species of tortoise.
 
-### Confidence Intervals for location parameters
+## Confidence Intervals for location parameters
 
 Recall that 
 $$\hat{\boldsymbol{\beta}}\sim N\left(\boldsymbol{\beta},\,\sigma^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\right)$$
@@ -233,7 +233,7 @@ confint(model)
 
 ## Prediction and Confidence Intervals for a response
 
-Given a vector of predictor covariates $\boldsymbol{x}_{0}$ (think of $\boldsymbol{x}_{0}^{T}$ as potentially one row in $\boldsymbol{X}$. Because we might want to predict some other values than what we observe, we do not restrict ourselves to *only* rows in \boldsymbol{X}), we want to make inference on the expected value $\hat{y}_{0}$. We can calculate the value by 
+Given a vector of predictor covariates $\boldsymbol{x}_{0}$ (think of $\boldsymbol{x}_{0}^{T}$ as potentially one row in $\boldsymbol{X}$. Because we might want to predict some other values than what we observe, we do not restrict ourselves to *only* rows in $\boldsymbol{X}$), we want to make inference on the expected value $\hat{y}_{0}$. We can calculate the value by 
 $$\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}$$
 and we are interested in two different types of predictions. 
 
@@ -290,7 +290,7 @@ predict(model, newdata=x0, interval='prediction')
 predict(model, newdata=x0, interval='confidence')
 ```
 
-## Interpretation
+## Interpretation with Correlated Covariates
 
 The standard interpretation of the slope parameter is that $\beta_{j}$ is the amount of increase in $y$ for a one unit increase in the $j$th covariate, provided that all other covariates stayed the same.
 
@@ -316,33 +316,65 @@ Perch Example: We might be interested in estimating the weight of a fish based o
 We first look at the data and observe the expected relationship between length and weight.
 
 ```{r}
-
+file <- 'https://raw.githubusercontent.com/dereksonderegger/STA_571_Book/master/data-raw/Fish.csv'
+fish <- read.table(file, header=TRUE, skip=111, sep=',')
+pairs(fish[,c('Weight','Length.1','Length.2','Length.3','Height','Width')])
 ```
-
-
 
 Naively, we might consider the linear model with all the length effects present.
 
-#setwd('~/Dropbox/NAU/Teaching/STA 571/Notes/c1.3_Inference')
-
-
-
-<<fig.height=4>>=
-fish <- read.table('~/Dropbox/NAU/Teaching/STA 571/Notes/c1.3_Inference/Fish.csv',                    header=TRUE, skip=111, sep=',') pairs(fish[,c('Weight','Length.1','Length.2','Length.3','Height','Width')])@
-
-We might then naively create a linear model that has all of the length measurements.
-
+```{r}
 model <- lm(Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish)
+summary(model)
+```
 
-This is crazy. There is a negative relationship between Length.2 and Weight. That doesn't make any sense unless you realize that this is the effect of Length.2 assuming the other covariates are in the model and can be held constant while changing the value of Length.2, which is obviously ridiculous. 
+This is crazy. There is a negative relationship between `Length.2` and `Weight`. That does not make any sense unless you realize that this is the effect of `Length.2` assuming the other covariates are in the model and can be held constant while changing the value of `Length.2`, which is obviously ridiculous. 
 
 If we remove the highly correlated covariates then we see a much better behaved model
 
+```{r}
 model <- lm(Weight ~ Length.2 + Height + Width, data=fish)
+```
 
 When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign. 
 
-In this case the sum of the three length variables was approximately 31
-  in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
+In this case the sum of the three length covariate estimates was approximately $31$ in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
 
 In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.
+
+## Exercises
+1. The dataset prostate in package `faraway` has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.
+    ```{r, eval=FALSE}
+    library(faraway)
+    data(prostate)
+    head(prostate)
+    ```
+    It is possible to get information about the data set using the command `help(prostate)`. Fit a model with `lpsa` as the response and all the other variables as predictors.
+
+    a) Compute $90\%$ and $95\%$ confidence intervals for the parameter associated with `age`. Using just these intervals, what could we deduced about the p-value for age in the regression summary. *Hint: look at the help for the function `confint()`. You'll find the `level` option to be helpful.*
+
+    b) Remove all the predictors that are not significant at the $5\%$ level. Test this model against the original model. Which is preferred?
+
+2. Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the `cheddar` dataset from the `faraway` package (import it the same way you did in problem one, but now use `cheddar`) to answer the following:
+
+    a) Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the $5\%$ level.
+
+    b) `Acetic` and `H2S` are measured on a log$_{10}$ scale. Create two new columns in the `cheddar` data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.
+
+    c) Can we use an $F$-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.
+
+    d) If H2S is increased by 0.01 for the model in (a), what change in taste would be expected? What caveates must be made in this interpretation.
+
+3. The `sat` data set in the `faraway` package gives data collected to study the relationship between expenditures on public education and test results.
+
+    a) Fit a model that with `total` SAT score as the response and only the intercept as a covariate.
+
+    b) Fit a model with `total` SAT score as the response and `expend`, `ratio`, and `salary` as predictors (along with the intercept). 
+
+    c) Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?
+
+    d) Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.
+
+    e) Fit the model with `salary` and `ratio` (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?
+
+    f) Now add `takers` to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that $\beta_{takers}=0$ using the summary table. Compare this model to the previous one using an $F$-test. Demonstrate that the F-test and t-test are equivalent by noting the mathematical relationship between the $t$ and $F$ statistics and the equality of the p-values.

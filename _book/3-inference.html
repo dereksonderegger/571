@@ -38,7 +38,7 @@ MathJax.Hub.Config({
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="parameter-estimation.html">
+<link rel="prev" href="2-parameter-estimation.html">
 
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
@@ -110,22 +110,56 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a></li>
-<li class="chapter" data-level="2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
-<li class="chapter" data-level="3" data-path="inference.html"><a href="inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
-<li class="chapter" data-level="3.1" data-path="inference.html"><a href="inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
-<li class="chapter" data-level="3.1.1" data-path="inference.html"><a href="inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
-<li class="chapter" data-level="3.1.2" data-path="inference.html"><a href="inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
-<li class="chapter" data-level="3.1.3" data-path="inference.html"><a href="inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
-<li class="chapter" data-level="3.1.4" data-path="inference.html"><a href="inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>1.1</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>1.1.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>1.1.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>1.1.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>1.1.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.1.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.1.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.1.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.1.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>1.1.7</b> Identity Matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="inference.html"><a href="inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
-<li class="chapter" data-level="3.3" data-path="inference.html"><a href="inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
-<li class="chapter" data-level="3.4" data-path="inference.html"><a href="inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.2</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>1.2.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.2.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>1.2.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>1.2.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.2.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.2.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>1.2.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.2.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>1.2.8</b> Inverse</a></li>
 </ul></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.1</b> Simple Regression</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.1.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.1.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.1.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="2.1.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.1.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.1.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.1.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.1.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.1.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="2.1.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.1.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>2.1.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2</b> ANOVA model</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>2.2.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -438,7 +472,7 @@ upper &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span cla
 </div>
 <div id="prediction-and-confidence-intervals-for-a-response" class="section level2">
 <h2><span class="header-section-number">3.3</span> Prediction and Confidence Intervals for a response</h2>
-<p>Given a vector of predictor covariates <span class="math inline">\(\boldsymbol{x}_{0}\)</span> (think of <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> as potentially one row in <span class="math inline">\(\boldsymbol{X}\)</span>. Because we might want to predict some other values than what we observe, we do not restrict ourselves to <em>only</em> rows in ), we want to make inference on the expected value <span class="math inline">\(\hat{y}_{0}\)</span>. We can calculate the value by <span class="math display">\[\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\]</span> and we are interested in two different types of predictions.</p>
+<p>Given a vector of predictor covariates <span class="math inline">\(\boldsymbol{x}_{0}\)</span> (think of <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> as potentially one row in <span class="math inline">\(\boldsymbol{X}\)</span>. Because we might want to predict some other values than what we observe, we do not restrict ourselves to <em>only</em> rows in <span class="math inline">\(\boldsymbol{X}\)</span>), we want to make inference on the expected value <span class="math inline">\(\hat{y}_{0}\)</span>. We can calculate the value by <span class="math display">\[\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\]</span> and we are interested in two different types of predictions.</p>
 <ol style="list-style-type: decimal">
 <li><p>We might be interested in the uncertainty of a new data point. This uncertainty has two components: the uncertainty of the regression model and uncertainty of a new data point from its expected value.</p></li>
 <li><p>Second, we might be interested in only the uncertainty about the regression model.</p></li>
@@ -526,7 +560,7 @@ y0</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/STA_571_Book/master/data-raw/Fish.csv&#39;</span>
 fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)
 <span class="kw">pairs</span>(fish[,<span class="kw">c</span>(<span class="st">&#39;Weight&#39;</span>,<span class="st">&#39;Length.1&#39;</span>,<span class="st">&#39;Length.2&#39;</span>,<span class="st">&#39;Length.3&#39;</span>,<span class="st">&#39;Height&#39;</span>,<span class="st">&#39;Width&#39;</span>)])</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight ~<span class="st"> </span>Length<span class="fl">.1</span> +<span class="st"> </span>Length<span class="fl">.2</span> +<span class="st"> </span>Length<span class="fl">.3</span> +<span class="st"> </span>Height +<span class="st"> </span>Width, <span class="dt">data=</span>fish)
 <span class="kw">summary</span>(model)</code></pre></div>
@@ -554,12 +588,42 @@ fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <spa
 ##   (1 observation deleted due to missingness)
 ## Multiple R-squared:  0.8675, Adjusted R-squared:  0.8631 
 ## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That doesn’t make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
+<p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
 <p>If we remove the highly correlated covariates then we see a much better behaved model</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight ~<span class="st"> </span>Length<span class="fl">.2</span> +<span class="st"> </span>Height +<span class="st"> </span>Width, <span class="dt">data=</span>fish)</code></pre></div>
 <p>When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign.</p>
 <p>In this case the sum of the three length covariate estimates was approximately <span class="math inline">\(31\)</span> in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.</p>
 <p>In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.</p>
+</div>
+<div id="exercises-2" class="section level2">
+<h2><span class="header-section-number">3.5</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>The dataset prostate in package <code>faraway</code> has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">data</span>(prostate)
+<span class="kw">head</span>(prostate)</code></pre></div>
+<p>It is possible to get information about the data set using the command <code>help(prostate)</code>. Fit a model with <code>lpsa</code> as the response and all the other variables as predictors.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Compute <span class="math inline">\(90\%\)</span> and <span class="math inline">\(95\%\)</span> confidence intervals for the parameter associated with <code>age</code>. Using just these intervals, what could we deduced about the p-value for age in the regression summary. <em>Hint: look at the help for the function <code>confint()</code>. You’ll find the <code>level</code> option to be helpful.</em></p></li>
+<li><p>Remove all the predictors that are not significant at the <span class="math inline">\(5\%\)</span> level. Test this model against the original model. Which is preferred?</p></li>
+</ol></li>
+<li><p>Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the <code>cheddar</code> dataset from the <code>faraway</code> package (import it the same way you did in problem one, but now use <code>cheddar</code>) to answer the following:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the <span class="math inline">\(5\%\)</span> level.</p></li>
+<li><p><code>Acetic</code> and <code>H2S</code> are measured on a log<span class="math inline">\(_{10}\)</span> scale. Create two new columns in the <code>cheddar</code> data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.</p></li>
+<li><p>Can we use an <span class="math inline">\(F\)</span>-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.</p></li>
+<li><p>If H2S is increased by 0.01 for the model in (a), what change in taste would be expected? What caveates must be made in this interpretation.</p></li>
+</ol></li>
+<li><p>The <code>sat</code> data set in the <code>faraway</code> package gives data collected to study the relationship between expenditures on public education and test results.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a model that with <code>total</code> SAT score as the response and only the intercept as a covariate.</p></li>
+<li><p>Fit a model with <code>total</code> SAT score as the response and <code>expend</code>, <code>ratio</code>, and <code>salary</code> as predictors (along with the intercept).</p></li>
+<li><p>Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?</p></li>
+<li><p>Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.</p></li>
+<li><p>Fit the model with <code>salary</code> and <code>ratio</code> (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?</p></li>
+<li><p>Now add <code>takers</code> to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that <span class="math inline">\(\beta_{takers}=0\)</span> using the summary table. Compare this model to the previous one using an <span class="math inline">\(F\)</span>-test. Demonstrate that the F-test and t-test are equivalent by noting the mathematical relationship between the <span class="math inline">\(t\)</span> and <span class="math inline">\(F\)</span> statistics and the equality of the p-values.</p></li>
+</ol></li>
+</ol>
 
 </div>
 </div>
@@ -568,7 +632,7 @@ fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <spa
           </div>
         </div>
       </div>
-<a href="parameter-estimation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="2-parameter-estimation.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -601,7 +665,8 @@ gitbook.start({
 },
 "download": null,
 "toc": {
-"collapse": "chapter+section"
+"collapse": "section",
+"scroll_highlight": true
 }
 });
 });

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+<meta name="date" content="2016-08-27">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="3-inference.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>1.1</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>1.1.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>1.1.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>1.1.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>1.1.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.1.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.1.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.1.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.1.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>1.1.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.2</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>1.2.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.2.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>1.2.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>1.2.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.2.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.2.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>1.2.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.2.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>1.2.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.1</b> Simple Regression</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.1.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.1.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.1.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="2.1.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.1.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.1.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.1.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.1.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.1.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="2.1.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.1.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>2.1.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2</b> ANOVA model</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>2.2.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="parameter-estimation" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Parameter Estimation</h1>
+<p>We have previously looked at ANOVA and regression models and, in many ways, they felt very similar. In this chapter we will introduce the theory that allows us to understand both models as a particular flavor of a larger class of models known as </p>
+<p>First we clarify what a linear model is. A linear model is a model where the data (which we will denote using roman letters as <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span>) and parameters of interest (which we denote using greek letters such as <span class="math inline">\(\boldsymbol{\alpha}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span>) interact only via addition and multiplication. The following are linear models:</p>
+<table style="width:40%;">
+<colgroup>
+<col width="26%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Formula</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ANOVA</td>
+<td><span class="math inline">\(y_{ij}=\mu+\tau_{i}+\epsilon_{i}\)</span></td>
+</tr>
+<tr class="even">
+<td>Simple Regression</td>
+<td><span class="math inline">\(y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Quadratic Term</td>
+<td><span class="math inline">\(y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}\)</span></td>
+</tr>
+<tr class="even">
+<td>General Regression</td>
+<td><span class="math inline">\(y_{i}=\beta_{0}+\beta_{1}x_{i,1}+\beta_{2}x_{i,2}+\dots+\beta_{p}x_{i,p}+\epsilon_{i}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Notice in the Quadratic model, the square is not a parameter and we can consider <span class="math inline">\(x_{i}^{2}\)</span> as just another column of data. This leads to the second example of multiple regression where we just add more slopes for other covariates where the <span class="math inline">\(p\)</span> covariate is denoted <span class="math inline">\(\boldsymbol{x}_{\cdot,p}\)</span> and might be some transformation (such as <span class="math inline">\(x^{2}\)</span> or <span class="math inline">\(\log x\)</span>) of another column of data. The critical point is that the transformation to the data <span class="math inline">\(\boldsymbol{x}\)</span> does not depend on a parameter. Thus the following is  a linear model <span class="math display">\[
+y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
+\]</span></p>
+<div id="simple-regression" class="section level2">
+<h2><span class="header-section-number">2.1</span> Simple Regression</h2>
+<p>We would like to represent all linear models in a similar compact matrix representation. This will allow us to make the transition between simple and multiple regression (and ANCOVA) painlessly.</p>
+To begin, we think about how to write the simple regression model using matrices and vectors that correspond the the data and the parameters. Notice we have
+<span class="math display">\[\begin{eqnarray*}
+y_{1} &amp; = &amp; \beta_{0}+\beta_{1}x_{1}+\epsilon_{1}\\
+y_{2} &amp; = &amp; \beta_{0}+\beta_{1}x_{2}+\epsilon_{2}\\
+y_{3} &amp; = &amp; \beta_{0}+\beta_{1}x_{3}+\epsilon_{3}\\
+ &amp; \vdots\\
+y_{n-1} &amp; = &amp; \beta_{0}+\beta_{1}x_{n-1}+\epsilon_{n-1}\\
+y_{n} &amp; = &amp; \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
+\end{eqnarray*}\]</span>
+<p>where, as usual, <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>. These equations can be written using matrices as <span class="math display">\[
+\underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
+y_{1}\\
+y_{2}\\
+y_{3}\\
+\vdots\\
+y_{n-1}\\
+y_{n}
+\end{array}\right]}}=\underset{\boldsymbol{X}}{\underbrace{\left[\begin{array}{cc}
+1 &amp; x_{1}\\
+1 &amp; x_{2}\\
+1 &amp; x_{3}\\
+\vdots &amp; \vdots\\
+1 &amp; x_{n-1}\\
+1 &amp; x_{n}
+\end{array}\right]}}\underset{\boldsymbol{\beta}}{\underbrace{\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}
+\end{array}\right]}}+\underset{\boldsymbol{\epsilon}}{\underbrace{\left[\begin{array}{c}
+\epsilon_{1}\\
+\epsilon_{2}\\
+\epsilon_{3}\\
+\vdots\\
+\epsilon_{n-1}\\
+\epsilon_{n}
+\end{array}\right]}}
+\]</span> and we compactly write the model as <span class="math display">\[
+\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}
+\]</span> where <span class="math inline">\(\boldsymbol{X}\)</span> is referred to as the <em>design matrix</em> and <span class="math inline">\(\boldsymbol{\beta}\)</span> is the vector of <em>location parameters</em> we are interested in estimating.</p>
+<div id="estimation-of-location-paramters" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Estimation of Location Paramters</h3>
+Our next goal is to find the best estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span> given the data. To justify the formula, consider the case where there is no error terms (i.e. <span class="math inline">\(\epsilon_{i}=0\)</span> for all <span class="math inline">\(i\)</span>). Thus we have <span class="math display">\[
+\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}
+\]</span> and our goal is to solve for <span class="math inline">\(\boldsymbol{\beta}\)</span>. To do this, we must use a matrix inverse, but since inverses only exist for square matrices, we pre-multiple by <span class="math inline">\(\boldsymbol{X}^{T}\)</span> (notice that <span class="math inline">\(\boldsymbol{X}^{T}\boldsymbol{X}\)</span> is a symmetric <span class="math inline">\(2\times2\)</span> matrix). <span class="math display">\[
+\boldsymbol{X}^{T}\boldsymbol{y}=\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}
+\]</span> and then pre-multiply by <span class="math inline">\(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\)</span>.
+<span class="math display">\[\begin{eqnarray*}
+\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &amp; = &amp; \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}\\
+\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &amp; = &amp; \boldsymbol{\beta}
+\end{eqnarray*}\]</span>
+<p>This exercise suggests that <span class="math inline">\(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\)</span> is a good place to start when looking for the maximum-likelihood estimator for <span class="math inline">\(\boldsymbol{\beta}\)</span>. It turns out that this quantity is in fact the maximum-likelihood estimator (and equivalently minimizes the sum-of-squared error). Therefore we will use it as our estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span>. <span class="math display">\[
+\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
+\]</span></p>
+</div>
+<div id="estimation-of-variance-parameter" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Estimation of Variance Parameter</h3>
+Recall our model is <span class="math display">\[
+y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
+\]</span> where <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>. As usual we will find estimates of the noise terms (which we will call residuals or errors) via
+<span class="math display">\[\begin{eqnarray*}
+\hat{\epsilon}_{i} &amp; = &amp; y_{i}-\hat{y}_{i}\\
+ &amp; = &amp; y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
+\end{eqnarray*}\]</span>
+Writing <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> in matrix terms we have
+<span class="math display">\[\begin{eqnarray*}
+\hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+ &amp; = &amp; \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
+ &amp; = &amp; \boldsymbol{H}\boldsymbol{y}
+\end{eqnarray*}\]</span>
+<p>where <span class="math inline">\(\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\)</span> is often called the <em>hat-matrix</em> because it takes <span class="math inline">\(y\)</span> to <span class="math inline">\(\hat{y}\)</span> and has many interesting theoretical properties.</p>
+We can now estimate the error terms via
+<span class="math display">\[\begin{eqnarray*}
+\hat{\boldsymbol{\epsilon}} &amp; = &amp; \boldsymbol{y}-\hat{\boldsymbol{y}}\\
+ &amp; = &amp; \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
+ &amp; = &amp; \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
+\end{eqnarray*}\]</span>
+As usual we estimate <span class="math inline">\(\sigma^{2}\)</span> using the mean-squared error
+<span class="math display">\[\begin{eqnarray*}
+\hat{\sigma}^{2} &amp; = &amp; \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\
+\\
+ &amp; = &amp; \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\end{eqnarray*}\]</span>
+In the general linear model case where <span class="math inline">\(\boldsymbol{\beta}\)</span> has <span class="math inline">\(p\)</span> elements (and thus we have <span class="math inline">\(n-p\)</span> degrees of freedom), the formula is
+<span class="math display">\[\begin{eqnarray*}
+\hat{\sigma}^{2} &amp; = &amp; \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\end{eqnarray*}\]</span>
+</div>
+<div id="expectation-and-variance-of-a-random-vector" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Expectation and variance of a random vector</h3>
+<p>Just as we needed to derive the expected value and variance of <span class="math inline">\(\bar{x}\)</span> in the previous semester, we must now do the same for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. But to do this, we need some properties of expectations and variances.</p>
+<p>In the following, let <span class="math inline">\(\boldsymbol{A}_{n\times p}\)</span> and <span class="math inline">\(\boldsymbol{b}_{n\times1}\)</span> be constants and <span class="math inline">\(\boldsymbol{\epsilon}_{n\times1}\)</span> be a random vector.</p>
+<p>Expectations are very similar to the scalar case where <span class="math display">\[
+E\left[\boldsymbol{\epsilon}\right]=\left[\begin{array}{c}
+E\left[\epsilon_{1}\right]\\
+E\left[\epsilon_{2}\right]\\
+\vdots\\
+E\left[\epsilon_{n}\right]
+\end{array}\right]
+\]</span> and any constants are pulled through the expectation <span class="math display">\[
+E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\mbox{\textbf{\ensuremath{\epsilon}}}\right]+\boldsymbol{b}
+\]</span></p>
+<p>Variances are a little different. The variance of the vector <span class="math inline">\(\boldsymbol{\epsilon}\)</span> is <span class="math display">\[
+Var\left(\boldsymbol{\epsilon}\right)=\left[\begin{array}{cccc}
+Var\left(\epsilon_{1}\right) &amp; Cov\left(\epsilon_{1},\epsilon_{2}\right) &amp; \dots &amp; Cov\left(\epsilon_{1},\epsilon_{n}\right)\\
+Cov\left(\epsilon_{2},\epsilon_{1}\right) &amp; Var\left(\epsilon_{2}\right) &amp; \dots &amp; Cov\left(\epsilon_{2},\epsilon_{n}\right)\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+Cov\left(\epsilon_{n},\epsilon_{1}\right) &amp; Cov\left(\epsilon_{n},\epsilon_{2}\right) &amp; \dots &amp; Var\left(\epsilon_{1}\right)
+\end{array}\right]
+\]</span> and additive constants are ignored, but multiplicative constants are pulled out as follows: <span class="math display">\[
+Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}\right)=\boldsymbol{A}^{T}\,Var\left(\boldsymbol{\epsilon}\right)\,\boldsymbol{A}
+\]</span></p>
+</div>
+<div id="variance-of-location-parameters" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> Variance of Location Parameters</h3>
+We next derive the sampling variance of our estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> by first noting that <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span> are constants and therefore
+<span class="math display">\[\begin{eqnarray*}
+Var\left(\boldsymbol{y}\right) &amp; = &amp; Var\left(\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\right)\\
+ &amp; = &amp; Var\left(\boldsymbol{\epsilon}\right)\\
+ &amp; = &amp; \sigma^{2}\boldsymbol{I}_{n}
+\end{eqnarray*}\]</span>
+because the error terms are independent and therefore <span class="math inline">\(Cov\left(\epsilon_{i},\epsilon_{j}\right)=0\)</span> when <span class="math inline">\(i\ne j\)</span> and <span class="math inline">\(Var\left(\epsilon_{i}\right)=\sigma^{2}\)</span>. Recalling that constants come out of the variance operator as the constant 
+<span class="math display">\[\begin{eqnarray*}
+Var\left(\hat{\boldsymbol{\beta}}\right) &amp; = &amp; Var\left(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\right)\\
+ &amp; = &amp; \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,Var\left(\boldsymbol{y}\right)\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &amp; = &amp; \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,\sigma^{2}\boldsymbol{I}_{n}\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &amp; = &amp; \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &amp; = &amp; \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
+\end{eqnarray*}\]</span>
+<p>Using this, the standard error (i.e. the estimated standard deviation) of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="math inline">\(j\)</span> in <span class="math inline">\(1,\dots,p\)</span>) is <span class="math display">\[
+StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
+\]</span></p>
+</div>
+<div id="confidence-intervals-and-hypothesis-tests" class="section level3">
+<h3><span class="header-section-number">2.1.5</span> Confidence intervals and hypothesis tests</h3>
+<p>We can now state the general method of creating confidence intervals and perform hypothesis tests for any element of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+<p>The confidence interval formula is (as usual) <span class="math display">\[
+\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{j}\right)
+\]</span> and a test statistic for testing <span class="math inline">\(H_{0}:\,\beta_{j}=0\)</span> versus <span class="math inline">\(H_{a}:\,\beta_{j}\ne0\)</span> is <span class="math display">\[
+t_{n-p}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}
+\]</span></p>
+</div>
+<div id="summary-of-pertinent-results" class="section level3">
+<h3><span class="header-section-number">2.1.6</span> Summary of pertinent results</h3>
+<ul>
+<li><span class="math inline">\(\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\)</span> is the unbiased maximum-likelihood estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</li>
+<li>The Central Limit Theorem applies to each element of <span class="math inline">\(\boldsymbol{\beta}\)</span>. That is, as <span class="math inline">\(n\to\infty\)</span>, the distribution of <span class="math inline">\(\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)\)</span>.</li>
+<li>The error terms can be calculated via
+<span class="math display">\[\begin{eqnarray*}
+\hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &amp; = &amp; \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{eqnarray*}\]</span></li>
+<li><p>The estimate of <span class="math inline">\(\sigma^{2}\)</span> is <span class="math display">\[
+\hat{\sigma}^{2}=\frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\]</span></p></li>
+<li><p>The standard error (i.e. the estimated standard deviation) of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="math inline">\(j\)</span> in <span class="math inline">\(1,\dots,p\)</span>) is <span class="math display">\[
+StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
+\]</span></p></li>
+</ul>
+</div>
+<div id="an-example-in-r" class="section level3">
+<h3><span class="header-section-number">2.1.7</span> An example in R</h3>
+<p>Here we will work an example in R and see the calculations. Consider the following data:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.2.4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">20</span>
+x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="dt">length=</span>n)
+y &lt;-<span class="st"> </span>-<span class="dv">3</span> +<span class="st"> </span><span class="dv">2</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)
+my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)
+<span class="kw">ggplot</span>(my.data) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>First we must create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>. Recall <span class="math display">\[
+\boldsymbol{X}=\left[\begin{array}{cc}
+1 &amp; x_{1}\\
+1 &amp; x_{2}\\
+1 &amp; x_{3}\\
+\vdots &amp; \vdots\\
+1 &amp; x_{n-1}\\
+1 &amp; x_{n}
+\end{array}\right]
+\]</span> and can be created in R via the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,n), x)</code></pre></div>
+<p>Given <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> we can calculate <span class="math display">\[
+\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
+\]</span> in R using the following code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) %*%<span class="st"> </span>X )
+beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
+beta.hat</code></pre></div>
+<pre><code>##        [,1]
+##   -2.742428
+## x  1.948965</code></pre>
+Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
+<span class="math display">\[\begin{eqnarray*}
+\hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &amp; = &amp; \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{eqnarray*}\]</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y.hat &lt;-<span class="st"> </span>X %*%<span class="st"> </span>beta.hat
+residuals &lt;-<span class="st"> </span>y -<span class="st"> </span>y.hat</code></pre></div>
+<p>Now that we have the residuals, we can calculate <span class="math inline">\(\hat{\sigma}^{2}\)</span> and the standard errors of <span class="math inline">\(\hat{\beta}_{j}\)</span> <span class="math display">\[
+\hat{\sigma}^{2}=\frac{1}{n-p}\,\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\]</span> <span class="math display">\[
+StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
+\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma2.hat &lt;-<span class="st"> </span>( <span class="kw">t</span>(residuals) %*%<span class="st"> </span>residuals) /<span class="st"> </span>(n<span class="dv">-2</span>)
+sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat )
+std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  <span class="kw">diag</span>(XtXinv) *<span class="st"> </span>sigma2.hat )</code></pre></div>
+<p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
+<pre><code>##        [,1]
+##   -2.742428
+## x  1.948965</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
+<pre><code>##          [,1]
+## [1,] 1.531189</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
+<pre><code>## [1] 0.6598595 0.1128162</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
+<span class="kw">summary</span>(model)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.6965 -0.4281  0.0490  0.8583  2.4072 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -2.7424     0.6599  -4.156 0.000593 ***
+## x             1.9490     0.1128  17.276 1.19e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.531 on 18 degrees of freedom
+## Multiple R-squared:  0.9431, Adjusted R-squared:   0.94 
+## F-statistic: 298.4 on 1 and 18 DF,  p-value: 1.187e-12</code></pre>
+<p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
+upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
+CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
+<span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lower&#39;</span>,<span class="st">&#39;upper&#39;</span>)
+<span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
+CI</code></pre></div>
+<pre><code>##               lower     upper
+## Intercept -4.128741 -1.356115
+## x          1.711946  2.185983</code></pre>
+<p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -4.128741 -1.356115
+## x            1.711946  2.185983</code></pre>
+</div>
+</div>
+<div id="anova-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> ANOVA model</h2>
+<p>The anova model is also a linear model and all we must do is create a appropriate design matrix. Given the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>, all the calculations are identical as in the simple regression case.</p>
+<div id="cell-means-representation" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Cell means representation</h3>
+Recall the cell means representation is <span class="math display">\[
+y_{i,j}=\mu_{i}+\epsilon_{i,j}
+\]</span> where <span class="math inline">\(y_{i,j}\)</span> is the <span class="math inline">\(j\)</span>th observation within the <span class="math inline">\(i\)</span>th group. To clearly show the creation of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix, let the number of groups be <span class="math inline">\(p=3\)</span> and the number of observations per group be <span class="math inline">\(n_{i}=4\)</span>. We now expand the formula to show all the data.
+<span class="math display">\[\begin{eqnarray*}
+y_{1,1} &amp; = &amp; \mu_{1}+\epsilon_{1,1}\\
+y_{1,2} &amp; = &amp; \mu_{1}+\epsilon_{1,2}\\
+y_{1,3} &amp; = &amp; \mu_{1}+\epsilon_{1,3}\\
+y_{1,4} &amp; = &amp; \mu_{1}+\epsilon_{1,4}\\
+y_{2,1} &amp; = &amp; \mu_{2}+\epsilon_{2,1}\\
+y_{2,2} &amp; = &amp; \mu_{2}+\epsilon_{2,2}\\
+y_{2,3} &amp; = &amp; \mu_{2}+\epsilon_{2,3}\\
+y_{2,4} &amp; = &amp; \mu_{2}+\epsilon_{2,4}\\
+y_{3,1} &amp; = &amp; \mu_{3}+\epsilon_{3,1}\\
+y_{3,2} &amp; = &amp; \mu_{3}+\epsilon_{3,2}\\
+y_{3,3} &amp; = &amp; \mu_{3}+\epsilon_{3,3}\\
+y_{3,4} &amp; = &amp; \mu_{3}+\epsilon_{3,4}
+\end{eqnarray*}\]</span>
+In an effort to write the model as <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\)</span> we will write the above as
+<span class="math display">\[\begin{eqnarray*}
+y_{1,1} &amp; = &amp; 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,1}\\
+y_{1,2} &amp; = &amp; 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,2}\\
+y_{1,3} &amp; = &amp; 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,3}\\
+y_{1,4} &amp; = &amp; 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,4}\\
+y_{2,1} &amp; = &amp; 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,1}\\
+y_{2,2} &amp; = &amp; 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,2}\\
+y_{2,3} &amp; = &amp; 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,3}\\
+y_{2,4} &amp; = &amp; 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,4}\\
+y_{3,1} &amp; = &amp; 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,1}\\
+y_{3,2} &amp; = &amp; 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,2}\\
+y_{3,3} &amp; = &amp; 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,3}\\
+y_{3,4} &amp; = &amp; 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,4}
+\end{eqnarray*}\]</span>
+<p>and we will finally be able to write the matrix version <span class="math display">\[
+\underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
+y_{1,1}\\
+y_{1,2}\\
+y_{1,3}\\
+y_{1,4}\\
+y_{2,1}\\
+y_{2,2}\\
+y_{2,3}\\
+y_{2,4}\\
+y_{3,1}\\
+y_{3,2}\\
+y_{3,3}\\
+y_{3,4}
+\end{array}\right]}}=\underset{\mathbf{X}}{\underbrace{\left[\begin{array}{ccc}
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 1 &amp; 0\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1\\
+0 &amp; 0 &amp; 1
+\end{array}\right]}}\underset{\boldsymbol{\beta}}{\underbrace{\left[\begin{array}{c}
+\mu_{1}\\
+\mu_{2}\\
+\mu_{3}
+\end{array}\right]}}+\underset{\boldsymbol{\epsilon}}{\underbrace{\left[\begin{array}{c}
+\epsilon_{1,1}\\
+\epsilon_{1,2}\\
+\epsilon_{1,3}\\
+\epsilon_{1,4}\\
+\epsilon_{2,1}\\
+\epsilon_{2,2}\\
+\epsilon_{2,3}\\
+\epsilon_{2,4}\\
+\epsilon_{3,1}\\
+\epsilon_{3,2}\\
+\epsilon_{3,3}\\
+\epsilon_{3,4}
+\end{array}\right]}}
+\]</span> <span class="math display">\[
+\]</span> Notice that each column of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix is acting as an indicator if the observation is an element of the appropriate group. As such, these are often called <code>indicator variables''. Another term for these, which I find less helpful, is</code>dummy variables’’.</p>
+</div>
+<div id="offset-from-reference-group" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Offset from reference group</h3>
+<p>In this model representation of ANOVA, we have an overall mean and then offsets from the control group (which will be group one). The model is thus <span class="math display">\[
+y_{i,j}=\mu+\tau_{i}+\epsilon_{i,j}
+\]</span> where <span class="math inline">\(\tau_{1}=0\)</span>. We can write this in matrix form as <span class="math display">\[
+\underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
+y_{1,1}\\
+y_{1,2}\\
+y_{1,3}\\
+y_{1,4}\\
+y_{2,1}\\
+y_{2,2}\\
+y_{2,3}\\
+y_{2,4}\\
+y_{3,1}\\
+y_{3,2}\\
+y_{3,3}\\
+y_{3,4}
+\end{array}\right]}}=\underset{\mathbf{X}}{\underbrace{\left[\begin{array}{ccc}
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 1 &amp; 0\\
+1 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 1
+\end{array}\right]}}\underset{\boldsymbol{\beta}}{\underbrace{\left[\begin{array}{c}
+\mu\\
+\tau_{2}\\
+\tau_{3}
+\end{array}\right]}}+\underset{\boldsymbol{\epsilon}}{\underbrace{\left[\begin{array}{c}
+\epsilon_{1,1}\\
+\epsilon_{1,2}\\
+\epsilon_{1,3}\\
+\epsilon_{1,4}\\
+\epsilon_{2,1}\\
+\epsilon_{2,2}\\
+\epsilon_{2,3}\\
+\epsilon_{2,4}\\
+\epsilon_{3,1}\\
+\epsilon_{3,2}\\
+\epsilon_{3,3}\\
+\epsilon_{3,4}
+\end{array}\right]}}
+\]</span></p>
+</div>
+</div>
+<div id="exercises-1" class="section level2">
+<h2><span class="header-section-number">2.3</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>We will do a simple ANOVA analysis on example 8.2 from Ott &amp; Longnecker using the matrix representation of the model. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used 24 students who obtained high and nearly equal scores in the experiment. eight were selected at random from among the 24 problem cases and were treated with method 1. Seven of the remaining 16 students were selected at random and treated with method 2. The remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table. (This analysis was done in section 8.3 of my STA 570 notes)</p>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>96, 79, 91, 85, 83, 91, 82, 87</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>77, 76, 74, 73, 78, 71, 80</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>66, 73, 69, 66, 77, 73, 71, 70, 74</td>
+</tr>
+</tbody>
+</table>
+<p>We will be using the cell means model of ANOVA <span class="math display">\[ y_{ij}=\beta_{i}+\epsilon_{ij} \]</span> where <span class="math inline">\(\beta_{i}\)</span> is the mean of group <span class="math inline">\(i\)</span> and <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Create one vector of all 24 hostility test scores <code>y</code>. (Use the <code>c()</code> function.)</p></li>
+<li><p>Create a design matrix <code>X</code> with dummy variables for columns that code for what group an observation belongs to. Notice that  will be a <span class="math inline">\(24\)</span> rows by <span class="math inline">\(3\)</span> column matrix. An R function that might be handy is  which will bind two vectors or matrices together along the columns. (There is also a corresponding  function that binds vectors/matrices along rows.)</p></li>
+</ol>
+<ol start="3" style="list-style-type: lower-alpha">
+<li><p>Find <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using the matrix formula given in class. The R function  computes the matrix transpose <span class="math inline">\(\mathbf{A}^{T}\)</span>,  computes <span class="math inline">\(\mathbf{A}^{-1}\)</span>, and the operator does matrix multiplication (used as ).</p></li>
+<li><p>Examine the matrix <span class="math inline">\(\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\mathbf{X}^{T}\)</span>. What do you notice about it? In particular, think about the result when you right multiply by <span class="math inline">\(\mathbf{y}\)</span>. How does this matrix calculate the appropriate group means and using the appropriate group sizes <span class="math inline">\(n_i\)</span>?</p></li>
+</ol></li>
+<li><p>We will calculate the y-intercept and slope estimates in a simple linear model using matrix notation. We will use a data set that gives the diameter at breast height (DBH) versus tree height for a randomly selected set of trees. In addition, for each tree, a ground measurement of crown closure (CC) was taken. Larger values of crown closure indicate more shading and is often associated with taller tree morphology (possibly). We will be interested in creating a regression model that predicts height based on DBH and CC. In the interest of reduced copying, we will only use 10 observations. <em>(Note: I made this data up and the DBH values might be unrealistic. Don’t make fun of me.)</em></p>
+<table style="width:86%;">
+<colgroup>
+<col width="18%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>DBH</strong></td>
+<td>30.5</td>
+<td>31.5</td>
+<td>31.7</td>
+<td>32.3</td>
+<td>33.3</td>
+<td align="left">35</td>
+<td>35.4</td>
+<td>35.6</td>
+<td>36.3</td>
+<td>37.8</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>CC</strong></td>
+<td>0.74</td>
+<td>0.69</td>
+<td>0.65</td>
+<td>0.72</td>
+<td>0.58</td>
+<td align="left">0.5</td>
+<td>0.6</td>
+<td>0.7</td>
+<td>0.52</td>
+<td>0.6</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Height</strong></td>
+<td>58</td>
+<td>64</td>
+<td>65</td>
+<td>70</td>
+<td>68</td>
+<td align="left">63</td>
+<td>78</td>
+<td>80</td>
+<td>74</td>
+<td>76</td>
+</tr>
+</tbody>
+</table>
+<p>We are interested in fitting the regression model <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i,1}+\beta_{2}x_{i,2}+\epsilon_{i}\]</span> where <span class="math inline">\(\beta_{0}\)</span> is the y-intercept and <span class="math inline">\(\beta_{1}\)</span> is the slope parameter associated with DBH and <span class="math inline">\(\beta_{2}\)</span> is the slope parameter associated with Crown Closure.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Create a vector of all 10 heights <span class="math inline">\(\mathbf{y}\)</span>.</li>
+<li>Create the design matrix <span class="math inline">\(\mathbf{X}\)</span>.</li>
+<li>Find <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> using the matrix formula given in class.</li>
+<li>Compare your results to the estimated coefficients you get using the <code>lm()</code> function. To add the second predictor to the model, your call to <code>lm()</code> should look something like <code>lm(Height ~ DBH + CrownClosure)</code>.</li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="3-inference.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/edit/master/02_Estimation.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
