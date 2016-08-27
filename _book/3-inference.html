@@ -590,7 +590,29 @@ fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <spa
 ## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
 <p>If we remove the highly correlated covariates then we see a much better behaved model</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight ~<span class="st"> </span>Length<span class="fl">.2</span> +<span class="st"> </span>Height +<span class="st"> </span>Width, <span class="dt">data=</span>fish)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight ~<span class="st"> </span>Length<span class="fl">.2</span> +<span class="st"> </span>Height +<span class="st"> </span>Width, <span class="dt">data=</span>fish)
+<span class="kw">summary</span>(model)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -306.14  -75.11  -36.45   89.54  337.95 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -701.0750    71.0438  -9.868  &lt; 2e-16 ***
+## Length.2      30.4360     0.9841  30.926  &lt; 2e-16 ***
+## Height         5.5141     1.4311   3.853 0.000171 ***
+## Width          5.6513     5.2016   1.086 0.278974    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 132.3 on 154 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.8669, Adjusted R-squared:  0.8643 
+## F-statistic: 334.2 on 3 and 154 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign.</p>
 <p>In this case the sum of the three length covariate estimates was approximately <span class="math inline">\(31\)</span> in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.</p>
 <p>In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.</p>
@@ -660,7 +682,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/STA_571_Book/edit/master/02_Inference.Rmd",
+"link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/03_Inference.Rmd",
 "text": null
 },
 "download": null,

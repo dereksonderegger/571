@@ -334,6 +334,7 @@ If we remove the highly correlated covariates then we see a much better behaved 
 
 ```{r}
 model <- lm(Weight ~ Length.2 + Height + Width, data=fish)
+summary(model)
 ```
 
 When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign. 
