@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+<meta name="date" content="2016-08-27">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="parameter-estimation.html">
+<link rel="next" href="setwddropboxnauteachingsta-571notesc1-3-inference.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a></li>
+<li class="chapter" data-level="2" data-path="parameter-estimation.html"><a href="parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
+<li class="chapter" data-level="3" data-path="inference.html"><a href="inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="inference.html"><a href="inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="inference.html"><a href="inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="inference.html"><a href="inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="inference.html"><a href="inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="inference.html"><a href="inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+<li class="chapter" data-level="3.1.5" data-path="inference.html"><a href="inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.1.5</b> Confidence Intervals for location parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="inference.html"><a href="inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.2</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.3" data-path="inference.html"><a href="inference.html#interpretationsections-3.7---3.9-in-faraway"><i class="fa fa-check"></i><b>3.3</b> InterpretationSections 3.7 - 3.9 in Faraway</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="setwddropboxnauteachingsta-571notesc1-3-inference.html"><a href="setwddropboxnauteachingsta-571notesc1-3-inference.html"><i class="fa fa-check"></i><b>4</b> setwd(‘~/Dropbox/NAU/Teaching/STA 571/Notes/c1.3_Inference’)</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inference" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Inference</h1>
+<div id="f-tests" class="section level2">
+<h2><span class="header-section-number">3.1</span> F-tests</h2>
+<p>We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.</p>
+<p>It is important to specify that we are developing a way of testing nested models. By nested, we mean that the simple model can be created from the full model just by setting one or more model parameters to zero.</p>
+<div id="theory" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Theory</h3>
+<p>Recall that in the simple regression and ANOVA cases we were interested in comparing a simple model versus a more complex model. For each model we computed the residual sum of squares (RSS) and said that if the complicated model performed much better than the simple then <span class="math inline">\(RSS_{simple}\gg RSS_{complex}\)</span>. To do this we needed to standardize by the number of parameters added to the model and the degrees of freedom remaining in the full model. We first defined <span class="math inline">\(RSS_{diff}=RSS_{simple}-RSS_{complex}\)</span> and let <span class="math inline">\(df_{diff}\)</span> be the number of parameters difference between the simple and complex models. Then we had <span class="math display">\[F=\frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}\]</span> and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F -distribution with degrees of freedom <span class="math inline">\(df_{diff}\)</span> and <span class="math inline">\(df_{complex}\)</span>.</p>
+<p>The critical assumption for the F-test to be appropriate is that the error terms are independent and normally distributed with constant variance.</p>
+<p>We will consider a data set from Johnson and Raven (1973) which also appears in Weisberg (1985). This data set is concerned with the number of tortoise species on <span class="math inline">\(n=30\)</span> different islands in the Galapagos. The variables of interest in the data set are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Species</code></td>
+<td>Number of tortoise species found on the island</td>
+</tr>
+<tr class="even">
+<td><code>Endimics</code></td>
+<td>Number of tortoise species endemic to the island</td>
+</tr>
+<tr class="odd">
+<td><code>Elevation</code></td>
+<td>Elevation of the highest point on the island</td>
+</tr>
+<tr class="even">
+<td><code>Area</code></td>
+<td>Area of the island (km<span class="math inline">\(^2\)</span>)</td>
+</tr>
+<tr class="odd">
+<td><code>Nearest</code></td>
+<td>Distance to the nearest neighboring island (km)</td>
+</tr>
+<tr class="even">
+<td><code>Scruz</code></td>
+<td>Distance to the Santa Cruz islands (km)</td>
+</tr>
+<tr class="odd">
+<td><code>Adjacent</code></td>
+<td>Area of the nearest adjacent island (km<span class="math inline">\(^2\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p>We will first read in the data set from the package <code>faraway</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)    <span class="co"># load the library </span>
+<span class="kw">data</span>(gala)          <span class="co"># import the data set</span>
+<span class="kw">head</span>(gala)          <span class="co"># show the first couple of rows</span></code></pre></div>
+<pre><code>##              Species Endemics  Area Elevation Nearest Scruz Adjacent
+## Baltra            58       23 25.09       346     0.6   0.6     1.84
+## Bartolome         31       21  1.24       109     0.6  26.3   572.33
+## Caldwell           3        3  0.21       114     2.8  58.7     0.78
+## Champion          25        9  0.10        46     1.9  47.4     0.18
+## Coamano            2        1  0.05        77     1.9   1.9   903.82
+## Daphne.Major      18       11  0.34       119     8.0   8.0     1.84</code></pre>
+<p>First we will create the full model that predicts the number of species as a function of elevation, area, nearest, scruz and adjacent. Notice that this model has <span class="math inline">\(p=6\)</span> <span class="math inline">\(\beta_{i}\)</span> values (one for each coefficient plus the intercept).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(M.c)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Species ~ Area + Elevation + Nearest + Scruz + Adjacent, 
+##     data = gala)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -111.679  -34.898   -7.862   33.460  182.584 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.068221  19.154198   0.369 0.715351    
+## Area        -0.023938   0.022422  -1.068 0.296318    
+## Elevation    0.319465   0.053663   5.953 3.82e-06 ***
+## Nearest      0.009144   1.054136   0.009 0.993151    
+## Scruz       -0.240524   0.215402  -1.117 0.275208    
+## Adjacent    -0.074805   0.017700  -4.226 0.000297 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 60.98 on 24 degrees of freedom
+## Multiple R-squared:  0.7658, Adjusted R-squared:  0.7171 
+## F-statistic:  15.7 on 5 and 24 DF,  p-value: 6.838e-07</code></pre>
+</div>
+<div id="testing-all-covariates" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Testing All Covariates</h3>
+<p>The first test we might want to do is to test if any of the covariates are significant. That is to say that we want to test the full model versus the simple null hypothesis model <span class="math display">\[y_{i}=\beta_{0}+\epsilon_{i}\]</span> that has no covariates and only a y-intercept. So we will create a simple model</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>gala)</code></pre></div>
+<p>and calculate the appropriate Residual Sums of Squares (RSS) for each model, along with the difference in degrees of freedom between the two models.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.c)^<span class="dv">2</span>)
+RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.s)^<span class="dv">2</span>)
+df.diff &lt;-<span class="st"> </span><span class="dv">5</span>               <span class="co"># complex model has 5 additional parameters</span>
+df.c &lt;-<span class="st"> </span><span class="dv">30</span> -<span class="st"> </span><span class="dv">6</span>             <span class="co"># complex model has 24 degrees of freedom left</span></code></pre></div>
+<p>The F-statistic for this test is therefore</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F.stat &lt;-<span class="st">  </span>( (RSS.s -<span class="st"> </span>RSS.c) /<span class="st"> </span>df.diff ) /<span class="st"> </span>( RSS.c /<span class="st"> </span>df.c )
+F.stat</code></pre></div>
+<pre><code>## [1] 15.69941</code></pre>
+<p>and should be compared against the F-distribution with <span class="math inline">\(5\)</span> and <span class="math inline">\(24\)</span> degrees of freedom. Because a large difference between RSS.s and RSS.c would be evidence for the alternative, larger model, the p-value for this test is <span class="math display">\[p-value=P\left(F_{5,24}\ge\mathtt{F.stat}\right)\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p.value &lt;-<span class="st">  </span><span class="dv">1</span> -<span class="st"> </span><span class="kw">pf</span>(<span class="fl">15.699</span>, <span class="dv">5</span>, <span class="dv">24</span>)
+p.value</code></pre></div>
+<pre><code>## [1] 6.839486e-07</code></pre>
+<p>Both the F.stat and its p-value are given at the bottom of the summary table. However, I might be interested in creating an ANOVA table for this situation.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>df</th>
+<th>Sum Sq</th>
+<th>Mean Sq</th>
+<th>F</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Difference</td>
+<td><span class="math inline">\(p-1\)</span></td>
+<td><span class="math inline">\(RSS_d\)</span></td>
+<td><span class="math inline">\(MSE_d = RSS_d / (p-1)\)</span></td>
+<td><span class="math inline">\(MSE_d/MSE_c\)</span></td>
+<td><span class="math inline">\(P(F &gt; F_{p-1,n-p})\)</span></td>
+</tr>
+<tr class="even">
+<td>Complex</td>
+<td><span class="math inline">\(n-p\)</span></td>
+<td><span class="math inline">\(RSS_c\)</span></td>
+<td><span class="math inline">\(MSE_c = RSS_c / (n-p)\)</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Simple</td>
+<td><span class="math inline">\(n-1\)</span></td>
+<td><span class="math inline">\(RSS_s\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This table can be obtained from R by using the <code>anova()</code> function on the two models of interest. As usual with R, it does not show the simple row, but rather concentrates on the difference row.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(M.s, M.c)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ 1
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     29 381081                                  
+## 2     24  89231  5    291850 15.699 6.838e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="testing-a-single-covariate" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Testing a Single Covariate</h3>
+<p>For a particular covariate, <span class="math inline">\(\beta_{j}\)</span>, we might wish to perform a test to see if it can be removed from the model. It can be shown that the F-statistic can be re-written as</p>
+<p><span class="math display">\[\begin{aligned}
+F   &amp;=  \frac{\left[RSS_{s}-RSS_{c}\right]/1}{RSS_{c}/\left(n-p\right)}\\
+    &amp;=  \vdots\\
+    &amp;=  \left[\frac{\hat{\beta_{j}}}{SE\left(\hat{\beta}_{j}\right)}\right]^{2}\\
+    &amp;= t^{2}
+\end{aligned}\]</span> where <span class="math inline">\(t\)</span> has a t-distribution with <span class="math inline">\(n-p\)</span> degrees of freedom under the null hypothesis that the simple model is sufficient.</p>
+<p>We consider the case of removing the covariate <code>Area</code> from the model and will calculate our test statistic using both methods.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st">        </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.c)^<span class="dv">2</span> )
+RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.s)^<span class="dv">2</span> )
+df.d &lt;-<span class="st"> </span><span class="dv">1</span>
+df.c &lt;-<span class="st"> </span><span class="dv">30-6</span>
+F.stat &lt;-<span class="st"> </span>((RSS.s -<span class="st"> </span>RSS.c)/<span class="dv">1</span>) /<span class="st"> </span>(RSS.c /<span class="st"> </span>df.c)
+F.stat</code></pre></div>
+<pre><code>## [1] 1.139792</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">1</span> -<span class="st"> </span><span class="kw">pf</span>(F.stat, <span class="dv">1</span>, <span class="dv">24</span>)</code></pre></div>
+<pre><code>## [1] 0.296318</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(F.stat)</code></pre></div>
+<pre><code>## [1] 1.067611</code></pre>
+<p>To calculate it using the estimated coefficient and its standard error, we must grab those values from the summary table</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw">summary</span>(M.c)
+temp$coefficients</code></pre></div>
+<pre><code>##                 Estimate  Std. Error      t value     Pr(&gt;|t|)
+## (Intercept)  7.068220709 19.15419782  0.369016796 7.153508e-01
+## Area        -0.023938338  0.02242235 -1.067610554 2.963180e-01
+## Elevation    0.319464761  0.05366280  5.953187968 3.823409e-06
+## Nearest      0.009143961  1.05413595  0.008674366 9.931506e-01
+## Scruz       -0.240524230  0.21540225 -1.116628222 2.752082e-01
+## Adjacent    -0.074804832  0.01770019 -4.226216850 2.970655e-04</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.area &lt;-<span class="st"> </span>temp$coefficients[<span class="dv">2</span>,<span class="dv">1</span>]
+SE.beta.area &lt;-<span class="st"> </span>temp$coefficients[<span class="dv">2</span>,<span class="dv">2</span>]
+t &lt;-<span class="st"> </span>beta.area /<span class="st"> </span>SE.beta.area
+t</code></pre></div>
+<pre><code>## [1] -1.067611</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> *<span class="st"> </span><span class="kw">pt</span>(t, <span class="dv">24</span>)</code></pre></div>
+<pre><code>## [1] 0.296318</code></pre>
+<p>All that hand calculation is tedious, so we can again use the anova() command to compare the two models.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(M.s, M.c)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ Elevation + Nearest + Scruz + Adjacent
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     25 93469                           
+## 2     24 89231  1    4237.7 1.1398 0.2963</code></pre>
+</div>
+<div id="testing-a-subset-of-covariates" class="section level3">
+<h3><span class="header-section-number">3.1.4</span> Testing a Subset of Covariates</h3>
+<p>Often a researcher will want to remove a subset of covariates from the model. In the Galapagos example, Area, Nearest, and Scruz all have non-significant p-values and would be removed when comparing the full model to the model without that one covariate. While each of them might be non-significant, is the sum of all three significant?</p>
+<p>Because the individual <span class="math inline">\(\hat{\beta}_{j}\)</span> values are not independent, then we cannot claim that the subset is not statistically significant just because each variable in turn was insignificant. Instead we again create simple and complex models in the same fashion as we have previously done.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st">        </span>Elevation +<span class="st">                   </span>Adjacent, <span class="dt">data=</span>gala)
+<span class="kw">anova</span>(M.s, M.c)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ Elevation + Adjacent
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     27 100003                           
+## 2     24  89231  3     10772 0.9657  0.425</code></pre>
+<p>We find a large p-value associated with this test and can safely stay with the null hypothesis, that the simple model is sufficient to explain the observed variability in the number of species of tortoise.</p>
+</div>
+<div id="confidence-intervals-for-location-parameters" class="section level3">
+<h3><span class="header-section-number">3.1.5</span> Confidence Intervals for location parameters</h3>
+<p>Recall that <span class="math display">\[\hat{\boldsymbol{\beta}}\sim N\left(\boldsymbol{\beta},\,\sigma^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\right)\]</span> and it is easy to calculate the estimate of <span class="math inline">\(\sigma^{2}\)</span>. This estimate will be the “average” squared residual <span class="math display">\[\hat{\sigma}^{2}=\frac{RSS}{df}\]</span> where <span class="math inline">\(RSS\)</span> is the residual sum of squares and <span class="math inline">\(df\)</span> is the degrees of freedom <span class="math inline">\(n-p\)</span> where <span class="math inline">\(p\)</span> is the number of <span class="math inline">\(\beta_{j}\)</span> parameters. Therefore the standard error of the <span class="math inline">\(\hat{\beta}_{j}\)</span> values is <span class="math display">\[SE\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}\]</span></p>
+<p>We can see this calculation in the summary regression table. We again consider the Galapagos Island data set. First we must create the design matrix</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span>gala$Species
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">30</span>), gala$Elevation, gala$Adjacent )</code></pre></div>
+<p>And then create <span class="math inline">\(\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(  <span class="kw">t</span>(X) %*%<span class="st"> </span>X )
+XtXinv</code></pre></div>
+<pre><code>##               [,1]          [,2]          [,3]
+## [1,]  6.094829e-02 -8.164025e-05  9.312123e-06
+## [2,] -8.164025e-05  2.723835e-07 -7.126027e-08
+## [3,]  9.312123e-06 -7.126027e-08  6.478031e-08</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">diag</span>(XtXinv)</code></pre></div>
+<pre><code>## [1] 6.094829e-02 2.723835e-07 6.478031e-08</code></pre>
+<p>Eventually we will need <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
+beta.hat</code></pre></div>
+<pre><code>##            [,1]
+## [1,]  1.4328722
+## [2,]  0.2765683
+## [3,] -0.0688855</code></pre>
+<p>And now find the estimate <span class="math inline">\(\hat{\sigma}\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">H &lt;-<span class="st"> </span>X %*%<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X)
+y.hat &lt;-<span class="st"> </span>H %*%<span class="st"> </span>y
+RSS &lt;-<span class="st"> </span><span class="kw">sum</span>( (y-y.hat)^<span class="dv">2</span> )
+sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  RSS/(<span class="dv">30-3</span>) )
+sigma.hat</code></pre></div>
+<pre><code>## [1] 60.85898</code></pre>
+<p>The standard errors of <span class="math inline">\(\hat{\beta}\)</span> is thus</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>( sigma.hat^<span class="dv">2</span> *<span class="st"> </span><span class="kw">diag</span>(XtXinv) )</code></pre></div>
+<pre><code>## [1] 15.02468680  0.03176253  0.01548981</code></pre>
+<p>We can double check that this is what R calculates in the summary table</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Elevation +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(model)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Species ~ Elevation + Adjacent, data = gala)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -103.41  -34.33  -11.43   22.57  203.65 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  1.43287   15.02469   0.095 0.924727    
+## Elevation    0.27657    0.03176   8.707 2.53e-09 ***
+## Adjacent    -0.06889    0.01549  -4.447 0.000134 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 60.86 on 27 degrees of freedom
+## Multiple R-squared:  0.7376, Adjusted R-squared:  0.7181 
+## F-statistic: 37.94 on 2 and 27 DF,  p-value: 1.434e-08</code></pre>
+<p>It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is <span class="math display">\[Estimate\;\pm Critical\,Value\;\cdot\;StandardError\left(Estimate\right)\]</span> For any specific <span class="math inline">\(\beta_{j}\)</span> we will have <span class="math display">\[\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}\]</span> where <span class="math inline">\(\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}\)</span> is the <span class="math inline">\([j,j]\)</span> element of the variance/covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
+<p>To demonstrate this, we return to the Galapagos Island data set.</p>
+<p>Finally we can calculate confidence intervals for our three <span class="math inline">\(\beta_{j}\)</span> values</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lower &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )
+upper &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )
+<span class="kw">cbind</span>(lower, upper)</code></pre></div>
+<pre><code>##            [,1]        [,2]
+## [1,] -29.395239 32.26098305
+## [2,]   0.211397  0.34173962
+## [3,]  -0.100668 -0.03710303</code></pre>
+<p>That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the confint() command.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
+<pre><code>##                  2.5 %      97.5 %
+## (Intercept) -29.395239 32.26098305
+## Elevation     0.211397  0.34173962
+## Adjacent     -0.100668 -0.03710303</code></pre>
+</div>
+</div>
+<div id="prediction-and-confidence-intervals-for-a-response" class="section level2">
+<h2><span class="header-section-number">3.2</span> Prediction and Confidence Intervals for a response</h2>
+<p>Given a vector of predictor covariates <span class="math inline">\(\boldsymbol{x}_{0}\)</span> (think of <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> as potentially one row in <span class="math inline">\(\boldsymbol{X}\)</span>. Because we might want to predict some other values than what we observe, we do not restrict ourselves to <em>only</em> rows in ), we want to make inference on the expected value <span class="math inline">\(\hat{y}_{0}\)</span>. We can calculate the value by <span class="math display">\[\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\]</span> and we are interested in two different types of predictions.</p>
+<ol style="list-style-type: decimal">
+<li><p>We might be interested in the uncertainty of a new data point. This uncertainty has two components: the uncertainty of the regression model and uncertainty of a new data point from its expected value.</p></li>
+<li><p>Second, we might be interested in only the uncertainty about the regression model.</p></li>
+</ol>
+<p>We note that because <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> is just a constant, we can calculate the variance of this value as <span class="math display">\[ \begin{aligned}
+Var\left(\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\right)  
+  &amp;= \boldsymbol{x}_{0}^{T}\,Var\left(\hat{\boldsymbol{\beta}}\right)\,\boldsymbol{x}_{0} \\
+    &amp;=  \boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\sigma^{2}\,\boldsymbol{x}_{0} \\
+    &amp;=  \boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\,\sigma^{2}
+\end{aligned}\]</span> and use this to calculate two types of intervals. First, a prediction interval for a new observation is <span class="math display">\[\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{1+\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}\]</span> and a confidence interval for the mean response for the given <span class="math inline">\(\boldsymbol{x}_{0}\)</span> is <span class="math display">\[\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}\]</span></p>
+<p>Again using the Galapagos Island data set as an example, we might be interested in predicting the number of tortoise species of an island with highest point <span class="math inline">\(400\)</span> meters and nearest adjacent island with area <span class="math inline">\(200 km^{2}\)</span>. We then have <span class="math display">\[\boldsymbol{x}_{0}^{T} = \left[\begin{array}{ccc}1  &amp;  400  &amp;  200\end{array}\right]\]</span> and we can calculate</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">400</span>, <span class="dv">200</span>)
+y0 &lt;-<span class="st"> </span><span class="kw">t</span>(x0) %*%<span class="st"> </span>beta.hat
+y0</code></pre></div>
+<pre><code>##          [,1]
+## [1,] 98.28309</code></pre>
+<p>and then calculate <span class="math inline">\(\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\)</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">xt.XtXinv.x &lt;-<span class="st"> </span><span class="kw">t</span>(x0) %*%<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) %*%<span class="st"> </span>X ) %*%<span class="st"> </span>x0</code></pre></div>
+<p>Thus the prediction interval will be</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(y0 -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> +<span class="st"> </span>xt.XtXinv.x),
+  y0 +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> +<span class="st"> </span>xt.XtXinv.x))</code></pre></div>
+<pre><code>## [1] -28.70241 225.26858</code></pre>
+<p>while a confidence interval for the expectation is</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(y0 -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x),
+  y0 +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) *<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x))</code></pre></div>
+<pre><code>## [1]  75.21317 121.35301</code></pre>
+<p>These prediction and confidence intervals can be calculated in R using the predict() function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Elevation=</span><span class="dv">400</span>, <span class="dt">Adjacent=</span><span class="dv">200</span>)
+<span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;prediction&#39;</span>)</code></pre></div>
+<pre><code>##        fit       lwr      upr
+## 1 98.28309 -28.70241 225.2686</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</code></pre></div>
+<pre><code>##        fit      lwr     upr
+## 1 98.28309 75.21317 121.353</code></pre>
+</div>
+<div id="interpretationsections-3.7---3.9-in-faraway" class="section level2">
+<h2><span class="header-section-number">3.3</span> InterpretationSections 3.7 - 3.9 in Faraway</h2>
+<p>The standard interpretation of the slope parameter is that _{j} is the amount of increase in y if the j th covariate were to increase by 1 , provided that all other covariates stayed the same.</p>
+<p>The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation.</p>
+<p>One common issue that make interpretation difficult is that covariates can be highly correlated.</p>
+<p>Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:</p>
+<p>We first look at the data and observe the expected relationship between length and weight.</p>
+<p>Naively, we might consider the linear model with all the length effects present.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="parameter-estimation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="setwddropboxnauteachingsta-571notesc1-3-inference.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/edit/master/02_Inference.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "chapter"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

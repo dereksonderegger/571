@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-08-24">
+<meta name="date" content="2016-08-27">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -107,6 +107,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <ul class="summary">
 <li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
@@ -394,8 +395,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -4.380516
-## x  2.328150</code></pre>
+##   -4.368892
+## x  2.129895</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -414,13 +415,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  <span clas
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -4.380516
-## x  2.328150</code></pre>
+##   -4.368892
+## x  2.129895</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 1.801733</code></pre>
+## [1,] 2.533119</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.7764492 0.1327496</code></pre>
+<pre><code>## [1] 1.0916368 0.1866372</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -428,19 +429,19 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  <span clas
 ## lm(formula = y ~ x)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -3.14460 -1.16681 -0.03144  1.12643  3.15734 
+##     Min      1Q  Median      3Q     Max 
+## -5.6152 -1.1538  0.3709  1.6658  4.7972 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -4.3805     0.7764  -5.642 2.37e-05 ***
-## x             2.3282     0.1327  17.538 9.18e-13 ***
+## (Intercept)  -4.3689     1.0916  -4.002 0.000836 ***
+## x             2.1299     0.1866  11.412 1.13e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.802 on 18 degrees of freedom
-## Multiple R-squared:  0.9447, Adjusted R-squared:  0.9416 
-## F-statistic: 307.6 on 1 and 18 DF,  p-value: 9.182e-13</code></pre>
+## Residual standard error: 2.533 on 18 degrees of freedom
+## Multiple R-squared:  0.8786, Adjusted R-squared:  0.8718 
+## F-statistic: 130.2 on 1 and 18 DF,  p-value: 1.128e-09</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -449,13 +450,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -6.011775 -2.749256
-## x          2.049254  2.607047</code></pre>
+## Intercept -6.662336 -2.075448
+## x          1.737785  2.522005</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -6.011775 -2.749256
-## x            2.049254  2.607047</code></pre>
+## (Intercept) -6.662336 -2.075448
+## x            1.737785  2.522005</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">
@@ -731,12 +732,12 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/STA_571_Book/02_Estimation.Rmd",
+"link": "https://github.com/dereksonderegger/STA_571_Book/edit/master/02_Estimation.Rmd",
 "text": null
 },
 "download": null,
 "toc": {
-"collapse": "subsection"
+"collapse": "chapter"
 }
 });
 });
