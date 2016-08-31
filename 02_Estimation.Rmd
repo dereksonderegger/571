@@ -14,7 +14,7 @@ models:
 
 Model              |  Formula
 ------------------ | ---------
-ANOVA              | $y_{ij}=\mu+\tau_{i}+\epsilon_{i}$ 
+ANOVA              | $y_{ij}=\mu+\tau_{i}+\epsilon_{ij}$ 
 Simple Regression  | $y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}$ 
 Quadratic Term     | $y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}$ 
 General Regression | $y_{i}=\beta_{0}+\beta_{1}x_{i,1}+\beta_{2}x_{i,2}+\dots+\beta_{p}x_{i,p}+\epsilon_{i}$ 
@@ -127,6 +127,13 @@ Recall our model is
 y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
 \]
 where $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
+
+Using our estimates $\hat{\boldsymbol{\beta}}$ we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each $x_i$ value in our dataset.
+\[
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
+\]
+Using matrix notation, I would write $\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$.
+
 As usual we will find estimates of the noise terms (which we will
 call residuals or errors) via 
 \begin{eqnarray*}
@@ -188,7 +195,7 @@ E\left[\epsilon_{n}\right]
 \]
 and any constants are pulled through the expectation
 \[
-E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\mbox{\textbf{\ensuremath{\epsilon}}}\right]+\boldsymbol{b}
+E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}
 \]
 
 
@@ -282,7 +289,7 @@ StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol
 
 Here we will work an example in R and see the calculations. Consider
 the following data:
-```{r, fig.height=3}
+```{r, fig.height=3, warning=FALSE}
 library(ggplot2)
 n <- 20
 x <- seq(0,10, length=n)
@@ -346,7 +353,7 @@ StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol
 ```{r}
 sigma2.hat <- ( t(residuals) %*% residuals) / (n-2)
 sigma.hat <- sqrt( sigma2.hat )
-std.errs <- sqrt(  diag(XtXinv) * sigma2.hat )
+std.errs <- sqrt( sigma2.hat * diag(XtXinv) )
 ```
 
 
@@ -481,8 +488,8 @@ y_{3,4}
 \]
 Notice that each column of the $\boldsymbol{X}$ matrix is acting
 as an indicator if the observation is an element of the appropriate
-group. As such, these are often called ``indicator variables''.
-Another term for these, which I find less helpful, is ``dummy variables''.
+group. As such, these are often called *indicator variables*.
+Another term for these, which I find less helpful, is *dummy variables*.
 
 
 ### Offset from reference group

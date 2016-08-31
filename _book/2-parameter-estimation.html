@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-08-27">
+<meta name="date" content="2016-08-30">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -195,7 +195,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tbody>
 <tr class="odd">
 <td>ANOVA</td>
-<td><span class="math inline">\(y_{ij}=\mu+\tau_{i}+\epsilon_{i}\)</span></td>
+<td><span class="math inline">\(y_{ij}=\mu+\tau_{i}+\epsilon_{ij}\)</span></td>
 </tr>
 <tr class="even">
 <td>Simple Regression</td>
@@ -272,9 +272,13 @@ Our next goal is to find the best estimate of <span class="math inline">\(\bolds
 </div>
 <div id="estimation-of-variance-parameter" class="section level3">
 <h3><span class="header-section-number">2.1.2</span> Estimation of Variance Parameter</h3>
-Recall our model is <span class="math display">\[
+<p>Recall our model is <span class="math display">\[
 y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
-\]</span> where <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>. As usual we will find estimates of the noise terms (which we will call residuals or errors) via
+\]</span> where <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>.</p>
+<p>Using our estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each <span class="math inline">\(x_i\)</span> value in our dataset. <span class="math display">\[
+\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
+\]</span> Using matrix notation, I would write <span class="math inline">\(\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>.</p>
+As usual we will find estimates of the noise terms (which we will call residuals or errors) via
 <span class="math display">\[\begin{eqnarray*}
 \hat{\epsilon}_{i} &amp; = &amp; y_{i}-\hat{y}_{i}\\
  &amp; = &amp; y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
@@ -315,7 +319,7 @@ E\left[\epsilon_{2}\right]\\
 E\left[\epsilon_{n}\right]
 \end{array}\right]
 \]</span> and any constants are pulled through the expectation <span class="math display">\[
-E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\mbox{\textbf{\ensuremath{\epsilon}}}\right]+\boldsymbol{b}
+E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}
 \]</span></p>
 <p>Variances are a little different. The variance of the vector <span class="math inline">\(\boldsymbol{\epsilon}\)</span> is <span class="math display">\[
 Var\left(\boldsymbol{\epsilon}\right)=\left[\begin{array}{cccc}
@@ -378,9 +382,8 @@ StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol
 <div id="an-example-in-r" class="section level3">
 <h3><span class="header-section-number">2.1.7</span> An example in R</h3>
 <p>Here we will work an example in R and see the calculations. Consider the following data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.2.4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">20</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+n &lt;-<span class="st"> </span><span class="dv">20</span>
 x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="dt">length=</span>n)
 y &lt;-<span class="st"> </span>-<span class="dv">3</span> +<span class="st"> </span><span class="dv">2</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)
 my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)
@@ -404,8 +407,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.113865
-## x  1.863362</code></pre>
+##   -2.470726
+## x  1.862567</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -420,17 +423,17 @@ StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol
 \]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma2.hat &lt;-<span class="st"> </span>( <span class="kw">t</span>(residuals) %*%<span class="st"> </span>residuals) /<span class="st"> </span>(n<span class="dv">-2</span>)
 sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat )
-std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  <span class="kw">diag</span>(XtXinv) *<span class="st"> </span>sigma2.hat )</code></pre></div>
+std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat *<span class="st"> </span><span class="kw">diag</span>(XtXinv) )</code></pre></div>
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.113865
-## x  1.863362</code></pre>
+##   -2.470726
+## x  1.862567</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 1.728113</code></pre>
+## [1,] 1.764552</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.7447230 0.1273254</code></pre>
+<pre><code>## [1] 0.7604261 0.1300101</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -439,18 +442,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  <span clas
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -2.5116 -1.7234  0.2948  1.3219  2.7420 
+## -2.8576 -1.3982  0.1813  0.7007  3.0587 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.1139     0.7447  -2.838   0.0109 *  
-## x             1.8634     0.1273  14.635 1.95e-11 ***
+## (Intercept)  -2.4707     0.7604  -3.249  0.00445 ** 
+## x             1.8626     0.1300  14.326 2.77e-11 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.728 on 18 degrees of freedom
-## Multiple R-squared:  0.9225, Adjusted R-squared:  0.9182 
-## F-statistic: 214.2 on 1 and 18 DF,  p-value: 1.946e-11</code></pre>
+## Residual standard error: 1.765 on 18 degrees of freedom
+## Multiple R-squared:  0.9194, Adjusted R-squared:  0.9149 
+## F-statistic: 205.2 on 1 and 18 DF,  p-value: 2.774e-11</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -459,13 +462,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower      upper
-## Intercept -3.678470 -0.5492599
-## x          1.595862  2.1308631</code></pre>
+## Intercept -4.068322 -0.8731304
+## x          1.589426  2.1357085</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %     97.5 %
-## (Intercept) -3.678470 -0.5492599
-## x            1.595862  2.1308631</code></pre>
+## (Intercept) -4.068322 -0.8731304
+## x            1.589426  2.1357085</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">
@@ -551,7 +554,7 @@ y_{3,4}
 \epsilon_{3,4}
 \end{array}\right]}}
 \]</span> <span class="math display">\[
-\]</span> Notice that each column of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix is acting as an indicator if the observation is an element of the appropriate group. As such, these are often called <code>indicator variables''. Another term for these, which I find less helpful, is</code>dummy variables’’.</p>
+\]</span> Notice that each column of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix is acting as an indicator if the observation is an element of the appropriate group. As such, these are often called <em>indicator variables</em>. Another term for these, which I find less helpful, is <em>dummy variables</em>.</p>
 </div>
 <div id="offset-from-reference-group" class="section level3">
 <h3><span class="header-section-number">2.2.2</span> Offset from reference group</h3>

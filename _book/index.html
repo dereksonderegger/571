@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-08-27">
+<meta name="date" content="2016-08-30">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -180,7 +180,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Statistical Methods II</h1>
 <h4 class="author"><em>Derek L. Sonderegger</em></h4>
-<h4 class="date"><em>2016-08-27</em></h4>
+<h4 class="date"><em>2016-08-30</em></h4>
 </div>
 <div id="matrix-theory" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Matrix Theory</h1>
@@ -319,7 +319,20 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 1 &amp; 4 &amp; 7\\
 2 &amp; 5 &amp; 6
 \end{array}\right]
-\]</span> We can think of this as swapping all elements about the main diagonal.</p>
+\]</span> We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.</p>
+<p><span class="math display">\[
+\boldsymbol{W}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{array}\right]
+\]</span></p>
+<p><span class="math display">\[
+\boldsymbol{W}^T=\left[\begin{array}{cc}
+1 &amp; 4 \\
+2 &amp; 5 \\
+3 &amp; 6
+\end{array}\right]
+\]</span></p>
 </div>
 <div id="addition-and-subtraction" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Addition and Subtraction</h3>
@@ -374,7 +387,7 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="matrix-multiplication" class="section level3">
 <h3><span class="header-section-number">1.2.5</span> Matrix Multiplication</h3>
-Matrix multiplication is just a sequence of vector multiplications. If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a <span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{ij}=\boldsymbol{x}_{i\cdot}\boldsymbol{w}_{\cdot j}\)</span> where <span class="math inline">\(\boldsymbol{x}_{i\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot j}\)</span> is the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let <span class="math display">\[
+Matrix multiplication is just a sequence of vector multiplications. If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a <span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}\)</span> where <span class="math inline">\(\boldsymbol{x}_{i,\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot, j}\)</span> is the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let <span class="math display">\[
 \boldsymbol{X}=\left[\begin{array}{cccc}
 1 &amp; 2 &amp; 3 &amp; 4\\
 5 &amp; 6 &amp; 7 &amp; 8\\
@@ -387,7 +400,7 @@ Matrix multiplication is just a sequence of vector multiplications. If <span cla
 \end{array}\right]
 \]</span> so <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(3\times4\)</span> (which we remind ourselves by adding a <span class="math inline">\(3\times4\)</span> subscript to <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_{3\times4}\)</span>) and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(\boldsymbol{W}{}_{4\times2}\)</span>. Because the <em>inner</em> dimensions match for this multiplication, then <span class="math inline">\(\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span> is defined whereand similarly
 <span class="math display">\[\begin{eqnarray*}
-z_{21} &amp; = &amp; \boldsymbol{x}_{2\cdot}\boldsymbol{w}_{\cdot1}\\
+z_{2,1} &amp; = &amp; \boldsymbol{x}_{2,\cdot}\boldsymbol{w}_{\cdot,1}\\
  &amp; = &amp; \left(5\cdot13\right)+\left(6\cdot15\right)+\left(7\cdot17\right)+\left(8\cdot19\right)=426
 \end{eqnarray*}\]</span>
 <p>so that <span class="math display">\[

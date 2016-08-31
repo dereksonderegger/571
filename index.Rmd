@@ -228,7 +228,22 @@ if $m_{i,j}=w_{j,i}.$
 2 & 5 & 6
 \end{array}\right]
 \]
-We can think of this as swapping all elements about the main diagonal.
+We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.
+
+\[
+\boldsymbol{W}=\left[\begin{array}{ccc}
+1 & 2 & 3\\
+4 & 5 & 6
+\end{array}\right]
+\]
+
+\[
+\boldsymbol{W}^T=\left[\begin{array}{cc}
+1 & 4 \\
+2 & 5 \\
+3 & 6
+\end{array}\right]
+\]
 
 
 ### Addition and Subtraction
@@ -304,9 +319,9 @@ The product is the sum of the element-wise multiplications.
 Matrix multiplication is just a sequence of vector multiplications.
 If $\boldsymbol{X}$ is a $m\times n$ matrix and $\boldsymbol{W}$
 is $n\times p$ matrix then $\boldsymbol{Z}=\boldsymbol{XW}$ is a
-$m\times p$ matrix where $z_{ij}=\boldsymbol{x}_{i\cdot}\boldsymbol{w}_{\cdot j}$
-where $\boldsymbol{x}_{i\cdot}$ is the $i$th column of
-$\boldsymbol{X}$ and $\boldsymbol{w}_{\cdot j}$ is the $j$th column
+$m\times p$ matrix where $z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}$
+where $\boldsymbol{x}_{i,\cdot}$ is the $i$th column of
+$\boldsymbol{X}$ and $\boldsymbol{w}_{\cdot, j}$ is the $j$th column
 of $\boldsymbol{W}$. For example, let
 \[
 \boldsymbol{X}=\left[\begin{array}{cccc}
@@ -326,12 +341,12 @@ and $\boldsymbol{W}$ is $\boldsymbol{W}{}_{4\times2}$. Because the
 *inner* dimensions match for this multiplication, then $\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}$
 is defined where\textbf{ 
 \begin{eqnarray*}
-z_{11} & = & \boldsymbol{x}_{1\cdot}\boldsymbol{w}_{\cdot1}\\
+z_{1,1} & = & \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
  & = & \left(1\cdot13\right)+\left(2\cdot15\right)+\left(3\cdot17\right)+\left(4\cdot19\right)=170
 \end{eqnarray*}
 }and similarly
 \begin{eqnarray*}
-z_{21} & = & \boldsymbol{x}_{2\cdot}\boldsymbol{w}_{\cdot1}\\
+z_{2,1} & = & \boldsymbol{x}_{2,\cdot}\boldsymbol{w}_{\cdot,1}\\
  & = & \left(5\cdot13\right)+\left(6\cdot15\right)+\left(7\cdot17\right)+\left(8\cdot19\right)=426
 \end{eqnarray*}
 so that 
