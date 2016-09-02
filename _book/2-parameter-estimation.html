@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-01">
+<meta name="date" content="2016-09-02">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -159,6 +159,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
 <li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
 <li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>4.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="4.2" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>4.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="4.3" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>4.3</b> Iris Example</a></li>
+<li class="chapter" data-level="4.4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -407,8 +413,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -3.726930
-## x  2.088669</code></pre>
+##   -3.222697
+## x  2.149599</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -427,13 +433,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -3.726930
-## x  2.088669</code></pre>
+##   -3.222697
+## x  2.149599</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
-<pre><code>##         [,1]
-## [1,] 1.86881</code></pre>
+<pre><code>##          [,1]
+## [1,] 1.751115</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.8053557 0.1376917</code></pre>
+<pre><code>## [1] 0.7546357 0.1290201</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -442,18 +448,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.1626 -1.0138  0.1219  0.9675  4.2781 
+## -3.1109 -0.8781 -0.1544  0.9228  2.8043 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -3.7269     0.8054  -4.628 0.000209 ***
-## x             2.0887     0.1377  15.169 1.07e-11 ***
+## (Intercept)  -3.2227     0.7546  -4.271  0.00046 ***
+## x             2.1496     0.1290  16.661  2.2e-12 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.869 on 18 degrees of freedom
-## Multiple R-squared:  0.9274, Adjusted R-squared:  0.9234 
-## F-statistic: 230.1 on 1 and 18 DF,  p-value: 1.068e-11</code></pre>
+## Residual standard error: 1.751 on 18 degrees of freedom
+## Multiple R-squared:  0.9391, Adjusted R-squared:  0.9357 
+## F-statistic: 277.6 on 1 and 18 DF,  p-value: 2.197e-12</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -462,13 +468,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -5.418919 -2.034940
-## x          1.799389  2.377948</code></pre>
+## Intercept -4.808128 -1.637267
+## x          1.878538  2.420660</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -5.418919 -2.034940
-## x            1.799389  2.377948</code></pre>
+## (Intercept) -4.808128 -1.637267
+## x            1.878538  2.420660</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

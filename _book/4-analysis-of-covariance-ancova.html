@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+<meta name="date" content="2016-09-02">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="3-inference.html">
+
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>1.1</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>1.1.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>1.1.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>1.1.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>1.1.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.1.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.1.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.1.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.1.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>1.1.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.2</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>1.2.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.2.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>1.2.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>1.2.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.2.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.2.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>1.2.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.2.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>1.2.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.1</b> Simple Regression</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.1.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.1.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.1.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="2.1.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.1.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.1.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.1.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.1.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.1.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="2.1.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.1.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>2.1.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2</b> ANOVA model</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>2.2.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>4.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="4.2" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>4.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="4.3" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>4.3</b> Iris Example</a></li>
+<li class="chapter" data-level="4.4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analysis-of-covariance-ancova" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Analysis of Covariance (ANCOVA)</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)   <span class="co"># for the data </span>
+<span class="kw">library</span>(ggplot2)   <span class="co"># my favorite graphing package</span>
+<span class="kw">library</span>(dplyr)     <span class="co"># for the %&gt;% operator</span></code></pre></div>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.2.5</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. This model is commonly called ANCOVA which stands for <em>Analysis of Covariance</em>.</p>
+<p>The dataset <code>teengamb</code> in the package <code>faraway</code> has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?</p>
+<p>There are two possible ways that gender could enter the model. Either:</p>
+<ol style="list-style-type: decimal">
+<li><p>We could fit two lines to the data one for males and one for females but require that the lines be parallel (i.e. having the same slopes for income). This is accomplished by having a separate y-intercept for each gender. In effect, the line for the females would be offset by a constant amount from the male line.</p></li>
+<li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender.</p></li>
+</ol>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<div id="offset-parallel-lines-aka-additive-models" class="section level2">
+<h2><span class="header-section-number">4.1</span> Offset parallel Lines (aka additive models)</h2>
+<p>In order to get offset parallel lines, we want to write a model <span class="math display">\[y_{i}=\begin{cases}
+\beta_{0}+\beta_{1}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
+\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
+\end{cases}\]</span> where <span class="math inline">\(\beta_{1}\)</span> is the vertical offset of the female group regression line to the reference group, which is the males regression line. Because the first <span class="math inline">\(19\)</span> observations are female, we can this in in matrix form as <span class="math display">\[\left[\begin{array}{c}
+y_{1}\\
+\vdots\\
+y_{19}\\
+y_{20}\\
+\vdots\\
+y_{47}
+\end{array}\right]=\left[\begin{array}{ccc}
+1 &amp; 1 &amp; x_{1}\\
+\vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 1 &amp; x_{19}\\
+1 &amp; 0 &amp; x_{20}\\
+\vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 0 &amp; x_{47}
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1}\\
+\vdots\\
+\epsilon_{19}\\
+\epsilon_{20}\\
+\vdots\\
+\epsilon_{47}
+\end{array}\right]\]</span></p>
+<p>I like this representation where <span class="math inline">\(\beta_{1}\)</span> is the offset from the male regression line because it makes it very convenient to test if the offset is equal to zero. The second column of the design matrix referred to as a “dummy variable” or “indicator variable” that codes for the female gender. Notice that even though I have two genders, I only had to add one additional variable to my model because we already had a y-intercept <span class="math inline">\(\beta_{0}\)</span> and we only added one indicator variable for females.</p>
+<p>What if we had a third group? Then we would fit another column of indicator variable for the third group. The new beta coefficient in the model would be the offset of the new group to the reference group. For example we consider <span class="math inline">\(n=9\)</span> observations with <span class="math inline">\(n_i=3\)</span> observations per group where <span class="math inline">\(y_{i,j}\)</span>is the <span class="math inline">\(j\)</span> th replication of the <span class="math inline">\(i\)</span>th group. <span class="math display">\[\left[\begin{array}{c}
+y_{1,1}\\
+y_{1,2}\\
+y_{1,3}\\
+y_{2,1}\\
+y_{2,2}\\
+y_{2,3}\\
+y_{3,1}\\
+y_{3,2}\\
+y_{3,3}
+\end{array}\right]=\left[\begin{array}{cccc}
+1 &amp; 0 &amp; 0 &amp; x_{1,1}\\
+1 &amp; 0 &amp; 0 &amp; x_{1,2}\\
+1 &amp; 0 &amp; 0 &amp; x_{1,3}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,1}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,2}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,3}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,1}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,2}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,3}
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}\\
+\beta_{3}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1,1}\\
+\epsilon_{1,2}\\
+\epsilon_{1,3}\\
+\epsilon_{2,1}\\
+\epsilon_{2,2}\\
+\epsilon_{2,3}\\
+\epsilon_{3,3}\\
+\epsilon_{3,2}\\
+\epsilon_{3,3}
+\end{array}\right]
+\]</span></p>
+<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The paramter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
+</div>
+<div id="lines-with-different-slopes-aka-interaction-model" class="section level2">
+<h2><span class="header-section-number">4.2</span> Lines with different slopes (aka Interaction model)</h2>
+<p>We can now include a discrete random variable and create regression lines that are parallel, but often that is inappropriate, such as in the teenage gambling dataset. We want to be able to fit a model that has different slopes. <span class="math display">\[y_{i}=\begin{cases}
+\left(\beta_{0}+\beta_{1}\right)+\left(\beta_{2}+\beta_{3}\right)x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
+\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
+\end{cases}
+\]</span> Where <span class="math inline">\(\beta_{1}\)</span> is the offset in y-intercept of the female group from the male group, and <span class="math inline">\(\beta_{3}\)</span> is the offset in slope. Now our matrix formula looks like</p>
+<p><span class="math display">\[\left[\begin{array}{c}
+y_{1}\\
+\vdots\\
+y_{19}\\
+y_{20}\\
+\vdots\\
+y_{47}
+\end{array}\right]=\left[\begin{array}{cccc}
+1 &amp; 1 &amp; x_{1} &amp; x_{1}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 1 &amp; x_{19} &amp; x_{19}\\
+1 &amp; 0 &amp; x_{20} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 0 &amp; x_{47} &amp; 0
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}\\
+\beta_{3}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1}\\
+\vdots\\
+\epsilon_{19}\\
+\epsilon_{20}\\
+\vdots\\
+\epsilon_{47}
+\end{array}\right]
+\]</span> where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(faraway)
+
+<span class="co"># Forces R to recognize that 0, 1 are categorical, also</span>
+<span class="co"># relabels the levels to something I understand.</span>
+teengamb$sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb$sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) 
+
+<span class="co"># Fit a linear model with the interaction of sex and income</span>
+<span class="co"># Interactions can be specified useing a colon :</span>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex +<span class="st"> </span>income +<span class="st"> </span>sex:income, <span class="dt">data=</span>teengamb )  
+
+<span class="co"># R allows a shortcut for the prior definition</span>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex *<span class="st"> </span>income, <span class="dt">data=</span>teengamb )
+
+<span class="co"># save the y.hat values for each observation</span>
+teengamb$gamble.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m1)
+
+<span class="co"># Make a nice plot that includes the regreesion line.</span>
+<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex)) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) +
+<span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble.hat))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the model summary</span>
+<span class="kw">summary</span>(m1)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gamble ~ sex * income, data = teengamb)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -56.522  -4.860  -1.790   6.273  93.478 
+## 
+## Coefficients:
+##                  Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       -2.6596     6.3164  -0.421  0.67580    
+## sexFemale          5.7996    11.2003   0.518  0.60724    
+## income             6.5181     0.9881   6.597 4.95e-08 ***
+## sexFemale:income  -6.3432     2.1446  -2.958  0.00502 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.98 on 43 degrees of freedom
+## Multiple R-squared:  0.5857, Adjusted R-squared:  0.5568 
+## F-statistic: 20.26 on 3 and 43 DF,  p-value: 2.451e-08</code></pre>
+</div>
+<div id="iris-example" class="section level2">
+<h2><span class="header-section-number">4.3</span> Iris Example</h2>
+<p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span>
+<span class="kw">levels</span>(iris$Species)  <span class="co"># notice the order of levels of Species</span></code></pre></div>
+<pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
+<p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) +
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
+<p>We consider the sequence of building successively more complex models:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make virginica the reference group </span>
+iris$Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris$Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)
+
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span>
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length +<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span>
+m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length *<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></code></pre></div>
+<p>The three models we consider are the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)     3.419      0.254  13.484    0.000
+## Sepal.Length   -0.062      0.043  -1.440    0.152</code></pre>
+<p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
+<p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<pre><code>##                   Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)          0.669      0.308   2.174    0.031
+## Sepal.Length         0.350      0.046   7.557    0.000
+## Speciessetosa        1.008      0.093  10.798    0.000
+## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
+<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statstically different y-intercept than the reference group.</p>
+<p>Finally we consider the most complicated model that includes two more slope parameters</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                       1.446      0.405   3.572    0.000
+## Sepal.Length                      0.232      0.061   3.790    0.000
+## Speciessetosa                    -2.016      0.686  -2.938    0.004
+## Speciesversicolor                -0.574      0.605  -0.950    0.344
+## Sepal.Length:Speciessetosa        0.567      0.126   4.490    0.000
+## Sepal.Length:Speciesversicolor    0.088      0.097   0.905    0.367</code></pre>
+<p>These parameters are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Meaning</th>
+<th>R-label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>Reference group y-intercept </em></td>
+<td>(Intercept)</td>
+</tr>
+<tr class="even">
+<td><em>Reference group slope </em></td>
+<td>Sepal.Length</td>
+</tr>
+<tr class="odd">
+<td><em>offset to y-intercept for Setosa</em></td>
+<td>Speciessetosa</td>
+</tr>
+<tr class="even">
+<td><em>offset to y-intercept for Versicolor</em></td>
+<td>Speciesversicolor</td>
+</tr>
+<tr class="odd">
+<td><em>offset to slope for Setosa</em></td>
+<td>Sepal.Length:Speciessetosa</td>
+</tr>
+<tr class="even">
+<td><em>offset to slope for Versicolor</em></td>
+<td>Sepal.Length:Speciesversicolor</td>
+</tr>
+</tbody>
+</table>
+<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two paramters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m2, m3)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Sepal.Width ~ Sepal.Length + Species
+## Model 2: Sepal.Width ~ Sepal.Length * Species
+##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+## 1    146 12.193                                 
+## 2    144 10.680  2    1.5132 10.201 7.19e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The F-test concludes that there is sufficent decrease in the SSE to justify adding two additional parameters to the model.</p>
+</div>
+<div id="exercises-3" class="section level2">
+<h2><span class="header-section-number">4.4</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>We will analyze data from an experiment to study factors affecting the production of the plastic PVC. In the study, 3 <code>operators used</code> 8 different devices (called <code>resin</code> railcars?). For each operator-resin combination, 2 replicate observations were made.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Load the faraway package and the dataset pvc via the following commands:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">data</span>(pvc)</code></pre></div></li>
+<li><p>Graph the dataset using <code>psize</code> as the response variable and <code>resin</code> and <code>operator</code> as the response. Explore different ways of displaying the relationship (which covariate should be the color or perhaps use faceting) and describe the trend you see. Is there an obvious interaction between <code>resin</code> and <code>operator</code>?</p></li>
+<li><p>Fit the 2-way main effects model and the interaction model.</p></li>
+<li><p>Compare the two models using an F-test and explain which is a superior model and why.</p></li>
+<li><p>Reproduce your graph from part (b), but include the predicted value for each treatment combination. Summarize your findings.</p></li>
+</ol></li>
+<li><p>We will analyze data from an experiment that investigated the growth of <em>Listeria monocytogenes</em> bacteria in the liver and spleen of 20 mice. Ten wildtype and ten RIP2 gene deficient mice were inoculated with <em>L. monocytogenes</em> and three days later, the spleen or liver was harvested. Researchers are believe the absence of the RIP2 might affect the two organs differently.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Download and install the package isdals (data sets from the text book Introduction to Statistical Data Analysis for the Life Sciences) and then load the dataset listeria.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&#39;isdals&#39;</span>)
+<span class="kw">library</span>(isdals)
+<span class="kw">data</span>(listeria)
+?listeria</code></pre></div></li>
+<li><p>The response variable <code>growth</code> is a measure of bacterial growth, but a log transformation should be performed. Create a new column in the dataset named <code>log.growth</code> that is the log transformed growth.</p></li>
+<li><p>Graph the dataset using <code>log.growth</code> as the response variable and <code>organ</code> and <code>type</code> as the response. Explore different ways of displaying the relationship (which covariate should be the color or perhaps use faceting) and describe the trend you see. Is there an obvious interaction?</p></li>
+<li><p>Fit the 2-way main effects model and the interaction model.</p></li>
+<li><p>Compare the two models using an F-test and explain which is a superior model and why.</p></li>
+<li><p>Reproduce your graph from part (b), but include the predicted value for each treatment combination. Summarize your findings.</p></li>
+<li><p>For the following cases, show the necessary calculation (and result) using the <span class="math inline">\(\hat{\beta}\)</span> values from the summary table of the interaction model. You don’t need to make R do the addition or subtraction, but I want to make sure you know how to take the summary output and figure out the following:</p>
+<ol style="list-style-type: lower-roman">
+<li>What is the estimated log.growth of the liver for a RIP2 deficient mouse?</li>
+<li>What is the estimated log.growth of the spleen for a RIP2 deficient mouse?</li>
+<li>What is the estimated log.growth of the liver for a wild-type moue?</li>
+<li>What is the estimated log.growth of the spleen for a wild-type mouse?</li>
+</ol></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="3-inference.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/04_ANCOVA.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
