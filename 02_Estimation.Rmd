@@ -13,7 +13,7 @@ interact only via addition and multiplication. The following are linear
 models:
 
 Model              |  Formula
------------------- | ---------
+------------------ | ---------------------------------------------
 ANOVA              | $y_{ij}=\mu+\tau_{i}+\epsilon_{ij}$ 
 Simple Regression  | $y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}$ 
 Quadratic Term     | $y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}$ 
