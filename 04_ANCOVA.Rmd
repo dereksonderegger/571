@@ -1,6 +1,6 @@
 # Analysis of Covariance (ANCOVA)
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(faraway)   # for the data 
 library(ggplot2)   # my favorite graphing package
 library(dplyr)     # for the %>% operator
