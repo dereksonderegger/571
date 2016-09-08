@@ -167,13 +167,16 @@ m1 <- lm( gamble ~ sex + income + sex:income, data=teengamb )
 # R allows a shortcut for the prior definition
 m1 <- lm( gamble ~ sex * income, data=teengamb )
 
-# save the y.hat values for each observation
-teengamb$gamble.hat <- predict(m1)
+# save the fit, lwr, upr values for each observation
+# these are the yhat and CI 
+teengamb <- cbind(teengamb, predict(m1, interval='conf'))
 
 # Make a nice plot that includes the regreesion line.
-ggplot(teengamb, aes(x=income, col=sex)) + 
+ggplot(teengamb, aes(x=income, col=sex, fill=sex)) + 
+      geom_ribbon(aes(ymin=lwr, ymax=upr),
+                  alpha=.3) +   # how solid the layer is
       geom_point(aes(y=gamble)) +
-      geom_line(aes(y=gamble.hat))
+      geom_line(aes(y=fit)) 
 
 # print the model summary
 summary(m1)
@@ -210,6 +213,7 @@ m3 <- lm( Sepal.Width ~ Sepal.Length * Species, data=iris )  # Non-parallel Line
 ```
 
 The three models we consider are the following:
+
 ```{r, fig.height=6, echo=FALSE}
 yhat.1 <- predict(m1) 
 yhat.2 <- predict(m2) 

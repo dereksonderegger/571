@@ -325,13 +325,16 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class
 <span class="co"># R allows a shortcut for the prior definition</span>
 m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex *<span class="st"> </span>income, <span class="dt">data=</span>teengamb )
 
-<span class="co"># save the y.hat values for each observation</span>
-teengamb$gamble.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m1)
+<span class="co"># save the fit, lwr, upr values for each observation</span>
+<span class="co"># these are the yhat and CI </span>
+teengamb &lt;-<span class="st"> </span><span class="kw">cbind</span>(teengamb, <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
 
 <span class="co"># Make a nice plot that includes the regreesion line.</span>
-<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex)) +<span class="st"> </span>
+<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),
+                  <span class="dt">alpha=</span>.<span class="dv">3</span>) +<span class="st">   </span><span class="co"># how solid the layer is</span>
 <span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) +
-<span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble.hat))</code></pre></div>
+<span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the model summary</span>
 <span class="kw">summary</span>(m1)</code></pre></div>
@@ -374,7 +377,8 @@ iris$Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris$
 m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span>
 m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length +<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span>
 m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length *<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></code></pre></div>
-<p>The three models we consider are the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>The three models we consider are the following:</p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
 <pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
