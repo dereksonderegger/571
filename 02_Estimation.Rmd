@@ -43,14 +43,17 @@ simple and multiple regression (and ANCOVA) painlessly.
 To begin, we think about how to write the simple regression model
 using matrices and vectors that correspond the the data and the parameters.
 Notice we have
-\begin{eqnarray*}
-y_{1} & = & \beta_{0}+\beta_{1}x_{1}+\epsilon_{1}\\
-y_{2} & = & \beta_{0}+\beta_{1}x_{2}+\epsilon_{2}\\
-y_{3} & = & \beta_{0}+\beta_{1}x_{3}+\epsilon_{3}\\
+
+
+$$\begin{aligned}
+y_{1} & =  \beta_{0}+\beta_{1}x_{1}+\epsilon_{1}\\
+y_{2} & =  \beta_{0}+\beta_{1}x_{2}+\epsilon_{2}\\
+y_{3} & =  \beta_{0}+\beta_{1}x_{3}+\epsilon_{3}\\
  & \vdots\\
-y_{n-1} & = & \beta_{0}+\beta_{1}x_{n-1}+\epsilon_{n-1}\\
-y_{n} & = & \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
-\end{eqnarray*}
+y_{n-1} & =  \beta_{0}+\beta_{1}x_{n-1}+\epsilon_{n-1}\\
+y_{n} & =  \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
+\end{aligned}$$
+
 where, as usual, $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
 These equations can be written using matrices as
 \[

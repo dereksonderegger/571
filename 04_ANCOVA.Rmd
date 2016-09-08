@@ -264,44 +264,26 @@ anova(m2, m3)
 The F-test concludes that there is sufficent decrease in the SSE to justify adding two additional parameters to the model. 
 
 ## Exercises
-1. We will analyze data from an experiment to study factors affecting the production of the plastic PVC. In the study, 3 `operators used` 8 different devices (called `resin` railcars?). For each operator-resin combination, 2 replicate observations were made.
 
-    a) Load the faraway package and the dataset pvc via the following commands:
-        ```{r}
-        library(faraway)
-        data(pvc)
-        ```
-    b) Graph the dataset using `psize` as the response variable and `resin` and `operator` as the response. Explore different ways of displaying the relationship (which covariate should be the color or perhaps use faceting) and describe the trend you see. Is there an obvious interaction between `resin` and `operator`?
-
-    c) Fit the 2-way main effects model and the interaction model.
-
-    d) Compare the two models using an F-test and explain which is a superior model and why.
-
-    e) Reproduce your graph from part (b), but include the predicted value for each treatment combination. Summarize your findings.
-
-2. We will analyze data from an experiment that investigated the growth of *Listeria monocytogenes* bacteria in the liver and spleen of 20 mice. Ten wildtype and ten RIP2 gene deficient mice were inoculated with *L. monocytogenes* and three days later, the spleen or liver was harvested. Researchers are believe the absence of the RIP2 might affect the two organs differently. 
-
-    a) Download and install the package isdals (data sets from the text book Introduction to Statistical Data Analysis for the Life Sciences) and then load the dataset listeria.
+1. The in the `faraway` package, there is a dataset named `phbirths` that gives babies birth weights along with their gestational time in utero along with the mother's smoking status. 
+    a. Load and inspect the dataset using
         ```{r, eval=FALSE}
-        install.packages('isdals')
-        library(isdals)
-        data(listeria)
-        ?listeria
+        library(faraway)    # load the package
+        data(phbirths)      # load the data within the package
+        ?phbirths
         ```
+    b. Create a plot of the birthweight vs the gestational age. Color code the points based on the mother's smoking status. Does it appear that smoking matters?
+    c. Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data.  Which model is preferred?
+    d. Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).
+    e. Now consider only the "full term babies" which are babies with gestational age at birth $\ge 36$ weeks. With this reduced dataset, repeat parts c,d.
 
-    b) The response variable `growth` is a measure of bacterial growth, but a log transformation should be performed. Create a new column in the dataset named `log.growth` that is the log transformed growth.
+2. The in the `faraway` package, there is a dataset named `clot` that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma.  Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time. 
+    a. Log transform the `time` and `conc` variable and plot the log-transformed data with color of the data point indicating the lot number.
+    b. Perform the appropriate analysis using transformed variables. Does `lot` matter?
 
-    c) Graph the dataset using `log.growth` as the response variable and `organ` and `type` as the response. Explore different ways of displaying the relationship (which covariate should be the color or perhaps use faceting) and describe the trend you see. Is there an obvious interaction?
 
-    d) Fit the 2-way main effects model and the interaction model.
+3. In the `faraway` package, there is a data set `ToothGrowth` which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth. 
+    a. Log transform the `dose` and use that throughout this problem. 
+    b. Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).
+    c. Just using your graphs and visual inspection, at low dose levels, say $\log(dose)=-0.7$, is there a difference in delivery method? What about at high dose levels, say $\log(dose)=0.7$? At this point we don't know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.
 
-    e) Compare the two models using an F-test and explain which is a superior model and why.
-
-    f) Reproduce your graph from part (b), but include the predicted value for each treatment combination. Summarize your findings.
-
-    g) For the following cases, show the necessary calculation (and result) using the $\hat{\beta}$ values from the summary table of the interaction model. You don't need to make R do the addition or subtraction, but I want to make sure you know how to take the summary output and figure out the following:
-
-        i. What is the estimated log.growth of the liver for a RIP2 deficient mouse? 
-        ii. What is the estimated log.growth of the spleen for a RIP2 deficient mouse?
-        iii. What is the estimated log.growth of the liver for a wild-type moue?
-        iv. What is the estimated log.growth of the spleen for a wild-type mouse?
