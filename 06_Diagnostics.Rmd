@@ -350,10 +350,10 @@ Often we are presented with data and we would like to fit a linear model to the 
 $$y=\beta_{0}+\beta_{1}x+\epsilon$$
  where $\epsilon\sim N\left(0,\sigma^{2}\right)$, the necessary assumptions are:
 
-    1. Independent errors
-    2. Errors have constant variance, no matter what the x-value (or equivalently the fitted value)
-    3. Errors are normally distributed
-    4. The model contains all the appropriate covariates and no more.
+1. Independent errors
+2. Errors have constant variance, no matter what the x-value (or equivalently the fitted value)
+3. Errors are normally distributed
+4. The model contains all the appropriate covariates and no more.
 
 In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4.
 
@@ -380,7 +380,7 @@ In the case that $\lambda\ne 0$, then a researcher will usually use the simpler 
 
 Finding the best transformation can be done by adding the $\lambda$ parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don't have to do this by hand, as the function `boxcox()` in the `MASS` library will do all the heavy calculation for us.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(faraway)
 library(MASS)
 data(gala)
@@ -393,13 +393,10 @@ The optimal transformation for these data would be $y^{1/4}=\sqrt[4]{y}$ but tha
 
 Thoughts on the Box-Cox transformation:
 
-    1. In general, I prefer to using a larger-than-optimal model when picking a transformation and then go about the model building process. After a suitable model has been chosen, I'll double check the my transformation was appropriate given the model that I ended up with.
-
-    2. Outliers can have a profound effect on this method. If the “optimal” transformation is extreme ($\lambda=5$ or something silly) then you might have to remove the outliers and refit the transformation.
-
-    3. If the range of the response $y$ is small, then the method is not as sensitive.
-
-    4. These are not the only possible transformations. For example, for binary data, the `logit` and `probit` transformations are common.
+1. In general, I prefer to using a larger-than-optimal model when picking a transformation and then go about the model building process. After a suitable model has been chosen, I'll double check the my transformation was appropriate given the model that I ended up with.
+2. Outliers can have a profound effect on this method. If the “optimal” transformation is extreme ($\lambda=5$ or something silly) then you might have to remove the outliers and refit the transformation.
+3. If the range of the response $y$ is small, then the method is not as sensitive.
+4. These are not the only possible transformations. For example, for binary data, the `logit` and `probit` transformations are common.
 
 ### Transforming the predictors
 
@@ -684,7 +681,7 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
 4. For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the time taken polishing a newly manufactured dish versus the dish diameter (in inches), type, and price.
 
     a. The data live in a package I have on GitHub. The following code will download the data package:
-        ```{r, warning=FALSE, message=FALSE}
+        ```{r, warning=FALSE, message=FALSE, eval=FALSE}
         library(devtools)   # You might need to load this package the usual way...
         install_github('dereksonderegger/dsData') # load an R package that lives on GitHub.
         ```
