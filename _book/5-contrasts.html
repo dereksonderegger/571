@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-08">
+<meta name="date" content="2016-09-14">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -39,7 +39,7 @@ MathJax.Hub.Config({
   
   
 <link rel="prev" href="4-analysis-of-covariance-ancova.html">
-
+<link rel="next" href="6-diagnostics-and-transformations.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -173,6 +173,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>6.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>6.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>6.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>6.2</b> Transformations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>6.2.1</b> Transforming the Response</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>6.2.2</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -342,16 +354,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6449
+## Quantile = 2.6451
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7346 90.7654
-## Mean of Group 2 == 0 75.5714  71.2787 79.8641
-## Mean of Group 3 == 0 71.0000  67.2142 74.7858
-## Diff G2-G3 == 0       4.5714  -1.1522 10.2950</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7343 90.7657
+## Mean of Group 2 == 0 75.5714  71.2785 79.8643
+## Mean of Group 3 == 0 71.0000  67.2140 74.7860
+## Diff G2-G3 == 0       4.5714  -1.1525 10.2953</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -398,10 +410,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -536,8 +548,8 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
           </div>
         </div>
       </div>
-<a href="4-analysis-of-covariance-ancova.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="4-analysis-of-covariance-ancova.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="6-diagnostics-and-transformations.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
