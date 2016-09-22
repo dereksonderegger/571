@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-14">
+<meta name="date" content="2016-09-22">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -186,6 +186,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -340,10 +361,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;0.001 ***
-## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;0.001 ***
-## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;0.001 ***
-## Diff G2-G3 == 0         4.571      2.164   2.112    0.144    
+## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;1e-04 ***
+## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;1e-04 ***
+## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;1e-04 ***
+## Diff G2-G3 == 0         4.571      2.164   2.112    0.145    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -354,16 +375,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6451
+## Quantile = 2.6444
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7343 90.7657
-## Mean of Group 2 == 0 75.5714  71.2785 79.8643
-## Mean of Group 3 == 0 71.0000  67.2140 74.7860
-## Diff G2-G3 == 0       4.5714  -1.1525 10.2953</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7353 90.7647
+## Mean of Group 2 == 0 75.5714  71.2795 79.8633
+## Mean of Group 3 == 0 71.0000  67.2149 74.7851
+## Diff G2-G3 == 0       4.5714  -1.1511 10.2940</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -410,10 +431,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>

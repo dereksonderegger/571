@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-14">
+<meta name="date" content="2016-09-22">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -185,6 +185,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -433,8 +454,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.638933
-## x  1.983560</code></pre>
+##   -3.174483
+## x  2.076017</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -453,13 +474,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.638933
-## x  1.983560</code></pre>
+##   -3.174483
+## x  2.076017</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 1.685166</code></pre>
+## [1,] 1.669946</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.7262151 0.1241610</code></pre>
+<pre><code>## [1] 0.7196563 0.1230397</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -468,18 +489,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.4318 -0.9410 -0.1987  1.1595  2.7246 
+## -3.0036 -0.8474 -0.0207  0.7270  3.2699 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.6389     0.7262  -3.634   0.0019 ** 
-## x             1.9836     0.1242  15.976 4.47e-12 ***
+## (Intercept)  -3.1745     0.7197  -4.411 0.000337 ***
+## x             2.0760     0.1230  16.873 1.77e-12 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.685 on 18 degrees of freedom
-## Multiple R-squared:  0.9341, Adjusted R-squared:  0.9305 
-## F-statistic: 255.2 on 1 and 18 DF,  p-value: 4.47e-12</code></pre>
+## Residual standard error: 1.67 on 18 degrees of freedom
+## Multiple R-squared:  0.9405, Adjusted R-squared:  0.9372 
+## F-statistic: 284.7 on 1 and 18 DF,  p-value: 1.773e-12</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -488,13 +509,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -4.164654 -1.113211
-## x          1.722707  2.244413</code></pre>
+## Intercept -4.686425 -1.662542
+## x          1.817520  2.334514</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -4.164654 -1.113211
-## x            1.722707  2.244413</code></pre>
+## (Intercept) -4.686425 -1.662542
+## x            1.817520  2.334514</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

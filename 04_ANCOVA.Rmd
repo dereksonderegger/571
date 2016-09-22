@@ -280,14 +280,16 @@ The F-test concludes that there is sufficent decrease in the SSE to justify addi
     c. Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data.  Which model is preferred?
     d. Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).
     e. Now consider only the "full term babies" which are babies with gestational age at birth $\ge 36$ weeks. With this reduced dataset, repeat parts c,d.
+    f. Interpret the relationship between gestational length and mother's smoking status on birthweight.
+
 
 2. The in the `faraway` package, there is a dataset named `clot` that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma.  Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time. 
-    a. Log transform the `time` and `conc` variable and plot the log-transformed data with color of the data point indicating the lot number.
-    b. Perform the appropriate analysis using transformed variables. Does `lot` matter?
+    a. Log transform the `time` and `conc` variable and plot the log-transformed data with color of the data point indicating the lot number. 
+    b. Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does `lot` matter?
 
 
 3. In the `faraway` package, there is a data set `ToothGrowth` which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth. 
-    a. Log transform the `dose` and use that throughout this problem. 
+    a. Log transform the `dose` and use that throughout this problem. Use $e$ as the base, which R does by default when you use the `log()` function. 
     b. Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).
     c. Just using your graphs and visual inspection, at low dose levels, say $\log(dose)=-0.7$, is there a difference in delivery method? What about at high dose levels, say $\log(dose)=0.7$? At this point we don't know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.
 

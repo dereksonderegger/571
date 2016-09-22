@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-14">
+<meta name="date" content="2016-09-22">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -185,6 +185,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -474,16 +495,17 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span 
 <li>Create a plot of the birthweight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</li>
 <li>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</li>
 <li>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</li>
-<li><p>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</p></li>
+<li>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</li>
+<li><p>Interpret the relationship between gestational length and mother’s smoking status on birthweight.</p></li>
 </ol></li>
 <li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time.
 <ol style="list-style-type: lower-alpha">
 <li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number.</li>
-<li>Perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
+<li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
 </ol></li>
 <li>In the <code>faraway</code> package, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth.
 <ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>dose</code> and use that throughout this problem.</li>
+<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function.</li>
 <li>Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).</li>
 <li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>? At this point we don’t know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.</li>
 </ol></li>

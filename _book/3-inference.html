@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-14">
+<meta name="date" content="2016-09-22">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -185,6 +185,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -669,7 +690,8 @@ fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <spa
 <li><p>Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?</p></li>
 <li><p>Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.</p></li>
 <li><p>Fit the model with <code>salary</code> and <code>ratio</code> (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?</p></li>
-<li><p>Now add <code>takers</code> to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that <span class="math inline">\(\beta_{takers}=0\)</span> using the summary table. Compare this model to the previous one using an <span class="math inline">\(F\)</span>-test. Demonstrate that the F-test and t-test are equivalent by noting the mathematical relationship between the <span class="math inline">\(t\)</span> and <span class="math inline">\(F\)</span> statistics and the equality of the p-values.</p></li>
+<li><p>Now add <code>takers</code> to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that <span class="math inline">\(\beta_{takers}=0\)</span> using the summary table.</p></li>
+<li><p>Discuss why <code>ratio</code> was not significant in the model in part (e) but was significant in part (f). <em>Hint: Look at the Residual Standard Error <span class="math inline">\(\hat{\sigma}\)</span> in each model and argue that each t-statistic is some variant of a “signal-to-noise” ratio and that the “noise” part is reduced in the second model.</em></p></li>
 </ol></li>
 </ol>
 

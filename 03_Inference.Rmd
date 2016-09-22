@@ -378,4 +378,7 @@ In general, you should be very careful with the interpretation of the regression
 
     e) Fit the model with `salary` and `ratio` (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?
 
-    f) Now add `takers` to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that $\beta_{takers}=0$ using the summary table. Compare this model to the previous one using an $F$-test. Demonstrate that the F-test and t-test are equivalent by noting the mathematical relationship between the $t$ and $F$ statistics and the equality of the p-values.
+    f) Now add `takers` to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that $\beta_{takers}=0$ using the summary table. 
+    
+    g) Discuss why `ratio` was not significant in the model in part (e) but was significant in part (f). *Hint: Look at the Residual Standard Error $\hat{\sigma}$ in each model and argue that each t-statistic is some variant of a "signal-to-noise" ratio and that the "noise" part is reduced in the second model.* 
+    
