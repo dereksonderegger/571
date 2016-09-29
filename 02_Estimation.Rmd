@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Parameter Estimation
 
 We have previously looked at ANOVA and regression models and, in many

@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-22">
+<meta name="date" content="2016-09-28">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -206,6 +206,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -609,8 +622,8 @@ pred.data &lt;-<span class="st"> </span>pred.data %&gt;%<span class="st"> </span
 <p>In particular we notice that <span class="math display">\[e^{0}=1\]</span> and <span class="math display">\[\log\left(1\right)=0\]</span> and the functions <span class="math inline">\(e^{x}\)</span> and <span class="math inline">\(\log x\)</span> are inverse functions of each other.</p>
 <p><span class="math display">\[e^{\log x}=\log\left(e^{x}\right)=x\]</span></p>
 <p>Also it is important to note that the <span class="math inline">\(\log\)</span> function has some interesting properties in that it makes operations “1-operation easier”. <span class="math display">\[\begin{aligned} 
-\log\left(a^{b}\right)        &amp;=    b\log a
-\log\left(\frac{a}{b}\right)    &amp;=  \log a-\log b
+\log\left(a^{b}\right)        &amp;=    b\log a  \\
+\log\left(\frac{a}{b}\right)    &amp;=  \log a-\log b \\
 \log\left(ab\right)           &amp;=    \log a+\log b
 \end{aligned}\]</span></p>
 <p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
@@ -627,7 +640,7 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 <span class="kw">summary</span>(m)$coef %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.948      0.014 288.402        0</code></pre>
-<p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(e^{\hat{\beta}_{0}}=e^{3.948}=51.83\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>.</p>
+<p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>.</p>
 <p>Next we examine how to interpret the model when a categorical variable is added to the model. <span class="math display">\[\log y=\begin{cases}
 \beta_{0}+\epsilon &amp; \;\;\textrm{if female}\\
 \beta_{0}+\beta_{1}+\epsilon &amp; \;\;\textrm{if male}
@@ -637,9 +650,11 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.995      0.018 222.949        0
 ## gendermale    -0.103      0.027  -3.887        0</code></pre>
-<p>The intercept is now the mean of the log-transformed <code>write</code> responses for the females and the offset for males is the change in <code>log(write)</code> from the female group. Notice that for the males, we have <span class="math display">\[\log\hat{y}   =   \hat{\beta}_{0}+\hat{\beta}_{1}
-\hat{y} =   e^{\hat{\beta}_{0}+\hat{\beta}_{1}}
-    =   \underset{\textrm{females}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change fo males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}}\]</span></p>
+<p>The intercept is now the mean of the log-transformed <code>write</code> responses for the females and thus <span class="math inline">\(e^{\hat{\beta}_0} = \hat{y}_{f}\)</span> and the offset for males is the change in <code>log(write)</code> from the female group. Notice that for the males, we have <span class="math display">\[\begin{aligned}
+\log\hat{y}_m   &amp;=  \hat{\beta}_{0}+\hat{\beta}_{1} \\
+    \hat{y}_m   &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{1}} \\
+              &amp;=    \underset{\hat{y}_{f}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change for males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}} 
+\end{aligned}\]</span></p>
 <p>and therefore we see that males tend to have writing scores <span class="math inline">\(e^{-0.103}=0.90=90\%\)</span> of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.</p>
 <p>The model with a continuous covariate has a similar interpretation. <span class="math display">\[\log y=\begin{cases}
 \beta_{0}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if female}\\
@@ -653,12 +668,19 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 ## gendermale    -0.116      0.021  -5.516        0
 ## read           0.011      0.001  11.057        0</code></pre>
 <p>For females, we consider the difference in <span class="math inline">\(\log\hat{y}\)</span> for a 1-unit increase in <span class="math inline">\(x\)</span> and will interpret this on the original write scale. <span class="math display">\[\begin{aligned}
-\log\hat{y} &amp;=  \hat{\beta}_{0}+\hat{\beta}_{2}x
-\hat{y}     &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
-\end{aligned}\]</span> therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> as the <em>percent</em> increase in write score for a 1-unit increase in <span class="math inline">\(x\)</span> because of the following justification: <span class="math display">\[\frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}}=\frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}}=e^{\hat{\beta}_{2}}\]</span></p>
+\log\hat{y}_f   &amp;=  \hat{\beta}_{0}+\hat{\beta}_{2}x \\
+\hat{y}_f       &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
+\end{aligned}\]</span> therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> as the <em>percent</em> increase in write score for a 1-unit increase in <span class="math inline">\(x\)</span> because of the following. Consider <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2 = x_1 +1\)</span>. Then we consider the ratio of predicted values: <span class="math display">\[
+\frac{y_2}{y_1} 
+  = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
+  = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
+  = e^{\hat{\beta}_{2}}\]</span></p>
 <p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.011}=1.01\)</span> meaning there is an estimated <span class="math inline">\(1\%\)</span> increase in <code>write</code> score for every 1-point increase in <code>read</code> score.</p>
-<p>If we are interested in, say, a 5-unit increase in <span class="math inline">\(x\)</span>, then that would result in an increase of <span class="math display">\[\frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\left(x+5\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}}=\frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}e^{5\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}}=e^{5\hat{\beta}_{2}}\]</span></p>
-<p>and for the writing scores we have <span class="math inline">\(e^{5\hat{\beta}_{2}}=\left(e^{\hat{\beta}_{2}}\right)^{5}=1.01^{5}\)</span>.</p>
+<p>If we are interested in, say, a 20-unit increase in <span class="math inline">\(x\)</span>, then that would result in an increase of</p>
+<p><span class="math display">\[\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\beta}_{0}+\hat{\beta}_{2} \, x}}
+ =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
+ = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}\]</span></p>
+<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
 <p>In short, we can interpret <span class="math inline">\(e^{\hat{\beta}_{i}}\)</span> as the percent increase/decrease in the non-transformed response variable. Some students get confused by what is meant by a <span class="math inline">\(\%\)</span> increase or decrease in <span class="math inline">\(x\)</span>.</p>
 <ul>
 <li>A <span class="math inline">\(75\%\)</span> decrease in <span class="math inline">\(x\)</span> has a resulting value of <span class="math inline">\(\left(1-0.75\right)x=\left(0.25\right) x\)</span></li>
@@ -669,19 +691,33 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 </div>
 <div id="untransformed-response-log-transformed-covariate" class="section level4">
 <h4><span class="header-section-number">6.2.3.2</span> Untransformed response, log-transformed covariate</h4>
-<p>We consider the model <span class="math display">\[y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span> and consider two different values of <span class="math inline">\(x\)</span> (which we’ll call <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> and we are considering the effect of moving from <span class="math inline">\(x_{1}\)</span> to <span class="math inline">\(x_{2}\)</span>) and look at the differences between the predicted values <span class="math inline">\(\hat{y}\)</span>.</p>
+<p>We consider the model <span class="math display">\[y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span> and consider two different values of <span class="math inline">\(x\)</span> (which we’ll call <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> and we are considering the effect of moving from <span class="math inline">\(x_{1}\)</span> to <span class="math inline">\(x_{2}\)</span>) and look at the differences between the predicted values <span class="math inline">\(\hat{y}_2 - \hat{y}_1\)</span>.</p>
 <p><span class="math display">\[\begin{aligned}
 \hat{y}_{2}-\hat{y}_{1} 
   &amp; =   \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
     &amp; = \hat{\beta}_{2}\left[\log x_{2}-\log x_{1}\right] \\
     &amp; = \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
     \end{aligned}\]</span></p>
-<p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 changes <span class="math inline">\(\hat{y}\)</span> has the same amount as changing x from 50 to 100.</p>
+<p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 has the same effect on <span class="math inline">\(\hat{y}\)</span> as changing x from 50 to 100.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( write ~<span class="st"> </span>gender +<span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)  -59.076      9.948  -5.938        0
+## gendermale    -5.431      1.013  -5.362        0
+## log(read)     29.045      2.527  11.493        0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># predict writing scores for three females, </span>
+<span class="co"># each with a reading score 50% larger than the other previous</span>
+<span class="kw">predict</span>(m, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),
+                              <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</code></pre></div>
+<pre><code>##        1        2        3 
+## 48.06622 59.84279 71.61936</code></pre>
+<p>We should see a <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
+difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
 </div>
 <div id="log-transformed-response-log-transformed-covariate" class="section level4">
 <h4><span class="header-section-number">6.2.3.3</span> Log-transformed response, log-transformed covariate</h4>
 <p>This combines the interpretation of the in the previous two section. We consider <span class="math display">\[\log y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span> and we again consider two <span class="math inline">\(x\)</span> values (again <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span>). We then examine the difference in the <span class="math inline">\(\log\hat{y}\)</span> values as <span class="math display">\[\begin{aligned}
-\log\hat{y}_{2}-\log\hat{y}_{1} &amp;=  \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
+\log\hat{y}_{2}-\log\hat{y}_{1} &amp;= \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
 \log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]    &amp;=  \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right] \\
 \log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]    &amp;=  \log\left[\left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}\right] \\
 \frac{\hat{y}_{2}}{\hat{y}_{1}} &amp;=  \left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}

@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # Diagnostics and Transformations
 
 We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:
@@ -484,7 +489,6 @@ ggplot(pred.data, aes(x=Area)) +
 ```
 
 
-
 ### Interpretation of log transformed variables
 
 One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Here we look at the interpretation of log transformed variables.
@@ -514,8 +518,8 @@ $$e^{\log x}=\log\left(e^{x}\right)=x$$
  
 Also it is important to note that the $\log$ function has some interesting properties in that it makes operations “1-operation easier”.
 $$\begin{aligned} 
-\log\left(a^{b}\right)	      &=	b\log a
-\log\left(\frac{a}{b}\right)	&=	\log a-\log b
+\log\left(a^{b}\right)	      &=	b\log a  \\
+\log\left(\frac{a}{b}\right)	&=	\log a-\log b \\
 \log\left(ab\right)	          &=	\log a+\log b
 \end{aligned}$$
  
@@ -529,6 +533,7 @@ scores <- scores %>% mutate(gender = female)
 pairs(write~read+math+gender, data=scores)
 ```
 
+
 #### Log-transformed response, untransformed covariates
 
 We consider the model where we have transformed the response variable and just an intercept term.
@@ -540,7 +545,7 @@ summary(m)$coef %>% round(digits=3)
 ```
 
 
-We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale $e^{\hat{\beta}_{0}}=e^{3.948}=51.83$ as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the *geometric mean*.
+We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale $\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83$ as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the *geometric mean*.
 
 Next we examine how to interpret the model when a categorical variable is added to the model.
 $$\log y=\begin{cases}
@@ -553,10 +558,12 @@ m <- lm(log(write) ~ gender, data=scores)
 summary(m)$coef %>% round(digits=3)
 ```
 
-The intercept is now the mean of the log-transformed `write` responses for the females and the offset for males is the change in `log(write)` from the female group. Notice that for the males, we have
-$$\log\hat{y}	=	\hat{\beta}_{0}+\hat{\beta}_{1}
-\hat{y}	=	e^{\hat{\beta}_{0}+\hat{\beta}_{1}}
-	=	\underset{\textrm{females}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change fo males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}}$$
+The intercept is now the mean of the log-transformed `write` responses for the females and thus $e^{\hat{\beta}_0} = \hat{y}_{f}$ and the offset for males is the change in `log(write)` from the female group. Notice that for the males, we have
+$$\begin{aligned}
+\log\hat{y}_m	&=	\hat{\beta}_{0}+\hat{\beta}_{1} \\
+    \hat{y}_m	&=	e^{\hat{\beta}_{0}+\hat{\beta}_{1}} \\
+	          &=	\underset{\hat{y}_{f}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change for males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}} 
+\end{aligned}$$
 
 and therefore we see that males tend to have writing scores $e^{-0.103}=0.90=90\%$ of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.
 
@@ -573,21 +580,29 @@ m <- lm(log(write) ~ gender + read, data=scores)  # main effects model
 summary(m)$coefficients %>% round(digits=3)
 ```
 
-
 For females, we consider the difference in $\log\hat{y}$ for a 1-unit increase in $x$ and will interpret this on the original write scale.
 $$\begin{aligned}
-\log\hat{y}	&=	\hat{\beta}_{0}+\hat{\beta}_{2}x
-\hat{y}	    &=	e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
+\log\hat{y}_f	&=	\hat{\beta}_{0}+\hat{\beta}_{2}x \\
+\hat{y}_f	    &=	e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
 \end{aligned}$$
-therefore we consider $e^{\hat{\beta}_{2}}$ as the *percent* increase in write score for a 1-unit increase in $x$ because of the following justification:
-$$\frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}}=\frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}}=e^{\hat{\beta}_{2}}$$
+therefore we consider $e^{\hat{\beta}_{2}}$ as the *percent* increase in write score for a 1-unit increase in $x$ because of the following. Consider $x_1$ and $x_2 = x_1 +1$. Then we consider the ratio of predicted values:
+$$
+\frac{y_2}{y_1} 
+  = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
+  = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
+  = e^{\hat{\beta}_{2}}$$
+
 
 For our writing scores example we have that $e^{\hat{\beta}_{2}}=e^{0.011}=1.01$
 meaning there is an estimated $1\%$ increase in `write` score for every 1-point increase in `read` score. 
 
-If we are interested in, say, a 5-unit increase in $x$, then that would result in an increase of $$\frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\left(x+5\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}}=\frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}e^{5\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}x}}=e^{5\hat{\beta}_{2}}$$
+If we are interested in, say, a 20-unit increase in $x$, then that would result in an increase of 
 
-and for the writing scores we have $e^{5\hat{\beta}_{2}}=\left(e^{\hat{\beta}_{2}}\right)^{5}=1.01^{5}$.
+$$\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\beta}_{0}+\hat{\beta}_{2} \, x}}
+ =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
+ = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}$$
+ 
+and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22$$ or a 22% increase in writing score for a 20-point increase in reading score.
 
 In short, we can interpret $e^{\hat{\beta}_{i}}$ as the percent increase/decrease in the non-transformed response variable.
 Some students get confused by what is meant by a $\%$ increase or decrease in $x$.
@@ -596,14 +611,13 @@ Some students get confused by what is meant by a $\%$ increase or decrease in $x
   * A $75\%$ increase in $x$ has a resulting value of $\left(1+0.75\right)x=\left(1.75\right) x$
   * A $100\%$ increase in $x$ has a resulting value of $\left(1+1.00\right)x=2x$ and is a doubling of $x$.
   * A $50\%$ decrease in $x$ has a resulting value of $\left(1-0.5\right)x=\left(0.5\right) x$ and is a halving of $x$.
- 
- 
+
 
 #### Untransformed response, log-transformed covariate
 
 We consider the model
 $$y=\beta_{0}+\beta_{2}\log x+\epsilon$$
-and consider two different values of $x$ (which we'll call $x_{1}$ and $x_{2}$ and we are considering the effect of moving from $x_{1}$ to $x_{2}$) and look at the differences between the predicted values $\hat{y}$.
+and consider two different values of $x$ (which we'll call $x_{1}$ and $x_{2}$ and we are considering the effect of moving from $x_{1}$ to $x_{2}$) and look at the differences between the predicted values $\hat{y}_2 - \hat{y}_1$.
 
 $$\begin{aligned}
 \hat{y}_{2}-\hat{y}_{1}	
@@ -612,7 +626,23 @@ $$\begin{aligned}
 	& =	\hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
 	\end{aligned}$$
 	
-This means that so long as the ratio between the two x-values is constant, then the change in $\hat{y}$ is the same. So doubling the value of $x$ from 1 to 2 changes $\hat{y}$ has the same amount as changing x from 50 to 100. 
+This means that so long as the ratio between the two x-values is constant, then the change in $\hat{y}$ is the same. So doubling the value of $x$ from 1 to 2 has the same effect on $\hat{y}$ as changing x from 50 to 100. 
+
+```{r}
+m <- lm( write ~ gender + log(read), data=scores)
+summary(m)$coefficients %>% round(digits=3)
+```
+
+```{r}
+# predict writing scores for three females, 
+# each with a reading score 50% larger than the other previous
+predict(m, newdata=data.frame(gender=rep('female',3),
+                              read=c(40, 60, 90)))
+```
+
+We should see a 
+$$29.045 \; \log \left( 1.5 \right) = 11.78$$  
+difference in $\hat{y}$ values for the first and second students and the second and third.
 
 #### Log-transformed response, log-transformed covariate
 
@@ -620,7 +650,7 @@ This combines the interpretation of the in the previous two section. We consider
 $$\log y=\beta_{0}+\beta_{2}\log x+\epsilon$$ 
 and we again consider two $x$ values (again $x_{1}$ and $x_{2}$). We then examine the difference in the $\log\hat{y}$ values as 
 $$\begin{aligned}
-\log\hat{y}_{2}-\log\hat{y}_{1}	&=	\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
+\log\hat{y}_{2}-\log\hat{y}_{1}	&= \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
 \log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]	&=	\hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right] \\
 \log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]	&=	\log\left[\left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}\right] \\
 \frac{\hat{y}_{2}}{\hat{y}_{1}}	&=	\left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}
@@ -703,3 +733,5 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     f. What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the `pairs()` plot?  
 
     g. How does a 20% increase in Price affect the polishing time? 
+
+

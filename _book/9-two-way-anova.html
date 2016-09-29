@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+<meta name="date" content="2016-09-28">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="8-one-way-anova.html">
+
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a></li>
+<li class="chapter" data-level="5" data-path="5-contrasts.html"><a href="5-contrasts.html"><i class="fa fa-check"></i><b>5</b> Contrasts</a></li>
+<li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="two-way-anova" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> Two-way ANOVA</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load my usual packages</span>
+<span class="kw">library</span>(MASS)     <span class="co"># for the boxcox function</span>
+<span class="kw">library</span>(faraway)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggfortify)
+<span class="kw">library</span>(multcompView)</code></pre></div>
+<p>Given a response that is predicted by two different categorical variables. Suppose we denote the levels of the first factor as <span class="math inline">\(\alpha_{i}\)</span> and has <span class="math inline">\(I\)</span> levels. The second factor has levels <span class="math inline">\(\beta_{j}\)</span> and has <span class="math inline">\(J\)</span> levels. As usual we let <span class="math inline">\(\epsilon_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>, and we wish to fit the model</p>
+<p><span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\epsilon_{ijk}\]</span></p>
+<p>which has the main effects of each covariate or possibly the model with the interaction <span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}+\epsilon_{ijk}\]</span></p>
+<p>To consider what an interaction term might mean consider the role of temperature and humidity on the amount of fungal growth. You might expect to see data similar to this (where the numbers represent some sort of measure of fungal growth):</p>
+<table style="width:71%;">
+<colgroup>
+<col width="23%" />
+<col width="13%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th></th>
+<th>5%</th>
+<th>30%</th>
+<th>60%</th>
+<th>90%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td><p><strong>2C</strong></p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+<td><p>8</p></td>
+<td><p>16</p></td>
+</tr>
+<tr class="even">
+<td><p>Temperature</p></td>
+<td><p><strong>10C</strong></p></td>
+<td><p>3</p></td>
+<td><p>9</p></td>
+<td><p>27</p></td>
+<td><p>81</p></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><p><strong>30C</strong></p></td>
+<td><p>4</p></td>
+<td><p>16</p></td>
+<td><p>64</p></td>
+<td><p>256</p></td>
+</tr>
+</tbody>
+</table>
+<p>In this case we see that increased humidity increases the amount of fungal growth, but the amount of increase depends on the temperature. At 2 C, the increase is humidity increases are significant, but at 10 C the increases are larger, and at 30 C the increases are larger yet. The effect of changing from one humidity level to the next <em>depends on which temperature level we are at</em>. This change in effect of humidity is an interaction effect. A memorable example is that chocolate by itself is good. Strawberries by themselves are also good. But the combination of chocolate and strawberries is a delight greater than the sum of the individual treats.</p>
+<p>We can look at a graph of the Humidity and Temperature vs the Response and see the effect of increasing humidity changes based on the temperature level. Just as in the ANCOVA model, the interaction manifested itself in non-parallel slopes, the interaction manifests itself in non-parallel slopes when I connect the dots across the factor levels.</p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Unfortunately the presence of a significant interaction term in the model makes interpretation difficult, but examining the interaction plots can be quite helpful in understanding the effects. Notice in this example, we 3 levels of temperature and 4 levels of humidity for a total of 12 different possible treatment combinations. In general I will refer to these combinations as cells.</p>
+<div id="orthogonality" class="section level2">
+<h2><span class="header-section-number">9.1</span> Orthogonality</h2>
+<p>When designing an experiment, I want to make sure than none of my covariates are confounded with each other and I’d also like for them to not be correlated. Consider the following three experimental designs, where the number in each bin is the number of subjects of that type. I am interested in testing 2 different drugs and studying its effect on heart disease within the gender groups.</p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="10%" />
+<col width="11%" />
+<col width="26%" />
+<col width="15%" />
+<col width="8%" />
+<col width="11%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Design 1</p></td>
+<td><p>Males</p></td>
+<td><p>Females</p></td>
+<td></td>
+<td><p>Design 2</p></td>
+<td><p>Males</p></td>
+<td><p>Females</p></td>
+</tr>
+<tr class="even">
+<td><p>Treatment A</p></td>
+<td><p>0</p></td>
+<td><p>10</p></td>
+<td></td>
+<td><p>Treatment A</p></td>
+<td><p>1</p></td>
+<td><p>9</p></td>
+</tr>
+<tr class="odd">
+<td><p>Treatment B</p></td>
+<td><p>6</p></td>
+<td><p>0</p></td>
+<td></td>
+<td><p>Treatment B</p></td>
+<td><p>5</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(\vspace{.2cm}\)</span></p>
+<table>
+<colgroup>
+<col width="15%" />
+<col width="10%" />
+<col width="11%" />
+<col width="26%" />
+<col width="15%" />
+<col width="8%" />
+<col width="11%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><p>Design 3</p></td>
+<td><p>Males</p></td>
+<td><p>Females</p></td>
+<td></td>
+<td><p>Design 4</p></td>
+<td><p>Males</p></td>
+<td><p>Females</p></td>
+</tr>
+<tr class="even">
+<td><p>Treatment A</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+<td></td>
+<td><p>Treatment A</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="odd">
+<td><p>Treatment B</p></td>
+<td><p>3</p></td>
+<td><p>5</p></td>
+<td></td>
+<td><p>Treatment B</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+</tr>
+</tbody>
+</table>
+<ol style="list-style-type: decimal">
+<li><p>This design is very bad. Because we have no males taking drug 1, and no females taking drug 2, we can’t say if any observed differences are due to the effect of drug 1 versus 2, or gender. When this situation happens, we say that the gender effect is confounded with the drug effect.</p></li>
+<li><p>This design is not much better. Because we only have one observation in the Male-Drug 1 group, any inference we make about the effect of drug 1 on males is based on one observation. In general that is a bad idea.</p></li>
+<li><p>Design 3 is better than the previous 2 because it evenly distributes the males and females among the two drug categories. However, it seems wasteful to have more females than males because estimating average of the male groups, I only have 6 observations while I have 10 females.</p></li>
+<li><p>This is the ideal design, with equal numbers of observations in each gender-drug group.</p></li>
+</ol>
+<p>Designs 3 and 4 are good because the correlation among my predictors is 0. In design 1, the drug covariate is perfectly correlated to the gender covariate. The correlation is less in design 2, but is zero in designs 3 and 4.We could show this by calculating the design matrix for each design and calculating the correlation coefficients between each of pairs of columns.</p>
+<p>Having an orthogonal design with equal numbers of observations in each group has many nice ramifications. Most importantly, with an orthogonal design, the interpretation of parameter is not dependent on what other factors are in the model. Balanced designs are also usually optimal in the sense that the variances of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> are as small as possible given the number of observations we have (barring any other <em>a priori</em> information).</p>
+</div>
+<div id="main-effects-model" class="section level2">
+<h2><span class="header-section-number">9.2</span> Main Effects Model</h2>
+<p>In the one factor ANOVA case, the additional degrees of freedom used by adding a factor with <span class="math inline">\(I\)</span> levels was <span class="math inline">\(I-1\)</span>. In the case that we consider two factors with the first factor having <span class="math inline">\(I\)</span> levels and the second factor having <span class="math inline">\(J\)</span> levels, then model <span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\epsilon_{ijk}\]</span> adds <span class="math inline">\((I-1)+(J-1)\)</span> parameters to the model because both <span class="math inline">\(\alpha_{1}=\beta_{1}=0\)</span>.</p>
+<ul>
+<li><p>The intercept term, <span class="math inline">\(\mu\)</span> is the reference point for all the other parameters. This is the expected value for an observation in the first level of factor 1 and the first level of factor two.</p></li>
+<li><p><span class="math inline">\(\alpha_{i}\)</span> is the amount you expect the response to increase when changing from factor 1 level 1, to factor 1 level i (while the second factor is held constant).</p></li>
+<li><p><span class="math inline">\(\beta_{j}\)</span> is the amount you expect the response to increase when changing from factor 2 level 1 to factor 2 level j (while the first factor is held constant).</p></li>
+</ul>
+<p>Referring back to the fungus example, let the <span class="math inline">\(\alpha_{i}\)</span> values be associated with changes in humidity and <span class="math inline">\(\beta_{j}\)</span> values be associated with changes in temperature levels. Then the expected value of each treatment combination is</p>
+<table>
+<colgroup>
+<col width="9%" />
+<col width="16%" />
+<col width="25%" />
+<col width="24%" />
+<col width="24%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>5%</strong></th>
+<th><strong>30%</strong></th>
+<th><strong>60%</strong></th>
+<th><strong>90%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>2C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+0\)</span></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>10C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+\beta_2\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+\beta_2\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+\beta_2\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+\beta_2\)</span></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>30C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+\beta_3\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+\beta_3\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+\beta_3\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+\beta_3\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<div id="example---fruit-trees" class="section level3">
+<h3><span class="header-section-number">9.2.1</span> Example - Fruit Trees</h3>
+<p>An experiment was conducted to determine the effects of four different pesticides on the yield of fruit from three different varieties of a citrus tree. Eight trees of each variety were randomly selected from an orchard. The four pesticides were randomly assigned to two trees of each variety and applications were made according to recommended levels. Yields of fruit (in bushels) were obtained after the test period.</p>
+<p>Critically notice that we have equal number of observations for each treatment combination.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Typing the data in by hand because I got this example from a really old text book...</span>
+Pesticide &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&#39;A&#39;</span>,<span class="st">&#39;B&#39;</span>,<span class="st">&#39;C&#39;</span>,<span class="st">&#39;D&#39;</span>)) 
+Variety &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&#39;1&#39;</span>,<span class="st">&#39;2&#39;</span>,<span class="st">&#39;3&#39;</span>)) 
+fruit &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="kw">expand.grid</span>(<span class="dt">rep=</span><span class="dv">1</span>:<span class="dv">2</span>, <span class="dt">Pest=</span>Pesticide, <span class="dt">Var=</span>Variety) ) 
+fruit$Yield &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">49</span>,<span class="dv">39</span>,<span class="dv">50</span>,<span class="dv">55</span>,<span class="dv">43</span>,<span class="dv">38</span>,<span class="dv">53</span>,<span class="dv">48</span>,<span class="dv">55</span>,<span class="dv">41</span>,<span class="dv">67</span>,<span class="dv">58</span>,<span class="dv">53</span>,<span class="dv">42</span>,<span class="dv">85</span>,<span class="dv">73</span>,<span class="dv">66</span>,<span class="dv">68</span>,<span class="dv">85</span>,<span class="dv">92</span>,<span class="dv">69</span>,<span class="dv">62</span>,<span class="dv">85</span>,<span class="dv">99</span>)</code></pre></div>
+<p>The first thing to do (as always) is to look at our data</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">y=</span>Yield, <span class="dt">shape=</span>Var)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don’t expect that the interaction effect will be significant. We next fit a linear model and look at the diagnostic plots.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+<span class="kw">autoplot</span>(m3, <span class="dt">which=</span><span class="dv">1</span>:<span class="dv">2</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>There might be a little curvature in the fitted vs residuals, but because we can’t fit a polynomial to a categorical variable, and the QQ-plot looks good, we’ll ignore it for now and eventually consider an interaction term. Just for fun, we can examine the smaller models with just Variety or Pesticide.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var, <span class="dt">data=</span>fruit)
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+<span class="kw">summary</span>(m1)$coef  %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   46.875      4.359  10.754    0.000
+## Var2          12.375      6.164   2.008    0.058
+## Var3          31.375      6.164   5.090    0.000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)$coef  %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   53.000      6.429   8.243    0.000
+## PestB         14.833      9.093   1.631    0.118
+## PestC         -1.833      9.093  -0.202    0.842
+## PestD         20.833      9.093   2.291    0.033</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)$coef  %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   38.417      3.660  10.497    0.000
+## Var2          12.375      3.660   3.381    0.003
+## Var3          31.375      3.660   8.573    0.000
+## PestB         14.833      4.226   3.510    0.003
+## PestC         -1.833      4.226  -0.434    0.670
+## PestD         20.833      4.226   4.930    0.000</code></pre>
+<p>Notice that the affects for Variety and Pesticide are the same <em>whether or not the other is in the model</em>. This is due to the orthogonal design of the experiment and makes it much easier to interpret the main effects of Variety and Pesticide.</p>
+</div>
+<div id="anova-table" class="section level3">
+<h3><span class="header-section-number">9.2.2</span> ANOVA Table</h3>
+<p>Most statistical software will produce an analysis of variance table when fitting a two-way ANOVA. This table is very similar to the analysis of variance table we have seen in the one-way ANOVA, but has several rows which correspond to the additional factors added to the model.</p>
+<p>Consider the two-way ANOVA with factors <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> which have levels <span class="math inline">\(I\)</span> and <span class="math inline">\(J\)</span> discrete levels respectively. For convenience let <span class="math inline">\(RSS_{1}\)</span> is the residual sum of squares of the intercept-only model, and <span class="math inline">\(RSS_{A}\)</span> be the residual sum of squares for the model with just the main effect of factor <span class="math inline">\(A\)</span>, and <span class="math inline">\(RSS_{A+B}\)</span> be the residual sum of squares of the model with both main effects. Finally assume that we have a total of <span class="math inline">\(n\)</span> observations. The ANOVA table for this model is as follows:</p>
+<table>
+<colgroup>
+<col width="8%" />
+<col width="12%" />
+<col width="20%" />
+<col width="19%" />
+<col width="10%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>df</th>
+<th>Sum of Sq (SS)</th>
+<th>Mean Sq</th>
+<th>F</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>A</strong></p></td>
+<td><p><span class="math inline">\(df_A=I-1\)</span></p></td>
+<td><p><span class="math inline">\(SS_A = RSS_1 - RSS_A\)</span></p></td>
+<td><p><span class="math inline">\(MS_A = SS_A / df_A\)</span></p></td>
+<td><p><span class="math inline">\(MS_A / MSE\)</span></p></td>
+<td><p><span class="math inline">\(P\left( F_{df_A, df_e} &gt; F_A \right)\)</span></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>B</strong></p></td>
+<td><p><span class="math inline">\(df_B=J-1\)</span></p></td>
+<td><p><span class="math inline">\(SS_B = RSS_A - RSS_{A+B}\)</span></p></td>
+<td><p><span class="math inline">\(MS_B = SS_B / df_B\)</span></p></td>
+<td><p><span class="math inline">\(MS_B / MSE\)</span></p></td>
+<td><p><span class="math inline">\(P\left( F_{df_B, df_e} &gt; F_B \right)\)</span></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>Error</strong></p></td>
+<td><p><span class="math inline">\(df_e=n-I-J+1\)</span></p></td>
+<td><p><span class="math inline">\(RSS_{A+B}\)</span></p></td>
+<td><p><span class="math inline">\(MSE = RSS_{A+B} / df_e\)</span></p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Note, if the table is cut off, you can change decrease your font size and have it all show up…</em></p>
+<p>This arrangement of the ANOVA table is referred to as “Type I” sum of squares.</p>
+<p>We can examine this table in the fruit trees example using the anova() command but just passing a single model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+<span class="kw">anova</span>( m4 )</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Yield
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Var        2 3996.1 1998.04  37.292 3.969e-07 ***
+## Pest       3 2227.5  742.49  13.858 6.310e-05 ***
+## Residuals 18  964.4   53.58                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We might think that this is the same as fitting three nested models and running an F-test on each successive pairs of models, but it isn’t. While both will give the same Sums of Squares, the F statistics are different because the MSE of the complex model is different. In particular, the F-statistics are larger and thus the p-values are smaller for detecting significant effects.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>fruit)
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var, <span class="dt">data=</span>fruit)
+m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+<span class="kw">anova</span>( m1, m2 )</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Yield ~ 1
+## Model 2: Yield ~ Var
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     23 7188.0                                  
+## 2     21 3191.9  2    3996.1 13.146 0.0001987 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( m2, m3 )</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Yield ~ Var
+## Model 2: Yield ~ Var + Pest
+##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+## 1     21 3191.9                                 
+## 2     18  964.4  3    2227.5 13.858 6.31e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="estimating-contrasts" class="section level3">
+<h3><span class="header-section-number">9.2.3</span> Estimating Contrasts</h3>
+<p>As in the one-way ANOVA, we are interested in which factor levels differ. For example, we might suspect that it makes sense to group pesticides B and D together and claim that they are better than the group of A and C.</p>
+<p>Just as we did in the one-way ANOVA model, this is such a common thing to do that there is an easy way to do this, using <code>TukeyHSD</code>, which requires us coerce our model output to an <code>aov</code> object. We could specify all of the contrasts by hand and use <code>glht()</code> in the <code>multcomp</code> package to calculate all of the contrasts, but using <code>TukeyHSD</code> will be simpler.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+<span class="kw">TukeyHSD</span>(<span class="kw">aov</span>(m3))</code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = m3)
+## 
+## $Var
+##       diff       lwr      upr     p adj
+## 2-1 12.375  3.034405 21.71559 0.0088734
+## 3-1 31.375 22.034405 40.71559 0.0000003
+## 3-2 19.000  9.659405 28.34059 0.0001735
+## 
+## $Pest
+##           diff        lwr       upr     p adj
+## B-A  14.833333   2.889267 26.777399 0.0121713
+## C-A  -1.833333 -13.777399 10.110733 0.9718552
+## D-A  20.833333   8.889267 32.777399 0.0005728
+## C-B -16.666667 -28.610733 -4.722601 0.0047986
+## D-B   6.000000  -5.944066 17.944066 0.5037838
+## D-C  22.666667  10.722601 34.610733 0.0002286</code></pre>
+<p>The output from the TukeyHSD is quite useful, but it would be nice to generate the data frame indicating group differences similar to what we did in the one-way ANOVA. We will use the exact same function we had before:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Create a data frame with significant groupings </span>
+<span class="co">#&#39;</span>
+<span class="co">#&#39; This function runs TukeyHSD on the input model and then creates a data frame</span>
+<span class="co">#&#39; with a column for the factor and a second for the Significance Group</span>
+<span class="co">#&#39; </span>
+<span class="co">#&#39; @param model The output of a lm() or aov() call that can be coerced to an aov object.</span>
+<span class="co">#&#39; @param variable The variable of interest.</span>
+<span class="co">#&#39; @output A data frame with a column for factor and another for the signicance group.</span>
+make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, variable){ 
+  Tukey &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(<span class="kw">aov</span>(model))[[variable]]
+  temp &lt;-<span class="st"> </span>Tukey[,<span class="st">&#39;p adj&#39;</span>] %&gt;%
+<span class="st">    </span><span class="kw">vec2mat</span>() %&gt;%
+<span class="st">    </span><span class="kw">multcompLetters</span>()
+  out &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">names</span>(temp$Letters), <span class="dt">SigGroup=</span>temp$Letters)
+  <span class="kw">colnames</span>(out)[<span class="dv">1</span>] &lt;-<span class="st"> </span>variable
+  out
+}  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>( m3, <span class="st">&#39;Var&#39;</span>)</code></pre></div>
+<pre><code>##   Var SigGroup
+## 2   2        a
+## 3   3        b
+## 1   1        c</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>( m3, <span class="st">&#39;Pest&#39;</span>)</code></pre></div>
+<pre><code>##   Pest SigGroup
+## B    B        a
+## C    C        b
+## D    D        a
+## A    A        b</code></pre>
+<p>So we see that each variety is significantly different from all the others and among the pesticides, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are indistigishable as are <span class="math inline">\(B\)</span> and <span class="math inline">\(D\)</span>, but there is a difference between the <span class="math inline">\(A,C\)</span> and <span class="math inline">\(B,D\)</span> groups.</p>
+</div>
+</div>
+<div id="interaction-model" class="section level2">
+<h2><span class="header-section-number">9.3</span> Interaction Model</h2>
+<p>When the model contains the interaction of the two factors, our model is written as <span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}+\epsilon_{ijk}\]</span></p>
+<p>Interpreting effects effects can be very tricky. Under the interaction, the effect of changing from factor 1 level 1 to factor 1 level <span class="math inline">\(i\)</span> depends on what level of factor 2 is. In essence, we are fitting a model that allows each of the <span class="math inline">\(I\times J\)</span> cells in my model to vary independently. As such, the model has a total of <span class="math inline">\(I\times J\)</span> parameters but because the model without interactions had <span class="math inline">\(1+(I-1)+(J-1)\)</span> terms in it, the interaction is adding <span class="math inline">\(df_{AB}\)</span> parameters. We can solve for this via: <span class="math display">\[\begin{aligned}
+I\times J   &amp;=  1+(I-1)+(J-1)+df_{AB} \\
+I\times J   &amp;=  I+J-1+df_{AB} \\
+IJ-I-J    &amp;=    -1+df_{AB} \\
+I(J-1)-J    &amp;=  -1+df_{AB} \\
+I(J-1)-J+1  &amp;=  df_{AB}  \\
+I(J-1)-(J-1)    &amp;=  df_{AB} \\
+(I-1)(J-1)  &amp;=  df_{AB} 
+\end{aligned}\]</span></p>
+<p>This makes sense because the first factor added <span class="math inline">\((I-1)\)</span> columns to the design matrix and an interaction with a continuous covariate just multiplied the columns of the factor by the single column of the continuous covariate. Creating an interaction of two factors multiplies each column of the first factor by all the columns defined by the second factor.</p>
+<p>The expected value of the <span class="math inline">\(ij\)</span> combination is <span class="math inline">\(\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}\)</span>. Returning to our fungus example, the expected means for each treatment under the model with main effects and the interaction is</p>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="10%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>5%</strong></th>
+<th><strong>30%</strong></th>
+<th><strong>60%</strong></th>
+<th><strong>90%</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>2C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+0+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+0+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+0+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+0+0\)</span></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>10C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+\beta_2+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+\beta_2+\left(\alpha\beta\right)_{22}\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+\beta_2+\left(\alpha\beta\right)_{32}\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+\beta_2+\left(\alpha\beta\right)_{42}\)</span></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>30C</strong></p></td>
+<td><p><span class="math inline">\(\mu+0+\beta_3+0\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_2+\beta_3+\left(\alpha\beta\right)_{23}\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_3+\beta_2+\left(\alpha\beta\right)_{33}\)</span></p></td>
+<td><p><span class="math inline">\(\mu+\alpha_4+\beta_2+\left(\alpha\beta\right)_{43}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>Notice that we have added <span class="math inline">\(6=3\cdot2=\left(4-1\right)\left(3-1\right)=\left(I-1\right)\left(J-1\right)\)</span> interaction parameters <span class="math inline">\(\left(\alpha\beta\right)_{ij}\)</span> to the main effects only model. The interaction model has <span class="math inline">\(p=12\)</span> parameters, one for each cell in my treatment array.</p>
+<p>In general it is hard to interpret the meaning of <span class="math inline">\(\alpha_{i}\)</span>, <span class="math inline">\(\beta_{j}\)</span>, and <span class="math inline">\(\left(\alpha\beta\right)_{ij}\)</span> and the best way to make sense of them is to look at the interaction plots.</p>
+<div id="anova-table-1" class="section level3">
+<h3><span class="header-section-number">9.3.1</span> ANOVA Table</h3>
+<p>Most statistical software will produce an analysis of variance table when fitting a two-way ANOVA. This table is very similar to the analysis of variance table we have seen in the one-way ANOVA, but has several rows which correspond to the additional factors added to the model.</p>
+<p>Consider the two-way ANOVA with factors <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> which have levels <span class="math inline">\(I\)</span> and <span class="math inline">\(J\)</span> discrete levels respectively. For convenience let <span class="math inline">\(RSS_{1}\)</span> be the residual sum of squares of the intercept-only model, and <span class="math inline">\(RSS_{A}\)</span> be the residual sum of squares for the model with just the main effect of factor <span class="math inline">\(A\)</span>. Likewise <span class="math inline">\(RSS_{A+B}\)</span> and <span class="math inline">\(RSS_{A*B}\)</span> shall be the residual sum of squares of the model with just the main effects and the model with main effects and the interaction. Finally assume that we have a total of <span class="math inline">\(n\)</span> observations. The ANOVA table for this model is as follows:</p>
+<table>
+<colgroup>
+<col width="7%" />
+<col width="13%" />
+<col width="20%" />
+<col width="22%" />
+<col width="10%" />
+<col width="26%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>df</th>
+<th>Sum Sq (SS)</th>
+<th>MS</th>
+<th>F</th>
+<th><span class="math inline">\(Pr(\ge F)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p><strong>A</strong></p></td>
+<td><p><span class="math inline">\(df_A=I-1\)</span></p></td>
+<td><p><span class="math inline">\(SS_A = RSS_1 - RSS_A\)</span></p></td>
+<td><p><span class="math inline">\(MS_A = SS_A/df_A\)</span></p></td>
+<td><p><span class="math inline">\(MS_A / MSE\)</span></p></td>
+<td><p><span class="math inline">\(Pr(F_{df_A,df_{\epsilon}} \ge F_A\)</span></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>B</strong></p></td>
+<td><p><span class="math inline">\(df_B=J-1\)</span></p></td>
+<td><p><span class="math inline">\(SS_B = RSS_A - RSS_{A+B}\)</span></p></td>
+<td><p><span class="math inline">\(MS_B = SS_B/df_B\)</span></p></td>
+<td><p><span class="math inline">\(MS_B / MSE\)</span></p></td>
+<td><p><span class="math inline">\(Pr(F_{df_B,df_{\epsilon}} \ge F_B\)</span></p></td>
+</tr>
+<tr class="odd">
+<td><p><strong>AB</strong></p></td>
+<td><p><span class="math inline">\(df_{AB}=(I-1)(J-1)\)</span></p></td>
+<td><p><span class="math inline">\(SS_{A*B} = RSS_{A*B}-RSS_{A+B}\)</span></p></td>
+<td><p><span class="math inline">\(MS_{AB} = SS_{AB} / df_{AB}\)</span></p></td>
+<td><p><span class="math inline">\(MS_{AB} MSE\)</span></p></td>
+<td><p><span class="math inline">\(Pr(F_{df_{AB},df_{\epsilon}} \ge F_{AB}\)</span></p></td>
+</tr>
+<tr class="even">
+<td><p><strong>Error</strong></p></td>
+<td><p><span class="math inline">\(df_{\epsilon}=n-IJ\)</span></p></td>
+<td><p><span class="math inline">\(RSS_{A*B}\)</span></p></td>
+<td><p><span class="math inline">\(MSE = RSS_{A*B} / df_{\epsilon}\)</span></p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This arrangement of the ANOVA table is referred to as “Type I” sum of squares. Type III sums of squares are the difference between the full interaction model and the model removing each parameter group, even when it doesn’t make sense. For example in the Type III table, <span class="math inline">\(SS_{A}=RSS_{B+A:B}-RSS_{A*B}\)</span>. There is an intermediate form of the sums of squares called Type II, that when removing a main effect also removes the higher order interaction. In the case of balanced (orthogonal) designs, there is no difference between the different types, but for non-balanced designs, the numbers will change. To access these other types of sums of squares, use the <code>Anova()</code> function in the package <code>car</code>.</p>
+</div>
+<div id="example---fruit-trees-continued" class="section level3">
+<h3><span class="header-section-number">9.3.2</span> Example - Fruit Trees (continued)</h3>
+<p>We next consider whether or not to include the interaction term to the fruit tree model. We fit the model with the interaction and then graph the results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var *<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
+fruit$y.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m4)
+<span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">shape=</span>Var, <span class="dt">y=</span>Yield)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) +
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>y.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(Pest)))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>All of the line segments are close to parallel so, we don’t expect the interaction to be significant.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( m4 )</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: Yield
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## Var        2 3996.1 1998.04 47.2443 2.048e-06 ***
+## Pest       3 2227.5  742.49 17.5563 0.0001098 ***
+## Var:Pest   6  456.9   76.15  1.8007 0.1816844    
+## Residuals 12  507.5   42.29                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Examining the ANOVA table, we see that the interaction effect is not significant and we will stay with simpler model <code>Yield~Var+Pest</code>.</p>
+</div>
+<div id="example---warpbreaks" class="section level3">
+<h3><span class="header-section-number">9.3.3</span> Example - Warpbreaks</h3>
+<p>This data set looks at the number of breaks that occur in two different types of wool under three different levels of tension (low, medium, and high). The fewer number of breaks, the better.</p>
+<p>As always, the first thing we do is look at the data. In this case, it looks like the number of breaks decreases with increasing tension and perhaps wool B has fewer breaks than wool A.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(faraway)
+<span class="kw">data</span>(warpbreaks)
+<span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span>breaks, <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool), <span class="dt">size=</span><span class="dv">2</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() +
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_dodge</span>(<span class="dt">width=</span>.<span class="dv">35</span>)) <span class="co"># offset the wool groups </span></code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>We next fit our linear model and examine the diagnostic plots.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(breaks ~<span class="st"> </span>tension +<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
+<span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>The residuals vs fitted values plot is a little worrisome and appears to be an issue with non-constant variance, but the normality assumption looks good. We’ll check for a Box-Cox transformation next.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxcox</span>(model)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p>This suggests we should make a log transformation, though because the confidence interval is quite wide we might consider if the increased difficulty in interpretation makes sufficient progress towards making the data meet the model assumptions.. The diagnostic plots of the resulting model look better for the constant variance assumption, but the normality is now a worse off. Because the Central Limit Theorem helps deal with the normality question, I’d rather stabilize the variance at the cost of the normality.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) ~<span class="st"> </span>tension +<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
+<span class="kw">autoplot</span>(model<span class="fl">.1</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Next we’ll fit the interaction model and check the diagnostic plots. The diagnostic plots look good and this appears to be a legitimate model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) ~<span class="st"> </span>tension *<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
+<span class="kw">autoplot</span>(model<span class="fl">.2</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>Then we’ll do an F-test to see if it is a better model than the main effects model. The p-value is marginally significant, so we’ll keep the interaction in the model, but recognize that it is a weak interaction.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model<span class="fl">.1</span>, model<span class="fl">.2</span>)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: log(breaks) ~ tension + wool
+## Model 2: log(breaks) ~ tension * wool
+##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1     50 7.6270                              
+## 2     48 6.7138  2   0.91315 3.2642 0.04686 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. This plot shows the raw data and connects lines to the cell mean of each factor combination.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">warpbreaks$logy.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(model<span class="fl">.2</span>)
+<span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span><span class="kw">log</span>(breaks), <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool)) +
+<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>logy.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(tension)))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>We can see that it appears that wool A has a decrease in breaks between low and medium tension, while wool B has a decrease in breaks between medium and high. It is actually quite difficult to see this interaction when we examine the model coefficients.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.2</span>)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(breaks) ~ tension * wool, data = warpbreaks)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.81504 -0.27885  0.04042  0.27319  0.64358 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      3.7179     0.1247  29.824  &lt; 2e-16 ***
+## tensionM        -0.6012     0.1763  -3.410  0.00133 ** 
+## tensionH        -0.6003     0.1763  -3.405  0.00134 ** 
+## woolB           -0.4356     0.1763  -2.471  0.01709 *  
+## tensionM:woolB   0.6281     0.2493   2.519  0.01514 *  
+## tensionH:woolB   0.2221     0.2493   0.891  0.37749    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.374 on 48 degrees of freedom
+## Multiple R-squared:  0.3363, Adjusted R-squared:  0.2672 
+## F-statistic: 4.864 on 5 and 48 DF,  p-value: 0.001116</code></pre>
+<p>To test if there is a statistically significant difference between medium and high tensions for wool type B, we really need to test the following hypothesis: <span class="math display">\[\begin{aligned}
+H_{0}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right) &amp; =   0 \\
+H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right) &amp;\ne    0
+\end{aligned}\]</span></p>
+<p>This test reduces to testing if <span class="math inline">\(\alpha_{2}-\alpha_{3}+\left(\alpha\beta\right)_{22}-\left(\alpha\beta\right)_{23}=0\)</span>. Calculating this difference from the estimated values of the summery table we have <span class="math inline">\(-.6012+.6003+.6281-.2221=0.4051\)</span>, we don’t know if that is significantly different than zero.</p>
+<p>In the main effects model, we were able to read off the necessary test using Tukey’s HSD. Fortunately, we can do the same thing here. In this case, we’ll look at the interactions piece of the TukeyHSD command. In this case, we find the test H:B - M:B in the last row of the interactions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">TukeyHSD</span>( <span class="kw">aov</span>(model<span class="fl">.2</span>) )</code></pre></div>
+<pre><code>##   Tukey multiple comparisons of means
+##     95% family-wise confidence level
+## 
+## Fit: aov(formula = model.2)
+## 
+## $tension
+##           diff        lwr         upr     p adj
+## M-L -0.2871237 -0.5886239  0.01437636 0.0649432
+## H-L -0.4892747 -0.7907748 -0.18777463 0.0007948
+## H-M -0.2021510 -0.5036511  0.09934912 0.2465032
+## 
+## $wool
+##           diff        lwr        upr     p adj
+## B-A -0.1521536 -0.3568127 0.05250558 0.1415114
+## 
+## $`tension:wool`
+##                  diff        lwr         upr     p adj
+## M:A-L:A -0.6011957092 -1.1244431 -0.07794828 0.0157632
+## H:A-L:A -0.6003226799 -1.1235701 -0.07707525 0.0159794
+## L:B-L:A -0.4355668365 -0.9588143  0.08768059 0.1534713
+## M:B-L:A -0.4086186238 -0.9318661  0.11462881 0.2071300
+## H:B-L:A -0.8137936293 -1.3370411 -0.29054620 0.0004035
+## H:A-M:A  0.0008730293 -0.5223744  0.52412046 1.0000000
+## L:B-M:A  0.1656288727 -0.3576186  0.68887630 0.9341161
+## M:B-M:A  0.1925770854 -0.3306703  0.71582452 0.8820529
+## H:B-M:A -0.2125979201 -0.7358454  0.31064951 0.8318529
+## L:B-H:A  0.1647558434 -0.3584916  0.68800327 0.9354994
+## M:B-H:A  0.1917040562 -0.3315434  0.71495149 0.8840239
+## H:B-H:A -0.2134709494 -0.7367184  0.30977648 0.8294547
+## M:B-L:B  0.0269482127 -0.4962992  0.55019564 0.9999876
+## H:B-L:B -0.3782267929 -0.9014742  0.14502064 0.2822984
+## H:B-M:B -0.4051750056 -0.9284224  0.11807242 0.2148594</code></pre>
+<p>So TukeyHSD gives us all the tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.</p>
+<p>Using TukeyHSD, we can see the wool effect difference between types B and A is <span class="math inline">\(-0.1522\)</span>. We can calculate the mean number of log breaks for each wool type and take the difference by the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">warpbreaks %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(wool) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarise</span>( <span class="dt">wool.means =</span> <span class="kw">mean</span>(<span class="kw">log</span>(breaks)) ) %&gt;%
+<span class="st">  </span><span class="kw">summarise</span>( <span class="kw">diff</span>(wool.means) )</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   diff(wool.means)
+##              &lt;dbl&gt;
+## 1       -0.1521536</code></pre>
+<p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. It isn’t clear which is preferred and TukeyHSD produces a result that is between those two methods.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="8-one-way-anova.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/09_TwoWayAnova.Rmd",
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

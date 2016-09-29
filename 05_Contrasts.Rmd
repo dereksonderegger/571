@@ -214,7 +214,7 @@ $$\begin{aligned}
 \hat{y}_{vc,dose=0.5}	
     &=	16.9633+13.0997\,\log\left(0.5\right)\\
     &=	\left(20.66-3.7\right)+\left(9.25+3.8\right)\,\log\left(0.5\right)\\
-	  &=	\left(\hat{\beta}_{0}+\hat{\beta}_{2}\right)+\left(\hat{\beta}_{1}+\hat{\beta}_{4}\right)\,\left(-0.69\right)\\
+	  &=	\left(\hat{\beta}_{0}+\hat{\beta}_{2}\right)+\left(\hat{\beta}_{1}+\hat{\beta}_{3}\right)\,\left(-0.69\right)\\
 	  &=	\left[\begin{array}{cccc}1 & -0.69 & 1 & -0.69\end{array}\right]\left[\begin{array}{c}
                  \hat{\beta_{0}}\\
                  \hat{\beta}_{1}\\

@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-22">
+<meta name="date" content="2016-09-28">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -207,6 +207,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -270,7 +283,7 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for HS.Grad rate and for Income. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data$HS.Grad<span class="fl">.2</span> &lt;-<span class="st"> </span>state.data$HS.Grad ^<span class="st"> </span><span class="dv">2</span>
 state.data$Income<span class="fl">.2</span>  &lt;-<span class="st"> </span>state.data$Income  ^<span class="st"> </span><span class="dv">2</span>
