@@ -265,37 +265,45 @@ summary(test)
 1. We will examine a dataset that summarizes cars featured in the magazine Motor Trend during the year 1974. In particular we will examine the relationship between the vehicles gas milage (`mpg`) versus the weight (`wt`) and number of cylinders (`cyl`) of the vehicle.
     ```{r, fig.height=4}
     library(ggplot2)
-    # treat cylinders as categorical
+    library(dplyr)
     data(mtcars)
-    mtcars$cyl <- factor(mtcars$cyl)
+    mtcars$cyl <- factor(mtcars$cyl)     # treat cylinders as categorical
     ggplot(mtcars, aes(x=wt, col=cyl)) +
       geom_point(aes(y=mpg, shape=cyl), size=4) +
       xlab('Weight (tons)') +
       ylab('Miles per Gallon') +
       labs(color='Cylinders', shape='Cylinders')
     ```
-    a. Fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
+    a. Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix $\boldsymbol{X}$ for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:
         ```{r}
-        model <- lm(mpg ~ wt*cyl, data=mtcars)
+        mtcars.small <- mtcars %>%      
+          group_by(cyl) %>%             # For each cylinder group
+          arrange(cyl, wt) %>%          # Reorder my dataset
+          slice(1:3)                    # grab first three rows of each group
+        model.matrix(  lm(mpg ~ wt*cyl, data=mtcars.small) )
         ```
-    b. Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.
-    c. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{1}$ to $\hat{\beta}_{6}$ (in the order given by R). Write your interaction model out using subscript notation and should be in the form
+    b. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{0}$ to $\hat{\beta}_{5}$ (in the order given by R). Write your interaction model out using subscript notation and should be in the form
         $$y_{i}=\begin{cases}
         ??????? & \;\;\textrm{if 4 cylinder}\\
         ??????? & \;\;\textrm{if 6 cylinder}\\
         ??????? & \;\;\textrm{if 8 cylinder}
         \end{cases}$$ 
         and give an interpretation for each $\beta_{j}$ value.
-        i. $\hat{\beta}_1$ = ???
-        ii. $\hat{\beta}_2$ = ???
-        iii. $\hat{\beta}_3$ = ???
-        iv. $\hat{\beta}_4$ = ???
-        v. $\hat{\beta}_5$ = ???
-        vi. $\hat{\beta}_6$ = ???
-        
+        i. $\hat{\beta}_0$ = ???
+        ii. $\hat{\beta}_1$ = ???
+        iii. $\hat{\beta}_2$ = ???
+        iv. $\hat{\beta}_3$ = ???
+        v. $\hat{\beta}_4$ = ???
+        vi. $\hat{\beta}_5$ = ???
 
-    d. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
-    e. Answer the previous question but using the `glht()` function.
-    f. What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the `glht()` function.
-    g. What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons?
-    h. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different?
+    c. Comment on the process by which you could create the interaction columns just using the `wt` and `cyl` columns.         
+    d. Using the full dataset, tit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
+        ```{r}
+        model <- lm(mpg ~ wt*cyl, data=mtcars)
+        ```
+    e. Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.
+    f. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
+    g. Answer the previous question but using the `glht()` function.
+    h. What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the `glht()` function.
+    i. What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons?
+    j. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different?

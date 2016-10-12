@@ -587,7 +587,7 @@ $$\begin{aligned}
 \end{aligned}$$
 therefore we consider $e^{\hat{\beta}_{2}}$ as the *percent* increase in write score for a 1-unit increase in $x$ because of the following. Consider $x_1$ and $x_2 = x_1 +1$. Then we consider the ratio of predicted values:
 $$
-\frac{y_2}{y_1} 
+\frac{\hat{y}_2}{\hat{y}_1} 
   = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
   = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
   = e^{\hat{\beta}_{2}}$$

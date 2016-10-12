@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-28">
+<meta name="date" content="2016-09-29">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -671,7 +671,7 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 \log\hat{y}_f   &amp;=  \hat{\beta}_{0}+\hat{\beta}_{2}x \\
 \hat{y}_f       &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
 \end{aligned}\]</span> therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> as the <em>percent</em> increase in write score for a 1-unit increase in <span class="math inline">\(x\)</span> because of the following. Consider <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2 = x_1 +1\)</span>. Then we consider the ratio of predicted values: <span class="math display">\[
-\frac{y_2}{y_1} 
+\frac{\hat{y}_2}{\hat{y}_1} 
   = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
   = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
   = e^{\hat{\beta}_{2}}\]</span></p>
