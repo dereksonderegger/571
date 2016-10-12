@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-29">
+<meta name="date" content="2016-10-11">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -219,6 +219,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
 <li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
 </ul></li>
+<li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -298,7 +299,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </table>
 <p>In this case we see that increased humidity increases the amount of fungal growth, but the amount of increase depends on the temperature. At 2 C, the increase is humidity increases are significant, but at 10 C the increases are larger, and at 30 C the increases are larger yet. The effect of changing from one humidity level to the next <em>depends on which temperature level we are at</em>. This change in effect of humidity is an interaction effect. A memorable example is that chocolate by itself is good. Strawberries by themselves are also good. But the combination of chocolate and strawberries is a delight greater than the sum of the individual treats.</p>
 <p>We can look at a graph of the Humidity and Temperature vs the Response and see the effect of increasing humidity changes based on the temperature level. Just as in the ANCOVA model, the interaction manifested itself in non-parallel slopes, the interaction manifests itself in non-parallel slopes when I connect the dots across the factor levels.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
 <p>Unfortunately the presence of a significant interaction term in the model makes interpretation difficult, but examining the interaction plots can be quite helpful in understanding the effects. Notice in this example, we 3 levels of temperature and 4 levels of humidity for a total of 12 different possible treatment combinations. In general I will refer to these combinations as cells.</p>
 <div id="orthogonality" class="section level2">
 <h2><span class="header-section-number">9.1</span> Orthogonality</h2>
@@ -455,11 +456,11 @@ fruit$Yield &lt;-<span class="st"> </span><span class="kw">c</span>(<span class=
 <p>The first thing to do (as always) is to look at our data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">y=</span>Yield, <span class="dt">shape=</span>Var)) +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
 <p>The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don’t expect that the interaction effect will be significant. We next fit a linear model and look at the diagnostic plots.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var +<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
 <span class="kw">autoplot</span>(m3, <span class="dt">which=</span><span class="dv">1</span>:<span class="dv">2</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
 <p>There might be a little curvature in the fitted vs residuals, but because we can’t fit a polynomial to a categorical variable, and the QQ-plot looks good, we’ll ignore it for now and eventually consider an interaction term. Just for fun, we can examine the smaller models with just Variety or Pesticide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Var, <span class="dt">data=</span>fruit)
 m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield ~<span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
@@ -756,7 +757,7 @@ fruit$y.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m4)
 <span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">shape=</span>Var, <span class="dt">y=</span>Yield)) +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) +
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>y.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(Pest)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
 <p>All of the line segments are close to parallel so, we don’t expect the interaction to be significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( m4 )</code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -781,22 +782,22 @@ fruit$y.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m4)
 <span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span>breaks, <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool), <span class="dt">size=</span><span class="dv">2</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_dodge</span>(<span class="dt">width=</span>.<span class="dv">35</span>)) <span class="co"># offset the wool groups </span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
 <p>We next fit our linear model and examine the diagnostic plots.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(breaks ~<span class="st"> </span>tension +<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
 <p>The residuals vs fitted values plot is a little worrisome and appears to be an issue with non-constant variance, but the normality assumption looks good. We’ll check for a Box-Cox transformation next.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">boxcox</span>(model)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
 <p>This suggests we should make a log transformation, though because the confidence interval is quite wide we might consider if the increased difficulty in interpretation makes sufficient progress towards making the data meet the model assumptions.. The diagnostic plots of the resulting model look better for the constant variance assumption, but the normality is now a worse off. Because the Central Limit Theorem helps deal with the normality question, I’d rather stabilize the variance at the cost of the normality.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) ~<span class="st"> </span>tension +<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model<span class="fl">.1</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
 <p>Next we’ll fit the interaction model and check the diagnostic plots. The diagnostic plots look good and this appears to be a legitimate model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) ~<span class="st"> </span>tension *<span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model<span class="fl">.2</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-153-1.png" width="672" /></p>
 <p>Then we’ll do an F-test to see if it is a better model than the main effects model. The p-value is marginally significant, so we’ll keep the interaction in the model, but recognize that it is a weak interaction.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model<span class="fl">.1</span>, model<span class="fl">.2</span>)</code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -813,7 +814,7 @@ fruit$y.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m4)
 <span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span><span class="kw">log</span>(breaks), <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool)) +
 <span class="st">  </span><span class="kw">geom_point</span>() +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>logy.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(tension)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
 <p>We can see that it appears that wool A has a decrease in breaks between low and medium tension, while wool B has a decrease in breaks between medium and high. It is actually quite difficult to see this interaction when we examine the model coefficients.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.2</span>)</code></pre></div>
 <pre><code>## 
@@ -888,8 +889,22 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ##              &lt;dbl&gt;
 ## 1       -0.1521536</code></pre>
 <p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. It isn’t clear which is preferred and TukeyHSD produces a result that is between those two methods.</p>
-
 </div>
+</div>
+<div id="exercises-8" class="section level2">
+<h2><span class="header-section-number">9.4</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>In the <code>faraway</code> package, the data set <code>rats</code> has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective.
+<ol style="list-style-type: lower-alpha">
+<li>Consider the interaction model which allows for a different effect of treatment for each poison type. Fit this model and examine the diagnostic plots. What stands out?</li>
+<li>Perform a Box-Cox analysis and perform the recommended transformation (with the realm of “common” transformations). Call the transformed variable <code>speed</code>.</li>
+<li>Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.</li>
+<li>Perform an appropriate statistical test to see if the interaction is statistically significant.</li>
+<li>What do you conclude about the poisons and treatment (application) types?</li>
+</ol></li>
+<li>Buttermilk question?</li>
+</ol>
+
 </div>
 </div>
             </section>

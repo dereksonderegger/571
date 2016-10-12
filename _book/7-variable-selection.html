@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-09-29">
+<meta name="date" content="2016-10-11">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -219,6 +219,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
 <li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
 </ul></li>
+<li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -283,7 +284,7 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for HS.Grad rate and for Income. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data$HS.Grad<span class="fl">.2</span> &lt;-<span class="st"> </span>state.data$HS.Grad ^<span class="st"> </span><span class="dv">2</span>
 state.data$Income<span class="fl">.2</span>  &lt;-<span class="st"> </span>state.data$Income  ^<span class="st"> </span><span class="dv">2</span>
