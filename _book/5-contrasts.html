@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-10-11">
+<meta name="date" content="2016-10-15">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -221,6 +221,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="10" data-path="10-block-designs.html"><a href="10-block-designs.html"><i class="fa fa-check"></i><b>10</b> Block Designs</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-block-designs.html"><a href="10-block-designs.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>10.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="10.2" data-path="10-block-designs.html"><a href="10-block-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="10.3" data-path="10-block-designs.html"><a href="10-block-designs.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html"><i class="fa fa-check"></i><b>11</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="11.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>11.1</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.2</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.3</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -389,16 +400,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6467
+## Quantile = 2.6446
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7319 90.7681
-## Mean of Group 2 == 0 75.5714  71.2759 79.8669
-## Mean of Group 3 == 0 71.0000  67.2117 74.7883
-## Diff G2-G3 == 0       4.5714  -1.1559 10.2988</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7350 90.7650
+## Mean of Group 2 == 0 75.5714  71.2792 79.8637
+## Mean of Group 3 == 0 71.0000  67.2146 74.7854
+## Diff G2-G3 == 0       4.5714  -1.1515 10.2944</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
