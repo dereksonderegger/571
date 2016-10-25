@@ -9,6 +9,7 @@ output:
 library(faraway)
 library(lme4)
 library(tidyverse)
+library(lsmeans)
 ```
 
 
@@ -200,6 +201,59 @@ anova(model.0, model.1)
 
 Using the LRT test (and difference of AIC values), we see the effect of variety is statistically signficant.
 
+Now that we are certain that there are differences among the varieties, we should look at all of the pairwise contrasts among the variety levels. Unfortunately `TukeyHSD` doesn't work with objects created by `lme` so we have to turn to another package. In this case, we could use either `multcomp` and build the contrast vectors $\boldsymbol{c}$ that we used previously or we could use the package `lsmeans`, which automates much of this.
+
+```{r}
+lsmeans( model.1, pairwise ~ variety)
+```
+
+This looks remarkably similar to the output from TukeyHSD and just as confusing.  Ideally the function `make_TukeyHSD_letters()` could be modified to handle this model as well.
+
+```{r}
+library(stringr)
+#' Create a data frame with significant groupings 
+#'
+#' This function runs TukeyHSD on the input model and then creates a data frame
+#' with a column for the factor and a second for the Significance Group
+#' 
+#' @param model The output of a lm(), aov(), or lme().
+#' @param variable The variable of interest.
+#' @output A data frame with a column for factor and another for the signicance group.
+#' @examples
+#' model <- lm( breaks ~ wool + tension, data=warpbreaks )
+#' make_TukeyHSD_letters(model, ~ wool)
+#' make_TukeyHSD_letters(model, ~ tension)
+#' make_TukeyHSD_letters(model, ~ wool+tension)
+make_TukeyHSD_letters <- function(model, formula){ 
+  formula2 <- update.formula( formula, pairwise ~ .)
+  temp <- lsmeans(model, formula2)$contrasts %>%
+    summary()  
+  temp2 <- temp$p.value
+  names(temp2) <- temp$contrast 
+  temp <- temp2 %>% vec2mat(sep=' - ') %>% multcompLetters()
+  out <-  data.frame(group = names(temp$Letters), SigGroup=temp$Letters)
+  colnames(out)[1] <-   Reduce(paste, deparse(formula)) %>% str_replace(fixed('~'),'')
+  rownames(out) <- NULL
+  out
+}  
+```
+
+```{r}
+make_TukeyHSD_letters(model.1, ~variety)
+```
+
+As usual we'll join this information into the original data table and then make a nice summary graph.
+```{r}
+oatvar <- oatvar %>%
+  left_join( make_TukeyHSD_letters(model.1, ~variety) ) %>%
+  mutate(LetterHeight=500)
+
+ggplot(oatvar, aes(x=variety, y=yield)) +
+  geom_point(aes(color=block)) +
+  geom_text(aes(label=SigGroup, y=LetterHeight))
+```
+
+
 ***
 
 We'll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a 'blend' and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.
@@ -209,8 +263,6 @@ data(penicillin)
 ggplot(penicillin, aes(y=yield, x=treat)) +
   geom_point() + 
   facet_wrap( ~ blend, ncol=5)
-
-
 ```
 
 It looks like there is definately a `Blend` effect (e.g. Blend1 is much better than Blend5) but it isn't clear that there is a treatment effect.

@@ -17,7 +17,7 @@ library(MASS)         # for the oats dataset
 ```
 Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large.  For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.
 
-Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables.  We already know how to deal with these variables by adding them to the model, but there are exerperimental designs where we must be careful because the experimental treatments are *nested*.
+Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables.  We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are *nested*.
 
 Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.  
 
@@ -32,7 +32,7 @@ Example 1. An agricultural field study has three fields in which the researchers
 +--------------+-------------+------------+-----------+
 
 
-Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials' use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren't really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.  In this example, the material type is nested within the mice.
+Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials' use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren't really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.  
 
 ## Randomized Complete Block Design (RCBD)
 The dataset oatvar in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.
@@ -63,13 +63,14 @@ Because this is an orthogonal design, the sums of squares doesn't change regardl
 
 In determining the significance of `variety` the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have $28$ residual degrees of freedom.
 
+But the F-value and p-value for testing if `block` is significant is wrong!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong.
+
+
 ```{r}
 m3 <- aov( yield ~ block + variety + Error(block), data=oatvar)
 summary(m3)
 ```
 
-
-But the F-value and p-value for testing if `block` is siginficant is wrong!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong.
 
 Fortunately in this case, we don't care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn't interested in estimating it.  If the only covariate I care about is the most deeply nested effect, then I can do my usual analysis and recognize the p-values for the blocking variable is wrong, but I don't care about it.
 
@@ -122,7 +123,9 @@ AgData <- AgData %>%
 AgData <- AgData %>% 
   mutate( row=ceiling(as.integer(subplot) / 2),
           col=as.integer(subplot) %% 2 + 1,
-          vis.plot = as.integer(plot))
+          vis.plot = as.integer(plot)) %>%
+  group_by(plot) %>%
+  mutate(Fertilizer = sample(Fertilizer)) 
 ggplot(AgData ) +
    geom_tile(aes(x=col, y=row, fill=Fertilizer),  color='black', size=1) +
    facet_wrap(  ~ plot, labeller=label_both, ncol=4) +
@@ -141,7 +144,7 @@ We can think about doing two separate analyses, one for the effect of irrigation
 # To analyze Irrigation, average over the subplots first...
 Irrigation.data <-   AgData %>% 
   group_by(plot, Irrigation) %>%
-  summarise( yield = mean(yield))
+  summarise( yield = mean(yield)) 
 
 # Now do a standard analysis. I use the aov() command instead of lm()
 # because we will shortly do something very tricky that can only be
@@ -172,7 +175,7 @@ m2 <- aov( yield ~ Irrigation + Fertilizer + Error(plot/subplot), data=AgData )
 summary(m2)
 ```
 
-In the output, we see that anova table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.
+In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.
 
 What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?
 
@@ -202,7 +205,7 @@ This is a lot to digest so lets unpack it. First we have 6 blocks and we'll repl
 
 We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of 3 plots, we'll randomly assign the 3 varieties, and to each set of subplots, we'll assign the fertilizers. 
 
-One issue that makes this issue confusing for students is that most texts get lazy and don't define the blocks, plots, and sub-plots when there are no replicates in a particluar level.  I prefer to be clear about defining those so.
+One issue that makes this issue confusing for students is that most texts get lazy and don't define the blocks, plots, and sub-plots when there are no replicates in a particular level.  I prefer to be clear about defining those so.
 
 ```{r}
 data(oats)
@@ -227,7 +230,7 @@ This graph also makes me think that variety doesn't matter and it is unlikely th
 #  What makes sense to me
 # m.c <- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)
 ```
-Unfortunately the above model isn't correct because R isn't smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting.  So we have to be smart enough to regnize that plot and subplot are actually Varity and Fertilizer.
+Unfortunately the above model isn't correct because R isn't smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting.  So we have to be smart enough to recognize that plot and subplot are actually Variety and Fertilizer.
 
 ```{r}
 m.c <- aov( Y ~ V * Nf + Error(B/V/Nf), data=oats)
@@ -249,7 +252,7 @@ There are many other types of designs out there. For example you might have 5 le
 
 You might have a design where you apply even more levels of nesting.  Suppose you have a green house study where you have rooms where you can apply a temperature treatment, within the room you have four tables and can apply a light treatment to each table. Finally within each table you can have four trays where can apply a soil treatment to each tray. This is a continuation of the split-plot design and by extending the nesting we can develop *split-split-plot* and *split-split-split-plot* designs.
 
-You might have 7 covariates each with two levels (High, Low) and you want to investigate how to these influency your response but also allow for second and third order interactions.  If you looked at every treatment combination you'd have $2^7=128$ different treatment combinations and perhaps you only have the budget for a sample of $n=32$.  How should you design your experiment? This question is addressed by *fractional factorial* designs.
+You might have 7 covariates each with two levels (High, Low) and you want to investigate how these influence your response but also allow for second and third order interactions.  If you looked at every treatment combination you'd have $2^7=128$ different treatment combinations and perhaps you only have the budget for a sample of $n=32$.  How should you design your experiment? This question is addressed by *fractional factorial* designs.
 
 If your research interests involve designing experiments such as these, you should consider taking an Experimental design course.
 
