@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-10-25">
+<meta name="date" content="2016-10-27">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -252,9 +252,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="mixed-effects-models" class="section level1">
 <h1><span class="header-section-number">Chapter 11</span> Mixed Effects Models</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">library</span>(MASS)
 <span class="kw">library</span>(lme4)
 <span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(lsmeans)</code></pre></div>
+<span class="kw">library</span>(lsmeans)
+<span class="kw">library</span>(multcompView)
+<span class="kw">library</span>(car)
+<span class="kw">library</span>(stringr)
+<span class="co"># library(devtools)</span>
+<span class="co"># install_github(&#39;dereksonderegger/dsData&#39;)  # some datasets I&#39;ve made up; only install once...</span>
+<span class="kw">library</span>(dsData)</code></pre></div>
 <p>The assumption of independent observations is often not supported and dependent data arises in a wide variety of situations. The dependency structure could be very simple such as rabbits within a litter being correlated and the litters being independent. More complex hierarchies of correlation are possible. For example we might expect voters in a particular part of town (called a precinct) to vote similarly, and particular districts in a state tend to vote similarly as well, which might result in a precinct / district / state hierarchy of correlation.</p>
 <p>Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models. In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.</p>
 <p>Mixed effects models combine what we call “fixed” and “random” effects.</p>
@@ -280,7 +287,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="review-of-maximum-likelihood-methods" class="section level2">
 <h2><span class="header-section-number">11.1</span> Review of Maximum Likelihood Methods</h2>
 <p>Recall that the likelihood function is the function links the model parameters to the data and is found by taking the probability density function and interpreting it as a function of the parameters instead of the a function of the data. Loosely, the probability function tells us what outcomes are most probable, with the height of the function telling us which values (or regions of values) are most probable given a set of parameter values. The higher the probability function, the higher the probability of seeing that value (or data in that region). The likelihood function turns that relationship around and tells us what parameter values are most likely to have generated the data we have, again with the parameter values with a higher likelihood value being more “likely”.</p>
-<p>The likelihood function for a sample <span class="math inline">\(y_i \stackrel{iid}{\sim} N\left( 0, \sigma \right)\)</span> is If we regard this as a function of our parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> then we have defined our likelihood function <span class="math display">\[L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]\]</span></p>
+<p>The likelihood function for a sample <span class="math inline">\(y_i \stackrel{iid}{\sim} N\left( 0, \sigma \right)\)</span> can be written as a function of our parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> then we have defined our likelihood function <span class="math display">\[L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]\]</span></p>
 <p>where the variance/covariance matrix is <span class="math inline">\(\boldsymbol{\Omega}=\sigma I_n\)</span>.</p>
 <p>We can use to this equation to find the maximum likelihood estimators by either taking the derivatives and setting them equal to zero and solving for the parameters or by using numerical methods. In the normal case, we can find the maximum likelihood estimators (MLEs) using the derivative trick and we find that <span class="math display">\[\hat{\mu}_{MLE}=\hat{y}=\bar{y}\]</span> and <span class="math display">\[\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}\left(y_{i}-\hat{y}\right)^{2}\]</span> and we notice that this is not our usual estimator <span class="math inline">\(\hat{\sigma}^{2}=s^{2}\)</span> where <span class="math inline">\(s^{2}\)</span> is the sample variance. It turns out that the MLE estimate of <span class="math inline">\(\sigma^{2}\)</span> is biased (the correction is to divide by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>). This is normally not an issue if our sample size is large, but with a small sample, the bias is not insignificant.</p>
 <p>Notice if we happened to know that <span class="math inline">\(\mu=0\)</span>, then we could use <span class="math display">\[\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}y_{i}^{2}\]</span> and this would be unbiased for <span class="math inline">\(\sigma^{2}\)</span>.</p>
@@ -400,8 +407,30 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright ~<span class=
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
 <p>In this case, we don’t really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
-model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>variety +<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar) 
-<span class="kw">summary</span>(model<span class="fl">.1</span>)</code></pre></div>
+model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>variety +<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
+<span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)</code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: oatvar
+## Models:
+## model.0: yield ~ (1 | block)
+## model.1: yield ~ variety + (1 | block)
+##         Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(&gt;Chisq)    
+## model.0  3 446.94 452.01 -220.47   440.94                            
+## model.1 10 421.67 438.56 -200.84   401.67 39.27      7  1.736e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate. R doesn’t do this by default because there isn’t a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the <code>car::Anova</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car::<span class="kw">Anova</span>(model<span class="fl">.1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
+<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
+## 
+## Response: yield
+##               Chisq Df Pr(&gt;Chisq)    
+## (Intercept) 252.605  1  &lt; 2.2e-16 ***
+## variety      57.987  7  3.803e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that this is using a Chi-squared test statistic. This is actually using the Likelihood Ratio Test which is an approximate test, but should be reasonable. Now that we have chosen our model, we can examine is model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.1</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ variety + (1 | block)
 ##    Data: oatvar
@@ -441,22 +470,8 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 <p>We start with the Random effects. This section shows us the <em>block-to-block</em> variability (and the square root of that, the Standard Deviation) as well as the “pure-error”, labeled residuals, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted <em>within</em> the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.</p>
 <p>Why do we care about this? This actually tells us quite a lot about the spatial variability. Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.</p>
 <p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don’t have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package <code>nlme</code>) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit.</p>
-<p>We can force R to give us a the Likelihood Ratio Test (LRT) to see if <code>variety</code> is statistically significant by comparing the appropriate models. Notice that R has noticed that we fit both models using Restricted Maximum Likelihood and it is inappropriate to compare models with different fixed effects (because the <span class="math inline">\(\boldsymbol{K}\)</span> matices are different) and it has refit the models appropriately.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)</code></pre></div>
-<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Data: oatvar
-## Models:
-## model.0: yield ~ (1 | block)
-## model.1: yield ~ variety + (1 | block)
-##         Df    AIC    BIC  logLik deviance Chisq Chi Df Pr(&gt;Chisq)    
-## model.0  3 446.94 452.01 -220.47   440.94                            
-## model.1 10 421.67 438.56 -200.84   401.67 39.27      7  1.736e-06 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Using the LRT test (and difference of AIC values), we see the effect of variety is statistically signficant.</p>
-<p>Now that we are certain that there are differences among the varieties, we should look at all of the pairwise contrasts among the variety levels. Unfortunately <code>TukeyHSD</code> doesn’t work with objects created by <code>lme</code> so we have to turn to another package. In this case, we could use either <code>multcomp</code> and build the contrast vectors <span class="math inline">\(\boldsymbol{c}\)</span> that we used previously or we could use the package <code>lsmeans</code>, which automates much of this.</p>
+<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately <code>TukeyHSD</code> doesn’t work with objects created by <code>lmer</code> so we have to turn to another package. In this case, we could use either <code>multcomp</code> and build the contrast vectors <span class="math inline">\(\boldsymbol{c}\)</span> that we used previously or we could use the package <code>lsmeans</code>, which automates much of this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>( model<span class="fl">.1</span>, pairwise ~<span class="st"> </span>variety)</code></pre></div>
-<pre><code>## Loading required namespace: pbkrtest</code></pre>
 <pre><code>## $lsmeans
 ##  variety lsmean       SE    df lower.CL upper.CL
 ##  1        334.4 21.03996 15.25 289.6196 379.1804
@@ -503,13 +518,6 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## 
 ## P value adjustment: tukey method for comparing a family of 8 estimates</code></pre>
 <p>This looks remarkably similar to the output from TukeyHSD and just as confusing. Ideally the function <code>make_TukeyHSD_letters()</code> could be modified to handle this model as well.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(stringr)</code></pre></div>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 3.2.5</code></pre>
-<pre><code>## 
-## Attaching package: &#39;stringr&#39;</code></pre>
-<pre><code>## The following object is masked _by_ &#39;.GlobalEnv&#39;:
-## 
-##     fruit</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Create a data frame with significant groupings </span>
 <span class="co">#&#39;</span>
 <span class="co">#&#39; This function runs TukeyHSD on the input model and then creates a data frame</span>
@@ -553,14 +561,14 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, formula){
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) +
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label=</span>SigGroup, <span class="dt">y=</span>LetterHeight))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
 <hr />
 <p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(penicillin)
 <span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) +
 <span class="st">  </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>( ~<span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <p>It looks like there is definately a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st">  </span><span class="dv">1</span>    +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
 model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>treat +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
@@ -573,6 +581,15 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ##         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)
 ## model.0  3 127.33 130.31 -60.662   121.33                         
 ## model.1  6 129.28 135.25 -58.639   117.28 4.0474      3     0.2564</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car::<span class="kw">Anova</span>(model<span class="fl">.1</span>, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
+## 
+## Response: yield
+##                 Chisq Df Pr(&gt;Chisq)    
+## (Intercept) 1152.0000  1     &lt;2e-16 ***
+## treat          3.7168  3     0.2937    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>It looks like we don’t have a significant effect of the treatments. Next we’ll examine the simple model to understand the variability.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.0</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -598,7 +615,151 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 </div>
 <div id="nested-effects" class="section level2">
 <h2><span class="header-section-number">11.4</span> Nested Effects</h2>
-<p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are crossed with site.</p>
+<p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are <em>crossed</em> with site.</p>
+<p>We’ve already seen a number of nested designs when we looked at split plot designs. Recall the <code>AgData</code> set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot. We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.</p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
+<p>So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following model definitions are equivalent</span>
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Irrigation +<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot) +<span class="st"> </span>(<span class="dv">1</span>|plot:subplot), <span class="dt">data=</span>AgData )
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Irrigation +<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot/subplot), <span class="dt">data=</span>AgData)
+car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
+## 
+## Response: yield
+##                Chisq Df Pr(&gt;Chisq)    
+## (Intercept) 178.0285  1  &lt; 2.2e-16 ***
+## Irrigation    3.4281  1     0.0641 .  
+## Fertilizer   30.9421  1  2.658e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We’ll remove the irrigation covariate and refit the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot/subplot), <span class="dt">data=</span>AgData)
+<span class="kw">summary</span>(model)</code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: yield ~ Fertilizer + (1 | plot/subplot)
+##    Data: AgData
+## 
+## REML criterion at convergence: 572.6
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.78714 -0.62878 -0.08602  0.64093  2.36353 
+## 
+## Random effects:
+##  Groups       Name        Variance Std.Dev.
+##  subplot:plot (Intercept) 5.345    2.312   
+##  plot         (Intercept) 8.854    2.975   
+##  Residual                 1.014    1.007   
+## Number of obs: 160, groups:  subplot:plot, 32; plot, 8
+## 
+## Fixed effects:
+##                Estimate Std. Error t value
+## (Intercept)     21.0211     1.2056  17.436
+## FertilizerHigh   4.6323     0.8328   5.563
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## FertilzrHgh -0.345</code></pre>
+<p>Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot. ***** A number of <em>in-situ</em> experiments looking at the addition CO<span class="math inline">\(_2\)</span> and warming on landscapes have been done (typically called Free Air CO<span class="math inline">\(_2\)</span> Experiments (FACE)) and these are interesting from an experimental design perspective because we have limited number of replicates because the cost of exposing plants to different CO<span class="math inline">\(_2\)</span> levels outside a greenhouse is extrodinarily expensive. In the <code>dsData</code> package, there is a dataset that is inspired by one of those studies.</p>
+<p>The experimental units for the CO<span class="math inline">\(_2\)</span> treatment will be called a ring, and we have nine rings. We have three treatments (A,B,C) which correspond to an elevated CO<span class="math inline">\(_2\)</span> treatment, an ambient CO<span class="math inline">\(_2\)</span> treatment with all the fans, and a pure control. For each ring we’ll have some measure of productivity but we have six replicate observations per ring.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;HierarchicalData&quot;</span>, <span class="dt">package =</span> <span class="st">&#39;dsData&#39;</span>)
+<span class="kw">head</span>(HierarchicalData)</code></pre></div>
+<pre><code>##   Trt Ring rep        y
+## 1   A    1   1 363.9684
+## 2   A    1   2 312.0613
+## 3   A    1   3 332.9916
+## 4   A    1   4 320.0109
+## 5   A    1   5 292.2656
+## 6   A    1   6 315.8136</code></pre>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p>We can easily fit this model using random effects for each ring.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y ~<span class="st"> </span>Trt +<span class="st"> </span>(<span class="dv">1</span>|Ring), <span class="dt">data=</span>HierarchicalData )
+car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
+## 
+## Response: y
+##               Chisq Df Pr(&gt;Chisq)    
+## (Intercept) 270.952  1  &lt; 2.2e-16 ***
+## Trt          11.435  2   0.003288 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the <code>predict</code> function, but now we have the option of including the random effects or not.</p>
+<p>First lets consider the predicted values if we completely ignore the Ring random effect.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> ~<span class="st"> </span><span class="dv">0</span>),  <span class="co"># don&#39;t include any random effects in the prediction</span>
+          <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
+          <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
+          <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-201-1.png" width="672" /></p>
+<p>Now we consider the predicted values, but created using the Ring random effect. These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is <em>required</em> to be 0.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ranef</span>(model)</code></pre></div>
+<pre><code>## $Ring
+##   (Intercept)
+## 1    9.458738
+## 2  -29.798425
+## 3   20.339687
+## 4  -40.532972
+## 5   21.067503
+## 6   19.465469
+## 7  -21.814405
+## 8    2.548287
+## 9   19.266118</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">ranef</span>(model)$Ring)</code></pre></div>
+<pre><code>## [1] -5.317524e-12</code></pre>
+<p>Also notice that the sum of the random effects <em>within a treatment</em> is zero! (Recall Ring 1:3 was treatment A, 4:6 was treatment B, and 7:9 was treatment C).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> ~<span class="st"> </span>(<span class="dv">1</span>|Ring)),  <span class="co"># Include the Ring Random effect</span>
+          <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
+          <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
+          <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
+<p>We interprete the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.</p>
+<hr />
+<p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two subsamples and measures the fat content twice within a subsample. So our hierarchy is that observations are nested within subsamples which are nested within technicians which are nested in labs.</p>
+<p>In terms of notation, we will refer to the 6 labs as <span class="math inline">\(L_{i}\)</span> and the lab technicians as <span class="math inline">\(T_{ij}\)</span> and we note that <span class="math inline">\(j\)</span> is either 1 or 2 which doesn’t uniquely identify the technician unless we include the lab subscript as well. Finally the subsamples are nested within the technicians and we denote them as <span class="math inline">\(S_{ijk}\)</span>. Finally our “pure” error is the two measurements from the same subsample. So the model we wish to fit is: <span class="math display">\[y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}\]</span> where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)\)</span>, <span class="math inline">\(T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)\)</span>, <span class="math inline">\(S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)\)</span>, <span class="math inline">\(\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>.</p>
+<p>We need a convenient way to tell lmer which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell lmer to create it and use it). Likewise there are 24 subsamples and 48 “pure” random effects.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(eggs)
+<span class="kw">str</span>(eggs)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    48 obs. of  4 variables:
+##  $ Fat       : num  0.62 0.55 0.34 0.24 0.8 0.68 0.76 0.65 0.3 0.4 ...
+##  $ Lab       : Factor w/ 6 levels &quot;I&quot;,&quot;II&quot;,&quot;III&quot;,..: 1 1 1 1 1 1 1 1 2 2 ...
+##  $ Technician: Factor w/ 2 levels &quot;one&quot;,&quot;two&quot;: 1 1 1 1 2 2 2 2 1 1 ...
+##  $ Sample    : Factor w/ 2 levels &quot;G&quot;,&quot;H&quot;: 1 1 2 2 1 1 2 2 1 1 ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs$Lab :<span class="st"> </span>eggs$Technician</code></pre></div>
+<pre><code>##  [1] I:one   I:one   I:one   I:one   I:two   I:two   I:two   I:two  
+##  [9] II:one  II:one  II:one  II:one  II:two  II:two  II:two  II:two 
+## [17] III:one III:one III:one III:one III:two III:two III:two III:two
+## [25] IV:one  IV:one  IV:one  IV:one  IV:two  IV:two  IV:two  IV:two 
+## [33] V:one   V:one   V:one   V:one   V:two   V:two   V:two   V:two  
+## [41] VI:one  VI:one  VI:one  VI:one  VI:two  VI:two  VI:two  VI:two 
+## 12 Levels: I:one I:two II:one II:two III:one III:two IV:one ... VI:two</code></pre>
+<p>Now that we know how to create the interaction, we could do the same for the subsample.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>(<span class="dv">1</span>|Lab) +<span class="st"> </span>(<span class="dv">1</span>|Lab:Technician) +
+<span class="st">                </span>(<span class="dv">1</span>|Lab:Technician:Sample), <span class="dt">data=</span>eggs)
+<span class="kw">summary</span>(m2)</code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: 
+## Fat ~ 1 + (1 | Lab) + (1 | Lab:Technician) + (1 | Lab:Technician:Sample)
+##    Data: eggs
+## 
+## REML criterion at convergence: -64.2
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.04098 -0.46576  0.00927  0.59713  1.54276 
+## 
+## Random effects:
+##  Groups                Name        Variance Std.Dev.
+##  Lab:Technician:Sample (Intercept) 0.003065 0.05536 
+##  Lab:Technician        (Intercept) 0.006980 0.08355 
+##  Lab                   (Intercept) 0.005920 0.07694 
+##  Residual                          0.007196 0.08483 
+## Number of obs: 48, groups:  
+## Lab:Technician:Sample, 24; Lab:Technician, 12; Lab, 6
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  0.38750    0.04296   9.019</code></pre>
 
 </div>
 </div>

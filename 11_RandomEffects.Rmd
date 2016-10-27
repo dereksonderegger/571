@@ -7,9 +7,16 @@ output:
 
 ```{r, warning=FALSE, message=FALSE}
 library(faraway)
+library(MASS)
 library(lme4)
 library(tidyverse)
 library(lsmeans)
+library(multcompView)
+library(car)
+library(stringr)
+# library(devtools)
+# install_github('dereksonderegger/dsData')  # some datasets I've made up; only install once...
+library(dsData)
 ```
 
 
@@ -42,8 +49,7 @@ Mixed effects models are models that have both fixed and random effects. We will
 
 Recall that the likelihood function is the function links the model parameters to the data and is found by taking the probability density function and interpreting it as a function of the parameters instead of the a function of the data. Loosely, the probability function tells us what outcomes are most probable, with the height of the function telling us which values (or regions of values) are most probable given a set of parameter values. The higher the probability function, the higher the probability of seeing that value (or data in that region). The likelihood function turns that relationship around and tells us what parameter values are most likely to have generated the data we have, again with the parameter values with a higher likelihood value being more “likely”.
 
-The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( 0, \sigma \right)$ is 
-If we regard this as a function of our parameters $\mu$ and $\sigma^{2}$ then we have defined our likelihood function
+The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( 0, \sigma \right)$ can be written as a function of our parameters $\mu$ and $\sigma^{2}$ then we have defined our likelihood function
 $$L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]$$
 
 where the variance/covariance matrix is $\boldsymbol{\Omega}=\sigma I_n$.
@@ -184,7 +190,17 @@ In this case, we don't really care about these particular fields (blocks) and wo
 
 ```{r}
 model.0 <- lmer( yield ~ (1|block), data=oatvar)
-model.1 <- lmer( yield ~ variety + (1|block), data=oatvar) 
+model.1 <- lmer( yield ~ variety + (1|block), data=oatvar)
+anova(model.0, model.1)
+```
+This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. R doesn't do this by default because there isn't a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the `car::Anova` function.
+
+```{r}
+car::Anova(model.1, type=3)  # Type III anova table (just as we've had before)
+```
+
+Notice that this is using a Chi-squared test statistic. This is actually using the Likelihood Ratio Test which is an approximate test, but should be reasonable. Now that we have chosen our model, we can examine is model.
+```{r}
 summary(model.1)
 ```
 
@@ -194,14 +210,7 @@ Why do we care about this? This actually tells us quite a lot about the spatial 
 
 Next we turn to the fixed effects.  These will be the offsets from the reference group, as we've typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don't have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don't know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of `lme4` are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package `nlme`) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit. 
 
-We can force R to give us a the Likelihood Ratio Test (LRT) to see if `variety` is statistically significant by comparing the appropriate models.  Notice that R has noticed that we fit both models using Restricted Maximum Likelihood and it is inappropriate to compare models with different fixed effects (because the $\boldsymbol{K}$ matices are different) and it has refit the models appropriately. 
-```{r}
-anova(model.0, model.1)
-```
-
-Using the LRT test (and difference of AIC values), we see the effect of variety is statistically signficant.
-
-Now that we are certain that there are differences among the varieties, we should look at all of the pairwise contrasts among the variety levels. Unfortunately `TukeyHSD` doesn't work with objects created by `lme` so we have to turn to another package. In this case, we could use either `multcomp` and build the contrast vectors $\boldsymbol{c}$ that we used previously or we could use the package `lsmeans`, which automates much of this.
+We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately `TukeyHSD` doesn't work with objects created by `lmer` so we have to turn to another package. In this case, we could use either `multcomp` and build the contrast vectors $\boldsymbol{c}$ that we used previously or we could use the package `lsmeans`, which automates much of this.
 
 ```{r}
 lsmeans( model.1, pairwise ~ variety)
@@ -210,7 +219,6 @@ lsmeans( model.1, pairwise ~ variety)
 This looks remarkably similar to the output from TukeyHSD and just as confusing.  Ideally the function `make_TukeyHSD_letters()` could be modified to handle this model as well.
 
 ```{r}
-library(stringr)
 #' Create a data frame with significant groupings 
 #'
 #' This function runs TukeyHSD on the input model and then creates a data frame
@@ -254,7 +262,7 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
 ```
 
 
-***
+************************************************************************
 
 We'll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a 'blend' and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.
 
@@ -273,6 +281,11 @@ model.1 <- lmer(yield ~ treat + (1 | blend), data=penicillin)
 anova(model.0, model.1)
 ```
 
+```{r}
+car::Anova(model.1, type=3)
+```
+
+
 It looks like we don't have a significant effect of the treatments. Next we'll examine the simple model to understand the variability.
 
 ```{r}
@@ -284,6 +297,147 @@ We see that the noise is more in the within blend rather than the between blends
 
 ## Nested Effects
 
-When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are crossed with site.
+When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are *crossed* with site.
 
+We've already seen a number of nested designs when we looked at split plot designs. Recall the `AgData` set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot.  We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.
+
+
+```{r, echo=FALSE}
+data('AgData')
+AgData <- AgData %>% 
+  mutate( row=ceiling(as.integer(subplot) / 2),
+          col=as.integer(subplot) %% 2 + 1,
+          vis.plot = as.integer(plot)) %>%
+  group_by(plot) 
+ggplot(AgData ) +
+   geom_tile(aes(x=col, y=row, fill=Fertilizer),  color='black', size=1) +
+   facet_wrap(  ~ plot, labeller=label_both, ncol=4) +
+   geom_text( aes(label=paste("Irrigation", Irrigation)), x=1.5, y=2.7) +
+   geom_point( aes(x=jitter(col, amount = .3), y=jitter(row, amount=.3))) +
+   scale_x_continuous(labels=NULL) + scale_y_continuous(labels=NULL, limits=c(0.5, 2.8)) +
+   xlab("") + ylab("")
+```
+
+So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot. 
+
+```{r}
+# The following model definitions are equivalent
+model <- lmer(yield ~ Irrigation + Fertilizer + (1|plot) + (1|plot:subplot), data=AgData )
+model <- lmer(yield ~ Irrigation + Fertilizer + (1|plot/subplot), data=AgData)
+car::Anova(model, type=3)
+```
+As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We'll remove the irrigation covariate and refit the model.
+
+```{r}
+model <- lmer(yield ~ Fertilizer + (1|plot/subplot), data=AgData)
+summary(model)
+```
+Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot.
+*****
+A number of *in-situ* experiments looking at the addition CO$_2$ and warming on landscapes have been done (typically called Free Air CO$_2$ Experiments (FACE)) and these are interesting from an experimental design perspective because we have limited number of replicates because the cost of exposing plants to different CO$_2$ levels outside a greenhouse is extrodinarily expensive. In the `dsData` package, there is a dataset that is inspired by one of those studies.
+
+The experimental units for the CO$_2$ treatment will be called a ring, and we have nine rings. We have three treatments (A,B,C) which correspond to an elevated CO$_2$ treatment, an ambient CO$_2$ treatment with all the fans, and a pure control. For each ring we'll have some measure of productivity but we have six replicate observations per ring. 
+
+```{r}
+data("HierarchicalData", package = 'dsData')
+head(HierarchicalData)
+```
+
+```{r, echo=FALSE}
+# Add some columns so I can plot this nicely
+HierarchicalData <- HierarchicalData %>%
+  mutate(graph.x = 1, graph.y = 1 )
+  
+ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
+  geom_tile() +
+  facet_wrap(~Ring, labeller = label_both) +
+  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
+  scale_x_continuous(breaks=NULL) +
+  scale_y_continuous(breaks=NULL) +
+  xlab("") + ylab("")
+```
+
+We can easily fit this model using random effects for each ring.
+```{r}
+model <- lmer( y ~ Trt + (1|Ring), data=HierarchicalData )
+car::Anova(model, type=3)
+```
+
+To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the `predict` function, but now we have the option of including the random effects or not. 
+
+First lets consider the predicted values if we completely ignore the Ring random effect.
+
+```{r}
+HierarchicalData <- HierarchicalData %>%
+  mutate( y.hat   = predict(model, re.form= ~ 0),  # don't include any random effects in the prediction
+          y.hat   = round( y.hat, digits=2),
+          my.text = paste('yhat =', y.hat),
+          text.height = 1.8)  
+```
+
+```{r, echo=FALSE}
+ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
+  geom_tile() +
+  facet_wrap(~Ring, labeller = label_both) +
+  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
+  scale_x_continuous(breaks=NULL) +
+  scale_y_continuous(breaks=NULL) +
+  geom_text( aes(label=my.text, y=text.height)) +
+  xlab("") + ylab("") +
+  ggtitle('Treatment Only Predictions')
+```
+
+Now we consider the predicted values, but created using the Ring random effect.  These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is *required* to be 0.
+
+```{r}
+ranef(model)
+sum(ranef(model)$Ring)
+```
+Also notice that the sum of the random effects *within a treatment* is zero! (Recall Ring 1:3 was treatment A, 4:6 was treatment B, and 7:9 was treatment C).
+
+```{r}
+HierarchicalData <- HierarchicalData %>%
+  mutate( y.hat   = predict(model, re.form= ~ (1|Ring)),  # Include the Ring Random effect
+          y.hat   = round( y.hat, digits=2),
+          my.text = paste('yhat =', y.hat),
+          text.height = 1.8)  
+```
+
+```{r, echo=FALSE}
+ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
+  geom_tile() +
+  facet_wrap(~Ring, labeller = label_both) +
+  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
+  scale_x_continuous(breaks=NULL) +
+  scale_y_continuous(breaks=NULL) +
+  geom_text( aes(label=my.text, y=text.height)) +
+  xlab("") + ylab("") +
+  ggtitle('Treatment and Ring Predictions')
+```
+
+We interprete the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.
+
+*****
+
+We'll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two subsamples and measures the fat content twice within a subsample. So our hierarchy is that observations are nested within subsamples which are nested within technicians which are nested in labs.
+
+In terms of notation, we will refer to the 6 labs as $L_{i}$ and the lab technicians as $T_{ij}$ and we note that $j$ is either 1 or 2 which doesn't uniquely identify the technician unless we include the lab subscript as well. Finally the subsamples are nested within the technicians and we denote them as $S_{ijk}$. Finally our “pure” error is the two measurements from the same subsample. So the model we wish to fit is:
+$$y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}$$
+where $L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)$, $T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)$, $S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)$, $\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)$. 
+
+We need a convenient way to tell lmer which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell lmer to create it and use it). Likewise there are 24 subsamples and 48 “pure” random effects.
+
+```{r}
+data(eggs)
+str(eggs)
+eggs$Lab : eggs$Technician
+```
+
+Now that we know how to create the interaction, we could do the same for the subsample.
+
+```{r}
+m2 <- lmer( Fat ~ 1 + (1|Lab) + (1|Lab:Technician) +
+                (1|Lab:Technician:Sample), data=eggs)
+summary(m2)
+```
 
