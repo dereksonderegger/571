@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-10-27">
+<meta name="date" content="2016-11-01">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -231,6 +231,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.2</b> 1-way ANOVA with a random effect</a></li>
 <li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.3</b> Blocks as Random Variables</a></li>
 <li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
+<li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -406,10 +409,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7330 90.7670
-## Mean of Group 2 == 0 75.5714  71.2771 79.8658
-## Mean of Group 3 == 0 71.0000  67.2128 74.7872
-## Diff G2-G3 == 0       4.5714  -1.1543 10.2972</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7331 90.7669
+## Mean of Group 2 == 0 75.5714  71.2772 79.8656
+## Mean of Group 3 == 0 71.0000  67.2129 74.7871
+## Diff G2-G3 == 0       4.5714  -1.1542 10.2971</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -456,10 +459,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>

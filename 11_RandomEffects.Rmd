@@ -17,6 +17,7 @@ library(stringr)
 # library(devtools)
 # install_github('dereksonderegger/dsData')  # some datasets I've made up; only install once...
 library(dsData)
+library(pander)
 ```
 
 
@@ -226,19 +227,20 @@ This looks remarkably similar to the output from TukeyHSD and just as confusing.
 #' 
 #' @param model The output of a lm(), aov(), or lme().
 #' @param variable The variable of interest.
+#' @param threshold maximum p-value for statistical significance
 #' @output A data frame with a column for factor and another for the signicance group.
 #' @examples
 #' model <- lm( breaks ~ wool + tension, data=warpbreaks )
 #' make_TukeyHSD_letters(model, ~ wool)
 #' make_TukeyHSD_letters(model, ~ tension)
 #' make_TukeyHSD_letters(model, ~ wool+tension)
-make_TukeyHSD_letters <- function(model, formula){ 
+make_TukeyHSD_letters <- function(model, formula, threshold=0.05){ 
   formula2 <- update.formula( formula, pairwise ~ .)
   temp <- lsmeans(model, formula2)$contrasts %>%
     summary()  
   temp2 <- temp$p.value
   names(temp2) <- temp$contrast 
-  temp <- temp2 %>% vec2mat(sep=' - ') %>% multcompLetters()
+  temp <- temp2 %>% vec2mat(sep=' - ') %>% multcompLetters(threshold=threshold)
   out <-  data.frame(group = names(temp$Letters), SigGroup=temp$Letters)
   colnames(out)[1] <-   Reduce(paste, deparse(formula)) %>% str_replace(fixed('~'),'')
   rownames(out) <- NULL
@@ -247,7 +249,7 @@ make_TukeyHSD_letters <- function(model, formula){
 ```
 
 ```{r}
-make_TukeyHSD_letters(model.1, ~variety)
+make_TukeyHSD_letters(model.1, ~ variety)
 ```
 
 As usual we'll join this information into the original data table and then make a nice summary graph.
@@ -333,7 +335,8 @@ model <- lmer(yield ~ Fertilizer + (1|plot/subplot), data=AgData)
 summary(model)
 ```
 Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot.
-*****
+
+**********************************
 A number of *in-situ* experiments looking at the addition CO$_2$ and warming on landscapes have been done (typically called Free Air CO$_2$ Experiments (FACE)) and these are interesting from an experimental design perspective because we have limited number of replicates because the cost of exposing plants to different CO$_2$ levels outside a greenhouse is extrodinarily expensive. In the `dsData` package, there is a dataset that is inspired by one of those studies.
 
 The experimental units for the CO$_2$ treatment will be called a ring, and we have nine rings. We have three treatments (A,B,C) which correspond to an elevated CO$_2$ treatment, an ambient CO$_2$ treatment with all the fans, and a pure control. For each ring we'll have some measure of productivity but we have six replicate observations per ring. 
@@ -417,7 +420,7 @@ ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
 
 We interprete the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.
 
-*****
+********************************
 
 We'll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two subsamples and measures the fat content twice within a subsample. So our hierarchy is that observations are nested within subsamples which are nested within technicians which are nested in labs.
 
@@ -428,16 +431,184 @@ where $L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)$, $T_{ij}\stackre
 We need a convenient way to tell lmer which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell lmer to create it and use it). Likewise there are 24 subsamples and 48 “pure” random effects.
 
 ```{r}
-data(eggs)
-str(eggs)
-eggs$Lab : eggs$Technician
+data(eggs, package='faraway')
+model <- lmer( Fat ~ 1 + (1|Lab) + (1|Lab:Technician) +
+                     (1|Lab:Technician:Sample), data=eggs)
+model <- lmer( Fat ~ 1 + (1|Lab/Technician/Sample), data=eggs)
 ```
-
-Now that we know how to create the interaction, we could do the same for the subsample.
 
 ```{r}
-m2 <- lmer( Fat ~ 1 + (1|Lab) + (1|Lab:Technician) +
-                (1|Lab:Technician:Sample), data=eggs)
-summary(m2)
+eggs <- eggs %>% mutate( yhat = predict(model, re.form=~0))
+ggplot(eggs, aes(x=Sample, y=Fat)) + 
+  geom_point() +
+  geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
+  facet_grid(. ~ Lab+Technician) +
+  ggtitle('Average Value Only')
 ```
 
+
+```{r}
+eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab)))
+ggplot(eggs, aes(x=Sample, y=Fat)) + 
+  geom_point() +
+  geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
+  facet_grid(. ~ Lab+Technician) +
+  ggtitle('Average With Lab Offset')
+```
+
+```{r}
+eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab/Technician)))
+ggplot(eggs, aes(x=Sample, y=Fat)) + 
+  geom_point() +
+  geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
+  facet_grid(. ~ Lab+Technician) +
+  ggtitle('Average With Lab + Technician Offset')
+```
+
+```{r}
+eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab/Technician/Sample)))
+ggplot(eggs, aes(x=Sample, y=Fat)) + 
+  geom_point() +
+  geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
+  facet_grid(. ~ Lab+Technician) +
+  ggtitle('Average With Lab + Technician + Sample Offset')
+```
+
+No that we have an idea of how things vary, we can look at the summary table.
+```{r}
+summary(model)
+```
+
+## Crossed Effects
+If two effects are not nested, we say they are *crossed(. In the penicillin example, the treatments and blends were not nested and are therefore crossed. 
+
+An example is a Latin square experiment to look the effects of abrasion on four different material types (A, B, C, and D). We have a machine to do the abrasion test with four positions and we did 4 different machine runs. Our data looks like the following setup:
+```{r, echo=FALSE}
+data(abrasion, package='faraway')
+abrasion %>% dplyr::select(run,position,material) %>%
+  mutate(position = paste('Position:',position)) %>%
+  spread(key=position, value=material) %>%
+  pander()
+```
+Our model can be written as $$y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}$$
+and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We'll regard both position and run as crossed random effects.
+
+```{r}
+data(abrasion, package='faraway')
+ggplot(abrasion, aes(x=material, y=wear, color=position, shape=run)) +
+  geom_point(size=3)
+```
+
+It certainly looks like the materials are different.  I don't think the run matters, but position 2 seems to develop excessive wear compared to the other positions.
+
+```{r}
+m <- lmer( wear ~ material + (1|run) + (1|position), data=abrasion)
+car::Anova(m, type=3)
+```
+
+The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
+```{r}
+make_TukeyHSD_letters(m, ~ material)
+```
+So material D is in between materials B and C for abrasion resistance.
+
+```{r}
+summary(m)
+```
+Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run effect.
+
+```{r}
+m2 <- lmer( wear ~ material + (1|position), data=abrasion)
+anova(m, m2)
+```
+
+Notice that R is refitting the model to make an appropriate conparison. The AIC difference between the two models is about 3 units (the larger model have a lower AIC) and so we could interprete this as decent evidence for a run effect.  Similarly the Likelihood Ratio Test gives a p-value of about $0.02$. So while the run effect wasn't visible in our initial graph, it looks like it is a statistically significant effect.
+
+## Repeated Measures / Longitudinal Studies
+
+In repeated measurement experiments, repeated observations are taken on each subject. When those repeated measurements are taken over a sequence of time, we call it a longitudinal study. Typically covariates are also observed at the same time points and we are interested in how the response is related to the covariates. 
+
+In this case the correlation structure is that observations on the same person/object should be more similar than observations between two people/objects.  As a result we need to account for repeated measures by including the person/object as a random effect.
+
+To demonstrate a longitudinal study we turn to the data set `sleepstudy` in the `lme4` library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.
+
+```{r}
+data(sleepstudy, package='lme4')
+ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
+    facet_wrap(~ Subject, ncol=6) + 
+    geom_point() + 
+    geom_line()
+```
+
+We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.
+
+```{r}
+m1 <- lmer( Reaction ~ Days + (1|Subject), data=sleepstudy)
+summary(m1)
+ranef(m1)
+```
+
+To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately $10.4$.
+
+```{r}
+sleepstudy <- sleepstudy %>% mutate(yhat = predict(m1, re.form=~(1|Subject)))
+ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
+    facet_wrap(~ Subject, ncol=6) + 
+    geom_point() + 
+    geom_line() +
+    geom_line(aes(y=yhat), color='red')
+```
+
+This isn't too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.
+
+```{r}
+# Random effects for intercept and Slope 
+m2 <- lmer( Reaction ~ Days + ( 1+Days | Subject), data=sleepstudy)
+
+sleepstudy <- sleepstudy %>% mutate(yhat = predict(m2, re.form=~(1+Days|Subject)))
+ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
+    facet_wrap(~ Subject, ncol=6) + 
+    geom_point() + 
+    geom_line() +
+    geom_line(aes(y=yhat), color='red')
+
+```
+
+This appears to fit the observed data quite a bit better, but it is useful to test this.
+```{r}
+anova(m1, m2)
+```
+
+Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.
+
+
+
+It is instructive to look at this example from the top down. First we plot the population regression line.
+```{r}
+sleepstudy <- sleepstudy %>% mutate(yhat = predict(m2, re.form=~0))
+ggplot(sleepstudy, aes(x=Days, y=yhat)) +
+  geom_line(color='red') + ylab('Reaction') +
+  ggtitle('Population Estimated Regression Curve')
+```
+
+```{r}
+sleepstudy <- sleepstudy %>% mutate(yhat.ind = predict(m2, re.form=~(1+Days|Subject)))
+ggplot(sleepstudy, aes(x=Days)) +
+  geom_line(aes(y=yhat), size=3) + 
+  geom_line(aes(y=yhat.ind, group=Subject), color='red') +
+  ylab('Reaction') + ggtitle('Person-to-Person Variation')
+```
+
+```{r}
+ggplot(sleepstudy, aes(x=Days)) +
+  geom_line(aes(y=yhat)) + 
+  geom_line(aes(y=yhat.ind, group=Subject), color='red') +
+  ylab('Reaction') + ggtitle('Within Person Variation') +
+  facet_wrap(~ Subject, ncol=6) + 
+  geom_point(aes(y=Reaction))
+```
+
+## Exercises
+1. ???
+2. ???
+3. ???
