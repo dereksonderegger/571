@@ -1079,13 +1079,10 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </sp
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>subject))  <span class="co"># play with removing the group=subject aesthetic...</span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
-<li><p>Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intersept perform as well as the model with random offsets in both the y-intercept and slope?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wt ~<span class="st"> </span>weeks         +<span class="st"> </span>(<span class="dv">1</span>+weeks|subject), <span class="dt">data=</span>ratdrink )
-m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wt ~<span class="st"> </span>treat +<span class="st"> </span>weeks +<span class="st"> </span>(<span class="dv">1</span>+weeks|subject), <span class="dt">data=</span>ratdrink )
-m3 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wt ~<span class="st"> </span>treat *<span class="st"> </span>weeks +<span class="st"> </span>(<span class="dv">1</span>+weeks|subject), <span class="dt">data=</span>ratdrink )</code></pre></div></li>
+<li>Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intersept perform as well as the model with random offsets in both the y-intercept and slope?</li>
 <li>Next consider if you can simplify the model by removing the interaction between Treatment and Week and possibly even the Treatment main effect.<br />
 </li>
-<li><p>Comment on the effect of each treatment. <em>Note we have not shown how to perform the appropriate contrasts to test the difference between thiouracil and thyroxine in this chapter. To do so, you’ll have to use the <code>glht()</code> function from the <code>multcomp</code> package.</em></p></li>
+<li>Comment on the effect of each treatment. <em>Note we have not shown how to perform the appropriate contrasts to test the difference between thiouracil and thyroxine in this chapter. To do so, you’ll have to use the <code>glht()</code> function from the <code>multcomp</code> package.</em></li>
 </ol></li>
 </ol>
 
