@@ -372,13 +372,13 @@ First lets consider the predicted values if we completely ignore the Ring random
 
 ```{r}
 HierarchicalData <- HierarchicalData %>%
-  mutate( y.hat   = predict(model, re.form= ~ 0),  # don't include any random effects in the prediction
+  mutate( y.hat   = predict(model, re.form= ~ 0),  # don't include any random effects 
           y.hat   = round( y.hat, digits=2),
           my.text = paste('yhat =', y.hat),
           text.height = 1.8)  
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height=5}
 ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
   geom_tile() +
   facet_wrap(~Ring, labeller = label_both) +
@@ -400,13 +400,13 @@ Also notice that the sum of the random effects *within a treatment* is zero! (Re
 
 ```{r}
 HierarchicalData <- HierarchicalData %>%
-  mutate( y.hat   = predict(model, re.form= ~ (1|Ring)),  # Include the Ring Random effect
+  mutate( y.hat   = predict(model, re.form= ~ (1|Ring)),  # Include Ring Random effect
           y.hat   = round( y.hat, digits=2),
           my.text = paste('yhat =', y.hat),
           text.height = 1.8)  
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height=5}
 ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
   geom_tile() +
   facet_wrap(~Ring, labeller = label_both) +
@@ -438,7 +438,8 @@ model <- lmer( Fat ~ 1 + (1|Lab/Technician/Sample), data=eggs)
 ```
 
 ```{r}
-eggs <- eggs %>% mutate( yhat = predict(model, re.form=~0))
+eggs <- eggs %>% 
+  mutate( yhat = predict(model, re.form=~0))
 ggplot(eggs, aes(x=Sample, y=Fat)) + 
   geom_point() +
   geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
@@ -448,7 +449,8 @@ ggplot(eggs, aes(x=Sample, y=Fat)) +
 
 
 ```{r}
-eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab)))
+eggs <- eggs %>% 
+  mutate( yhat = predict(model, re.form=~(1|Lab)))
 ggplot(eggs, aes(x=Sample, y=Fat)) + 
   geom_point() +
   geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
@@ -457,7 +459,8 @@ ggplot(eggs, aes(x=Sample, y=Fat)) +
 ```
 
 ```{r}
-eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab/Technician)))
+eggs <- eggs %>% 
+  mutate( yhat = predict(model, re.form=~(1|Lab/Technician)))
 ggplot(eggs, aes(x=Sample, y=Fat)) + 
   geom_point() +
   geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
@@ -466,7 +469,8 @@ ggplot(eggs, aes(x=Sample, y=Fat)) +
 ```
 
 ```{r}
-eggs <- eggs %>% mutate( yhat = predict(model, re.form=~(1|Lab/Technician/Sample)))
+eggs <- eggs %>% 
+  mutate( yhat = predict(model, re.form=~(1|Lab/Technician/Sample)))
 ggplot(eggs, aes(x=Sample, y=Fat)) + 
   geom_point() +
   geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
@@ -551,7 +555,8 @@ ranef(m1)
 To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately $10.4$.
 
 ```{r}
-sleepstudy <- sleepstudy %>% mutate(yhat = predict(m1, re.form=~(1|Subject)))
+sleepstudy <- sleepstudy %>% 
+  mutate(yhat = predict(m1, re.form=~(1|Subject)))
 ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
     facet_wrap(~ Subject, ncol=6) + 
     geom_point() + 
@@ -565,7 +570,8 @@ This isn't too bad, but I would really like to have each patient have their own 
 # Random effects for intercept and Slope 
 m2 <- lmer( Reaction ~ Days + ( 1+Days | Subject), data=sleepstudy)
 
-sleepstudy <- sleepstudy %>% mutate(yhat = predict(m2, re.form=~(1+Days|Subject)))
+sleepstudy <- sleepstudy %>% 
+  mutate(yhat = predict(m2, re.form=~(1+Days|Subject)))
 ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
     facet_wrap(~ Subject, ncol=6) + 
     geom_point() + 
@@ -585,14 +591,16 @@ Here we see that indeed the random effect for each subject in both y-intercept a
 
 It is instructive to look at this example from the top down. First we plot the population regression line.
 ```{r}
-sleepstudy <- sleepstudy %>% mutate(yhat = predict(m2, re.form=~0))
+sleepstudy <- sleepstudy %>% 
+  mutate(yhat = predict(m2, re.form=~0))
 ggplot(sleepstudy, aes(x=Days, y=yhat)) +
   geom_line(color='red') + ylab('Reaction') +
   ggtitle('Population Estimated Regression Curve')
 ```
 
 ```{r}
-sleepstudy <- sleepstudy %>% mutate(yhat.ind = predict(m2, re.form=~(1+Days|Subject)))
+sleepstudy <- sleepstudy %>% 
+  mutate(yhat.ind = predict(m2, re.form=~(1+Days|Subject)))
 ggplot(sleepstudy, aes(x=Days)) +
   geom_line(aes(y=yhat), size=3) + 
   geom_line(aes(y=yhat.ind, group=Subject), color='red') +
@@ -608,7 +616,46 @@ ggplot(sleepstudy, aes(x=Days)) +
   geom_point(aes(y=Reaction))
 ```
 
+Finally we want to go back and look at the coefficients for the complex model.
+```{r}
+summary(m2)
+```
+
+
+
 ## Exercises
-1. ???
-2. ???
-3. ???
+1. An experiment was conducted to determine the effect of recipe and baking temperature on chocolate cake quality. For each recipe, $15$ batches of cake mix for were prepared (so 45 batches total). Each batch was sufficient for six cakes. Each of the six cakes was baked at a different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is available in the `faraway` package as `choccake`.
+    a. For the variables Temperature, Recipe, and Batch, which should be fixed and which should be random?
+    b. Inspect the data. How many levels of batch are there and how will that influence your model statements in R?
+    c. Build a mixed model using the main effects (no interactions). 
+    d. Compare your model in part (c) one models with one or both of the fixed effects removed. Which model is preferred?
+    e. Compare your model in part (c) with a more complicated model that includes the interaction between temperature and recipe. Which model is preferred? 
+    f. Using the model you selected, discuss the impact of the different variance components.
+
+2. An experiment was conducted to select the supplier of raw materials for production of a component. The breaking strength of the component was the objective of interest. Raw materials from four suppliers were considered. In our factory, we have four operators that can only produce one component per day. We utilized a latin square design so that each factory operator worked with a different supplier each day. The data set is presented in the `faraway` package as `breaking`.
+    a. Explain why it would be natural to treat the operators and days as random effects but the suppliers as fixed effects.
+    b. Inspect the data? Does anything seem weird? It turns out that the person responsible for entering the data made an input error.  Fix it making sure to preserve that each day has all 4 suppliers and 4 operators.
+    c. Build a model to predict the breaking strength. Describe the variation from operator to operator and from day to day.
+    d. Test the significance of the supplier effect.
+    e. Is there a significant difference between the operators?
+
+3. An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 rats and divided them into three groups.  The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats' growth.
+*I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.* The following R code might be helpful for the initial visualization.
+    ```{r, eval=FALSE}
+    # we need to force ggplot to only draw lines between points for the same
+    # rat.  If I haven't already defined some aesthetic that is different
+    # for each rat, then it will connect points at the same week but for different
+    # rats. The solution is to add an aesthetic that does the equivalent of the
+    # dplyr function group_by(). In ggplot2, this aesetheic is "group". 
+    ggplot(ratdrink, aes(y=wt, x=weeks, color=treat)) +    
+      geom_point(aes(shape=treat)) +
+      geom_line(aes(group=subject))  # play with removing the group=subject aesthetic...
+    ```
+    a. Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intersept perform as well as the model with random offsets in both the y-intercept and slope?
+        ```{r}
+        m1 <- lmer( wt ~ weeks         + (1+weeks|subject), data=ratdrink )
+        m2 <- lmer( wt ~ treat + weeks + (1+weeks|subject), data=ratdrink )
+        m3 <- lmer( wt ~ treat * weeks + (1+weeks|subject), data=ratdrink )
+        ```
+    b. Next consider if you can simplify the model by removing the interaction between Treatment and Week and possibly even the Treatment main effect.     
+    c. Comment on the effect of each treatment. *Note we have not shown how to perform the appropriate contrasts to test the difference between thiouracil and thyroxine in this chapter. To do so, you'll have to use the `glht()` function from the `multcomp` package.*
