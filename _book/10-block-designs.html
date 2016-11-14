@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-10">
+<meta name="date" content="2016-11-13">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -235,6 +235,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
 <li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -309,7 +319,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) +
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
 <p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because <span class="math display">\[\begin{aligned}
   df_\epsilon   &amp;=  n-p \\
         &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
@@ -371,12 +381,12 @@ oatvar &lt;-<span class="st"> </span>oatvar %&gt;%
 <span class="st">  </span><span class="kw">geom_boxplot</span>() +
 <span class="st">  </span><span class="kw">geom_text</span>( <span class="kw">aes</span>(<span class="dt">label=</span>SigGroup), <span class="dt">y=</span><span class="dv">505</span>) +
 <span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">200</span>, <span class="dv">510</span>))  <span class="co"># give me some room for letters</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
 </div>
 <div id="split-plot-designs" class="section level2">
 <h2><span class="header-section-number">10.2</span> Split-plot designs</h2>
 <p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
 <p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
 <p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
 <p>We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.</p>
@@ -461,7 +471,7 @@ oats &lt;-<span class="st"> </span>oats %&gt;%<span class="st"> </span><span cla
 <span class="st">  </span><span class="kw">facet_wrap</span>( ~<span class="st"> </span>B, <span class="dt">ncol=</span><span class="dv">3</span>) +
 <span class="st">  </span><span class="kw">geom_point</span>() +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-181-1.png" width="672" /></p>
 <p>This graph also makes me think that variety doesn’t matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#  What makes sense to me</span>
 <span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></code></pre></div>

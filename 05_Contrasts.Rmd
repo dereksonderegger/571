@@ -1,4 +1,8 @@
 # Contrasts
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 We often are interested in estimating a function of the parameters $\boldsymbol{\beta}$. For example in the offset representation of the ANOVA model with 3 groups we have
 $$y_{ij}=\mu+\tau_{i}+\epsilon_{ij}$$

@@ -4,6 +4,10 @@ output:
   html_document: default
 ---
 # Two-way ANOVA
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 ```{r, warning=FALSE, message=FALSE}
 # Load my usual packages

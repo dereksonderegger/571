@@ -1,4 +1,8 @@
 # Inference
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 ## F-tests
 

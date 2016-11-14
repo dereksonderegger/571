@@ -4,6 +4,10 @@ output:
   html_document: default
 ---
 # Diagnostics and Transformations
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:
 

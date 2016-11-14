@@ -4,6 +4,10 @@ output:
   html_document: default
 ---
 # Parameter Estimation
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 We have previously looked at ANOVA and regression models and, in many
 ways, they felt very similar. In this chapter we will introduce the

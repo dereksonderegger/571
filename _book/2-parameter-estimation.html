@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-10">
+<meta name="date" content="2016-11-13">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -234,6 +234,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
 <li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -463,7 +473,7 @@ x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</
 y &lt;-<span class="st"> </span>-<span class="dv">3</span> +<span class="st"> </span><span class="dv">2</span>*x +<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)
 my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)
 <span class="kw">ggplot</span>(my.data) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>First we must create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>. Recall <span class="math display">\[
 \boldsymbol{X}=\left[\begin{array}{cc}
 1 &amp; x_{1}\\
@@ -482,8 +492,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.350312
-## x  1.787441</code></pre>
+##   -3.993735
+## x  2.205682</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -502,13 +512,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.350312
-## x  1.787441</code></pre>
+##   -3.993735
+## x  2.205682</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 2.471203</code></pre>
+## [1,] 2.083097</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 1.0649545 0.1820754</code></pre>
+<pre><code>## [1] 0.8977018 0.1534802</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -517,18 +527,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.1308 -1.1004 -0.2467  0.6310  6.1363 
+## -5.5444 -0.9468  0.3578  1.0070  3.7344 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.3503     1.0650  -2.207   0.0405 *  
-## x             1.7874     0.1821   9.817 1.19e-08 ***
+## (Intercept)  -3.9937     0.8977  -4.449  0.00031 ***
+## x             2.2057     0.1535  14.371 2.63e-11 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.471 on 18 degrees of freedom
-## Multiple R-squared:  0.8426, Adjusted R-squared:  0.8339 
-## F-statistic: 96.37 on 1 and 18 DF,  p-value: 1.186e-08</code></pre>
+## Residual standard error: 2.083 on 18 degrees of freedom
+## Multiple R-squared:  0.9198, Adjusted R-squared:  0.9154 
+## F-statistic: 206.5 on 1 and 18 DF,  p-value: 2.634e-11</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -536,14 +546,14 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lower&#39;</span>,<span class="st">&#39;upper&#39;</span>)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
-<pre><code>##               lower      upper
-## Intercept -4.587698 -0.1129255
-## x          1.404915  2.1699675</code></pre>
+<pre><code>##               lower     upper
+## Intercept -5.879737 -2.107733
+## x          1.883233  2.528132</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
-<pre><code>##                 2.5 %     97.5 %
-## (Intercept) -4.587698 -0.1129255
-## x            1.404915  2.1699675</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -5.879737 -2.107733
+## x            1.883233  2.528132</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

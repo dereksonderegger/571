@@ -1,5 +1,9 @@
 # Variable Selection
 
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:
 

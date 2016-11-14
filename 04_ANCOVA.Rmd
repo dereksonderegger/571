@@ -1,5 +1,10 @@
 # Analysis of Covariance (ANCOVA)
 
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
+
 ```{r, message=FALSE, warning=FALSE}
 library(faraway)   # for the data 
 library(ggplot2)   # my favorite graphing package

@@ -4,6 +4,10 @@ output:
   html_document: default
 ---
 # Mixed Effects Models
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
 
 ```{r, warning=FALSE, message=FALSE}
 library(faraway)

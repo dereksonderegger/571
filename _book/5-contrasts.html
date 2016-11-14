@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-10">
+<meta name="date" content="2016-11-13">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -235,6 +235,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
 <li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -392,7 +402,7 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;0.001 ***
 ## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;0.001 ***
 ## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;0.001 ***
-## Diff G2-G3 == 0         4.571      2.164   2.112    0.144    
+## Diff G2-G3 == 0         4.571      2.164   2.112    0.145    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -403,16 +413,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6462
+## Quantile = 2.6485
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7325 90.7675
-## Mean of Group 2 == 0 75.5714  71.2766 79.8663
-## Mean of Group 3 == 0 71.0000  67.2123 74.7877
-## Diff G2-G3 == 0       4.5714  -1.1550 10.2979</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7291 90.7709
+## Mean of Group 2 == 0 75.5714  71.2729 79.8699
+## Mean of Group 3 == 0 71.0000  67.2091 74.7909
+## Diff G2-G3 == 0       4.5714  -1.1599 10.3028</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -435,7 +445,7 @@ ToothGrowth$len.upr &lt;-<span class="st"> </span><span class="kw">predict</span
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) +
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len.hat)) +
 <span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>len.lwr, <span class="dt">ymax=</span>len.upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)$coefficient</code></pre></div>
 <pre><code>##                 Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -564,7 +574,7 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) +
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&#39;Cylinders&#39;</span>, <span class="dt">shape=</span><span class="st">&#39;Cylinders&#39;</span>)</code></pre></div>
-<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-66-1.png" width="672" />
+<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-70-1.png" width="672" />
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars.small &lt;-<span class="st"> </span>mtcars %&gt;%<span class="st">      </span>
