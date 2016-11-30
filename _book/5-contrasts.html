@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-13">
+<meta name="date" content="2016-11-30">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -245,6 +245,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="13" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html"><i class="fa fa-check"></i><b>13</b> A Brief Introduction to Time Series</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html#trend-seasonality"><i class="fa fa-check"></i><b>13.1</b> Trend + Seasonality</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -402,7 +405,7 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;0.001 ***
 ## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;0.001 ***
 ## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;0.001 ***
-## Diff G2-G3 == 0         4.571      2.164   2.112    0.145    
+## Diff G2-G3 == 0         4.571      2.164   2.112    0.144    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -413,16 +416,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6485
+## Quantile = 2.6445
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7291 90.7709
-## Mean of Group 2 == 0 75.5714  71.2729 79.8699
-## Mean of Group 3 == 0 71.0000  67.2091 74.7909
-## Diff G2-G3 == 0       4.5714  -1.1599 10.3028</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7351 90.7649
+## Mean of Group 2 == 0 75.5714  71.2794 79.8635
+## Mean of Group 3 == 0 71.0000  67.2148 74.7852
+## Diff G2-G3 == 0       4.5714  -1.1513 10.2942</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -469,10 +472,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>

@@ -530,7 +530,12 @@ Looking at this experiment, we might consider that location really ought to be a
 1. The dataset `faraway::wbca` comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (ie cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called 'fine needle aspiration', which draws only a small sample of tissue, could be effective in determining tumor status.
     a. Fit a binomial regression with `Class` as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that glm wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?
     b. Use AIC as the criterion to determine the best subset of variables using the step function.
-    c. Use the reduced model to give the estimated probability that a tumor with associated predictor variables<<>>=is benign and give a confidence interval for your estimate.
+    c. Use the reduced model to give the estimated probability that a tumor with associated predictor variables
+        ```{r}
+        newdata <- data.frame( Adhes=1, BNucl=1, Chrom=3, Epith=2, Mitos=1, 
+                               NNucl=1, Thick=4, UShap=1, USize=1)
+        ```
+        is benign and give a confidence interval for your estimate.
     d. Suppose that a cancer is classified as benign if $\hat{p}>0.5$ and malignant if $\hat{p}\le0.5$. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. *Hint: save the $\hat{p}$ as a column in the wbca data frame and use that to create a new column `Est_Class` which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.*
     e. Suppose we changed the cutoff to $0.9$. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.
 

@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-13">
+<meta name="date" content="2016-11-30">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -244,6 +244,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html"><i class="fa fa-check"></i><b>13</b> A Brief Introduction to Time Series</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html#trend-seasonality"><i class="fa fa-check"></i><b>13.1</b> Trend + Seasonality</a></li>
 </ul></li>
 </ul>
 
@@ -492,8 +495,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -3.993735
-## x  2.205682</code></pre>
+##   -2.983416
+## x  1.918510</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -512,13 +515,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -3.993735
-## x  2.205682</code></pre>
+##   -2.983416
+## x  1.918510</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 2.083097</code></pre>
+## [1,] 1.147167</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.8977018 0.1534802</code></pre>
+<pre><code>## [1] 0.49436677 0.08452193</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -527,18 +530,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -5.5444 -0.9468  0.3578  1.0070  3.7344 
+## -2.4504 -0.3419  0.3831  0.8512  1.3122 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -3.9937     0.8977  -4.449  0.00031 ***
-## x             2.2057     0.1535  14.371 2.63e-11 ***
+## (Intercept) -2.98342    0.49437  -6.035 1.05e-05 ***
+## x            1.91851    0.08452  22.698 1.07e-14 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.083 on 18 degrees of freedom
-## Multiple R-squared:  0.9198, Adjusted R-squared:  0.9154 
-## F-statistic: 206.5 on 1 and 18 DF,  p-value: 2.634e-11</code></pre>
+## Residual standard error: 1.147 on 18 degrees of freedom
+## Multiple R-squared:  0.9662, Adjusted R-squared:  0.9644 
+## F-statistic: 515.2 on 1 and 18 DF,  p-value: 1.072e-14</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -547,13 +550,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -5.879737 -2.107733
-## x          1.883233  2.528132</code></pre>
+## Intercept -4.022042 -1.944790
+## x          1.740936  2.096083</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -5.879737 -2.107733
-## x            1.883233  2.528132</code></pre>
+## (Intercept) -4.022042 -1.944790
+## x            1.740936  2.096083</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

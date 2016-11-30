@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-13">
+<meta name="date" content="2016-11-30">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -39,7 +39,7 @@ MathJax.Hub.Config({
   
   
 <link rel="prev" href="11-mixed-effects-models.html">
-
+<link rel="next" href="13-a-brief-introduction-to-time-series.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -244,6 +244,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html"><i class="fa fa-check"></i><b>13</b> A Brief Introduction to Time Series</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html#trend-seasonality"><i class="fa fa-check"></i><b>13.1</b> Trend + Seasonality</a></li>
 </ul></li>
 </ul>
 
@@ -875,9 +878,12 @@ sigma2</code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Fit a binomial regression with <code>Class</code> as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that glm wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?</li>
 <li>Use AIC as the criterion to determine the best subset of variables using the step function.</li>
-<li>Use the reduced model to give the estimated probability that a tumor with associated predictor variables&lt;&lt;&gt;&gt;=is benign and give a confidence interval for your estimate.</li>
+<li><p>Use the reduced model to give the estimated probability that a tumor with associated predictor variables</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Adhes=</span><span class="dv">1</span>, <span class="dt">BNucl=</span><span class="dv">1</span>, <span class="dt">Chrom=</span><span class="dv">3</span>, <span class="dt">Epith=</span><span class="dv">2</span>, <span class="dt">Mitos=</span><span class="dv">1</span>, 
+                       <span class="dt">NNucl=</span><span class="dv">1</span>, <span class="dt">Thick=</span><span class="dv">4</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">1</span>)</code></pre></div>
+is benign and give a confidence interval for your estimate.</li>
 <li>Suppose that a cancer is classified as benign if <span class="math inline">\(\hat{p}&gt;0.5\)</span> and malignant if <span class="math inline">\(\hat{p}\le0.5\)</span>. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. <em>Hint: save the <span class="math inline">\(\hat{p}\)</span> as a column in the wbca data frame and use that to create a new column <code>Est_Class</code> which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.</em></li>
-<li>Suppose we changed the cutoff to <span class="math inline">\(0.9\)</span>. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.</li>
+<li><p>Suppose we changed the cutoff to <span class="math inline">\(0.9\)</span>. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.</p></li>
 </ol></li>
 <li>Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset <code>aflatoxin</code> in the <code>faraway</code> package.
 <ol style="list-style-type: lower-alpha">
@@ -913,8 +919,8 @@ pima &lt;-<span class="st"> </span>pima %&gt;%<span class="st"> </span><span cla
           </div>
         </div>
       </div>
-<a href="11-mixed-effects-models.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="11-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="13-a-brief-introduction-to-time-series.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
