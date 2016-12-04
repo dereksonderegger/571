@@ -25,7 +25,7 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-11-30">
+<meta name="date" content="2016-12-04">
 
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -885,16 +885,16 @@ is benign and give a confidence interval for your estimate.</li>
 <li>Suppose that a cancer is classified as benign if <span class="math inline">\(\hat{p}&gt;0.5\)</span> and malignant if <span class="math inline">\(\hat{p}\le0.5\)</span>. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. <em>Hint: save the <span class="math inline">\(\hat{p}\)</span> as a column in the wbca data frame and use that to create a new column <code>Est_Class</code> which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.</em></li>
 <li><p>Suppose we changed the cutoff to <span class="math inline">\(0.9\)</span>. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.</p></li>
 </ol></li>
-<li>Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset <code>aflatoxin</code> in the <code>faraway</code> package.
+<li>Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset <code>faraway::aflatoxin</code>.
 <ol style="list-style-type: lower-alpha">
 <li>Build a model to predict the occurrence of liver cancer. Consider a square-root transformation to the dose level.</li>
 <li>Compute the ED50 level (effective dose level… same as LD50 but isn’t confined to strictly lethal effects) and an approximate <span class="math inline">\(95\%\)</span> confidence interval.</li>
 </ol></li>
-<li>A study of adult female Pima Indians living near Phoenix was done and resulted <span class="math inline">\(n=724\)</span> observations after the cases of missing data (obnoxiously coded as 0) were removed. Testing positive for diabetes was the success (<code>test</code>) and the predictor variables we will use are: <code>pregnant</code>, <code>glucose</code>, and <code>bmi</code>.
+<li>The dataset <code>faraway::pima</code> is data from a study of adult female Pima Indians living near Phoenix was done and resulted <span class="math inline">\(n=752\)</span> observations after the cases of missing data (obnoxiously coded as 0) were removed. Testing positive for diabetes was the success (<code>test</code>) and the predictor variables we will use are: <code>pregnant</code>, <code>glucose</code>, and <code>bmi</code>.
 <ol style="list-style-type: lower-alpha">
-<li>Remove the observations that have missing data (coded as a zero) for either <code>glucose</code> or <code>bmi</code>. <em>The researcher’s choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the <code>pregnant</code> covariate is a true value.</em></li>
+<li>Remove the observations that have missing data (coded as a zero) for either <code>glucose</code> or <code>bmi</code>. <em>The researcher’s choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the <code>pregnant</code> covariate is a true value. The <code>dplyr</code> function <code>filter</code> could be used here.</em></li>
 <li>Fit the logistic regression model for <code>test</code> with using the main effects of <code>glucose</code>, <code>bmi</code>, and <code>pregnant</code>.</li>
-<li><p>Produce a graphic that displays the relationship between the variables. <em>Notice I’ve done the previous parts for you and also split up the pregnancy and bmi values into some logical grouping for the visualization. If you’ve never used the <code>cut</code> function, go look it up because it is extremely handy.</em></p>
+<li><p>Produce a graphic that displays the relationship between the variables. <em>Notice I’ve done the part (a) for you and the assume that your model produced in part (b) is named <code>m</code>. I also split up the pregnancy and bmi values into some logical grouping for the visualization. If you’ve never used the <code>cut</code> function, go look it up because it is extremely handy.</em></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pima &lt;-<span class="st"> </span>pima %&gt;%<span class="st"> </span><span class="kw">filter</span>( bmi !=<span class="st"> </span><span class="dv">0</span>, glucose !=<span class="st"> </span><span class="dv">0</span>)
 pima &lt;-<span class="st"> </span>pima %&gt;%<span class="st"> </span><span class="kw">mutate</span>( 
   <span class="dt">phat=</span><span class="kw">ilogit</span>(<span class="kw">predict</span>(m)),

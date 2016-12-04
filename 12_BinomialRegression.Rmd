@@ -539,15 +539,14 @@ Looking at this experiment, we might consider that location really ought to be a
     d. Suppose that a cancer is classified as benign if $\hat{p}>0.5$ and malignant if $\hat{p}\le0.5$. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. *Hint: save the $\hat{p}$ as a column in the wbca data frame and use that to create a new column `Est_Class` which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.*
     e. Suppose we changed the cutoff to $0.9$. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.
 
-2. Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset `aflatoxin` in the `faraway` package. 
+2. Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset `faraway::aflatoxin`. 
     a. Build a model to predict the occurrence of liver cancer. Consider a square-root transformation to the dose level.
     b. Compute the ED50 level (effective dose level... same as LD50 but isn't confined to strictly lethal effects) and an approximate $95\%$ confidence interval.
 
-3. A study of adult female Pima Indians living near Phoenix was done and resulted $n=724$ observations after the cases of missing data (obnoxiously coded as 0) were removed. 
-Testing positive for diabetes was the success (`test`) and the predictor variables we will use are: `pregnant`, `glucose`, and `bmi`.
-    a. Remove the observations that have missing data (coded as a zero) for either `glucose` or `bmi`. *The researcher's choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the `pregnant` covariate is a true value.*
+3. The dataset `faraway::pima` is data from a study of adult female Pima Indians living near Phoenix was done and resulted $n=752$ observations after the cases of missing data (obnoxiously coded as 0) were removed. Testing positive for diabetes was the success (`test`) and the predictor variables we will use are: `pregnant`, `glucose`, and `bmi`.
+    a. Remove the observations that have missing data (coded as a zero) for either `glucose` or `bmi`. *The researcher's choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the `pregnant` covariate is a true value. The `dplyr` function `filter` could be used here.*
     b. Fit the logistic regression model for `test` with using the main effects of `glucose`, `bmi`, and `pregnant`.
-    c. Produce a graphic that displays the relationship between the variables. *Notice I've done the previous parts for you and also split up the pregnancy and bmi values into some logical grouping for the visualization. If you've never used the `cut` function, go look it up because it is extremely handy.*
+    c. Produce a graphic that displays the relationship between the variables. *Notice I've done the part (a) for you and the assume that your model produced in part (b) is named `m`. I also split up the pregnancy and bmi values into some logical grouping for the visualization. If you've never used the `cut` function, go look it up because it is extremely handy.*
         ```{r, eval=FALSE}
         pima <- pima %>% filter( bmi != 0, glucose != 0)
         pima <- pima %>% mutate( 
