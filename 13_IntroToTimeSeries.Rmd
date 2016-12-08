@@ -182,11 +182,144 @@ library(mgcv)
 model <- gam(value ~ s(year) + s(month, bs='cc'), data=CO2)
 
 CO2 <- CO2 %>%
-  mutate( fit = predict(model) )
+  mutate( fit = predict(model),
+          resid = resid(model))
+  
 
 ggplot(CO2, aes(x=time, y=value)) +
   geom_point() +
   ggtitle('Mauna Loa Atmospheric CO2') +
   geom_line(aes(y=fit), color='red')
+```
+
+## Correlated Error Models
+
+```{r}
+ggplot(CO2, aes(x=time, y=resid)) + 
+  geom_line() + geom_point() + 
+  geom_hline(yintercept = 0, color='red')
+```
+
+There are streches where the residuals are consistently positve or negative for many months in a row.  Which should be very rare if the error terms are independent.
+
+### White Noise
+
+```{r}
+Z <- rnorm(100)
+df <- data.frame(t = 1:length(Z), Z=Z)
+ggplot( df, aes(x=t, y=Z)) + 
+  geom_point() + 
+  geom_line() +
+  geom_hline(yintercept = 0, color='red')
+```
+
+Here we have some runs of positive and negative, but what does the autocorrelation function look like?
+
+```{r}
+acf( Z )
+```
+
+
+### Random Walk Process
+
+$$X_t = X_{t-1} + Z_t$$
+
+Notice that because we need a starting point
+
+```{r}
+Z <- rnorm(100)
+X <- NULL
+X[1] <- Z[1]  # first one doesn't have a preceding
+for( t in 2:100 ){
+  X[t] <- X[t-1] + Z[t]
+}
+
+df <- data.frame(t = 1:length(X), X=X)
+ggplot( df, aes(x=t, y=X)) + 
+  geom_point() + 
+  geom_line() +
+  geom_hline(yintercept = 0, color='red')
+```
+
+```{r}
+acf(X)
+```
+
+
+### Moving Average Process
+We will consider an MA(q=2) process.
+```{r}
+Z <- rnorm(100)
+X <- NULL
+beta <- c(.999999, .75)
+X[1] <- Z[1]
+X[2] <- Z[2] + Z[1]*beta[1]
+X[3] <- Z[3] + Z[2]*beta[1] + Z[1]*beta[2]
+for( t in 4:100 ){
+  X[t] <- Z[t] + Z[t-1]*beta[1] + Z[t-2]*beta[2]
+}
+df <- data.frame(t = 1:length(X), X=X)
+ggplot( df, aes(x=t, y=X)) + 
+  geom_point() + 
+  geom_line() +
+  geom_hline(yintercept = 0, color='red')
+```
+
+
+```{r}
+acf(X)
+```
+
+
+### Autoregressive Processes
+
+```{r}
+# AR(p=2) process
+X <- NULL
+alpha <- c(.5, .1)
+X[1] <- Z[1]
+X[2] <- X[1]*alpha[1] + Z[2]
+X[3] <- X[2]*alpha[1] + X[1]*alpha[2] + Z[3]
+for( t in 4:100 ){
+  X[t] <- X[t-1]*alpha[1] + X[t-2]*alpha[2] + Z[t]
+}
+```
+
+```{r}
+df <- data.frame(t = 1:length(X), X=X)
+ggplot( df, aes(x=t, y=X)) + 
+  geom_point() + 
+  geom_line() +
+  geom_hline(yintercept = 0, color='red')
+```
+
+```{r}
+acf(X)
+```
+
+
+
+
+```{r}
+# AR(p=1) process
+X <- NULL
+alpha <- c(.2)
+X[1] <- Z[1]
+X[2] <- X[1]*alpha[1] + Z[2]
+for( t in 3:100 ){
+  X[t] <- X[t-1]*alpha[1] + Z[t]
+}
+```
+
+```{r}
+df <- data.frame(t = 1:length(X), X=X)
+ggplot( df, aes(x=t, y=X)) + 
+  geom_point() + 
+  geom_line() +
+  geom_hline(yintercept = 0, color='red')
+```
+
+```{r}
+acf(X)
 ```
 
