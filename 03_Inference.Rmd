@@ -1,0 +1,388 @@
+# Inference
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
+
+## F-tests
+
+We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.
+
+It is important to specify that we are developing a way of testing nested models. By nested, we mean that the simple model can be created from the full model just by setting one or more model parameters to zero.
+
+### Theory
+
+Recall that in the simple regression and ANOVA cases we were interested in comparing a simple model versus a more complex model. For each model we computed the residual sum of squares (RSS) and said that if the complicated model performed much better than the simple then $RSS_{simple}\gg RSS_{complex}$. To do this we needed to standardize by the number of parameters added to the model and the degrees of freedom remaining in the full model. We first defined $RSS_{diff}=RSS_{simple}-RSS_{complex}$ and let $df_{diff}$ be the number of parameters difference between the simple and complex models. Then we had $$F=\frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}$$
+and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F
+ -distribution with degrees of freedom $df_{diff}$ and $df_{complex}$.
+
+The critical assumption for the F-test to be appropriate is that the error terms are independent and normally distributed with constant variance.
+
+We will consider a data set from Johnson and Raven (1973) which also appears in Weisberg (1985). This data set is concerned with the number of tortoise species on $n=30$ different islands in the Galapagos. The variables of interest in the data set are:
+
+  Variable  |   Description
+------------|-----------------
+`Species`   |  Number of tortoise species found on the island
+`Endimics`  |  Number of tortoise species endemic to the island
+`Elevation` |  Elevation of the highest point on the island
+`Area`      |  Area of the island (km$^2$)
+`Nearest`   |  Distance to the nearest neighboring island (km)
+`Scruz`     |  Distance to the Santa Cruz islands (km)
+`Adjacent`  |  Area of the nearest adjacent island (km$^2$)
+
+We will first read in the data set from the package `faraway`.
+
+```{r}
+library(faraway)    # load the library 
+data(gala)          # import the data set
+head(gala)          # show the first couple of rows
+```
+
+
+First we will create the full model that predicts the number of species as a function of elevation, area, nearest, scruz and adjacent. Notice that this model has $p=6$ $\beta_{i}$ values (one for each coefficient plus the intercept).
+
+```{r}
+M.c <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
+summary(M.c)
+```
+
+### Testing All Covariates
+
+The first test we might want to do is to test if any of the covariates are significant. That is to say that we want to test the full model versus the simple null hypothesis model
+$$y_{i}=\beta_{0}+\epsilon_{i}$$
+that has no covariates and only a y-intercept. So we will create a simple model
+
+```{r}
+M.s <- lm(Species ~ 1, data=gala)
+```
+
+and calculate the appropriate Residual Sums of Squares (RSS) for each model, along with the difference in degrees of freedom between the two models.
+
+```{r}
+RSS.c <- sum(resid(M.c)^2)
+RSS.s <- sum(resid(M.s)^2)
+df.diff <- 5               # complex model has 5 additional parameters
+df.c <- 30 - 6             # complex model has 24 degrees of freedom left
+```
+
+The F-statistic for this test is therefore
+
+```{r}
+F.stat <-  ( (RSS.s - RSS.c) / df.diff ) / ( RSS.c / df.c )
+F.stat
+```
+
+and should be compared against the F-distribution with $5$ and $24$ degrees of freedom. Because a large difference between RSS.s and RSS.c would be evidence for the alternative, larger model, the p-value for this test is $$p-value=P\left(F_{5,24}\ge\mathtt{F.stat}\right)$$
+ 
+```{r}
+p.value <-  1 - pf(15.699, 5, 24)
+p.value
+```
+
+
+Both the F.stat and its p-value are given at the bottom of the summary table. However, I might be interested in creating an ANOVA table for this situation.
+
+Source         |  df   |  Sum Sq  | 	Mean Sq                 |	F             |  p-value             |
+---------------|-------|----------|---------------------------|---------------|----------------------|
+Difference	   | $p-1$ | $RSS_d$  | $MSE_d = RSS_d / (p-1)$   | $MSE_d/MSE_c$ | $P(F > F_{p-1,n-p})$ |
+Complex        | $n-p$ | $RSS_c$  | $MSE_c = RSS_c / (n-p)$   |               |                      |
+Simple         | $n-1$ | $RSS_s$  |                           |               |                      |
+
+
+This table can be obtained from R by using the `anova()` function on the two models of interest. As usual with R, it does not show the simple row, but rather concentrates on the difference row.
+
+```{r}
+anova(M.s, M.c)
+```
+
+
+### Testing a Single Covariate
+
+For a particular covariate, $\beta_{j}$, we might wish to perform a test to see if it can be removed from the model. It can be shown that the F-statistic can be re-written as
+
+$$\begin{aligned}
+F	&=	\frac{\left[RSS_{s}-RSS_{c}\right]/1}{RSS_{c}/\left(n-p\right)}\\
+	&=	\vdots\\
+	&=	\left[\frac{\hat{\beta_{j}}}{SE\left(\hat{\beta}_{j}\right)}\right]^{2}\\
+	&= t^{2}
+\end{aligned}$$
+where $t$ has a t-distribution with $n-p$ degrees of freedom under the null hypothesis that the simple model is sufficient.
+
+We consider the case of removing the covariate `Area` from the model and will calculate our test statistic using both methods.
+
+```{r}
+M.c <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
+M.s <- lm(Species ~        Elevation + Nearest + Scruz + Adjacent, data=gala)
+RSS.c <- sum( resid(M.c)^2 )
+RSS.s <- sum( resid(M.s)^2 )
+df.d <- 1
+df.c <- 30-6
+F.stat <- ((RSS.s - RSS.c)/1) / (RSS.c / df.c)
+F.stat
+1 - pf(F.stat, 1, 24)
+sqrt(F.stat)
+```
+
+To calculate it using the estimated coefficient and its standard error, we must grab those values from the summary table
+
+```{r}
+temp <- summary(M.c)
+temp$coefficients
+beta.area <- temp$coefficients[2,1]
+SE.beta.area <- temp$coefficients[2,2]
+t <- beta.area / SE.beta.area
+t
+2 * pt(t, 24)
+```
+
+
+All that hand calculation is tedious, so we can again use the anova() command to compare the two models.
+
+```{r}
+anova(M.s, M.c)
+```
+
+### Testing a Subset of Covariates
+
+Often a researcher will want to remove a subset of covariates from the model. In the Galapagos example, Area, Nearest, and Scruz all have non-significant p-values and would be removed when comparing the full model to the model without that one covariate. While each of them might be non-significant, is the sum of all three significant? 
+
+Because the individual $\hat{\beta}_{j}$ values are not independent, then we cannot claim that the subset is not statistically significant just because each variable in turn was insignificant. Instead we again create simple and complex models in the same fashion as we have previously done. 
+
+```{r}
+M.c <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
+M.s <- lm(Species ~        Elevation +                   Adjacent, data=gala)
+anova(M.s, M.c)
+```
+
+We find a large p-value associated with this test and can safely stay with the null hypothesis, that the simple model is sufficient to explain the observed variability in the number of species of tortoise.
+
+## Confidence Intervals for location parameters
+
+Recall that 
+$$\hat{\boldsymbol{\beta}}\sim N\left(\boldsymbol{\beta},\,\sigma^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\right)$$
+and it is easy to calculate the estimate of $\sigma^{2}$. This estimate will be the “average” squared residual $$\hat{\sigma}^{2}=\frac{RSS}{df}$$
+where $RSS$ is the residual sum of squares and $df$ is the degrees of freedom $n-p$ where $p$ is the number of $\beta_{j}$ parameters. Therefore the standard error of the $\hat{\beta}_{j}$ values is
+$$SE\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}$$
+ 
+
+We can see this calculation in the summary regression table. We again consider the Galapagos Island data set. First we must create the design matrix
+
+```{r}
+y <- gala$Species
+X <- cbind( rep(1,30), gala$Elevation, gala$Adjacent )
+```
+
+And then create $\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}$
+```{r}
+XtXinv <- solve(  t(X) %*% X )
+XtXinv
+diag(XtXinv)
+```
+
+
+Eventually we will need $\hat{\boldsymbol{\beta}}$
+ 
+```{r}
+beta.hat <- XtXinv %*% t(X) %*% y
+beta.hat
+```
+
+And now find the estimate $\hat{\sigma}$
+ 
+
+```{r}
+H <- X %*% XtXinv %*% t(X)
+y.hat <- H %*% y
+RSS <- sum( (y-y.hat)^2 )
+sigma.hat <- sqrt(  RSS/(30-3) )
+sigma.hat
+```
+
+The standard errors of $\hat{\beta}$ is thus
+
+```{r}
+sqrt( sigma.hat^2 * diag(XtXinv) )
+```
+
+We can double check that this is what R calculates in the summary table
+
+```{r}
+model <- lm(Species ~ Elevation + Adjacent, data=gala)
+summary(model)
+```
+
+It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is
+$$Estimate\;\pm Critical\,Value\;\cdot\;StandardError\left(Estimate\right)$$
+For any specific $\beta_{j}$ we will have 
+$$\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}$$
+where $\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}$ is the $[j,j]$ element of the variance/covariance of $\hat{\boldsymbol{\beta}}$. 
+
+To demonstrate this, we return to the Galapagos Island data set.
+
+Finally we can calculate confidence intervals for our three $\beta_{j}$ values
+
+```{r}
+lower <- beta.hat - qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
+upper <- beta.hat + qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
+cbind(lower, upper)
+```
+
+That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the confint() command.
+
+```{r}
+confint(model)
+```
+
+
+
+## Prediction and Confidence Intervals for a response
+
+Given a vector of predictor covariates $\boldsymbol{x}_{0}$ (think of $\boldsymbol{x}_{0}^{T}$ as potentially one row in $\boldsymbol{X}$. Because we might want to predict some other values than what we observe, we do not restrict ourselves to *only* rows in $\boldsymbol{X}$), we want to make inference on the expected value $\hat{y}_{0}$. We can calculate the value by 
+$$\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}$$
+and we are interested in two different types of predictions. 
+
+1. We might be interested in the uncertainty of a new data point. This uncertainty has two components: the uncertainty of the regression model and uncertainty of a new data point from its expected value.
+
+2. Second, we might be interested in only the uncertainty about the regression model.
+
+We note that because $\boldsymbol{x}_{0}^{T}$ is just a constant, we can calculate the variance of this value as
+\[ \begin{aligned}
+Var\left(\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\right)	
+  &= \boldsymbol{x}_{0}^{T}\,Var\left(\hat{\boldsymbol{\beta}}\right)\,\boldsymbol{x}_{0} \\
+	&=	\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\sigma^{2}\,\boldsymbol{x}_{0} \\
+	&=	\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\,\sigma^{2}
+\end{aligned}\]
+and use this to calculate two types of intervals. First, a prediction interval for a new observation is $$\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{1+\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}$$
+and a confidence interval for the mean response for the given $\boldsymbol{x}_{0}$ is 
+$$\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}$$
+
+Again using the Galapagos Island data set as an example, we might be interested in predicting the number of tortoise species of an island with highest point $400$ meters and nearest adjacent island with area $200 km^{2}$. We then have $$\boldsymbol{x}_{0}^{T} = \left[\begin{array}{ccc}1  &  400  &  200\end{array}\right]$$
+and we can calculate
+
+```{r}
+x0 <- c(1, 400, 200)
+y0 <- t(x0) %*% beta.hat
+y0
+```
+
+and then calculate $\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}$
+ 
+```{r}
+xt.XtXinv.x <- t(x0) %*% solve( t(X) %*% X ) %*% x0
+```
+
+Thus the prediction interval will be 
+
+```{r}
+c(y0 - qt(.975, 27) * sigma.hat * sqrt(1 + xt.XtXinv.x),
+  y0 + qt(.975, 27) * sigma.hat * sqrt(1 + xt.XtXinv.x))
+```
+
+while a confidence interval for the expectation is
+
+```{r}
+c(y0 - qt(.975, 27) * sigma.hat * sqrt(xt.XtXinv.x),
+  y0 + qt(.975, 27) * sigma.hat * sqrt(xt.XtXinv.x))
+```
+
+
+These prediction and confidence intervals can be calculated in R using the predict() function
+
+```{r}
+x0 <- data.frame(Elevation=400, Adjacent=200)
+predict(model, newdata=x0, interval='prediction')
+predict(model, newdata=x0, interval='confidence')
+```
+
+## Interpretation with Correlated Covariates
+
+The standard interpretation of the slope parameter is that $\beta_{j}$ is the amount of increase in $y$ for a one unit increase in the $j$th covariate, provided that all other covariates stayed the same.
+
+The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation. 
+
+One common issue that make interpretation difficult is that covariates can be highly correlated. 
+
+Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:
+
+  Variable    |   Interpretation
+--------------|----------------------
+ `Weight`     |  Weight (g)
+ `Length.1`   |  Length from nose to beginning of Tail (cm)
+ `Length.2`   |  Length from nose to notch of Tail (cm)
+ `Length.3`   |  Length from nose to tip of tail (cm)
+ `Height`     |  Maximal height as a percentage of `Length.3`
+ `Width`      |  Maximal width as a percentage of `Length.3`
+ `Sex`        |  0=Female, 1=Male
+ `Species`    |  Which species of perch (1-7)
+ 
+ 
+ 
+We first look at the data and observe the expected relationship between length and weight.
+
+```{r}
+file <- 'https://raw.githubusercontent.com/dereksonderegger/STA_571_Book/master/data-raw/Fish.csv'
+fish <- read.table(file, header=TRUE, skip=111, sep=',')
+pairs(fish[,c('Weight','Length.1','Length.2','Length.3','Height','Width')])
+```
+
+Naively, we might consider the linear model with all the length effects present.
+
+```{r}
+model <- lm(Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish)
+summary(model)
+```
+
+This is crazy. There is a negative relationship between `Length.2` and `Weight`. That does not make any sense unless you realize that this is the effect of `Length.2` assuming the other covariates are in the model and can be held constant while changing the value of `Length.2`, which is obviously ridiculous. 
+
+If we remove the highly correlated covariates then we see a much better behaved model
+
+```{r}
+model <- lm(Weight ~ Length.2 + Height + Width, data=fish)
+summary(model)
+```
+
+When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign. 
+
+In this case the sum of the three length covariate estimates was approximately $31$ in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
+
+In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.
+
+## Exercises
+1. The dataset prostate in package `faraway` has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.
+    ```{r, eval=FALSE}
+    library(faraway)
+    data(prostate)
+    head(prostate)
+    ```
+    It is possible to get information about the data set using the command `help(prostate)`. Fit a model with `lpsa` as the response and all the other variables as predictors.
+
+    a) Compute $90\%$ and $95\%$ confidence intervals for the parameter associated with `age`. Using just these intervals, what could we deduced about the p-value for age in the regression summary. *Hint: look at the help for the function `confint()`. You'll find the `level` option to be helpful.*
+
+    b) Remove all the predictors that are not significant at the $5\%$ level. Test this model against the original model. Which is preferred?
+
+2. Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the `cheddar` dataset from the `faraway` package (import it the same way you did in problem one, but now use `cheddar`) to answer the following:
+
+    a) Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the $5\%$ level.
+
+    b) `Acetic` and `H2S` are measured on a log$_{10}$ scale. Create two new columns in the `cheddar` data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.
+
+    c) Can we use an $F$-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.
+
+    d) If H2S is increased by 0.01 for the model in (a), what change in taste would be expected? What caveates must be made in this interpretation.
+
+3. The `sat` data set in the `faraway` package gives data collected to study the relationship between expenditures on public education and test results.
+
+    a) Fit a model that with `total` SAT score as the response and only the intercept as a covariate.
+
+    b) Fit a model with `total` SAT score as the response and `expend`, `ratio`, and `salary` as predictors (along with the intercept). 
+
+    c) Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?
+
+    d) Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.
+
+    e) Fit the model with `salary` and `ratio` (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?
+
+    f) Now add `takers` to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that $\beta_{takers}=0$ using the summary table. 
+    
+    g) Discuss why `ratio` was not significant in the model in part (e) but was significant in part (f). *Hint: Look at the Residual Standard Error $\hat{\sigma}$ in each model and argue that each t-statistic is some variant of a "signal-to-noise" ratio and that the "noise" part is reduced in the second model.* 
+    

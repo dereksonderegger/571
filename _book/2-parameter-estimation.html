@@ -6,8 +6,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,8 +25,13 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
+<meta name="date" content="2016-12-04">
 
-<meta name="date" content="2017-08-31">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,6 +39,7 @@
   
   
 <link rel="prev" href="index.html">
+<link rel="next" href="3-inference.html">
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -93,7 +100,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <body>
 
 
-
   <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
 
     <div class="book-summary">
@@ -141,6 +147,106 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>4.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="4.2" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>4.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="4.3" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>4.3</b> Iris Example</a></li>
+<li class="chapter" data-level="4.4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-contrasts.html"><a href="5-contrasts.html"><i class="fa fa-check"></i><b>5</b> Contrasts</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-contrasts.html"><a href="5-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>5.1</b> Estimate and variance</a></li>
+<li class="chapter" data-level="5.2" data-path="5-contrasts.html"><a href="5-contrasts.html#estimating-contrasts-in-r"><i class="fa fa-check"></i><b>5.2</b> Estimating contrasts in R</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova"><i class="fa fa-check"></i><b>5.2.1</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>6.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>6.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>6.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>6.2</b> Transformations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>6.2.1</b> Transforming the Response</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>6.2.2</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-block-designs.html"><a href="10-block-designs.html"><i class="fa fa-check"></i><b>10</b> Block Designs</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-block-designs.html"><a href="10-block-designs.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>10.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="10.2" data-path="10-block-designs.html"><a href="10-block-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="10.3" data-path="10-block-designs.html"><a href="10-block-designs.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html"><i class="fa fa-check"></i><b>11</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="11.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>11.1</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.2</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.3</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
+<li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html"><i class="fa fa-check"></i><b>13</b> A Brief Introduction to Time Series</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html#trend-seasonality"><i class="fa fa-check"></i><b>13.1</b> Trend + Seasonality</a></li>
 </ul></li>
 </ul>
 
@@ -389,8 +495,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.788108
-## x  1.955609</code></pre>
+##   -3.211652
+## x  2.091552</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -409,13 +515,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.788108
-## x  1.955609</code></pre>
+##   -3.211652
+## x  2.091552</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 2.418868</code></pre>
+## [1,] 2.349105</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 1.0424012 0.1782194</code></pre>
+<pre><code>## [1] 1.0123368 0.1730793</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -423,19 +529,19 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## lm(formula = y ~ x)
 ## 
 ## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -5.609 -1.694  0.420  1.327  4.726 
+##     Min      1Q  Median      3Q     Max 
+## -3.5064 -1.6396 -0.2256  1.6805  5.0046 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.7881     1.0424  -2.675   0.0155 *  
-## x             1.9556     0.1782  10.973  2.1e-09 ***
+## (Intercept)  -3.2117     1.0123  -3.173  0.00527 ** 
+## x             2.0916     0.1731  12.084 4.51e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.419 on 18 degrees of freedom
-## Multiple R-squared:  0.8699, Adjusted R-squared:  0.8627 
-## F-statistic: 120.4 on 1 and 18 DF,  p-value: 2.101e-09</code></pre>
+## Residual standard error: 2.349 on 18 degrees of freedom
+## Multiple R-squared:  0.8903, Adjusted R-squared:  0.8842 
+## F-statistic:   146 on 1 and 18 DF,  p-value: 4.508e-10</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -443,14 +549,14 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lower&#39;</span>,<span class="st">&#39;upper&#39;</span>)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
-<pre><code>##               lower      upper
-## Intercept -4.978112 -0.5981048
-## x          1.581184  2.3300339</code></pre>
+<pre><code>##               lower     upper
+## Intercept -5.338493 -1.084812
+## x          1.727926  2.455178</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
-<pre><code>##                 2.5 %     97.5 %
-## (Intercept) -4.978112 -0.5981048
-## x            1.581184  2.3300339</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -5.338493 -1.084812
+## x            1.727926  2.455178</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">
@@ -698,10 +804,9 @@ y_{3,4}
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="3-inference.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
 
-    </div>
-  </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
@@ -713,7 +818,6 @@ y_{3,4}
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,
@@ -729,7 +833,7 @@ gitbook.start({
 },
 "edit": {
 "link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/02_Estimation.Rmd",
-"text": "Edit"
+"text": null
 },
 "download": null,
 "toc": {
@@ -745,7 +849,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     if (location.protocol !== "file:" && /^https?:/.test(script.src))
       script.src  = script.src.replace(/^https?:/, '');
     document.getElementsByTagName("head")[0].appendChild(script);

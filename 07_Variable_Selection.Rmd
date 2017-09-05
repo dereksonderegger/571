@@ -1,0 +1,266 @@
+# Variable Selection
+
+```{r, results='hide', echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      fig.height=3)
+```
+
+Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:
+
+1. Occam's Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.
+
+2. Unnecessary predictors add noise to the estimates of other quantities and will waste degrees of freedom, possibly increasing the estimate of $\hat{\sigma}^{2}$.
+
+3. We might have variables that are collinear.
+
+The problems that arise in the diagnostics of a model will often lead a researcher to consider other models, for example to include a quadratic term to account for curvature. The model building process is often an iterative procedure where we build a model, examine the diagnostic plots and consider what could be added or modified to correct issues observed.
+
+## Nested Models 
+
+Often one model is just a simplification of another and can be obtained by setting some subset of $\beta_{i}$ values equal to zero. Those models can be adequately compared by the F-test, which we have already made great use of.
+
+We should be careful to note that we typically do not want to remove the main covariate from the model if the model uses the covariate in a more complicated fashion. For example, if my model is $$y=\beta_{0}+\beta_{1}x+\beta_{2}x^{2}+\epsilon$$
+where $\epsilon\sim N\left(0,\sigma^{2}\right)$, then considering the simplification $\beta_{1}=0$ and removing the effect of $x$ is not desirable because that forces the parabola to be symmetric about $x=0$. Similarly, if the model contains an interaction effect, then the removal of the main effect drastically alters the interpretation of the interaction coefficients and should be avoided. Often times removing a lower complexity term while keeping a higher complexity term results in unintended consequences and is typically not recommended.
+
+## Testing-Based Model Selection
+
+Starting with a model that is likely too complex, consider a list of possible terms to remove and remove each in turn while evaluating the resulting model to the starting model using an F-test. Whichever term has the highest p-value is removed and the process is repeated until no more terms have non-significant p-values. This is often referred to as *backward selection*.
+
+It should be noted that the cutoff value for significance here does not have to be $\alpha=0.05$. If prediction performance is the primary goal, then a more liberal $\alpha$ level is appropriate.
+
+
+Starting with a model that is likely too small, consider adding terms until there are no more terms that when added to the model are significant. This is called *forward selection*.
+
+This is a hybrid between forward selection and backward elimination. At every stage, a term is either added or removed. This is referred to as *stepwise selection*.
+
+Stepwise, forward, and backward selection are commonly used but there are some issues.
+
+1. Because of the “one-at-a-time” nature of the addition/deletion, the most optimal model might not be found.
+
+2. p-values should not be treated literally. Because the multiple comparisons issue is completely ignored, the p-values are lower than they should be if multiple comparisons were accounted for. As such, it is possible to sort through a huge number of potential covariates and find one with a low p-value simply by random chance. This is “data dredging” and is a serious issue.
+
+3. As a non-thinking algorithm, these methods ignore the science behind that data and might include two variables that are highly collinear or might ignore variables that are scientifically interesting.
+
+### Example - U.S. Life Expectancy
+
+Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a `lm()` object and adds or removes things from the formula. The notation `. ~ .` means to leave the response and all the predictors alone, while `. ~ . + vnew` will add the main effect of vnew to the model.
+
+```{r, message=FALSE, warning=FALSE}
+library(faraway)
+library(dplyr)   # for the %>% operator!
+
+# Convert from a matrix to a data frame with state abbreviations
+state.data <- data.frame(state.x77, row.names=state.abb)
+str(state.data)
+```
+
+
+We should first look at the 
+```{r}
+pairs(Life.Exp ~ ., data=state.data)
+```
+
+
+I want to add a quadratic effect for HS.Grad rate and for Income. We'll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.
+
+```{r}
+state.data$HS.Grad.2 <- state.data$HS.Grad ^ 2
+state.data$Income.2  <- state.data$Income  ^ 2
+# explicitly define my starting model
+m1 <- lm(Life.Exp ~ Population + Income + Illiteracy + 
+                	Murder + HS.Grad + Frost + HS.Grad.2 + Income.2, data=state.data)
+#
+# Define the same model, but using shorthand
+# The '.' means everything else in the data frame
+m1 <- lm( Life.Exp ~ ., data=state.data)
+summary(m1)$coefficients %>% round(digits=3)
+```
+
+
+The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like `Income` are not significant, which is surprising. We will first remove the term with the highest p-value, which is the state's `HS.Grad`. However, I don't want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that `HS.Grad` is correlated with `Income` and `Illiteracy`.
+
+```{r}
+# Remove Graduation Rate from the model from the model
+m1 <- update(m1, .~. - HS.Grad - HS.Grad.2)
+summary(m1)$coefficients %>% round(digits=3)
+```
+
+```{r}
+# Next remove Illiteracy
+m1 <- update(m1, .~. - Illiteracy)
+summary(m1)$coefficients %>% round(digits=3)
+```
+
+```{r}
+# And Population...
+m1 <- update(m1, .~. - Population)
+summary(m1)$coefficients %>% round(digits=3)
+```
+
+```{r}
+# Remove Area from the model
+m1 <- update(m1, .~. - Area)
+summary(m1)$coefficients %>% round(digits=3)
+```
+
+The removal of `Income.2` is a tough decision because the p-value is very close to $\alpha=0.05$ and might be left in if it makes model interpretation easier or if the researcher feels a quadratic effect in income is appropriate (perhaps rich people are too stressed?).
+
+```{r}
+summary(m1)
+```
+
+We are left with a model that adequately explains `Life.Exp` but we should be careful to note that just because a covariate was removed from the model does not imply that it isn't related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is `Income` and thus replacing `Illiteracy` shows that illiteracy is associated with lower life expectancy, but it is not as predictive as `Income`. 
+
+```{r}
+m2 <- lm(Life.Exp ~ Illiteracy+Murder+Frost, data=state.data)
+summary(m2)
+```
+
+Notice that the $R^{2}$ values for both models are quite similar $0.7042$ vs $0.6739$ but the first model with the higher $R^{2}$ has one more predictor variable? Which model should I prefer? I can't do an F-test because these models are not nested.
+
+## Criterion Based Procedures
+
+### Information Criterions
+
+It is often necessary to compare models that are not nested. For example, I might want to compare 
+$$y=\beta_{0}+\beta_{1}x+\epsilon$$
+vs
+$$y=\beta_{0}+\beta_{2}w+\epsilon$$
+
+This comparison comes about naturally when doing forward model selection and we are looking for the “best” covariate to add to the model first.
+
+Akaike introduced his criterion (which he called “An Information Criterion”) as
+$$AIC=\underset{\textrm{decreases if RSS decreases}}{\underbrace{-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)}}+\underset{\textrm{increases as p increases}}{\underbrace{2p}}$$
+where 
+$L\left(\hat{\boldsymbol{\beta}}|\,\textrm{data}\,\right)$ is the likelihood function and $p$ is the number of elements in the $\hat{\boldsymbol{\beta}}$
+vector and we regard a lower AIC value as better. Notice the $2p$
+term is essentially a penalty on adding addition covariates so to lower the AIC value, a new predictor must lower the negative log likelihood more than it increases the penalty.
+
+To convince ourselves that the first summand decreases with decreasing RSS in the standard linear model, we examine the likelihood function
+$$\begin{aligned}
+f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)	&=	\frac{1}{\left(2\pi\sigma^{2}\right)^{n/2}}\exp\left[-\frac{1}{2\sigma^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)\right] \\
+	&=	L\left(\boldsymbol{\beta},\sigma\,|\,\boldsymbol{y},\boldsymbol{X}\right)
+\end{aligned}$$
+and we could re-write this as
+$$\begin{aligned}
+\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}\,|\,\textrm{data}\right)	&=	-\log\left(\left(2\pi\hat{\sigma}^{2}\right)^{n/2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
+	&=	-\frac{n}{2}\log\left(2\pi\hat{\sigma}^{2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
+	&=	-\frac{1}{2}\left[n\log\left(2\pi\hat{\sigma}^{2}\right)+\frac{1}{\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)\right] \\
+	&=	-\frac{1}{2}\left[+n\log\left(2\pi\right)+n\log\hat{\sigma}^{2}+\frac{1}{\hat{\sigma}^{2}}RSS\right]
+\end{aligned}$$
+ 
+
+It isn't clear what we should do with the $n\log\left(2\pi\right)$ term in the $\log L()$ function. There are some compelling reasons to ignore it and just use the second, and there are reasons to use both terms. Unfortunately, statisticians have not settled on one convention or the other and different software packages might therefore report different values for AIC. 
+
+As a general rule of thumb, if the difference in AIC values is less than two then the models are not significantly different, differences between 2 and 4 AIC units are marginally significant and any difference greater than 4 AIC units is highly significant.
+
+Notice that while this allows us to compare models that are not nested, it does require that the same data are used to fit both models. Because I could start out with my data frame including both $x$ and $x^{2}$, (or more generally $x$ and $f\left(x\right)$ for some function $f()$) you can regard a transformation of a covariate as “the same data”. However, a transformation of a y-variable is not and therefore we cannot use AIC to compare a models `log(y) ~ x` versus the model `y ~ x`.
+
+Another criterion that might be used is *Bayes Information Criterion* (BIC) which is
+
+$$BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)+p\log n$$
+
+and this criterion punishes large models more than AIC does (because $\log n>2$ for $n\ge8$)
+
+The AIC value of a linear model can be found using the AIC() on a lm() object.
+
+```{r}
+AIC(m1)
+AIC(m2)
+```
+
+Because the AIC value for the first model is lower, we would prefer the first model that includes both `Income` and `Income.2` compared to model 2, which was `Life.Exp ~ Illiteracy+Murder+Frost`.
+
+### Adjusted `R-sq`
+ 
+
+One of the problems with $R^{2}$ is that it makes no adjustment for how many parameters in the model. Recall that $R^{2}$ was defined as 
+$$R^{2}=\frac{RSS_{S}-RSS_{C}}{RSS_{S}}=1-\frac{RSS_{C}}{RSS_{S}}$$
+where the simple model was the intercept only model. We can create an $R_{adj}^{2}$ statistic that attempts to add a penalty for having too many parameters by defining
+$$R_{adj}^{2}=1-\frac{RSS_{C}/\left(n-p\right)}{RSS_{S}/\left(n-1\right)}$$
+With this adjusted definition, adding a variable to the model that has no predictive power will decrease $R_{adj}^{2}$.
+
+### Example
+Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function add1() which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.
+
+```{r}
+# Define the biggest model I wish to consider
+biggest <- Life.Exp ~ Population + Income + Illiteracy + Murder + 
+                      HS.Grad + Frost + Area + HS.Grad.2 + Income.2
+
+# Define the model I wish to start with
+m <- lm(Life.Exp ~ 1, data=state.data)
+
+add1(m, scope=biggest)  # what is the best addition to make?
+```
+
+Clearly the additiona of `Murder` to the model results in the lowest AIC value, so we will add `Murder` to the model. Notice the `<none>` row corresponds to the model m which we started with and it has a `RSS=88.299`. For each model considered, R will calculate the `RSS_{C}` for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.
+
+```{r}
+m <- update(m, . ~ . + Murder)  # add murder to the model
+add1(m, scope=biggest)          # what should I add next?
+```
+
+
+There is a companion function to `add1()` that finds the best term to drop. It is conveniently named `drop1()` but here the `scope` parameter defines the smallest model to be considered.
+
+It would be nice if all of this work was automated. Again, R makes our life easy and the function `step()` does exactly this. The set of models searched is determined by the scope argument which can be a *list* of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If `scope` is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.
+
+```{r}
+smallest <- Life.Exp ~ 1
+biggest <- Life.Exp ~ Population + Income + Illiteracy + 
+                      Murder + HS.Grad + Frost + Area + HS.Grad.2 + Income.2
+m <- lm(Life.Exp ~ Income, data=state.data)
+step(m, scope=list(lower=smallest, upper=biggest))
+```
+
+Notice that our model selected by `step()` is not the same model we obtained when we started with the biggest model and removed things based on p-values. 
+
+The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was
+
+```{r}
+# m1 was
+m1 <- lm(Life.Exp ~ Income + Murder + Frost + Income.2, data = state.data)
+AIC(m1)
+```
+
+and the model selected by the stepwise algorithm was
+
+```{r}
+m3 <- lm(Life.Exp ~ Murder + Frost + HS.Grad + Population, data = state.data)
+AIC(m3)
+```
+
+Because `step()` and `AIC()` are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.
+
+First we calculate the difference using the AIC() function:
+
+```{r}
+AIC(m1) - AIC(m3)
+```
+
+and next we use `add1()` on both models to see what the AIC values for each.
+
+```{r}
+add1(m1, scope=biggest)
+add1(m3, scope=biggest)
+```
+
+
+Using these results, we can calculate the difference in AIC values to be the same as we calculated before $$\begin{aligned}
+-22.465--28.161	&=	-22.465+28.161 \\
+	&=	5.696
+	\end{aligned}$$
+ 
+## Exercises
+1. Consider the `prostate` data from the `faraway` package. The variable `lpsa` is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use `lpsa` as the response and all the other variables as predictors (no interactions). Determine the “best” model using:
+
+    a. Backward elimination using the analysis of variance F-statistic as the criteria.
+
+    b. Forward selection using AIC as the criteria.
+
+2. Again from the `faraway` package, use the `divusa` which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use `divorce` as the response variable and all other variables as the predictors.
+
+    a. Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test='F' to use an F-test instead of AIC.
+
+    b. Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?
