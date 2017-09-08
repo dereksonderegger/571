@@ -576,9 +576,9 @@ y_{3,4}
 
     a. Create one vector of all 24 hostility test scores `y`. (Use the `c()` function.)
     
-    b. Create a design matrix `X` with dummy variables for columns that code for what group an observation belongs to. Notice that \texttt{X} will be a $24$ rows by $3$ column matrix. An R function that might be handy is \texttt{cbind(a,b)} which will bind two vectors or matrices together along the columns. (There is also a corresponding \texttt{rbind()} function that binds vectors/matrices along rows.)
+    b. Create a design matrix `X` with dummy variables for columns that code for what group an observation belongs to. Notice that `X` will be a $24$ rows by $3$ column matrix. _Hint: An R function that might be handy is `cbind(a,b)` which will bind two vectors or matrices together along the columns. (There is also a corresponding `rbind()` function that binds vectors/matrices along rows.) Also you'll like to have the repeat command `rep()`._
     
-    c) Find $\hat{\boldsymbol{\beta}}$ using the matrix formula given in class. The R function \texttt{t(A)} computes the matrix transpose $\mathbf{A}^{T}$, \texttt{solve(A)} computes $\mathbf{A}^{-1}$, and the operator\texttt{ \%{*}\%} does matrix multiplication (used as \texttt{A \%{*}\% B}).
+    c) Find $\hat{\boldsymbol{\beta}}$ using the matrix formula given in class. _Hint: The R function `t(A)` computes the matrix transpose $\mathbf{A}^{T}$, `solve(A)` computes $\mathbf{A}^{-1}$, and the operator `%*%` does matrix multiplication (used as `A %*% B`)._
     
     d) Examine the matrix $\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\mathbf{X}^{T}$.
 What do you notice about it? In particular, think about the result

@@ -6,9 +6,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
-  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.1.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -25,13 +24,8 @@
 
 <meta name="author" content="Derek L. Sonderegger">
 
-<meta name="date" content="2016-12-04">
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+<meta name="date" content="2017-09-08">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,7 +34,6 @@ MathJax.Hub.Config({
   
 
 <link rel="next" href="2-parameter-estimation.html">
-
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -98,6 +91,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </head>
 
 <body>
+
 
 
   <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
@@ -168,11 +162,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="5" data-path="5-contrasts.html"><a href="5-contrasts.html"><i class="fa fa-check"></i><b>5</b> Contrasts</a><ul>
 <li class="chapter" data-level="5.1" data-path="5-contrasts.html"><a href="5-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>5.1</b> Estimate and variance</a></li>
-<li class="chapter" data-level="5.2" data-path="5-contrasts.html"><a href="5-contrasts.html#estimating-contrasts-in-r"><i class="fa fa-check"></i><b>5.2</b> Estimating contrasts in R</a><ul>
+<li class="chapter" data-level="5.2" data-path="5-contrasts.html"><a href="5-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>5.2</b> Estimating contrasts using <code>glht()</code></a><ul>
 <li class="chapter" data-level="5.2.1" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova"><i class="fa fa-check"></i><b>5.2.1</b> 1-way ANOVA</a></li>
 <li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.3</b> Exercises</a></li>
+<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#using-lsmeans-package"><i class="fa fa-check"></i><b>5.3</b> Using <code>lsmeans</code> Package</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="5-contrasts.html"><a href="5-contrasts.html#simple-regression-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="5.3.2" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>5.3.2</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.3.3" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova"><i class="fa fa-check"></i><b>5.3.3</b> ANCOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a><ul>
 <li class="chapter" data-level="6.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>6.1</b> Detecting Assumption Violations</a><ul>
@@ -245,9 +244,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html"><i class="fa fa-check"></i><b>13</b> A Brief Introduction to Time Series</a><ul>
-<li class="chapter" data-level="13.1" data-path="13-a-brief-introduction-to-time-series.html"><a href="13-a-brief-introduction-to-time-series.html#trend-seasonality"><i class="fa fa-check"></i><b>13.1</b> Trend + Seasonality</a></li>
-</ul></li>
 </ul>
 
       </nav>
@@ -268,7 +264,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="header">
 <h1 class="title">Statistical Methods II</h1>
 <h4 class="author"><em>Derek L. Sonderegger</em></h4>
-<h4 class="date"><em>2016-12-04</em></h4>
+<h4 class="date"><em>2017-09-08</em></h4>
 </div>
 <div id="matrix-theory" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Matrix Theory</h1>
@@ -651,8 +647,9 @@ and thus
         </div>
       </div>
 
-<a href="2-parameter-estimation.html" class="navigation navigation-next navigation-unique" aria-label="Next page""><i class="fa fa-angle-right"></i></a>
-
+<a href="2-parameter-estimation.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
@@ -664,6 +661,7 @@ and thus
 require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
+"github": false,
 "facebook": true,
 "twitter": true,
 "google": false,
@@ -679,7 +677,7 @@ gitbook.start({
 },
 "edit": {
 "link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/index.Rmd",
-"text": null
+"text": "Edit"
 },
 "download": null,
 "toc": {
@@ -695,7 +693,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(script.src))
       script.src  = script.src.replace(/^https?:/, '');
     document.getElementsByTagName("head")[0].appendChild(script);

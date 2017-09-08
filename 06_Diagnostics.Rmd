@@ -531,7 +531,7 @@ To investigate the effects of a log transformation, we'll examine a dataset that
 
 ```{r}
 scores <- read.table(
-  file='http://www.ats.ucla.edu/stat/mult_pkg/faq/general/lgtrans.csv',
+  file='https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv',
   header=TRUE, sep=',')
 scores <- scores %>% mutate(gender = female)
 pairs(write~read+math+gender, data=scores)

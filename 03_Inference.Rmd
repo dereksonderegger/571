@@ -41,8 +41,16 @@ head(gala)          # show the first couple of rows
 
 First we will create the full model that predicts the number of species as a function of elevation, area, nearest, scruz and adjacent. Notice that this model has $p=6$ $\beta_{i}$ values (one for each coefficient plus the intercept).
 
+$$ y_i = \beta_0 + \beta_1 Area_i + \beta_2 Elevation_i + \beta_3 Nearest_i + \beta_4 Scruz_i + \beta_5 Adjacent_i + \epsilon_i$$
+
+We can happily fit this model just by adding terms on the left hand side of the model formula.  Notice that R creates the design matrix $X$ for us.
 ```{r}
 M.c <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
+model.matrix(M.c)  # this is the design matrix X.
+```
+
+All the usual calculations from chapter two can be calculated and we can see the summary table for this regression as follows:
+```{r}
 summary(M.c)
 ```
 

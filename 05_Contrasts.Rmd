@@ -4,6 +4,14 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.height=3)
 ```
 
+```{r, warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+library(lsmeans)    # for lsmeans()
+library(multcomp)   # for glht() 
+```
+
+
 We often are interested in estimating a function of the parameters $\boldsymbol{\beta}$. For example in the offset representation of the ANOVA model with 3 groups we have
 $$y_{ij}=\mu+\tau_{i}+\epsilon_{ij}$$
 where 
@@ -104,7 +112,7 @@ summary(CellMeansModel)$coefficients
 ```
 
 
-## Estimating contrasts in R
+## Estimating contrasts using `glht()`
 
 Instead of us doing all the matrix calculations ourselves, all we really need is to is specify the row vector $\boldsymbol{c}^{T}$. The function that will do the rest of the calculations is the generalized linear hypothesis test function `glht()` that can be found in the multiple comparisons package `multcomp`. The p-values will be adjusted to correct for testing multiple hypothesis, so there may be slight differences compared to the p-value seen in just the regular summary table.
 
@@ -148,14 +156,12 @@ confint(test, level=0.95)
 
 ### ANCOVA example
 
-In the ANCOVA case, there are more interesting contrasts to be made. For this example we will use the `ToothGrowth` dataset from the faraway package. This data measuring the effects of different dose levels of vitamin C on tooth growth of guinea pigs. The two different delivery methods are encoded by the variable supp which has levels of orange juice (OJ) and ascorbic acid (VC). 
+In the ANCOVA case, there are more interesting contrasts to be made. For this example we will use the `ToothGrowth` dataset. This data measuring the effects of different dose levels of vitamin C on tooth growth of guinea pigs. The two different delivery methods are encoded by the variable supp which has levels of orange juice (OJ) and ascorbic acid (VC). 
 
 We first fit a ANCOVA model with an interaction between log(dose) level and delivery method and graph the result.
 
 ```{r, fig.height=4, warning=FALSE, message=FALSE}
-library(ggplot2)
-library(faraway)
-data(ToothGrowth)
+data('ToothGrowth')
 ToothGrowth$logDose <- log( ToothGrowth$dose )
 m <- lm(len ~ logDose * supp, data=ToothGrowth)
 
@@ -194,12 +200,12 @@ summary(test)
 
 In our original table of summary coefficients, the (intercept) term corresponds to the tooth growth of a guinea pig when the logDose level is 0 (and therefore dose=1). If I wanted to estimate the tooth growth of a guinea pig fed OJ but with only $1/2$ a dose (and therefore $logDose=\log\left(1/2\right)=-0.69$), then we want 
 
-\begin{eqnarray*}
-\hat{y}_{oj,dose=0.5}	& = &	\hat{\beta}_{0}+\hat{\beta}_{1}\log\left(0.5\right)\\
-	                    & = &	20.6+9.25\log\left(0.5\right)\\
-	                    & = &	20.6+9.25\left(-0.69\right)\\
-	                    & = &	14.21
-\end{eqnarray*}
+$$\begin{aligned}
+\hat{y}_{oj,dose=0.5}	& = 	\hat{\beta}_{0}+\hat{\beta}_{1}\log\left(0.5\right)\\
+	                    & = 	20.6+9.25\log\left(0.5\right)\\
+	                    & = 	20.6+9.25\left(-0.69\right)\\
+	                    & = 	14.21
+\end{aligned}$$
 
 which I can write as 
 $$y_{oj,dose=0.5}	=	\left[\begin{array}{cccc}
@@ -209,8 +215,7 @@ $$y_{oj,dose=0.5}	=	\left[\begin{array}{cccc}
 \hat{\beta}_{2}\\
 \hat{\beta}_{3}
 \end{array}\right]
-	=	\boldsymbol{c}_{1}^{T}\hat{\boldsymbol{\beta}}
-$$ 
+	=	\boldsymbol{c}_{1}^{T}\hat{\boldsymbol{\beta}}$$ 
 
 To calculate the same value for the VC group, we need the following contrast:
 
@@ -228,13 +233,15 @@ $$\begin{aligned}
 	  \end{aligned}$$
 
 
+
+
 ```{r}
 #                                Int  logDose  suppVC   logDose:suppVC
 contr <- rbind("OJ; 1/2 dose" = c(1,   -0.69,    0,          0         ),
                "VC; 1/2 dose" = c(1,   -0.69,    1,        -0.69       ))
 test <- glht(m, linfct=contr)
 summary(test)
-```
+``` 
 
 Finally we might be interested in testing if there is a treatment difference between OJ and VC at a 1/2
   dose level. So to do this, we want to calculate the difference between these two previous contrasts, i.e.
@@ -263,6 +270,111 @@ contr <- rbind("OJ - VC; dose 2" = c(0, 0, -1, -0.69))
 test <- glht(m, linfct=contr)
 summary(test)
 ```
+
+## Using `lsmeans` Package
+Specifying the contrasts by hand is extremely difficult to do correctly and instead we would prefer to specify the contrasts using language like "create all possible pairwise contrasts" where each pair is just a subtraction.  The R-package `lsmeans` tries to simply the creation of common contrasts. 
+
+To show how to use the `lsmeans` package, we'll consider a bunch of common models and show how to address common statistical questions for each.
+
+### Simple Regression
+There is a dataset built into R named `trees` which describes a set of $n=31$ cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.
+
+```{r}
+data(trees)
+model <- lm( Volume ~ Girth, data=trees )
+trees <- cbind( trees, predict(model, interval='conf'))
+ggplot(trees, aes(x=Girth, y=Volume)) +
+  geom_point() +
+  geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
+  geom_line( aes(y=fit) )
+```
+
+Using the `summary()` function, we can test hypotheses about if
+the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth valus of 10 and 12.
+
+```{r}
+# We could find the regression line heights and CI using 
+# either predict() or lsmeans()
+predict(model, newdata=data.frame(Girth=c(10,12)), interval='conf' )
+lsmeans(model, specs = ~Girth, at=list(Girth=c(10,12)) )  
+```
+
+The `lsmeans()` function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out.  In the simple regression case, the `specs` argument is just the single covariate.
+
+We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth?  In other words, we want to test
+$$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) == 0$$ 
+$$ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0$$ 
+
+In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$.
+
+```{r}
+lsmeans(model, specs = pairwise~Girth,
+        at=list(Girth=c(10,12)) ) 
+```
+
+Notice that if I was interested in 3 points, we would get all of the differences.
+
+```{r}
+lsmeans(model, specs = pairwise~Girth,
+        at=list(Girth=c(10,11,12)) ) 
+```
+
+### 1-way ANOVA
+To consider the pairwise contrasts between different levels we will consider the college student hostility data again. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used $24$ students who obtained high and nearly equal scores in the experiment. Eight subjects were selected at random from among the $24$ problem cases and were treated with method 1, seven of the remaining $16$ students were selected at random and treated with method 2 while the remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table.
+
+```{r}
+Hostility <- data.frame(
+  HLT = c(96,79,91,85,83,91,82,87,
+          77,76,74,73,78,71,80,
+          66,73,69,66,77,73,71,70,74),
+  Method = c( rep('M1',8), rep('M2',7), rep('M3',9) ) )
+```
+
+```{r}
+ggplot(Hostility, aes(x=Method, y=HLT)) +
+  geom_boxplot()
+```
+
+To use the `lsmeans()`, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.
+
+```{r}
+model <- lm( HLT ~ Method, data=Hostility )
+lsmeans::lsmeans(model, pairwise~Method)
+```
+
+### ANCOVA
+We will return to the `ToothGrowth` dataset and calculate all the interesting contrasts we previously built by hand.  
+
+```{r}
+data('ToothGrowth')
+ToothGrowth$logDose <- log( ToothGrowth$dose )
+m <- lm(len ~ logDose * supp, data=ToothGrowth)
+```
+
+First, lets get the slope and y-intercept for each group.
+
+```{r}
+lsmeans(m, ~logDose|supp, at=list(logDose=0)) %>% 
+  summary(infer=c(TRUE,TRUE))
+lsmeans(m, pairwise~logDose|supp, at=list(logDose=c(1,0))) %>% 
+  summary(infer=c(TRUE,TRUE))
+```
+
+The formula with the `|supp` part says that we want to do all the calculations for each level of the suppliment types. So we first calculate the response a logDose levels of 0 and 1 and then we take the difference by using the `pairwise`. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
+
+Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC suppliments. We also wanted to calculate the contrast between the two suppliment predictions.
+
+```{r}
+lsmeans(m, pairwise~logDose*supp, at=list(logDose=-.69)) %>% 
+  summary(infer=c(TRUE,TRUE))
+```
+
+We finished the section by making the same comparison for logdose = 0.69 (i.e. dose=2).
+```{r}
+lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>% 
+  summary(infer=c(TRUE,TRUE))
+```
+
 
 ## Exercises
 
