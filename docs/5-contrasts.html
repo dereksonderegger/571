@@ -416,16 +416,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6449
+## Quantile = 2.6455
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7346 90.7654
-## Mean of Group 2 == 0 75.5714  71.2788 79.8641
-## Mean of Group 3 == 0 71.0000  67.2143 74.7857
-## Diff G2-G3 == 0       4.5714  -1.1521 10.2949</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7337 90.7663
+## Mean of Group 2 == 0 75.5714  71.2778 79.8651
+## Mean of Group 3 == 0 71.0000  67.2134 74.7866
+## Diff G2-G3 == 0       4.5714  -1.1534 10.2963</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -470,10 +470,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425  &lt; 1e-10 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712 2.65e-10 ***
-## Intercept VC == 0  16.9633     0.6791  24.977  &lt; 1e-10 ***
-## Slope     VC == 0  13.0997     1.2000  10.916  &lt; 1e-10 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -590,7 +590,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>The <code>lsmeans()</code> function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out. In the simple regression case, the <code>specs</code> argument is just the single covariate.</p>
-<p>We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth? In other words, we want to test <span class="math display">\[ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) == 0\]</span> <span class="math display">\[ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0\]</span></p>
+<p>We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth? In other words, we want to test <span class="math display">\[ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0\]</span> <span class="math display">\[ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0\]</span></p>
 <p>In this case, we want to look at all possible pairwise differences between the predicted values at <span class="math inline">\(10\)</span> and <span class="math inline">\(12\)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> pairwise~Girth,
         <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) ) </code></pre></div>
@@ -636,7 +636,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
 <p>To use the <code>lsmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT ~<span class="st"> </span>Method, <span class="dt">data=</span>Hostility )
-lsmeans::<span class="kw">lsmeans</span>(model, pairwise~Method)</code></pre></div>
+<span class="kw">lsmeans</span>(model, pairwise~Method)</code></pre></div>
 <pre><code>## $lsmeans
 ##  Method   lsmean       SE df lower.CL upper.CL
 ##  M1     86.75000 1.518172 21 83.59279 89.90721
@@ -658,9 +658,15 @@ lsmeans::<span class="kw">lsmeans</span>(model, pairwise~Method)</code></pre></d
 <p>We will return to the <code>ToothGrowth</code> dataset and calculate all the interesting contrasts we previously built by hand.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)
 ToothGrowth$logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth$dose )
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"> </span>logDose *<span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)</code></pre></div>
-<p>First, lets get the slope and y-intercept for each group.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose|supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) %&gt;%<span class="st"> </span>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"> </span>logDose *<span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
+ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGrowth, <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+<span class="kw">ggplot</span>(ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">color=</span>supp, <span class="dt">fill=</span>supp)) +
+<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) +
+<span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) +
+<span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">y=</span>len) )</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p>First, lets get the slope and y-intercept for each group. In the following code, the formula with the <code>| supp</code> part says that we want to do all the calculations for each level of the suppliment types. The first call to <code>lsmeans()</code> calculates the response at logDose level 0, while the second call calculates the response at logDose levels 0 and 1 and then takes the difference because of the use of the <code>pairwise</code>. By passing the result of the <code>lsmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose |<span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## supp = OJ:
 ##  logDose   lsmean        SE df lower.CL upper.CL t.ratio p.value
@@ -671,7 +677,7 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"
 ##        0 16.96333 0.6791481 56 15.60284 18.32383  24.977  &lt;.0001
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise~logDose|supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>))) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise ~<span class="st"> </span>logDose |<span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>))) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## $lsmeans
 ## supp = OJ:
@@ -696,7 +702,6 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"
 ##  1 - 0    13.099671 1.200009 56 10.695763 15.50358  10.916  &lt;.0001
 ## 
 ## Confidence level used: 0.95</code></pre>
-<p>The formula with the <code>|supp</code> part says that we want to do all the calculations for each level of the suppliment types. So we first calculate the response a logDose levels of 0 and 1 and then we take the difference by using the <code>pairwise</code>. By passing the result of the <code>lsmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
 <p>Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC suppliments. We also wanted to calculate the contrast between the two suppliment predictions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise~logDose*supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>)) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
@@ -766,7 +771,8 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 ## [1] 0 1 2 2 3 3
 ## attr(,&quot;contrasts&quot;)
 ## attr(,&quot;contrasts&quot;)$cyl
-## [1] &quot;contr.treatment&quot;</code></pre></li>
+## [1] &quot;contr.treatment&quot;</code></pre>
+<p><em>Hint: the purpose of this step is to make sure everyone knows the column order of the design matrix so that you interprete the <span class="math inline">\(\beta\)</span> terms in the correct order.</em></p></li>
 <li>Denote the coefficients obtained from the summary of your <code>lm()</code> call as <span class="math inline">\(\hat{\beta}_{0}\)</span> to <span class="math inline">\(\hat{\beta}_{5}\)</span> (in the order given by R). Write your interaction model out using subscript notation and should be in the form <span class="math display">\[y_{i}=\begin{cases}
 ??????? &amp; \;\;\textrm{if 4 cylinder}\\
 ??????? &amp; \;\;\textrm{if 6 cylinder}\\
@@ -782,14 +788,15 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 </ol></li>
 <li>Comment on the process by which you could create the interaction columns just using the <code>wt</code> and <code>cyl</code> columns.<br />
 </li>
-<li><p>Using the full dataset, tit the model that predicts mpg using both weight and number of cylinders and their interaction using the command</p>
+<li><p>Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg ~<span class="st"> </span>wt*cyl, <span class="dt">data=</span>mtcars)</code></pre></div></li>
-<li>Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.</li>
-<li>What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the <code>predict()</code> function. <em>Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).</em></li>
-<li>Answer the previous question but using the <code>glht()</code> function.</li>
-<li>What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the <code>glht()</code> function.</li>
-<li>What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons?</li>
-<li><p>Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different?</p></li>
+<li><p>Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.</p></li>
+<li><p>What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the <code>predict()</code> function. <em>Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).</em></p></li>
+<li><p>Recalculate your answer to part (f) using the <code>glht()</code> function.</p></li>
+<li><p>Recalculate your answer to part (f) using the <code>lsmeans()</code> function.</p></li>
+<li><p>What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the <code>glht()</code> function and using the <code>lsmeans()</code> function.</p></li>
+<li><p>What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons? Calculate this result using both the <code>glht()</code> and <code>lsmeans()</code>.</p></li>
+<li><p>Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use either <code>lsmeans()</code> or <code>glht()</code> to produce this result.</p></li>
 </ol></li>
 </ol>
 

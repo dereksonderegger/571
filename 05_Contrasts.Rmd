@@ -302,7 +302,7 @@ lsmeans(model, specs = ~Girth, at=list(Girth=c(10,12)) )
 The `lsmeans()` function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out.  In the simple regression case, the `specs` argument is just the single covariate.
 
 We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth?  In other words, we want to test
-$$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) == 0$$ 
+$$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0$$ 
 $$ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0$$ 
 
 In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$.
@@ -339,7 +339,7 @@ To use the `lsmeans()`, we again will use the pairwise command where we specify 
 
 ```{r}
 model <- lm( HLT ~ Method, data=Hostility )
-lsmeans::lsmeans(model, pairwise~Method)
+lsmeans(model, pairwise~Method)
 ```
 
 ### ANCOVA
@@ -349,18 +349,22 @@ We will return to the `ToothGrowth` dataset and calculate all the interesting co
 data('ToothGrowth')
 ToothGrowth$logDose <- log( ToothGrowth$dose )
 m <- lm(len ~ logDose * supp, data=ToothGrowth)
+ToothGrowth <- cbind(ToothGrowth, predict(m, interval='conf'))
+ggplot(ToothGrowth, aes(x=logDose, color=supp, fill=supp)) +
+  geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
+  geom_line( aes(y=fit) ) +
+  geom_point( aes(y=len) )
 ```
 
-First, lets get the slope and y-intercept for each group.
+First, lets get the slope and y-intercept for each group. In the following code, the formula with the `| supp` part says that we want to do all the calculations for each level of the suppliment types. The first call to `lsmeans()` calculates the response at logDose level 0, while the second call calculates the response at logDose levels 0 and 1 and then takes the difference because of the use of the `pairwise`. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
+
 
 ```{r}
-lsmeans(m, ~logDose|supp, at=list(logDose=0)) %>% 
+lsmeans(m, ~logDose | supp, at=list(logDose=0)) %>% 
   summary(infer=c(TRUE,TRUE))
-lsmeans(m, pairwise~logDose|supp, at=list(logDose=c(1,0))) %>% 
+lsmeans(m, pairwise ~ logDose | supp, at=list(logDose=c(1,0))) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
-
-The formula with the `|supp` part says that we want to do all the calculations for each level of the suppliment types. So we first calculate the response a logDose levels of 0 and 1 and then we take the difference by using the `pairwise`. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
 
 Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC suppliments. We also wanted to calculate the contrast between the two suppliment predictions.
 
@@ -398,6 +402,8 @@ lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>%
           slice(1:3)                    # grab first three rows of each group
         model.matrix(  lm(mpg ~ wt*cyl, data=mtcars.small) )
         ```
+        _Hint: the purpose of this step is to make sure everyone knows the column order of the design matrix so that you interprete the $\beta$ terms in the correct order._
+        
     b. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{0}$ to $\hat{\beta}_{5}$ (in the order given by R). Write your interaction model out using subscript notation and should be in the form
         $$y_{i}=\begin{cases}
         ??????? & \;\;\textrm{if 4 cylinder}\\
@@ -411,15 +417,23 @@ lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>%
         iv. $\hat{\beta}_3$ = ???
         v. $\hat{\beta}_4$ = ???
         vi. $\hat{\beta}_5$ = ???
-
+        
     c. Comment on the process by which you could create the interaction columns just using the `wt` and `cyl` columns.         
-    d. Using the full dataset, tit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
+    d. Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
         ```{r}
         model <- lm(mpg ~ wt*cyl, data=mtcars)
         ```
+        
     e. Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.
+    
     f. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
-    g. Answer the previous question but using the `glht()` function.
-    h. What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the `glht()` function.
-    i. What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons?
-    j. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different?
+    
+    g. Recalculate your answer to part (f) using the `glht()` function.
+    
+    h. Recalculate your answer to part (f) using the `lsmeans()` function.
+    
+    i. What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the `glht()` function and using the `lsmeans()` function.
+    
+    j. What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons? Calculate this result using both the `glht()` and `lsmeans()`. 
+    
+    k. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use either `lsmeans()` or `glht()` to produce this result.  
