@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+
+<meta name="date" content="2017-09-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="5-contrasts.html">
+<link rel="next" href="7-variable-selection.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>1.1</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>1.1.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>1.1.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>1.1.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>1.1.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.1.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.1.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.1.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.1.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>1.1.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.2</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>1.2.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.2.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>1.2.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>1.2.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.2.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.2.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>1.2.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.2.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>1.2.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.1</b> Simple Regression</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.1.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.1.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.1.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="2.1.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.1.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.1.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.1.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.1.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.1.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="2.1.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.1.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>2.1.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2</b> ANOVA model</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>2.2.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>4.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="4.2" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>4.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="4.3" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>4.3</b> Iris Example</a></li>
+<li class="chapter" data-level="4.4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-contrasts.html"><a href="5-contrasts.html"><i class="fa fa-check"></i><b>5</b> Contrasts</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-contrasts.html"><a href="5-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>5.1</b> Estimate and variance</a></li>
+<li class="chapter" data-level="5.2" data-path="5-contrasts.html"><a href="5-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>5.2</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova"><i class="fa fa-check"></i><b>5.2.1</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#using-lsmeans-package"><i class="fa fa-check"></i><b>5.3</b> Using <code>lsmeans</code> Package</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="5-contrasts.html"><a href="5-contrasts.html#simple-regression-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="5.3.2" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>5.3.2</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.3.3" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova"><i class="fa fa-check"></i><b>5.3.3</b> ANCOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>6.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>6.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>6.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>6.2</b> Transformations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>6.2.1</b> Transforming the Response</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>6.2.2</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-block-designs.html"><a href="10-block-designs.html"><i class="fa fa-check"></i><b>10</b> Block Designs</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-block-designs.html"><a href="10-block-designs.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>10.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="10.2" data-path="10-block-designs.html"><a href="10-block-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="10.3" data-path="10-block-designs.html"><a href="10-block-designs.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html"><i class="fa fa-check"></i><b>11</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="11.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>11.1</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.2</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.3</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
+<li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="diagnostics-and-transformations" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Diagnostics and Transformations</h1>
+<p>We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:</p>
+<ol style="list-style-type: decimal">
+<li><p>Unusual observations that contribute too much influence to the analysis. These few observations might drastically change the outcome of the model.</p></li>
+<li><p>Model misspecification. Our assumption that <span class="math inline">\(E\left[\boldsymbol{y}\right]=\boldsymbol{X}\boldsymbol{\beta}\)</span> might be wrong and we might need to include different covariates in the model to get a satisfactory result.</p></li>
+<li><p>Error distribution. We have assumed that <span class="math inline">\(\boldsymbol{\epsilon}\sim MVN\left(\boldsymbol{0},\sigma^{2}\boldsymbol{I}\right)\)</span> but autocorrelation, heteroscedasticity, and non-normality might be present.</p></li>
+</ol>
+<p>Often problems with one of these can be corrected by tranforming either the explanatory or response variables.</p>
+<div id="detecting-assumption-violations" class="section level2">
+<h2><span class="header-section-number">6.1</span> Detecting Assumption Violations</h2>
+<p>Throughout this chapter I will use data created by Francis Anscombe that show how simple linear regression can be misused. In particular, these data sets will show how our diagnostic measures will detect various departures from the model assumptions.</p>
+<p>The data are available in R as a data frame <code>anscombe</code> and is loaded by default. The data consists of four datasets, each having the same linear regression <span class="math inline">\(\hat{y}=3+0.5\,x\)</span> but the data are drastically different.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(dplyr)
+
+<span class="co"># The anscombe dataset has 8 columns - x1,x2,x3,x4,y1,y2,y3,y4</span>
+<span class="co"># and I want it to have 3 columns - Set, X, Y</span>
+Anscombe &lt;-<span class="st"> </span><span class="kw">rbind</span>( 
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x1, <span class="dt">y=</span>anscombe$y1, <span class="dt">set=</span><span class="st">&#39;Set 1&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x2, <span class="dt">y=</span>anscombe$y2, <span class="dt">set=</span><span class="st">&#39;Set 2&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x3, <span class="dt">y=</span>anscombe$y3, <span class="dt">set=</span><span class="st">&#39;Set 3&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x4, <span class="dt">y=</span>anscombe$y4, <span class="dt">set=</span><span class="st">&#39;Set 4&#39;</span>)) 
+
+<span class="co"># order them by their x values, and add an index column</span>
+Anscombe &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(set) %&gt;%<span class="st">       </span><span class="co"># Every subsequent action happens by dataset</span>
+<span class="st">  </span><span class="kw">arrange</span>(x,y) %&gt;%<span class="st">        </span><span class="co"># sort them on the x-values and if tied, by y-value</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">index =</span> <span class="dv">1</span>:<span class="kw">n</span>() ) <span class="co"># give each observation within a set, an ID number</span>
+
+<span class="co"># Make a nice graph</span>
+<span class="kw">ggplot</span>(Anscombe, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) +
+<span class="st"> </span><span class="kw">geom_point</span>() +
+<span class="st"> </span><span class="kw">facet_wrap</span>(~set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) +
+<span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y~x, <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<div id="measures-of-influence" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Measures of Influence</h3>
+<div id="standardized-residuals-aka-studentized" class="section level4">
+<h4><span class="header-section-number">6.1.1.1</span> Standardized Residuals (aka Studentized )</h4>
+<p>Recall that we have</p>
+<p><span class="math display">\[\begin{aligned}\hat{\boldsymbol{y}}   
+  &amp;=    \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+    &amp;=  \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
+    &amp;=  \boldsymbol{H}\boldsymbol{y}\\
+\end{aligned}\]</span></p>
+<p>where the “Hat Matrix” is <span class="math inline">\(\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\)</span> because we have <span class="math inline">\(\hat{\boldsymbol{y}}=\boldsymbol{H}\boldsymbol{y}\)</span>. The elements of <span class="math inline">\(\boldsymbol{H}\)</span> can be quite useful in diagnostics. It can be shown that the variance of the <span class="math inline">\(i\)</span>the residual is <span class="math display">\[Var\left(\hat{\epsilon}_{i}\right)=\sigma^{2}\left(1-\boldsymbol{H}_{ii}\right)\]</span> where <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> is the <span class="math inline">\(i\)</span>th element of the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>. This suggests that I could rescale my residuals to <span class="math display">\[\hat{\epsilon}_{i}^{*}=\frac{\hat{\epsilon}_{i}}{\hat{\sigma}\sqrt{1-\boldsymbol{H}_{ii}}}\]</span> which, if the normality and homoscedasticity assumptions hold, should behave as a <span class="math inline">\(N\left(0,1\right)\)</span> sample.</p>
+<p>These rescaled residuals are called “studentized residuals”, though R typically refers to them as “standardized”. Since we have a good intuition about the scale of a standard normal distribution, the scale of standardized residuals will give a good indicator if normality is violated.</p>
+<p>There are actually two types of studentized residuals, typically called <em>internal</em> and <em>external</em> among statisticians. The version presented above is the <em>internal</em> version which can be obtained using the R function <code>rstandard()</code> while the <em>external</em> version is available using <code>rstudent()</code>. Whenever you see R present standardized residuals, they are talking about internally studentized residuals. For sake of clarity, I will use the term <em>standardized</em> as well.</p>
+<div id="example---anscombes-set-3" class="section level5">
+<h5><span class="header-section-number">6.1.1.1.1</span> Example - Anscombe’s set 3</h5>
+<p>For the third dataset, the outlier is the ninth observation with <span class="math inline">\(x_{9}=13\)</span> and <span class="math inline">\(y_{9}=12.74\)</span>. We calculate the standardized residuals using the function <code>rstandard()</code> and plot them</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>(set ==<span class="st"> &#39;Set 3&#39;</span>) <span class="co"># Just set 3</span>
+model &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data=</span>Set3)               <span class="co"># Fit the regression line</span>
+Set3$stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(model)           <span class="co"># rstandard() returns the standardized residuals</span>
+
+<span class="kw">ggplot</span>(Set3, <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>stdresid)) +<span class="st">    </span><span class="co"># make a plot</span>
+<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Observation Index&#39;</span>, 
+       <span class="dt">y=</span><span class="st">&#39;Standardized Residuals&#39;</span>, 
+       <span class="dt">title=</span><span class="st">&#39;Standardized Residuals vs Observation Index&#39;</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p>and we notice that the outlier residual is really big. If the model assumptions were true, then the standardized residuals should follow a standard normal distribution, and I would need to have hundreds of observations before I wouldn’t be surprised to see a residual more than 3 standard deviations from 0.</p>
+</div>
+</div>
+<div id="leverage" class="section level4">
+<h4><span class="header-section-number">6.1.1.2</span> Leverage</h4>
+<p>The extremely large standardized residual suggests that this data point is important, but we would like to quantify how important this observation actually is.</p>
+<p>One way to quantify this is to look at the elements of <span class="math inline">\(\boldsymbol{H}\)</span>. Because <span class="math display">\[\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}\]</span> then the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\boldsymbol{H}\)</span> is a vector of weights that tell us how influential a point <span class="math inline">\(y_{j}\)</span> is for calculating the predicted value <span class="math inline">\(\hat{y}_{i}\)</span>. If I look at just the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>, these are how much weight a point has on its predicted value. As such, I can think of the <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> as the amount of leverage a particular data point has on the regression line.</p>
+<p>Fortunately there is already a function <code>hatvalues()</code> to compute these <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> values for me. We will compare the leverages from Anscombe’s set 3 versus set 4.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>( set ==<span class="st"> &#39;Set 3&#39;</span>)
+Set4 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>( set ==<span class="st"> &#39;Set 4&#39;</span>)
+
+model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data =</span> Set3 )
+model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data =</span> Set4 )
+
+Set3 &lt;-<span class="st"> </span>Set3 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model3))  <span class="co"># add leverage columns</span>
+Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model4))
+
+<span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) +
+<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="st">  </span><span class="kw">facet_grid</span>( . ~<span class="st"> </span>set )</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<p>This leverage idea only picks out the <em>potential</em> for a specific value of <span class="math inline">\(x\)</span> to be influential, but does not actually measure influence. It has picked out the issue with the fourth data set, but does not adequately address the outlier in set 3.</p>
+</div>
+<div id="cooks-distance" class="section level4">
+<h4><span class="header-section-number">6.1.1.3</span> Cook’s Distance</h4>
+<p>To attempt to measure the actual influence of an observation <span class="math inline">\(\left\{ y_{i},\boldsymbol{x}_{i}^{T}\right\}\)</span> on the linear model, we consider the effect on the regression if we removed the observation and fit the same model. Let <span class="math display">\[\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\]</span> be the vector of predicted values, where <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is created using all of the data, and <span class="math inline">\(\hat{\boldsymbol{y}}_{(i)}=\boldsymbol{X}\hat{\boldsymbol{\beta}}_{(i)}\)</span> be the vector of predicted values where <span class="math inline">\(\hat{\boldsymbol{\beta}}_{(i)}\)</span> was estimated using all of the data except the <span class="math inline">\(i\)</span>th observation. Letting <span class="math inline">\(p\)</span> be the number of <span class="math inline">\(\beta_{j}\)</span> parameters as usual we define Cook’s distance of the <span class="math inline">\(i\)</span>th observation as <span class="math display">\[ D_{i} = \frac{\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)^{T}\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)}{p\hat{\sigma}^{2}}\]</span> which boils down to saying if the predicted values have large changes when the <span class="math inline">\(i\)</span>th element is removed, then the distance is big. It can be shown that this formula can be simplified to <span class="math display">\[D_{i}=\frac{\hat{\epsilon}_{i}^{*}\boldsymbol{H}_{ii}}{p\left(1-H_{ii}\right)}\]</span> which expresses Cook’s distance in terms of the <span class="math inline">\(i\)</span>th studentized residual and the <span class="math inline">\(i\)</span>th leverage.</p>
+<p>Nicely, the R function <code>cooks.distance()</code> will calculate Cook’s distance.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Set3 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model3))  
+Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model4))
+
+<span class="co"># Note: The high leverage point in set 4 has a Cook&#39;s distance of Infinity.</span>
+<span class="kw">ggplot</span>(<span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>cooksd)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>set) +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Cook&#39;s Distance&quot;</span>)</code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p>Some texts will give a rule of thumb that points with Cook’s distances greater than 1 should be considered influential, while other books claim a reasonable rule of thumb is <span class="math inline">\(4/\left(n-p-1\right)\)</span> where <span class="math inline">\(n\)</span> is the sample size, and <span class="math inline">\(p\)</span> is the number of parameters in <span class="math inline">\(\boldsymbol{\beta}\)</span>. My take on this, is that you should look for values that are highly different from the rest of your data.</p>
+</div>
+</div>
+<div id="diagnostic-plots" class="section level3">
+<h3><span class="header-section-number">6.1.2</span> Diagnostic Plots</h3>
+<p>After fitting a linear model in R, you have the option of looking at diagnostic plots that help to decide if any assumptions are being violated. We will step through each of the plots that are generated by the function <code>plot(model)</code> or using <code>ggplot2</code> using the package <code>ggfortify</code>.</p>
+<p>In the package <code>ggfortify</code> there is a function that will calculate the diagnostics measures and add them to your dataset. This will simplify our graphing process.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set1 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>(set ==<span class="st"> &#39;Set 1&#39;</span>)
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( y ~<span class="st"> </span>x, <span class="dt">data=</span>Set1)
+Set1 &lt;-<span class="st"> </span><span class="kw">fortify</span>(model)  <span class="co"># add dignostic measures to the dataset</span>
+Set1 %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># show the dataset nicely</span></code></pre></div>
+<pre><code>##        y  x  .hat .sigma .cooksd .fitted .resid .stdresid
+## 1   4.26  4 0.318  1.273   0.123   5.000 -0.740    -0.725
+## 2   5.68  5 0.236  1.310   0.004   5.501  0.179     0.166
+## 3   7.24  6 0.173  1.220   0.127   6.001  1.239     1.102
+## 4   4.82  7 0.127  1.147   0.154   6.501 -1.681    -1.455
+## 5   6.95  8 0.100  1.311   0.000   7.001 -0.051    -0.043
+## 6   8.81  9 0.091  1.218   0.062   7.501  1.309     1.110
+## 7   8.04 10 0.100  1.312   0.000   8.001  0.039     0.033
+## 8   8.33 11 0.127  1.310   0.002   8.501 -0.171    -0.148
+## 9  10.84 12 0.173  1.100   0.279   9.001  1.839     1.635
+## 10  7.58 13 0.236  1.056   0.489   9.501 -1.921    -1.778
+## 11  9.96 14 0.318  1.311   0.000  10.001 -0.041    -0.041</code></pre>
+<div id="residuals-vs-fitted" class="section level4">
+<h4><span class="header-section-number">6.1.2.1</span> Residuals vs Fitted</h4>
+<p>In the simple linear regression the most useful plot to look at was the residuals versus the <span class="math inline">\(x\)</span>-covariate, but we also saw that this was similar to looking at the residuals versus the fitted values. In the general linear model, we will look at the residuals versus the fitted values or possibly the studentized residuals versus the fitted values.</p>
+<div id="polynomial-relationships" class="section level5">
+<h5><span class="header-section-number">6.1.2.1.1</span> Polynomial relationships</h5>
+<p>To explore how this plot can detect non-linear relationships between <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span>, we will examine a data set from Ashton et al. (2007) that relates the length of a tortoise’s carapace to the number of eggs laid in a clutch. The data are</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Eggs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">carapace    =</span> <span class="kw">c</span>(<span class="dv">284</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">298</span>,<span class="dv">299</span>,<span class="dv">302</span>,<span class="dv">306</span>,<span class="dv">306</span>,
+                  <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),
+  <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,
+                  <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) 
+<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<p>Looking at the data, it seems that we are violating the assumption that a linear model is appropriate, but we will fit the model anyway and look at the residual graph.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )
+<span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># which=1 tells R to only make the first plot</span></code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)        <span class="co"># need the ggfortify library for autoplot.lm() to work</span>
+<span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2</span></code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
+<p>The red/blue lines going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in <code>carapace length</code>. We will create a new covariate, <code>carapace.2</code>, which is the square of the carapace length and add it to the model.</p>
+<p>In general I could write the quadratic model as <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}\]</span> and note that my model is still a linear model with respect to covariates <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^{2}\)</span> because I can still write the model as <span class="math display">\[\begin{aligned} \boldsymbol{y}    
+  &amp;=    \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon} \\
+    &amp;=  \left[\begin{array}{ccc}
+      1 &amp; x_{1} &amp; x_{1}^{2}\\
+      1 &amp; x_{2} &amp; x_{2}^{2}\\
+      1 &amp; x_{3} &amp; x_{3}^{2}\\
+      \vdots &amp; \vdots &amp; \vdots\\
+      1 &amp; x_{n} &amp; x_{n}^{2}
+  \end{array}\right]\left[\begin{array}{c}
+        \beta_{0}\\
+        \beta_{1}\\
+        \beta_{2}
+\end{array}\right]
++
+\left[\begin{array}{c}
+\epsilon_{1}\\
+\epsilon_{2}\\
+\epsilon_{3}\\
+\vdots\\
+\epsilon_{n}
+\end{array}\right]\end{aligned}\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add a new column that is carapace^2</span>
+Eggs2 &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace^<span class="dv">2</span> )
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace +<span class="st"> </span>carapace<span class="fl">.2</span>,    <span class="dt">data=</span>Eggs2 )
+
+<span class="co"># make R do it inside the formula... convenient</span>
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace +<span class="st"> </span><span class="kw">I</span>(carapace^<span class="dv">2</span>), <span class="dt">data=</span>Eggs )
+
+<span class="co"># Fit an arbitrary degree polynomial</span>
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dv">2</span>),        <span class="dt">data=</span>Eggs )
+
+<span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span>
+<span class="co"># otherwise you can skip it and R will do the right thing.</span>
+<span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>, <span class="dt">data=</span>Eggs)  </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
+<p>Now our residual plot versus fitted values does not show any trend, suggesting that the quadratic model is fitting the data well. Graphing the original data along with the predicted values confirms this.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span>
+Eggs &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )
+
+<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace)) +
+<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) +
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
+</div>
+<div id="heteroskedasticity" class="section level5">
+<h5><span class="header-section-number">6.1.2.1.2</span> Heteroskedasticity</h5>
+<p>The plot of residuals versus fitted values can detect heteroskedasticity (non-constant variance) in the error terms.</p>
+<p>To illustrate this, we turn to another dataset in the Faraway book. The dataset airquality uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and windspeed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.</p>
+<p>We first graph all pairs of variables in the dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(airquality)
+<span class="kw">pairs</span>(~<span class="st"> </span>Ozone +<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance amongst the predictors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone ~<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
+<span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<p>As we feared, we have both a non-constant variance and a non-linear relationship. A transformation of the <span class="math inline">\(y\)</span> variable might be able to fix our problem.</p>
+</div>
+</div>
+<div id="qqplots" class="section level4">
+<h4><span class="header-section-number">6.1.2.2</span> QQplots</h4>
+<p>If we are taking a sample of size <span class="math inline">\(n=10\)</span> from a standard normal distribution, then I should expect that the smallest observation will be negative. Intuitively, you would expect the smallest observation to be near the <span class="math inline">\(10\)</span>th percentile of the standard normal, and likewise the second smallest should be near the <span class="math inline">\(20\)</span>th percentile.</p>
+<p>This idea needs a little modification because the largest observation cannot be near the <span class="math inline">\(100\)</span>th percentile (because that is <span class="math inline">\(\infty\)</span>). So we’ll adjust the estimates to still be spaced at <span class="math inline">\((1/n)\)</span> quantile increments, but starting at the <span class="math inline">\(0.5/n\)</span> quantile instead of the <span class="math inline">\(1/n\)</span> quantile. So the smallest observation should be near the <span class="math inline">\(0.05\)</span> quantile, the second smallest should be near the <span class="math inline">\(0.15\)</span> quantile, and the largest observation should be near the <span class="math inline">\(0.95\)</span> quantile. I will refer to these as the <em>theoretical quantiles</em>.</p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-99-1.png" width="672" /></p>
+<p>I can then graph the theoretical quantiles vs my observed values and if they lie on the 1-to-1 line, then my data comes from a standard normal distribution.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span>
+
+n &lt;-<span class="st"> </span><span class="dv">10</span>
+data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">observed =</span> <span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) ) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(observed) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">theoretical =</span> <span class="kw">qnorm</span>( (<span class="dv">1</span>:n -.<span class="dv">5</span>)/n ) )
+
+<span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>theoretical, <span class="dt">y=</span>observed) ) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
+<p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the airquality example, R will calculate the qqplot for us.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone ~<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
+<span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
+<p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  rstandard(model)
+## W = 0.9151, p-value = 2.819e-06</code></pre>
+<p>The tail of the distribution of observed residuals is <em>far</em> from what we expect to see.</p>
+</div>
+<div id="scale-location-plot" class="section level4">
+<h4><span class="header-section-number">6.1.2.3</span> Scale-Location Plot</h4>
+<p>This plot is a variation on the fitted vs residuals plot, but the y-axis uses the square root of the absolute value of the standardized residuals. Supposedly this makes detecting increasing variance easier to detect, but I’m not convinced.</p>
+</div>
+<div id="residuals-vs-leverage-plus-cooks-distance" class="section level4">
+<h4><span class="header-section-number">6.1.2.4</span> Residuals vs Leverage (plus Cook’s Distance)</h4>
+<p>This plot lets the user examine the which observations have a high potential for being influential (i.e. high leverage) versus how large the residual is. Because Cook’s distance is a function of those two traits, we can also divide the graph up into regions by the value of Cook’s Distance.</p>
+<p>Returning to Anscombe’s third set of data, we see</p>
+<p>&lt;&lt;&gt;&gt;=</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data=</span>Set3)
+<span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+<p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the ggfortify version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+</div>
+</div>
+</div>
+<div id="transformations" class="section level2">
+<h2><span class="header-section-number">6.2</span> Transformations</h2>
+<p>Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms.</p>
+<p>Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model <span class="math display">\[y=\beta_{0}+\beta_{1}x+\epsilon\]</span> where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</span>, the necessary assumptions are:</p>
+<ol style="list-style-type: decimal">
+<li>Independent errors</li>
+<li>Errors have constant variance, no matter what the x-value (or equivalently the fitted value)</li>
+<li>Errors are normally distributed</li>
+<li>The model contains all the appropriate covariates and no more.</li>
+</ol>
+<p>In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4.</p>
+<div id="transforming-the-response" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> Transforming the Response</h3>
+<p>When the normality or constant variance assumption is violated, sometimes it is possible to transform the response to satisfy the assumption. Often times count data is analyzed as <code>log(count)</code> and weights are analyzed after taking a square root or cube root transform. Statistics involving income or other monetary values are usually analyzed on the log scale so as to reduce the leverage of high income observations.</p>
+<p>While we may want to transform the response in order to satisfy the statistical assumptions, it is often necessary to back-transform to the original scale. For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>) <span class="math display">\[\log y=\beta_{0}+\beta_{1}x+\epsilon\]</span> then we might want to give a prediction interval for an <span class="math inline">\(x_{0}\)</span> value. The predicted <span class="math inline">\(log(income)\)</span> value is <span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}\]</span> and we could calculate the appropriate predicted income as <span class="math inline">\(\hat{y}_{0}=e^{log\left(\hat{y}_{0}\right)}\)</span>. Likewise if we had a confidence interval or prediction interval for <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span> of the form <span class="math inline">\(\left(l,u\right)\)</span> then the appropriate interval for <span class="math inline">\(\hat{y}_{0}\)</span> is <span class="math inline">\(\left(e^{l},e^{u}\right)\)</span>. Notice that while <span class="math inline">\(\left(l,u\right)\)</span> might be symmetric about <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span>, the back-transformed interval is not symmetric about <span class="math inline">\(\hat{y}_{0}\)</span>.</p>
+<p>Unfortunately the interpretation of the regression coefficients <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> on the untransformed scale becomes more complicated. This is a very serious difficulty and might sway a researcher from transforming their data.</p>
+<div id="box-cox-family-of-transformations" class="section level4">
+<h4><span class="header-section-number">6.2.1.1</span> Box-Cox Family of Transformations</h4>
+<p>The Box-Cox method is a popular way of determining what transformation to make. It is intended for responses that are strictly positive (because <span class="math inline">\(\log0=-\infty\)</span> and the square root of a number gives complex numbers, which we don’t know how to address in regression). The transformation is defined as <span class="math display">\[g\left(y\right)=\begin{cases}
+\frac{y^{\lambda}-1}{\lambda} &amp; \lambda\ne0\\
+\log y &amp; \lambda=0
+\end{cases}\]</span> This transformation is a smooth family of transformations because <span class="math display">\[\lim_{\lambda\to0}\frac{y^{\lambda}-1}{\lambda}=\log y\]</span> In the case that <span class="math inline">\(\lambda\ne 0\)</span>, then a researcher will usually use the simpler transformation <span class="math inline">\(y^{\lambda}\)</span> because the subtraction and division does not change anything in a non-linear fashion. Thus for purposes of addressing the assumption violations, all we care about is the <span class="math inline">\(y^{\lambda}\)</span> and prefer the simpler (i.e. more interpretable) transformation.</p>
+<p>Finding the best transformation can be done by adding the <span class="math inline">\(\lambda\)</span> parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don’t have to do this by hand, as the function <code>boxcox()</code> in the <code>MASS</code> library will do all the heavy calculation for us.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">library</span>(MASS)
+<span class="kw">data</span>(gala)
+g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+<span class="kw">boxcox</span>(g)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
+<p>Thoughts on the Box-Cox transformation:</p>
+<ol style="list-style-type: decimal">
+<li>In general, I prefer to using a larger-than-optimal model when picking a transformation and then go about the model building process. After a suitable model has been chosen, I’ll double check the my transformation was appropriate given the model that I ended up with.</li>
+<li>Outliers can have a profound effect on this method. If the “optimal” transformation is extreme (<span class="math inline">\(\lambda=5\)</span> or something silly) then you might have to remove the outliers and refit the transformation.</li>
+<li>If the range of the response <span class="math inline">\(y\)</span> is small, then the method is not as sensitive.</li>
+<li>These are not the only possible transformations. For example, for binary data, the <code>logit</code> and <code>probit</code> transformations are common.</li>
+</ol>
+</div>
+</div>
+<div id="transforming-the-predictors" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Transforming the predictors</h3>
+<div id="polynomials-of-a-predictor" class="section level4">
+<h4><span class="header-section-number">6.2.2.1</span> Polynomials of a predictor</h4>
+<p>Perhaps the most common transformation to make is to make a quadratic function in <span class="math inline">\(x\)</span>. Often the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> follows a curve and we want to fit a quadratic model <span class="math display">\[\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1}x+\hat{\beta}_{2}x^{2}\]</span> and we should note that this is still a linear model because <span class="math inline">\(\hat{y}\)</span> is a linear function of <span class="math inline">\(x\)</span> and <span class="math inline">\(x^{2}\)</span>. As we have already seen, it is easy to fit the model. Adding the column of <span class="math inline">\(x^{2}\)</span> values to the design matrix does the trick.</p>
+<p>The difficult part comes in the interpretation of the parameter values. No longer is <span class="math inline">\(\hat{\beta}_{1}\)</span> the increase in <span class="math inline">\(y\)</span> for every one unit increase in <span class="math inline">\(x\)</span>. Instead the three parameters in my model interact in a complicated fashion. For example, the peak of the parabola is at <span class="math inline">\(-\hat{\beta}_{1}/2\hat{\beta}_{2}\)</span> and whether the parabola is cup shaped vs dome shaped and its steepness is controlled by <span class="math inline">\(\hat{\beta}_{2}\)</span>. Because my geometric understanding of degree <span class="math inline">\(q\)</span> polynomials relies on have all factors of degree <span class="math inline">\(q\)</span> or lower, whenever I include a covariate raised to a power, I should include all the lower powers as well.</p>
+</div>
+<div id="log-and-square-root-of-a-predictor" class="section level4">
+<h4><span class="header-section-number">6.2.2.2</span> Log and Square Root of a predictor</h4>
+<p>Often the effect of a covariate is not linearly related to response, but rather some function of the covariate. For example the area of a circle is not linearly related to its radius, but it is linearly related to the radius squared. <span class="math display">\[Area=\pi r^{2}\]</span> Similar situations might arise in biological settings, such as the volume of conducting tissue being related to the square of the diameter. Or perhaps an animals metabolic requirements are related to some power of body length. In sociology, it is often seen that the utility of, say, $1000 drops off in a logarithmic fashion according to the person’s income. To a graduate student, $1K is a big deal, but to a corporate CEO, $1K is just another weekend at the track. Making a log transformation on any monetary covariate, might account for the non-linear nature of “utility”.</p>
+<p>Picking a good transformation for a covariate is quite difficult, but most fields of study have spent plenty of time thinking about these issues. When in doubt, look at scatter plots of the covariate vs the response and ask what transformation would make the data fall onto a line?</p>
+</div>
+<div id="examples-of-transformation-of-predictors" class="section level4">
+<h4><span class="header-section-number">6.2.2.3</span> Examples of transformation of predictors</h4>
+<p>To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in <code>faraway</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">data</span>(gala)
+<span class="co"># look at all the scatterplots</span>
+<span class="kw">pairs</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
+<p>Looking at these graphs, I think I should transform <code>elevation</code>, <code>Adjacent</code>, and <code>Area</code> and perhaps a log transformation is a good idea.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>( <span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Elevation) +<span class="st"> </span><span class="kw">log</span>(Area) +<span class="st"> </span>
+<span class="st">                       </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st">  </span><span class="kw">log</span>(Area) +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(m.c)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></code></pre></div>
+<pre><code>##               Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)      3.122      0.208  14.979    0.000
+## log(Area)        0.398      0.044   9.027    0.000
+## Nearest          0.000      0.013  -0.022    0.983
+## Scruz           -0.003      0.003  -1.238    0.227
+## log(Adjacent)   -0.021      0.045  -0.468    0.644</code></pre>
+<p>We will remove all the parameters that appear to be superfluous, and perorm an F-test to confirm that the simple model is sufficient.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
+<span class="kw">anova</span>(m.s, m.c)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: log(Species) ~ log(Area)
+## Model 2: log(Species) ~ log(Area) + Nearest + Scruz + log(Adjacent)
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     28 17.218                           
+## 2     25 15.501  3    1.7176 0.9234 0.4439</code></pre>
+<p>Next we will look at the coefficients.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m.s)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(Species) ~ log(Area), data = gala)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.5442 -0.4001  0.0941  0.5449  1.3752 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.9037     0.1571  18.484  &lt; 2e-16 ***
+## log(Area)     0.3886     0.0416   9.342 4.23e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7842 on 28 degrees of freedom
+## Multiple R-squared:  0.7571, Adjusted R-squared:  0.7484 
+## F-statistic: 87.27 on 1 and 28 DF,  p-value: 4.23e-10</code></pre>
+<p>The slope coefficient (0.3886) is the increase in log(Species) for every 1 unit increase in log(Area). Unfortunately that is not particularly convenient to interpretation and we will address this in the next section of this chapter.</p>
+<p>Finally, we might be interested in creating a confidence interval for the expected number of tortoise species for an island with <code>Area=50</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">50</span>)
+log.Species.CI &lt;-<span class="st"> </span><span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)
+log.Species.CI       <span class="co"># Log(Species) scale</span></code></pre></div>
+<pre><code>##        fit      lwr      upr
+## 1 4.423903 4.068412 4.779394</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">exp</span>(log.Species.CI)  <span class="co"># Species scale</span></code></pre></div>
+<pre><code>##        fit      lwr      upr
+## 1 83.42122 58.46403 119.0322</code></pre>
+<p>Notice that on the species-scale, we see that the fitted value is not in the center of the confidence interval.</p>
+<p>To help us understand what the log transformations are doing, we can produce a plot with the island Area on the x-axis and the expected number of Species on the y-axis and hopefully that will help us understand the relationship between the two.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span>:<span class="dv">50</span>)
+pred.data &lt;-<span class="st"> </span>pred.data %&gt;%<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+<span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) +
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) +
+<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) +
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+</div>
+</div>
+<div id="interpretation-of-log-transformed-variables" class="section level3">
+<h3><span class="header-section-number">6.2.3</span> Interpretation of log transformed variables</h3>
+<p>One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Here we look at the interpretation of log transformed variables.</p>
+<p>To begin with, we need to remind ourselves of what the functions <span class="math inline">\(\log x\)</span> and <span class="math inline">\(e^{x}\)</span> look like.</p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<p>In particular we notice that <span class="math display">\[e^{0}=1\]</span> and <span class="math display">\[\log\left(1\right)=0\]</span> and the functions <span class="math inline">\(e^{x}\)</span> and <span class="math inline">\(\log x\)</span> are inverse functions of each other.</p>
+<p><span class="math display">\[e^{\log x}=\log\left(e^{x}\right)=x\]</span></p>
+<p>Also it is important to note that the <span class="math inline">\(\log\)</span> function has some interesting properties in that it makes operations “1-operation easier”. <span class="math display">\[\begin{aligned} 
+\log\left(a^{b}\right)        &amp;=    b\log a  \\
+\log\left(\frac{a}{b}\right)    &amp;=  \log a-\log b \\
+\log\left(ab\right)           &amp;=    \log a+\log b
+\end{aligned}\]</span></p>
+<p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scores &lt;-<span class="st"> </span><span class="kw">read.table</span>(
+  <span class="dt">file=</span><span class="st">&#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>,
+  <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)
+scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">gender =</span> female)
+<span class="kw">pairs</span>(write~read+math+gender, <span class="dt">data=</span>scores)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<div id="log-transformed-response-untransformed-covariates" class="section level4">
+<h4><span class="header-section-number">6.2.3.1</span> Log-transformed response, untransformed covariates</h4>
+<p>We consider the model where we have transformed the response variable and just an intercept term. <span class="math display">\[\log y=\beta_{0}+\epsilon\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)$coef %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    3.948      0.014 288.402        0</code></pre>
+<p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>.</p>
+<p>Next we examine how to interpret the model when a categorical variable is added to the model. <span class="math display">\[\log y=\begin{cases}
+\beta_{0}+\epsilon &amp; \;\;\textrm{if female}\\
+\beta_{0}+\beta_{1}+\epsilon &amp; \;\;\textrm{if male}
+\end{cases}\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender, <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)$coef %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    3.995      0.018 222.949        0
+## gendermale    -0.103      0.027  -3.887        0</code></pre>
+<p>The intercept is now the mean of the log-transformed <code>write</code> responses for the females and thus <span class="math inline">\(e^{\hat{\beta}_0} = \hat{y}_{f}\)</span> and the offset for males is the change in <code>log(write)</code> from the female group. Notice that for the males, we have <span class="math display">\[\begin{aligned}
+\log\hat{y}_m   &amp;=  \hat{\beta}_{0}+\hat{\beta}_{1} \\
+    \hat{y}_m   &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{1}} \\
+              &amp;=    \underset{\hat{y}_{f}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change for males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}} 
+\end{aligned}\]</span></p>
+<p>and therefore we see that males tend to have writing scores <span class="math inline">\(e^{-0.103}=0.90=90\%\)</span> of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.</p>
+<p>The model with a continuous covariate has a similar interpretation. <span class="math display">\[\log y=\begin{cases}
+\beta_{0}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if female}\\
+\beta_{0}+\beta_{1}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if male}
+\end{cases}\]</span></p>
+<p>We will use the reading score read to predict the writing score. Then <span class="math inline">\(\hat{\beta}_{2}\)</span> is the predicted increase in <code>log(write)</code> for every 1-unit increase in read score. The interpretation of <span class="math inline">\(\hat{\beta}_{0}\)</span> is now <span class="math inline">\(\log\hat{y}\)</span> when <span class="math inline">\(x=0\)</span> and therefore <span class="math inline">\(\hat{y}=e^{\hat{\beta}_{0}}\)</span> when <span class="math inline">\(x=0\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender +<span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span>
+<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    3.412      0.055  62.452        0
+## gendermale    -0.116      0.021  -5.516        0
+## read           0.011      0.001  11.057        0</code></pre>
+<p>For females, we consider the difference in <span class="math inline">\(\log\hat{y}\)</span> for a 1-unit increase in <span class="math inline">\(x\)</span> and will interpret this on the original write scale. <span class="math display">\[\begin{aligned}
+\log\hat{y}_f   &amp;=  \hat{\beta}_{0}+\hat{\beta}_{2}x \\
+\hat{y}_f       &amp;=  e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
+\end{aligned}\]</span> therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> as the <em>percent</em> increase in write score for a 1-unit increase in <span class="math inline">\(x\)</span> because of the following. Consider <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2 = x_1 +1\)</span>. Then we consider the ratio of predicted values: <span class="math display">\[
+\frac{\hat{y}_2}{\hat{y}_1} 
+  = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
+  = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
+  = e^{\hat{\beta}_{2}}\]</span></p>
+<p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.011}=1.01\)</span> meaning there is an estimated <span class="math inline">\(1\%\)</span> increase in <code>write</code> score for every 1-point increase in <code>read</code> score.</p>
+<p>If we are interested in, say, a 20-unit increase in <span class="math inline">\(x\)</span>, then that would result in an increase of</p>
+<p><span class="math display">\[\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\beta}_{0}+\hat{\beta}_{2} \, x}}
+ =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
+ = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}\]</span></p>
+<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
+<p>In short, we can interpret <span class="math inline">\(e^{\hat{\beta}_{i}}\)</span> as the percent increase/decrease in the non-transformed response variable. Some students get confused by what is meant by a <span class="math inline">\(\%\)</span> increase or decrease in <span class="math inline">\(x\)</span>.</p>
+<ul>
+<li>A <span class="math inline">\(75\%\)</span> decrease in <span class="math inline">\(x\)</span> has a resulting value of <span class="math inline">\(\left(1-0.75\right)x=\left(0.25\right) x\)</span></li>
+<li>A <span class="math inline">\(75\%\)</span> increase in <span class="math inline">\(x\)</span> has a resulting value of <span class="math inline">\(\left(1+0.75\right)x=\left(1.75\right) x\)</span></li>
+<li>A <span class="math inline">\(100\%\)</span> increase in <span class="math inline">\(x\)</span> has a resulting value of <span class="math inline">\(\left(1+1.00\right)x=2x\)</span> and is a doubling of <span class="math inline">\(x\)</span>.</li>
+<li>A <span class="math inline">\(50\%\)</span> decrease in <span class="math inline">\(x\)</span> has a resulting value of <span class="math inline">\(\left(1-0.5\right)x=\left(0.5\right) x\)</span> and is a halving of <span class="math inline">\(x\)</span>.</li>
+</ul>
+</div>
+<div id="untransformed-response-log-transformed-covariate" class="section level4">
+<h4><span class="header-section-number">6.2.3.2</span> Untransformed response, log-transformed covariate</h4>
+<p>We consider the model <span class="math display">\[y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span> and consider two different values of <span class="math inline">\(x\)</span> (which we’ll call <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span> and we are considering the effect of moving from <span class="math inline">\(x_{1}\)</span> to <span class="math inline">\(x_{2}\)</span>) and look at the differences between the predicted values <span class="math inline">\(\hat{y}_2 - \hat{y}_1\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{y}_{2}-\hat{y}_{1} 
+  &amp; =   \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
+    &amp; = \hat{\beta}_{2}\left[\log x_{2}-\log x_{1}\right] \\
+    &amp; = \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
+    \end{aligned}\]</span></p>
+<p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 has the same effect on <span class="math inline">\(\hat{y}\)</span> as changing x from 50 to 100.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( write ~<span class="st"> </span>gender +<span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)  -59.076      9.948  -5.938        0
+## gendermale    -5.431      1.013  -5.362        0
+## log(read)     29.045      2.527  11.493        0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># predict writing scores for three females, </span>
+<span class="co"># each with a reading score 50% larger than the other previous</span>
+<span class="kw">predict</span>(m, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),
+                              <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</code></pre></div>
+<pre><code>##        1        2        3 
+## 48.06622 59.84279 71.61936</code></pre>
+<p>We should see a <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
+difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
+</div>
+<div id="log-transformed-response-log-transformed-covariate" class="section level4">
+<h4><span class="header-section-number">6.2.3.3</span> Log-transformed response, log-transformed covariate</h4>
+<p>This combines the interpretation of the in the previous two section. We consider <span class="math display">\[\log y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span> and we again consider two <span class="math inline">\(x\)</span> values (again <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span>). We then examine the difference in the <span class="math inline">\(\log\hat{y}\)</span> values as <span class="math display">\[\begin{aligned}
+\log\hat{y}_{2}-\log\hat{y}_{1} &amp;= \left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{2}\right]-\left[\hat{\beta}_{0}+\hat{\beta}_{2}\log x_{1}\right] \\
+\log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]    &amp;=  \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right] \\
+\log\left[\frac{\hat{y}_{2}}{\hat{y}_{1}}\right]    &amp;=  \log\left[\left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}\right] \\
+\frac{\hat{y}_{2}}{\hat{y}_{1}} &amp;=  \left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}
+\end{aligned}\]</span></p>
+<p>This allows us to examine the effect of some arbitrary percentage increase in <span class="math inline">\(x\)</span> value as a percentage increase in <span class="math inline">\(y\)</span> value.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender +<span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    1.714      0.205   8.358        0
+## gendermale    -0.114      0.021  -5.483        0
+## log(read)      0.581      0.052  11.148        0</code></pre>
+<p>which implies for a <span class="math inline">\(10\)</span>% increase in <code>read</code> score, we should see a <span class="math inline">\(1.10^{0.581}=1.05\)</span> multiplier in <code>write</code> score. That is to say, a <span class="math inline">\(10\%\)</span> increase in reading score results in a <span class="math inline">\(5\%\)</span> increase in writing score.</p>
+<p>For the Galapagos islands, we had</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(m.s)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)    2.904      0.157  18.484        0
+## log(Area)      0.389      0.042   9.342        0</code></pre>
+<p>and therefore doubling of Area (i.e. the ratio of the <span class="math inline">\(Area_{2} / Area_{1} = 2\)</span>) results in a <span class="math inline">\(2^{0.389}=1.31\)</span> multiplier of the <code>Species</code> value. That is to say doubling the island area increases the number of species by <span class="math inline">\(31\%\)</span>.</p>
+</div>
+</div>
+</div>
+<div id="exercises-5" class="section level2">
+<h2><span class="header-section-number">6.3</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>The dataset <code>infmort</code> in package faraway has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using <code>help(infmort)</code>. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Plot the relationship between income and mortality. This can be done using the command</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">pairs</span>(mortality ~., <span class="dt">data=</span>infmort)</code></pre></div>
+<p>What do you notice about the relationship between mortality and income?</p></li>
+<li><p>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</p></li>
+<li><p>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</p></li>
+<li><p>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</p></li>
+<li><p>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</p></li>
+<li><p>Examine models that have a <code>region:log(income)</code> interaction and <code>oil:log(income)</code> interaction along with the main effect of the third variable. Are either interaction significant vs the model without interactions? What about a model that contains both interactions?</p></li>
+<li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. <em>Hint: graph the data and the predicted values.</em></p></li>
+</ol></li>
+<li><p>Using the <code>pressure</code> data available in the <code>faraway</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on.</p></li>
+<li><p>Comment on the interpretability of your (possibly ridiculously complicated) model.</p></li>
+</ol></li>
+<li><p>Use transformations to find a good model for <code>volume</code> in terms of <code>girth</code> and <code>height</code> using the <code>trees</code> dataset in the <code>faraway</code> package.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.</p></li>
+<li><p>Create a prediction interval for the volume of a tree with girth=16 and height=70. Notice that if you have transformed your response variable in you model, you’ll have to back-transform to the original y-scale.</p></li>
+</ol></li>
+<li><p>For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the time taken polishing a newly manufactured dish versus the dish diameter (in inches), type, and price.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>The data live in a package I have on GitHub. The following code will download the data package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)   <span class="co"># You might need to load this package the usual way...</span>
+<span class="kw">install_github</span>(<span class="st">&#39;dereksonderegger/dsData&#39;</span>) <span class="co"># load an R package that lives on GitHub.</span></code></pre></div></li>
+<li><p>Load the data and examine it using the commands</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dsData)
+<span class="kw">str</span>(Dishes)
+<span class="kw">pairs</span>(Time ~<span class="st"> </span>., <span class="dt">data=</span>Dishes)</code></pre></div>
+<p>Comment on the relationships and possible transformations to be made.</p></li>
+<li><p>Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.</p></li>
+<li><p>Examine the diagnostic plots. What stands out to you?</p></li>
+<li><p>While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.</p></li>
+<li><p>What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?</p></li>
+<li><p>How does a 20% increase in Price affect the polishing time?</p></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="5-contrasts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="7-variable-selection.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/06_Diagnostics.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

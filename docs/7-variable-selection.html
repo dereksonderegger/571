@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger">
+
+
+<meta name="date" content="2017-09-08">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="6-diagnostics-and-transformations.html">
+<link rel="next" href="8-one-way-anova.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+<li><a href="https://dereksonderegger.github.io/571/Statistical_Methods_II.pdf" target="blank">PDF version</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>1.1</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>1.1.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.1.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>1.1.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.1.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>1.1.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.1.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>1.1.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.1.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.1.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.1.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.1.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.1.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>1.1.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.2</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>1.2.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.2.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.2.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.2.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>1.2.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.2.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>1.2.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.2.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.2.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.2.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.2.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.2.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>1.2.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.2.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>1.2.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#exercises"><i class="fa fa-check"></i><b>1.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.1</b> Simple Regression</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.1.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.1.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.1.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="2.1.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.1.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.1.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.1.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.1.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.1.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="2.1.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.1.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="2.1.7" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>2.1.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2</b> ANOVA model</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>2.2.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>2.2.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#exercises-1"><i class="fa fa-check"></i><b>2.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.1</b> F-tests</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.1.1</b> Theory</a></li>
+<li class="chapter" data-level="3.1.2" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.1.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.1.4" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>3.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>3.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#exercises-2"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>4</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>4.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="4.2" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>4.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="4.3" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>4.3</b> Iris Example</a></li>
+<li class="chapter" data-level="4.4" data-path="4-analysis-of-covariance-ancova.html"><a href="4-analysis-of-covariance-ancova.html#exercises-3"><i class="fa fa-check"></i><b>4.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-contrasts.html"><a href="5-contrasts.html"><i class="fa fa-check"></i><b>5</b> Contrasts</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-contrasts.html"><a href="5-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>5.1</b> Estimate and variance</a></li>
+<li class="chapter" data-level="5.2" data-path="5-contrasts.html"><a href="5-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>5.2</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="5.2.1" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova"><i class="fa fa-check"></i><b>5.2.1</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#using-lsmeans-package"><i class="fa fa-check"></i><b>5.3</b> Using <code>lsmeans</code> Package</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="5-contrasts.html"><a href="5-contrasts.html#simple-regression-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="5.3.2" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>5.3.2</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="5.3.3" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova"><i class="fa fa-check"></i><b>5.3.3</b> ANCOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="5-contrasts.html"><a href="5-contrasts.html#exercises-4"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>6</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>6.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>6.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>6.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>6.2</b> Transformations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>6.2.1</b> Transforming the Response</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>6.2.2</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="6.2.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>6.2.3</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-diagnostics-and-transformations.html"><a href="6-diagnostics-and-transformations.html#exercises-5"><i class="fa fa-check"></i><b>6.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-variable-selection.html"><a href="7-variable-selection.html"><i class="fa fa-check"></i><b>7</b> Variable Selection</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>7.1</b> Nested Models</a></li>
+<li class="chapter" data-level="7.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>7.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>7.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>7.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="7-variable-selection.html"><a href="7-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>7.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="7.3.2" data-path="7-variable-selection.html"><a href="7-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>7.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="7.3.3" data-path="7-variable-selection.html"><a href="7-variable-selection.html#example"><i class="fa fa-check"></i><b>7.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="7-variable-selection.html"><a href="7-variable-selection.html#exercises-6"><i class="fa fa-check"></i><b>7.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html"><i class="fa fa-check"></i><b>8</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
+<li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>9.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="9.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>9.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>9.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="9.2.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>9.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.2.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>9.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>9.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>9.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="9.3.2" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>9.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="9.3.3" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>9.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-block-designs.html"><a href="10-block-designs.html"><i class="fa fa-check"></i><b>10</b> Block Designs</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-block-designs.html"><a href="10-block-designs.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>10.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="10.2" data-path="10-block-designs.html"><a href="10-block-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>10.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="10.3" data-path="10-block-designs.html"><a href="10-block-designs.html#exercises-9"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html"><i class="fa fa-check"></i><b>11</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="11.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>11.1</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.2</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.3</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
+<li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
+<li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="variable-selection" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Variable Selection</h1>
+<p>Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:</p>
+<ol style="list-style-type: decimal">
+<li><p>Occam’s Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.</p></li>
+<li><p>Unnecessary predictors add noise to the estimates of other quantities and will waste degrees of freedom, possibly increasing the estimate of <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</p></li>
+<li><p>We might have variables that are collinear.</p></li>
+</ol>
+<p>The problems that arise in the diagnostics of a model will often lead a researcher to consider other models, for example to include a quadratic term to account for curvature. The model building process is often an iterative procedure where we build a model, examine the diagnostic plots and consider what could be added or modified to correct issues observed.</p>
+<div id="nested-models" class="section level2">
+<h2><span class="header-section-number">7.1</span> Nested Models</h2>
+<p>Often one model is just a simplification of another and can be obtained by setting some subset of <span class="math inline">\(\beta_{i}\)</span> values equal to zero. Those models can be adequately compared by the F-test, which we have already made great use of.</p>
+<p>We should be careful to note that we typically do not want to remove the main covariate from the model if the model uses the covariate in a more complicated fashion. For example, if my model is <span class="math display">\[y=\beta_{0}+\beta_{1}x+\beta_{2}x^{2}+\epsilon\]</span> where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</span>, then considering the simplification <span class="math inline">\(\beta_{1}=0\)</span> and removing the effect of <span class="math inline">\(x\)</span> is not desirable because that forces the parabola to be symmetric about <span class="math inline">\(x=0\)</span>. Similarly, if the model contains an interaction effect, then the removal of the main effect drastically alters the interpretation of the interaction coefficients and should be avoided. Often times removing a lower complexity term while keeping a higher complexity term results in unintended consequences and is typically not recommended.</p>
+</div>
+<div id="testing-based-model-selection" class="section level2">
+<h2><span class="header-section-number">7.2</span> Testing-Based Model Selection</h2>
+<p>Starting with a model that is likely too complex, consider a list of possible terms to remove and remove each in turn while evaluating the resulting model to the starting model using an F-test. Whichever term has the highest p-value is removed and the process is repeated until no more terms have non-significant p-values. This is often referred to as <em>backward selection</em>.</p>
+<p>It should be noted that the cutoff value for significance here does not have to be <span class="math inline">\(\alpha=0.05\)</span>. If prediction performance is the primary goal, then a more liberal <span class="math inline">\(\alpha\)</span> level is appropriate.</p>
+<p>Starting with a model that is likely too small, consider adding terms until there are no more terms that when added to the model are significant. This is called <em>forward selection</em>.</p>
+<p>This is a hybrid between forward selection and backward elimination. At every stage, a term is either added or removed. This is referred to as <em>stepwise selection</em>.</p>
+<p>Stepwise, forward, and backward selection are commonly used but there are some issues.</p>
+<ol style="list-style-type: decimal">
+<li><p>Because of the “one-at-a-time” nature of the addition/deletion, the most optimal model might not be found.</p></li>
+<li><p>p-values should not be treated literally. Because the multiple comparisons issue is completely ignored, the p-values are lower than they should be if multiple comparisons were accounted for. As such, it is possible to sort through a huge number of potential covariates and find one with a low p-value simply by random chance. This is “data dredging” and is a serious issue.</p></li>
+<li><p>As a non-thinking algorithm, these methods ignore the science behind that data and might include two variables that are highly collinear or might ignore variables that are scientifically interesting.</p></li>
+</ol>
+<div id="example---u.s.-life-expectancy" class="section level3">
+<h3><span class="header-section-number">7.2.1</span> Example - U.S. Life Expectancy</h3>
+<p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of vnew to the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<span class="kw">library</span>(dplyr)   <span class="co"># for the %&gt;% operator!</span>
+
+<span class="co"># Convert from a matrix to a data frame with state abbreviations</span>
+state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)
+<span class="kw">str</span>(state.data)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    50 obs. of  8 variables:
+##  $ Population: num  3615 365 2212 2110 21198 ...
+##  $ Income    : num  3624 6315 4530 3378 5114 ...
+##  $ Illiteracy: num  2.1 1.5 1.8 1.9 1.1 0.7 1.1 0.9 1.3 2 ...
+##  $ Life.Exp  : num  69 69.3 70.5 70.7 71.7 ...
+##  $ Murder    : num  15.1 11.3 7.8 10.1 10.3 6.8 3.1 6.2 10.7 13.9 ...
+##  $ HS.Grad   : num  41.3 66.7 58.1 39.9 62.6 63.9 56 54.6 52.6 40.6 ...
+##  $ Frost     : num  20 152 15 65 20 166 139 103 11 60 ...
+##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
+<p>We should first look at the</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p>I want to add a quadratic effect for HS.Grad rate and for Income. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data$HS.Grad<span class="fl">.2</span> &lt;-<span class="st"> </span>state.data$HS.Grad ^<span class="st"> </span><span class="dv">2</span>
+state.data$Income<span class="fl">.2</span>  &lt;-<span class="st"> </span>state.data$Income  ^<span class="st"> </span><span class="dv">2</span>
+<span class="co"># explicitly define my starting model</span>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>
+<span class="st">                    </span>Murder +<span class="st"> </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data=</span>state.data)
+<span class="co">#</span>
+<span class="co"># Define the same model, but using shorthand</span>
+<span class="co"># The &#39;.&#39; means everything else in the data frame</span>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)
+<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   63.413      7.449   8.513    0.000
+## Population     0.000      0.000   1.310    0.198
+## Income         0.004      0.003   1.605    0.116
+## Illiteracy     0.255      0.388   0.656    0.515
+## Murder        -0.300      0.049  -6.088    0.000
+## HS.Grad       -0.053      0.214  -0.248    0.806
+## Frost         -0.004      0.003  -1.374    0.177
+## Area           0.000      0.000   0.656    0.516
+## HS.Grad.2      0.001      0.002   0.460    0.648
+## Income.2       0.000      0.000  -1.618    0.114</code></pre>
+<p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. We will first remove the term with the highest p-value, which is the state’s <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Graduation Rate from the model from the model</span>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>HS.Grad -<span class="st"> </span>HS.Grad<span class="fl">.2</span>)
+<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   62.497      6.395   9.772    0.000
+## Population     0.000      0.000   0.838    0.407
+## Income         0.005      0.003   1.804    0.078
+## Illiteracy    -0.076      0.358  -0.212    0.833
+## Murder        -0.308      0.047  -6.573    0.000
+## Frost         -0.006      0.003  -1.948    0.058
+## Area           0.000      0.000   1.688    0.099
+## Income.2       0.000      0.000  -1.750    0.087</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next remove Illiteracy</span>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Illiteracy)
+<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   61.779      5.367  11.510    0.000
+## Population     0.000      0.000   0.860    0.394
+## Income         0.005      0.002   2.165    0.036
+## Murder        -0.312      0.043  -7.304    0.000
+## Frost         -0.006      0.003  -2.261    0.029
+## Area           0.000      0.000   1.736    0.090
+## Income.2       0.000      0.000  -2.069    0.045</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># And Population...</span>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Population)
+<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   59.985      4.931  12.166    0.000
+## Income         0.006      0.002   2.702    0.010
+## Murder        -0.297      0.039  -7.633    0.000
+## Frost         -0.006      0.003  -2.471    0.017
+## Area           0.000      0.000   1.746    0.088
+## Income.2       0.000      0.000  -2.533    0.015</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Area from the model</span>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Area)
+<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   63.685      4.552  13.990    0.000
+## Income         0.004      0.002   2.078    0.043
+## Murder        -0.285      0.039  -7.278    0.000
+## Frost         -0.006      0.003  -2.235    0.030
+## Income.2       0.000      0.000  -1.864    0.069</code></pre>
+<p>The removal of <code>Income.2</code> is a tough decision because the p-value is very close to <span class="math inline">\(\alpha=0.05\)</span> and might be left in if it makes model interpretation easier or if the researcher feels a quadratic effect in income is appropriate (perhaps rich people are too stressed?).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Life.Exp ~ Income + Murder + Frost + Income.2, data = state.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.44396 -0.53231 -0.04994  0.50160  1.51754 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  6.369e+01  4.552e+00  13.990  &lt; 2e-16 ***
+## Income       4.017e-03  1.933e-03   2.078   0.0434 *  
+## Murder      -2.852e-01  3.918e-02  -7.278 3.95e-09 ***
+## Frost       -5.686e-03  2.544e-03  -2.235   0.0304 *  
+## Income.2    -3.955e-07  2.121e-07  -1.864   0.0688 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7619 on 45 degrees of freedom
+## Multiple R-squared:  0.7042, Adjusted R-squared:  0.6779 
+## F-statistic: 26.78 on 4 and 45 DF,  p-value: 2.112e-11</code></pre>
+<p>We are left with a model that adequately explains <code>Life.Exp</code> but we should be careful to note that just because a covariate was removed from the model does not imply that it isn’t related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is <code>Income</code> and thus replacing <code>Illiteracy</code> shows that illiteracy is associated with lower life expectancy, but it is not as predictive as <code>Income</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Illiteracy+Murder+Frost, <span class="dt">data=</span>state.data)
+<span class="kw">summary</span>(m2)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Life.Exp ~ Illiteracy + Murder + Frost, data = state.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.59010 -0.46961  0.00394  0.57060  1.92292 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 74.556717   0.584251 127.611  &lt; 2e-16 ***
+## Illiteracy  -0.601761   0.298927  -2.013  0.04998 *  
+## Murder      -0.280047   0.043394  -6.454 6.03e-08 ***
+## Frost       -0.008691   0.002959  -2.937  0.00517 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7911 on 46 degrees of freedom
+## Multiple R-squared:  0.6739, Adjusted R-squared:  0.6527 
+## F-statistic: 31.69 on 3 and 46 DF,  p-value: 2.915e-11</code></pre>
+<p>Notice that the <span class="math inline">\(R^{2}\)</span> values for both models are quite similar <span class="math inline">\(0.7042\)</span> vs <span class="math inline">\(0.6739\)</span> but the first model with the higher <span class="math inline">\(R^{2}\)</span> has one more predictor variable? Which model should I prefer? I can’t do an F-test because these models are not nested.</p>
+</div>
+</div>
+<div id="criterion-based-procedures" class="section level2">
+<h2><span class="header-section-number">7.3</span> Criterion Based Procedures</h2>
+<div id="information-criterions" class="section level3">
+<h3><span class="header-section-number">7.3.1</span> Information Criterions</h3>
+<p>It is often necessary to compare models that are not nested. For example, I might want to compare <span class="math display">\[y=\beta_{0}+\beta_{1}x+\epsilon\]</span> vs <span class="math display">\[y=\beta_{0}+\beta_{2}w+\epsilon\]</span></p>
+<p>This comparison comes about naturally when doing forward model selection and we are looking for the “best” covariate to add to the model first.</p>
+<p>Akaike introduced his criterion (which he called “An Information Criterion”) as <span class="math display">\[AIC=\underset{\textrm{decreases if RSS decreases}}{\underbrace{-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)}}+\underset{\textrm{increases as p increases}}{\underbrace{2p}}\]</span> where <span class="math inline">\(L\left(\hat{\boldsymbol{\beta}}|\,\textrm{data}\,\right)\)</span> is the likelihood function and <span class="math inline">\(p\)</span> is the number of elements in the <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> vector and we regard a lower AIC value as better. Notice the <span class="math inline">\(2p\)</span> term is essentially a penalty on adding addition covariates so to lower the AIC value, a new predictor must lower the negative log likelihood more than it increases the penalty.</p>
+<p>To convince ourselves that the first summand decreases with decreasing RSS in the standard linear model, we examine the likelihood function <span class="math display">\[\begin{aligned}
+f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp;=  \frac{1}{\left(2\pi\sigma^{2}\right)^{n/2}}\exp\left[-\frac{1}{2\sigma^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)\right] \\
+    &amp;=  L\left(\boldsymbol{\beta},\sigma\,|\,\boldsymbol{y},\boldsymbol{X}\right)
+\end{aligned}\]</span> and we could re-write this as <span class="math display">\[\begin{aligned}
+\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}\,|\,\textrm{data}\right)  &amp;=  -\log\left(\left(2\pi\hat{\sigma}^{2}\right)^{n/2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
+    &amp;=  -\frac{n}{2}\log\left(2\pi\hat{\sigma}^{2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
+    &amp;=  -\frac{1}{2}\left[n\log\left(2\pi\hat{\sigma}^{2}\right)+\frac{1}{\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)\right] \\
+    &amp;=  -\frac{1}{2}\left[+n\log\left(2\pi\right)+n\log\hat{\sigma}^{2}+\frac{1}{\hat{\sigma}^{2}}RSS\right]
+\end{aligned}\]</span></p>
+<p>It isn’t clear what we should do with the <span class="math inline">\(n\log\left(2\pi\right)\)</span> term in the <span class="math inline">\(\log L()\)</span> function. There are some compelling reasons to ignore it and just use the second, and there are reasons to use both terms. Unfortunately, statisticians have not settled on one convention or the other and different software packages might therefore report different values for AIC.</p>
+<p>As a general rule of thumb, if the difference in AIC values is less than two then the models are not significantly different, differences between 2 and 4 AIC units are marginally significant and any difference greater than 4 AIC units is highly significant.</p>
+<p>Notice that while this allows us to compare models that are not nested, it does require that the same data are used to fit both models. Because I could start out with my data frame including both <span class="math inline">\(x\)</span> and <span class="math inline">\(x^{2}\)</span>, (or more generally <span class="math inline">\(x\)</span> and <span class="math inline">\(f\left(x\right)\)</span> for some function <span class="math inline">\(f()\)</span>) you can regard a transformation of a covariate as “the same data”. However, a transformation of a y-variable is not and therefore we cannot use AIC to compare a models <code>log(y) ~ x</code> versus the model <code>y ~ x</code>.</p>
+<p>Another criterion that might be used is <em>Bayes Information Criterion</em> (BIC) which is</p>
+<p><span class="math display">\[BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)+p\log n\]</span></p>
+<p>and this criterion punishes large models more than AIC does (because <span class="math inline">\(\log n&gt;2\)</span> for <span class="math inline">\(n\ge8\)</span>)</p>
+<p>The AIC value of a linear model can be found using the AIC() on a lm() object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1)</code></pre></div>
+<pre><code>## [1] 121.4293</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m2)</code></pre></div>
+<pre><code>## [1] 124.2947</code></pre>
+<p>Because the AIC value for the first model is lower, we would prefer the first model that includes both <code>Income</code> and <code>Income.2</code> compared to model 2, which was <code>Life.Exp ~ Illiteracy+Murder+Frost</code>.</p>
+</div>
+<div id="adjusted-r-sq" class="section level3">
+<h3><span class="header-section-number">7.3.2</span> Adjusted <code>R-sq</code></h3>
+<p>One of the problems with <span class="math inline">\(R^{2}\)</span> is that it makes no adjustment for how many parameters in the model. Recall that <span class="math inline">\(R^{2}\)</span> was defined as <span class="math display">\[R^{2}=\frac{RSS_{S}-RSS_{C}}{RSS_{S}}=1-\frac{RSS_{C}}{RSS_{S}}\]</span> where the simple model was the intercept only model. We can create an <span class="math inline">\(R_{adj}^{2}\)</span> statistic that attempts to add a penalty for having too many parameters by defining <span class="math display">\[R_{adj}^{2}=1-\frac{RSS_{C}/\left(n-p\right)}{RSS_{S}/\left(n-1\right)}\]</span> With this adjusted definition, adding a variable to the model that has no predictive power will decrease <span class="math inline">\(R_{adj}^{2}\)</span>.</p>
+</div>
+<div id="example" class="section level3">
+<h3><span class="header-section-number">7.3.3</span> Example</h3>
+<p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function add1() which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define the biggest model I wish to consider</span>
+biggest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>Murder +<span class="st"> </span>
+<span class="st">                      </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>Area +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>
+
+<span class="co"># Define the model I wish to start with</span>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)
+
+<span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></code></pre></div>
+<pre><code>## Single term additions
+## 
+## Model:
+## Life.Exp ~ 1
+##            Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                  88.299  30.435
+## Population  1     0.409 87.890  32.203
+## Income      1    10.223 78.076  26.283
+## Illiteracy  1    30.578 57.721  11.179
+## Murder      1    53.838 34.461 -14.609
+## HS.Grad     1    29.931 58.368  11.737
+## Frost       1     6.064 82.235  28.878
+## Area        1     1.017 87.282  31.856
+## HS.Grad.2   1    27.414 60.885  13.848
+## Income.2    1     7.464 80.835  28.020</code></pre>
+<p>Clearly the additiona of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . ~<span class="st"> </span>. +<span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
+<span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></code></pre></div>
+<pre><code>## Single term additions
+## 
+## Model:
+## Life.Exp ~ Murder
+##            Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                  34.461 -14.609
+## Population  1    4.0161 30.445 -18.805
+## Income      1    2.4047 32.057 -16.226
+## Illiteracy  1    0.2732 34.188 -13.007
+## HS.Grad     1    4.6910 29.770 -19.925
+## Frost       1    3.1346 31.327 -17.378
+## Area        1    0.4697 33.992 -13.295
+## HS.Grad.2   1    4.4396 30.022 -19.505
+## Income.2    1    1.8972 32.564 -15.441</code></pre>
+<p>There is a companion function to <code>add1()</code> that finds the best term to drop. It is conveniently named <code>drop1()</code> but here the <code>scope</code> parameter defines the smallest model to be considered.</p>
+<p>It would be nice if all of this work was automated. Again, R makes our life easy and the function <code>step()</code> does exactly this. The set of models searched is determined by the scope argument which can be a <em>list</em> of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If <code>scope</code> is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smallest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span><span class="dv">1</span>
+biggest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>
+<span class="st">                      </span>Murder +<span class="st"> </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>Area +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Income, <span class="dt">data=</span>state.data)
+<span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</code></pre></div>
+<pre><code>## Start:  AIC=26.28
+## Life.Exp ~ Income
+## 
+##              Df Sum of Sq    RSS     AIC
+## + Murder      1    46.020 32.057 -16.226
+## + Illiteracy  1    21.109 56.968  12.523
+## + HS.Grad     1    19.770 58.306  13.684
+## + Income.2    1    19.062 59.015  14.288
+## + HS.Grad.2   1    17.193 60.884  15.847
+## + Area        1     5.426 72.650  24.682
+## + Frost       1     3.188 74.889  26.199
+## &lt;none&gt;                    78.076  26.283
+## + Population  1     1.781 76.295  27.130
+## - Income      1    10.223 88.299  30.435
+## 
+## Step:  AIC=-16.23
+## Life.Exp ~ Income + Murder
+## 
+##              Df Sum of Sq    RSS     AIC
+## + Frost       1     3.918 28.138 -20.745
+## + Income.2    1     3.036 29.021 -19.200
+## + Population  1     2.552 29.504 -18.374
+## + HS.Grad     1     2.388 29.668 -18.097
+## + HS.Grad.2   1     2.199 29.857 -17.780
+## &lt;none&gt;                    32.057 -16.226
+## - Income      1     2.405 34.461 -14.609
+## + Illiteracy  1     0.011 32.046 -14.242
+## + Area        1     0.000 32.057 -14.226
+## - Murder      1    46.020 78.076  26.283
+## 
+## Step:  AIC=-20.74
+## Life.Exp ~ Income + Murder + Frost
+## 
+##              Df Sum of Sq    RSS     AIC
+## + HS.Grad     1     2.949 25.189 -24.280
+## + HS.Grad.2   1     2.764 25.375 -23.914
+## + Income.2    1     2.017 26.121 -22.465
+## + Population  1     1.341 26.797 -21.187
+## &lt;none&gt;                    28.138 -20.745
+## + Illiteracy  1     0.950 27.189 -20.461
+## + Area        1     0.147 27.991 -19.007
+## - Income      1     3.188 31.327 -17.378
+## - Frost       1     3.918 32.057 -16.226
+## - Murder      1    46.750 74.889  26.199
+## 
+## Step:  AIC=-24.28
+## Life.Exp ~ Income + Murder + Frost + HS.Grad
+## 
+##              Df Sum of Sq    RSS     AIC
+## + Population  1     1.887 23.302 -26.174
+## + Income.2    1     1.864 23.326 -26.124
+## - Income      1     0.182 25.372 -25.920
+## &lt;none&gt;                    25.189 -24.280
+## + HS.Grad.2   1     0.218 24.972 -22.714
+## + Illiteracy  1     0.131 25.058 -22.541
+## + Area        1     0.058 25.131 -22.395
+## - HS.Grad     1     2.949 28.138 -20.745
+## - Frost       1     4.479 29.668 -18.097
+## - Murder      1    32.877 58.067  15.478
+## 
+## Step:  AIC=-26.17
+## Life.Exp ~ Income + Murder + Frost + HS.Grad + Population
+## 
+##              Df Sum of Sq    RSS     AIC
+## - Income      1     0.006 23.308 -28.161
+## &lt;none&gt;                    23.302 -26.174
+## + Income.2    1     0.790 22.512 -25.899
+## - Population  1     1.887 25.189 -24.280
+## + HS.Grad.2   1     0.006 23.296 -24.187
+## + Illiteracy  1     0.004 23.298 -24.182
+## + Area        1     0.000 23.302 -24.174
+## - Frost       1     3.037 26.339 -22.048
+## - HS.Grad     1     3.495 26.797 -21.187
+## - Murder      1    34.739 58.041  17.456
+## 
+## Step:  AIC=-28.16
+## Life.Exp ~ Murder + Frost + HS.Grad + Population
+## 
+##              Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                    23.308 -28.161
+## + Income.2    1     0.031 23.277 -26.229
+## + HS.Grad.2   1     0.007 23.301 -26.177
+## + Income      1     0.006 23.302 -26.174
+## + Illiteracy  1     0.004 23.304 -26.170
+## + Area        1     0.001 23.307 -26.163
+## - Population  1     2.064 25.372 -25.920
+## - Frost       1     3.122 26.430 -23.877
+## - HS.Grad     1     5.112 28.420 -20.246
+## - Murder      1    34.816 58.124  15.528</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = Life.Exp ~ Murder + Frost + HS.Grad + Population, 
+##     data = state.data)
+## 
+## Coefficients:
+## (Intercept)       Murder        Frost      HS.Grad   Population  
+##   7.103e+01   -3.001e-01   -5.943e-03    4.658e-02    5.014e-05</code></pre>
+<p>Notice that our model selected by <code>step()</code> is not the same model we obtained when we started with the biggest model and removed things based on p-values.</p>
+<p>The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># m1 was</span>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Income +<span class="st"> </span>Murder +<span class="st"> </span>Frost +<span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data =</span> state.data)
+<span class="kw">AIC</span>(m1)</code></pre></div>
+<pre><code>## [1] 121.4293</code></pre>
+<p>and the model selected by the stepwise algorithm was</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Murder +<span class="st"> </span>Frost +<span class="st"> </span>HS.Grad +<span class="st"> </span>Population, <span class="dt">data =</span> state.data)
+<span class="kw">AIC</span>(m3)</code></pre></div>
+<pre><code>## [1] 115.7326</code></pre>
+<p>Because <code>step()</code> and <code>AIC()</code> are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.</p>
+<p>First we calculate the difference using the AIC() function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1) -<span class="st"> </span><span class="kw">AIC</span>(m3)</code></pre></div>
+<pre><code>## [1] 5.696681</code></pre>
+<p>and next we use <code>add1()</code> on both models to see what the AIC values for each.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</code></pre></div>
+<pre><code>## Single term additions
+## 
+## Model:
+## Life.Exp ~ Income + Murder + Frost + Income.2
+##            Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                  26.121 -22.465
+## Population  1   0.42412 25.697 -21.283
+## Illiteracy  1   0.10097 26.020 -20.658
+## HS.Grad     1   2.79527 23.326 -26.124
+## Area        1   1.69309 24.428 -23.815
+## HS.Grad.2   1   2.79698 23.324 -26.127</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</code></pre></div>
+<pre><code>## Single term additions
+## 
+## Model:
+## Life.Exp ~ Murder + Frost + HS.Grad + Population
+##            Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                  23.308 -28.161
+## Income      1 0.0060582 23.302 -26.174
+## Illiteracy  1 0.0039221 23.304 -26.170
+## Area        1 0.0007900 23.307 -26.163
+## HS.Grad.2   1 0.0073439 23.301 -26.177
+## Income.2    1 0.0314248 23.277 -26.229</code></pre>
+<p>Using these results, we can calculate the difference in AIC values to be the same as we calculated before <span class="math display">\[\begin{aligned}
+-22.465--28.161 &amp;=  -22.465+28.161 \\
+    &amp;=  5.696
+    \end{aligned}\]</span></p>
+</div>
+</div>
+<div id="exercises-6" class="section level2">
+<h2><span class="header-section-number">7.4</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>Consider the <code>prostate</code> data from the <code>faraway</code> package. The variable <code>lpsa</code> is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use <code>lpsa</code> as the response and all the other variables as predictors (no interactions). Determine the “best” model using:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Backward elimination using the analysis of variance F-statistic as the criteria.</p></li>
+<li><p>Forward selection using AIC as the criteria.</p></li>
+</ol></li>
+<li><p>Again from the <code>faraway</code> package, use the <code>divusa</code> which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use <code>divorce</code> as the response variable and all other variables as the predictors.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test=‘F’ to use an F-test instead of AIC.</p></li>
+<li><p>Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?</p></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="6-diagnostics-and-transformations.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="8-one-way-anova.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/STA_571_Book/raw/master/07_Variable_Selection.Rmd",
+"text": "Edit"
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
