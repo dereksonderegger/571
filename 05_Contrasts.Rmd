@@ -43,7 +43,7 @@ $$
 \hat{\beta}_{1}
 \end{array}\right]}}
 $$
-In this manner, we could think of the predicted values $\hat{y}_i$ as just the result of the contrasts $\boldsymbol{X}^T \hat{\boldsymbol{\beta}}$ where our design matrix takes the role of the contrasts.
+In this manner, we could think of the predicted values $\hat{y}_i$ as just the result of the contrasts $\boldsymbol{X} \hat{\boldsymbol{\beta}}$ where our design matrix takes the role of the contrasts.
 
 One of the properties of maximum likelihood estimator (MLEs), is that they are invariant under transformations. Meaning that since $\hat{\boldsymbol{\beta}}$ is the MLE of $\boldsymbol{\beta}$, then $\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}$ is the MLE of $\boldsymbol{c}^{T}\boldsymbol{\beta}$. The only thing we need to perform hypotheses tests and create confidence intervals is an estimate of the variance of $\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}$. 
 

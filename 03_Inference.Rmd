@@ -363,33 +363,33 @@ In general, you should be very careful with the interpretation of the regression
     head(prostate)
     ```
     It is possible to get information about the data set using the command `help(prostate)`. Fit a model with `lpsa` as the response and all the other variables as predictors.
-
+    
     a) Compute $90\%$ and $95\%$ confidence intervals for the parameter associated with `age`. Using just these intervals, what could we deduced about the p-value for age in the regression summary. *Hint: look at the help for the function `confint()`. You'll find the `level` option to be helpful.*
-
+    
     b) Remove all the predictors that are not significant at the $5\%$ level. Test this model against the original model. Which is preferred?
 
 2. Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the `cheddar` dataset from the `faraway` package (import it the same way you did in problem one, but now use `cheddar`) to answer the following:
-
+    
     a) Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the $5\%$ level.
-
+    
     b) `Acetic` and `H2S` are measured on a log$_{10}$ scale. Create two new columns in the `cheddar` data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.
-
+    
     c) Can we use an $F$-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.
-
-    d) If H2S is increased by 0.01 for the model in (a), what change in taste would be expected? What caveates must be made in this interpretation.
+    
+    d) For the model in part (a), if `H2S` is increased by 0.01 (where H2S is on the log scale and we increase it by adding 0.01), what change in taste would be expected? What caveates must be made in this interpretation? _Hint: I don't want to get into interpreting parameters on the log scale just yet. So just interpret this as adding 0.01 to the covariate value._
 
 3. The `sat` data set in the `faraway` package gives data collected to study the relationship between expenditures on public education and test results.
-
+    
     a) Fit a model that with `total` SAT score as the response and only the intercept as a covariate.
-
+    
     b) Fit a model with `total` SAT score as the response and `expend`, `ratio`, and `salary` as predictors (along with the intercept). 
-
+    
     c) Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?
-
+    
     d) Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.
-
+    
     e) Fit the model with `salary` and `ratio` (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?
-
+    
     f) Now add `takers` to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that $\beta_{takers}=0$ using the summary table. 
     
     g) Discuss why `ratio` was not significant in the model in part (e) but was significant in part (f). *Hint: Look at the Residual Standard Error $\hat{\sigma}$ in each model and argue that each t-statistic is some variant of a "signal-to-noise" ratio and that the "noise" part is reduced in the second model.* 

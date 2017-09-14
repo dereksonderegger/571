@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-08">
+<meta name="date" content="2017-09-14">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -755,7 +755,7 @@ fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <spa
 <li><p>Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the <span class="math inline">\(5\%\)</span> level.</p></li>
 <li><p><code>Acetic</code> and <code>H2S</code> are measured on a log<span class="math inline">\(_{10}\)</span> scale. Create two new columns in the <code>cheddar</code> data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.</p></li>
 <li><p>Can we use an <span class="math inline">\(F\)</span>-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.</p></li>
-<li><p>If H2S is increased by 0.01 for the model in (a), what change in taste would be expected? What caveates must be made in this interpretation.</p></li>
+<li><p>For the model in part (a), if <code>H2S</code> is increased by 0.01 (where H2S is on the log scale and we increase it by adding 0.01), what change in taste would be expected? What caveates must be made in this interpretation? <em>Hint: I don’t want to get into interpreting parameters on the log scale just yet. So just interpret this as adding 0.01 to the covariate value.</em></p></li>
 </ol></li>
 <li><p>The <code>sat</code> data set in the <code>faraway</code> package gives data collected to study the relationship between expenditures on public education and test results.</p>
 <ol style="list-style-type: lower-alpha">
