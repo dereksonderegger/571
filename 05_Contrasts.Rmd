@@ -290,7 +290,7 @@ ggplot(trees, aes(x=Girth, y=Volume)) +
 ```
 
 Using the `summary()` function, we can test hypotheses about if
-the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth valus of 10 and 12.
+the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.
 
 ```{r}
 # We could find the regression line heights and CI using 
@@ -356,33 +356,37 @@ ggplot(ToothGrowth, aes(x=logDose, color=supp, fill=supp)) +
   geom_point( aes(y=len) )
 ```
 
-First, lets get the slope and y-intercept for each group. In the following code, the formula with the `| supp` part says that we want to do all the calculations for each level of the suppliment types. The first call to `lsmeans()` calculates the response at logDose level 0, while the second call calculates the response at logDose levels 0 and 1 and then takes the difference because of the use of the `pairwise`. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
+First, lets get the y-intercept for each group. In the following code, the formula with the `| supp` part says that we want to do all the calculations for each level of the supplement types. The call to `lsmeans()` calculates the response at logDose level 0. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
 
 
 ```{r}
 lsmeans(m, ~logDose | supp, at=list(logDose=0)) %>% 
   summary(infer=c(TRUE,TRUE))
-lsmeans(m, pairwise ~ logDose | supp, at=list(logDose=c(1,0))) %>% 
-  summary(infer=c(TRUE,TRUE))
 ```
 
-Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC suppliments. We also wanted to calculate the contrast between the two suppliment predictions.
+Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC supplements. We also wanted to calculate the contrast between the two supplement predictions.
 
 ```{r}
 lsmeans(m, pairwise~logDose*supp, at=list(logDose=-.69)) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
 
-We finished the section by making the same comparison for logdose = 0.69 (i.e. dose=2).
+We next make the same comparison for logdose = 0.69 (i.e. dose=2).
 ```{r}
 lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
 
+While `lsmeans()` makes it very easy to calculate the $\hat{y}$ value for some covariate combination or some difference of $\hat{y}$ values, it doesn't handle slope parameters particularly well.  The companion function `lstrends()` is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.
+
+```{r}
+lstrends(m, ~logDose*supp, var = 'logDose')
+lstrends(m, pairwise~logDose*supp, var = 'logDose')
+```
 
 ## Exercises
 
-1. We will examine a dataset that summarizes cars featured in the magazine Motor Trend during the year 1974. In particular we will examine the relationship between the vehicles gas milage (`mpg`) versus the weight (`wt`) and number of cylinders (`cyl`) of the vehicle.
+1. We will examine a dataset that summarizes cars featured in the magazine Motor Trend during the year 1974. In particular we will examine the relationship between the vehicles gas mileage (`mpg`) versus the weight (`wt`) and number of cylinders (`cyl`) of the vehicle.
     ```{r, fig.height=4}
     library(ggplot2)
     library(dplyr)
@@ -418,13 +422,14 @@ lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>%
         v. $\hat{\beta}_4$ = ???
         vi. $\hat{\beta}_5$ = ???
         
-    c. Comment on the process by which you could create the interaction columns just using the `wt` and `cyl` columns.         
+    c. Comment on the process by which you could create the interaction columns in the design matrix just using the columns associated with `wt` and `cyl` covariates. _Hint: notice there is simple algebra being done to create the columns associated with the interaction._
+    
     d. Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
         ```{r}
         model <- lm(mpg ~ wt*cyl, data=mtcars)
         ```
         
-    e. Create a vector of fitted values, add it to the data frame mtcars and then create a plot that includes the regression lines.
+    e. Create a vector of fitted values, add it to the data frame `mtcars` and then create a plot that includes the regression lines.
     
     f. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
     

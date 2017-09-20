@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-14">
+<meta name="date" content="2017-09-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -307,7 +307,7 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for HS.Grad rate and for Income. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data$HS.Grad<span class="fl">.2</span> &lt;-<span class="st"> </span>state.data$HS.Grad ^<span class="st"> </span><span class="dv">2</span>
 state.data$Income<span class="fl">.2</span>  &lt;-<span class="st"> </span>state.data$Income  ^<span class="st"> </span><span class="dv">2</span>
