@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-19">
+<meta name="date" content="2017-09-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -417,7 +417,7 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright ~<span class=
 <span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span> variety)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() +
 <span class="st">  </span><span class="kw">facet_wrap</span>(~block, <span class="dt">labeller=</span>label_both)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 <p>In this case, we don’t really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
 model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>variety +<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
@@ -577,14 +577,14 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, formula, <sp
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) +
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label=</span>SigGroup, <span class="dt">y=</span>LetterHeight))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
 <hr />
 <p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(penicillin)
 <span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) +
 <span class="st">  </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>( ~<span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
 <p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st">  </span><span class="dv">1</span>    +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
 model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>treat +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
@@ -633,7 +633,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 <h2><span class="header-section-number">11.4</span> Nested Effects</h2>
 <p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are <em>crossed</em> with site.</p>
 <p>We’ve already seen a number of nested designs when we looked at split plot designs. Recall the <code>AgData</code> set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot. We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following model definitions are equivalent</span>
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Irrigation +<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot) +<span class="st"> </span>(<span class="dv">1</span>|plot:subplot), <span class="dt">data=</span>AgData )
@@ -689,7 +689,7 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
 ## 4   A    1   4 320.0109
 ## 5   A    1   5 292.2656
 ## 6   A    1   6 315.8136</code></pre>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-221-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-224-1.png" width="672" /></p>
 <p>We can easily fit this model using random effects for each ring.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y ~<span class="st"> </span>Trt +<span class="st"> </span>(<span class="dv">1</span>|Ring), <span class="dt">data=</span>HierarchicalData )
 car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
@@ -708,7 +708,7 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-224-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
 <p>Now we consider the predicted values, but created using the Ring random effect. These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is <em>required</em> to be 0.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ranef</span>(model)</code></pre></div>
 <pre><code>## $Ring
@@ -730,7 +730,7 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
 <p>We interpret the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.</p>
 <hr />
 <p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.</p>
@@ -747,7 +747,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average Value Only&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
@@ -755,7 +755,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab/Technician)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
@@ -763,7 +763,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab/Technician/Sample)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
@@ -771,7 +771,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician + Sample Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
 <p>No that we have an idea of how things vary, we can look at the summary table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -853,7 +853,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(abrasion, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
 <span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) +
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
 <p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear ~<span class="st"> </span>material +<span class="st"> </span>(<span class="dv">1</span>|run) +<span class="st"> </span>(<span class="dv">1</span>|position), <span class="dt">data=</span>abrasion)
 car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
@@ -928,7 +928,7 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 <span class="st">    </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-240-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
 <p>We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction ~<span class="st"> </span>Days +<span class="st"> </span>(<span class="dv">1</span>|Subject), <span class="dt">data=</span>sleepstudy)
 <span class="kw">summary</span>(m1)</code></pre></div>
@@ -985,7 +985,7 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 <span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>() +
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
 <p>This isn’t too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Random effects for intercept and Slope </span>
 m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction ~<span class="st"> </span>Days +<span class="st"> </span>( <span class="dv">1</span>+Days |<span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)
@@ -997,7 +997,7 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </sp
 <span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>() +
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
 <p>This appears to fit the observed data quite a bit better, but it is useful to test this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m1, m2)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
@@ -1017,21 +1017,21 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </sp
 <span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +<span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span>~(<span class="dv">1</span>+Days|Subject)))
 <span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) +
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) +
 <span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-247-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
 <p>Finally we want to go back and look at the coefficients for the complex model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]

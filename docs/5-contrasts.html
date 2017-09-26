@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-19">
+<meta name="date" content="2017-09-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -402,9 +402,9 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                      Estimate Std. Error t value Pr(&gt;|t|)    
-## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;0.001 ***
-## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;0.001 ***
-## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;0.001 ***
+## Mean of Group 1 == 0   86.750      1.518  57.141   &lt;1e-04 ***
+## Mean of Group 2 == 0   75.571      1.623  46.563   &lt;1e-04 ***
+## Mean of Group 3 == 0   71.000      1.431  49.604   &lt;1e-04 ***
 ## Diff G2-G3 == 0         4.571      2.164   2.112    0.144    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
@@ -416,16 +416,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6448
+## Quantile = 2.6459
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7347 90.7653
-## Mean of Group 2 == 0 75.5714  71.2789 79.8640
-## Mean of Group 3 == 0 71.0000  67.2143 74.7857
-## Diff G2-G3 == 0       4.5714  -1.1519 10.2948</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7331 90.7669
+## Mean of Group 2 == 0 75.5714  71.2772 79.8657
+## Mean of Group 3 == 0 71.0000  67.2128 74.7872
+## Diff G2-G3 == 0       4.5714  -1.1542 10.2971</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -727,6 +727,40 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 ## $contrasts
 ##  contrast     estimate      SE df t.ratio p.value
 ##  0,OJ - 0,VC -3.844782 1.69707 56  -2.266  0.0274</code></pre>
+<div id="common-lsmeans-mistake" class="section level4">
+<h4><span class="header-section-number">5.3.3.1</span> Common <code>lsmeans()</code> mistake</h4>
+<p>It is very common to make a mistake using <code>lsmeans()</code> or <code>lstrends()</code> if you don’t understand what the specification formula means. In particular what happens if you were to use <code>~logDose</code> instead of the correct <code>~logDose*supp</code>.</p>
+<p>Consider the case where we are interested in making predictions for each suppliment type at <span class="math inline">\(1/2\)</span> dose (logDose=-0.69).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose*supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>))</code></pre></div>
+<pre><code>##  logDose supp   lsmean       SE df lower.CL upper.CL
+##    -0.69 OJ   14.27746 1.070905 56 12.13218 16.42274
+##    -0.69 VC    7.92456 1.070905 56  5.77928 10.06984
+## 
+## Confidence level used: 0.95</code></pre>
+<p>If I were to accidently forget the <code>supp</code> part of this, then <code>lsmeans()</code> would figure that I wanted to <em>average</em> over the two levels and give me the average of <span class="math inline">\(14.28\)</span> and <span class="math inline">\(7.92\)</span>, which is <span class="math inline">\(11.1\)</span>. With the interaction term in the model, it is unlikely that I would want to do this, but <code>lsmeans()</code> complains a little but lets me do it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>))</code></pre></div>
+<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
+<pre><code>##  logDose   lsmean       SE df lower.CL upper.CL
+##    -0.69 11.10101 0.757244 56 9.584068 12.61795
+## 
+## Results are averaged over the levels of: supp 
+## Confidence level used: 0.95</code></pre>
+<p>What would happen if we only use <code>supp</code> in the formula specification? In this case we are lucky because the <code>logDose=-0.69</code> specified what dose level to look at. If we had forgotten to specify this, then we would have done this calculation at the mean <code>logDose</code> value, which happens to be zero.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~supp*logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>))</code></pre></div>
+<pre><code>##  supp logDose   lsmean        SE df lower.CL upper.CL
+##  OJ         0 20.66333 0.6791481 56 19.30284 22.02383
+##  VC         0 16.96333 0.6791481 56 15.60284 18.32383
+## 
+## Confidence level used: 0.95</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~supp)</code></pre></div>
+<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
+<pre><code>##  supp   lsmean        SE df lower.CL upper.CL
+##  OJ   20.66333 0.6791481 56 19.30284 22.02383
+##  VC   16.96333 0.6791481 56 15.60284 18.32383
+## 
+## Confidence level used: 0.95</code></pre>
+<p>Because the averaging over factor levels isn’t what I typically want to do, I start the analysis making sure the model formula I used in the <code>lm()</code> command is the same as the one I pass into <code>lsmeans()</code>.</p>
+</div>
 </div>
 </div>
 <div id="exercises-4" class="section level2">
@@ -742,7 +776,7 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) +
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) +
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&#39;Cylinders&#39;</span>, <span class="dt">shape=</span><span class="st">&#39;Cylinders&#39;</span>)</code></pre></div>
-<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-84-1.png" width="672" />
+<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-87-1.png" width="672" />
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars.small &lt;-<span class="st"> </span>mtcars %&gt;%<span class="st">      </span>
@@ -779,16 +813,14 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 <li><span class="math inline">\(\hat{\beta}_4\)</span> = ???</li>
 <li><span class="math inline">\(\hat{\beta}_5\)</span> = ???</li>
 </ol></li>
-<li><p>Comment on the process by which you could create the interaction columns in the design matrix just using the columns associated with <code>wt</code> and <code>cyl</code> covariates. <em>Hint: notice there is simple algebra being done to create the columns associated with the interaction.</em></p></li>
 <li><p>Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg ~<span class="st"> </span>wt*cyl, <span class="dt">data=</span>mtcars)</code></pre></div></li>
-<li><p>Create a vector of fitted values, add it to the data frame <code>mtcars</code> and then create a plot that includes the regression lines.</p></li>
-<li><p>What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the <code>predict()</code> function. <em>Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).</em></p></li>
-<li><p>Recalculate your answer to part (f) using the <code>glht()</code> function.</p></li>
-<li><p>Recalculate your answer to part (f) using the <code>lsmeans()</code> function.</p></li>
-<li><p>What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the <code>glht()</code> function and using the <code>lsmeans()</code> function.</p></li>
-<li><p>What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons? Calculate this result using both the <code>glht()</code> and <code>lsmeans()</code>.</p></li>
-<li><p>Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use either <code>lsmeans()</code> or <code>glht()</code> to produce this result.</p></li>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg ~<span class="st"> </span>wt*cyl, <span class="dt">data=</span>mtcars)</code></pre></div>
+<p>Create a vector of fitted values, add it to the data frame <code>mtcars</code> and then create a plot that includes the regression lines.</p></li>
+<li><p>What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? What is the estimated mpg of a 8-cylinder vehicle weight 3.5 tons? Give the associated 95% confidence intervals. Calculate these using the <code>predict()</code> function. <em>Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).</em></p></li>
+<li><p>Recalculate your answer to part (d) using the <code>glht()</code> function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?</p></li>
+<li><p>Recalculate your answer to part (e) using the <code>lsmeans()</code> function.</p></li>
+<li><p>Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use <code>glht()</code> to produce this result.</p></li>
+<li><p>Recalculate your answer to part (g) using the <code>lstrends()</code> function.</p></li>
 </ol></li>
 </ol>
 

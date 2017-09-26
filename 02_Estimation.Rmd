@@ -12,12 +12,12 @@ knitr::opts_chunk$set(echo = TRUE,
 We have previously looked at ANOVA and regression models and, in many
 ways, they felt very similar. In this chapter we will introduce the
 theory that allows us to understand both models as a particular flavor
-of a larger class of models known as \emph{linear models.}
+of a larger class of models known as _linear models_.
 
 First we clarify what a linear model is. A linear model is a model
 where the data (which we will denote using roman letters as $\boldsymbol{x}$
 and $\boldsymbol{y}$) and parameters of interest (which we denote
-using greek letters such as $\boldsymbol{\alpha}$ and $\boldsymbol{\beta}$)
+using Greek letters such as $\boldsymbol{\alpha}$ and $\boldsymbol{\beta}$)
 interact only via addition and multiplication. The following are linear
 models:
 
@@ -32,11 +32,11 @@ General Regression | $y_{i}=\beta_{0}+\beta_{1}x_{i,1}+\beta_{2}x_{i,2}+\dots+\b
 Notice in the Quadratic model, the square is
 not a parameter and we can consider $x_{i}^{2}$ as just another column
 of data. This leads to the second example of multiple regression where
-we just add more slopes for other covariates where the $p$\textsuperscript{th}
+we just add more slopes for other covariates where the $p$th
 covariate is denoted $\boldsymbol{x}_{\cdot,p}$ and might be some
 transformation (such as $x^{2}$ or $\log x$) of another column of
 data. The critical point is that the transformation to the data  $\boldsymbol{x}$ does not depend
-on a parameter. Thus the following is \emph{not} a linear model
+on a parameter. Thus the following is _not_ a linear model
 \[
 y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
 \]
@@ -65,7 +65,8 @@ y_{n} & =  \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
 
 where, as usual, $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
 These equations can be written using matrices as
-\[
+RR
+$$
 \underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
 y_{1}\\
 y_{2}\\
@@ -91,8 +92,10 @@ y_{n}
 \epsilon_{n-1}\\
 \epsilon_{n}
 \end{array}\right]}}
-\]
+$$
+
 and we compactly write the model as 
+
 $$
 \boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}
 $$
@@ -106,60 +109,62 @@ in estimating.
 Our next goal is to find the best estimate of $\boldsymbol{\beta}$
 given the data. To justify the formula, consider the case where there
 is no error terms (i.e. $\epsilon_{i}=0$ for all $i$). Thus we have
-\[
+$$
 \boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}
-\]
+$$
 and our goal is to solve for $\boldsymbol{\beta}$. To do this, we
 must use a matrix inverse, but since inverses only exist for square
 matrices, we pre-multiple by $\boldsymbol{X}^{T}$ (notice that $\boldsymbol{X}^{T}\boldsymbol{X}$
 is a symmetric $2\times2$ matrix).
-\[
+$$
 \boldsymbol{X}^{T}\boldsymbol{y}=\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}
-\]
+$$
  and then pre-multiply by $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}$.
-\begin{eqnarray*}
+
+$$\begin{eqnarray*}
 \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} & = & \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}\\
 \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} & = & \boldsymbol{\beta}
-\end{eqnarray*}
+\end{eqnarray*}$$
+
 This exercise suggests that $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$
 is a good place to start when looking for the maximum-likelihood estimator
 for $\boldsymbol{\beta}$. It turns out that this quantity is in fact
 the maximum-likelihood estimator (and equivalently minimizes the sum-of-squared
 error). Therefore we will use it as our estimate of $\boldsymbol{\beta}$.
-\[
+$$
 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
-\]
+$$
 
 
 
 ### Estimation of Variance Parameter
 
 Recall our model is 
-\[
+$$
 y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
-\]
+$$
 where $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
 
 Using our estimates $\hat{\boldsymbol{\beta}}$ we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each $x_i$ value in our dataset.
-\[
+$$
 \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-\]
+$$
 Using matrix notation, I would write $\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$.
 
 As usual we will find estimates of the noise terms (which we will
 call residuals or errors) via 
-\begin{eqnarray*}
+$$\begin{eqnarray*}
 \hat{\epsilon}_{i} & = & y_{i}-\hat{y}_{i}\\
  & = & y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
-\end{eqnarray*}
+\end{eqnarray*}$$
 
 
 Writing $\hat{\boldsymbol{y}}$ in matrix terms we have
-\begin{eqnarray*}
+$$\begin{eqnarray*}
 \hat{\boldsymbol{y}} & = & \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
  & = & \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
  & = & \boldsymbol{H}\boldsymbol{y}
-\end{eqnarray*}
+\end{eqnarray*}$$
 where $\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}$
 is often called the *hat-matrix* because it takes $y$ to $\hat{y}$
 and has many interesting theoretical properties.\footnote{Mathematically, $\boldsymbol{H}$ is the projection matrix that takes
@@ -169,23 +174,26 @@ have many useful properties and much of the theory of linear models
 utilizes $\boldsymbol{H}$. }
 
 We can now estimate the error terms via
-\begin{eqnarray*}
+
+$$\begin{eqnarray*}
 \hat{\boldsymbol{\epsilon}} & = & \boldsymbol{y}-\hat{\boldsymbol{y}}\\
  & = & \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
  & = & \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
-\end{eqnarray*}
+\end{eqnarray*}$$
+
 As usual we estimate $\sigma^{2}$ using the mean-squared error 
-\begin{eqnarray*}
+$$\begin{eqnarray*}
 \hat{\sigma}^{2} & = & \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\
 \\
  & = & \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}
+\end{eqnarray*}$$
+
 In the general linear model case where $\boldsymbol{\beta}$ has $p$
 elements (and thus we have $n-p$ degrees of freedom), the formula
 is
-\begin{eqnarray*}
+$$\begin{eqnarray*}
 \hat{\sigma}^{2} & = & \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}
+\end{eqnarray*}$$
  
 
 ### Expectation and variance of a random vector

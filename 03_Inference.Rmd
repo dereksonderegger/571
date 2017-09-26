@@ -376,7 +376,7 @@ In general, you should be very careful with the interpretation of the regression
     
     c) Can we use an $F$-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.
     
-    d) For the model in part (a), if `H2S` is increased by 0.01 (where H2S is on the log scale and we increase it by adding 0.01), what change in taste would be expected? What caveates must be made in this interpretation? _Hint: I don't want to get into interpreting parameters on the log scale just yet. So just interpret this as adding 0.01 to the covariate value._
+    d) For the model in part (a), if a sample of cheese were to have `H2S` increased by 2 (where H2S is on the log scale and we increase this value by 2 using some method), what change in taste would be expected? What caveates must be made in this interpretation? _Hint: I don't want to get into interpreting parameters on the log scale just yet. So just interpret this as adding 2 to the covariate value and predicting the change in taste._
 
 3. The `sat` data set in the `faraway` package gives data collected to study the relationship between expenditures on public education and test results.
     

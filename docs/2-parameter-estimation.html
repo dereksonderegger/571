@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-19">
+<meta name="date" content="2017-09-26">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -263,7 +263,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="parameter-estimation" class="section level1">
 <h1><span class="header-section-number">Chapter 2</span> Parameter Estimation</h1>
-<p>We have previously looked at ANOVA and regression models and, in many ways, they felt very similar. In this chapter we will introduce the theory that allows us to understand both models as a particular flavor of a larger class of models known as </p>
+<p>We have previously looked at ANOVA and regression models and, in many ways, they felt very similar. In this chapter we will introduce the theory that allows us to understand both models as a particular flavor of a larger class of models known as <em>linear models</em>.</p>
 <p>First we clarify what a linear model is. A linear model is a model where the data (which we will denote using roman letters as <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span>) and parameters of interest (which we denote using greek letters such as <span class="math inline">\(\boldsymbol{\alpha}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span>) interact only via addition and multiplication. The following are linear models:</p>
 <table style="width:90%;">
 <colgroup>
@@ -295,7 +295,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tr>
 </tbody>
 </table>
-<p>Notice in the Quadratic model, the square is not a parameter and we can consider <span class="math inline">\(x_{i}^{2}\)</span> as just another column of data. This leads to the second example of multiple regression where we just add more slopes for other covariates where the <span class="math inline">\(p\)</span> covariate is denoted <span class="math inline">\(\boldsymbol{x}_{\cdot,p}\)</span> and might be some transformation (such as <span class="math inline">\(x^{2}\)</span> or <span class="math inline">\(\log x\)</span>) of another column of data. The critical point is that the transformation to the data <span class="math inline">\(\boldsymbol{x}\)</span> does not depend on a parameter. Thus the following is  a linear model <span class="math display">\[
+<p>Notice in the Quadratic model, the square is not a parameter and we can consider <span class="math inline">\(x_{i}^{2}\)</span> as just another column of data. This leads to the second example of multiple regression where we just add more slopes for other covariates where the <span class="math inline">\(p\)</span>th covariate is denoted <span class="math inline">\(\boldsymbol{x}_{\cdot,p}\)</span> and might be some transformation (such as <span class="math inline">\(x^{2}\)</span> or <span class="math inline">\(\log x\)</span>) of another column of data. The critical point is that the transformation to the data <span class="math inline">\(\boldsymbol{x}\)</span> does not depend on a parameter. Thus the following is <em>not</em> a linear model <span class="math display">\[
 y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
 \]</span></p>
 <div id="simple-regression" class="section level2">
@@ -310,7 +310,7 @@ y_{3} &amp; =  \beta_{0}+\beta_{1}x_{3}+\epsilon_{3}\\
 y_{n-1} &amp; =  \beta_{0}+\beta_{1}x_{n-1}+\epsilon_{n-1}\\
 y_{n} &amp; =  \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
 \end{aligned}\]</span></p>
-<p>where, as usual, <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>. These equations can be written using matrices as <span class="math display">\[
+<p>where, as usual, <span class="math inline">\(\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>. These equations can be written using matrices as RR <span class="math display">\[
 \underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
 y_{1}\\
 y_{2}\\
@@ -336,20 +336,22 @@ y_{n}
 \epsilon_{n-1}\\
 \epsilon_{n}
 \end{array}\right]}}
-\]</span> and we compactly write the model as <span class="math display">\[
+\]</span></p>
+<p>and we compactly write the model as</p>
+<p><span class="math display">\[
 \boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}
 \]</span> where <span class="math inline">\(\boldsymbol{X}\)</span> is referred to as the <em>design matrix</em> and <span class="math inline">\(\boldsymbol{\beta}\)</span> is the vector of <em>location parameters</em> we are interested in estimating.</p>
 <div id="estimation-of-location-paramters" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> Estimation of Location Paramters</h3>
-Our next goal is to find the best estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span> given the data. To justify the formula, consider the case where there is no error terms (i.e. <span class="math inline">\(\epsilon_{i}=0\)</span> for all <span class="math inline">\(i\)</span>). Thus we have <span class="math display">\[
+<p>Our next goal is to find the best estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span> given the data. To justify the formula, consider the case where there is no error terms (i.e. <span class="math inline">\(\epsilon_{i}=0\)</span> for all <span class="math inline">\(i\)</span>). Thus we have <span class="math display">\[
 \boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}
 \]</span> and our goal is to solve for <span class="math inline">\(\boldsymbol{\beta}\)</span>. To do this, we must use a matrix inverse, but since inverses only exist for square matrices, we pre-multiple by <span class="math inline">\(\boldsymbol{X}^{T}\)</span> (notice that <span class="math inline">\(\boldsymbol{X}^{T}\boldsymbol{X}\)</span> is a symmetric <span class="math inline">\(2\times2\)</span> matrix). <span class="math display">\[
 \boldsymbol{X}^{T}\boldsymbol{y}=\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}
-\]</span> and then pre-multiply by <span class="math inline">\(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\)</span>.
-<span class="math display">\[\begin{eqnarray*}
+\]</span> and then pre-multiply by <span class="math inline">\(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\)</span>.</p>
+<p><span class="math display">\[\begin{eqnarray*}
 \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &amp; = &amp; \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}\\
 \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &amp; = &amp; \boldsymbol{\beta}
-\end{eqnarray*}\]</span>
+\end{eqnarray*}\]</span></p>
 <p>This exercise suggests that <span class="math inline">\(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\)</span> is a good place to start when looking for the maximum-likelihood estimator for <span class="math inline">\(\boldsymbol{\beta}\)</span>. It turns out that this quantity is in fact the maximum-likelihood estimator (and equivalently minimizes the sum-of-squared error). Therefore we will use it as our estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span>. <span class="math display">\[
 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
 \]</span></p>
@@ -362,34 +364,29 @@ y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
 <p>Using our estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each <span class="math inline">\(x_i\)</span> value in our dataset. <span class="math display">\[
 \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
 \]</span> Using matrix notation, I would write <span class="math inline">\(\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>.</p>
-As usual we will find estimates of the noise terms (which we will call residuals or errors) via
-<span class="math display">\[\begin{eqnarray*}
+<p>As usual we will find estimates of the noise terms (which we will call residuals or errors) via <span class="math display">\[\begin{eqnarray*}
 \hat{\epsilon}_{i} &amp; = &amp; y_{i}-\hat{y}_{i}\\
  &amp; = &amp; y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
-\end{eqnarray*}\]</span>
-Writing <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> in matrix terms we have
-<span class="math display">\[\begin{eqnarray*}
+\end{eqnarray*}\]</span></p>
+<p>Writing <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> in matrix terms we have <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
  &amp; = &amp; \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
  &amp; = &amp; \boldsymbol{H}\boldsymbol{y}
-\end{eqnarray*}\]</span>
-<p>where <span class="math inline">\(\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\)</span> is often called the <em>hat-matrix</em> because it takes <span class="math inline">\(y\)</span> to <span class="math inline">\(\hat{y}\)</span> and has many interesting theoretical properties.</p>
-We can now estimate the error terms via
-<span class="math display">\[\begin{eqnarray*}
+\end{eqnarray*}\]</span> where <span class="math inline">\(\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\)</span> is often called the <em>hat-matrix</em> because it takes <span class="math inline">\(y\)</span> to <span class="math inline">\(\hat{y}\)</span> and has many interesting theoretical properties.</p>
+<p>We can now estimate the error terms via</p>
+<p><span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{\epsilon}} &amp; = &amp; \boldsymbol{y}-\hat{\boldsymbol{y}}\\
  &amp; = &amp; \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
  &amp; = &amp; \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
-\end{eqnarray*}\]</span>
-As usual we estimate <span class="math inline">\(\sigma^{2}\)</span> using the mean-squared error
-<span class="math display">\[\begin{eqnarray*}
+\end{eqnarray*}\]</span></p>
+<p>As usual we estimate <span class="math inline">\(\sigma^{2}\)</span> using the mean-squared error <span class="math display">\[\begin{eqnarray*}
 \hat{\sigma}^{2} &amp; = &amp; \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\
 \\
  &amp; = &amp; \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}\]</span>
-In the general linear model case where <span class="math inline">\(\boldsymbol{\beta}\)</span> has <span class="math inline">\(p\)</span> elements (and thus we have <span class="math inline">\(n-p\)</span> degrees of freedom), the formula is
-<span class="math display">\[\begin{eqnarray*}
+\end{eqnarray*}\]</span></p>
+<p>In the general linear model case where <span class="math inline">\(\boldsymbol{\beta}\)</span> has <span class="math inline">\(p\)</span> elements (and thus we have <span class="math inline">\(n-p\)</span> degrees of freedom), the formula is <span class="math display">\[\begin{eqnarray*}
 \hat{\sigma}^{2} &amp; = &amp; \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}\]</span>
+\end{eqnarray*}\]</span></p>
 </div>
 <div id="expectation-and-variance-of-a-random-vector" class="section level3">
 <h3><span class="header-section-number">2.1.3</span> Expectation and variance of a random vector</h3>
@@ -491,8 +488,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -1.609079
-## x  1.838418</code></pre>
+##   -3.398425
+## x  2.102089</code></pre>
 Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span>
 <span class="math display">\[\begin{eqnarray*}
 \hat{\boldsymbol{y}} &amp; = &amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -511,13 +508,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -1.609079
-## x  1.838418</code></pre>
+##   -3.398425
+## x  2.102089</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 2.063636</code></pre>
+## [1,] 1.921179</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.8893153 0.1520463</code></pre>
+<pre><code>## [1] 0.8279240 0.1415502</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -526,18 +523,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.3265 -1.7505 -0.7333  1.6472  3.2552 
+## -3.2006 -0.9231 -0.1054  1.2881  3.6310 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -1.6091     0.8893  -1.809   0.0871 .  
-## x             1.8384     0.1520  12.091 4.47e-10 ***
+## (Intercept)  -3.3984     0.8279  -4.105 0.000665 ***
+## x             2.1021     0.1416  14.850 1.52e-11 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.064 on 18 degrees of freedom
-## Multiple R-squared:  0.8904, Adjusted R-squared:  0.8843 
-## F-statistic: 146.2 on 1 and 18 DF,  p-value: 4.467e-10</code></pre>
+## Residual standard error: 1.921 on 18 degrees of freedom
+## Multiple R-squared:  0.9245, Adjusted R-squared:  0.9203 
+## F-statistic: 220.5 on 1 and 18 DF,  p-value: 1.524e-11</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -546,13 +543,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -3.477461 0.2593036
-## x          1.518981 2.1578558</code></pre>
+## Intercept -5.137829 -1.659022
+## x          1.804703  2.399475</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -3.477461 0.2593036
-## x            1.518981 2.1578558</code></pre>
+## (Intercept) -5.137829 -1.659022
+## x            1.804703  2.399475</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

@@ -384,6 +384,30 @@ lstrends(m, ~logDose*supp, var = 'logDose')
 lstrends(m, pairwise~logDose*supp, var = 'logDose')
 ```
 
+#### Common `lsmeans()` mistake
+It is very common to make a mistake using `lsmeans()` or `lstrends()` if you don't understand what the specification formula means. In particular what happens if you were to use `~logDose` instead of the correct `~logDose*supp`.
+
+Consider the case where we are interested in making predictions for each suppliment type at $1/2$ dose (logDose=-0.69).
+```{r}
+lsmeans(m, ~logDose*supp, at=list(logDose=-.69))
+```
+
+If I were to accidently forget the `supp` part of this, then `lsmeans()` would figure that I wanted to _average_ over the two levels and give me the average of $14.28$ and $7.92$, which is $11.1$. With the interaction term in the model, it is unlikely that I would want to do this, but `lsmeans()` complains a little but lets me do it.
+
+```{r}
+lsmeans(m, ~logDose, at=list(logDose=-.69))
+```
+
+What would happen if we only use `supp` in the formula specification? In this case we are lucky because the `logDose=-0.69` specified what dose level to look at.  If we had forgotten to specify this, then we would have done this calculation at the mean `logDose` value, which happens to be zero.
+
+```{r}
+lsmeans(m, ~supp*logDose, at=list(logDose=0))
+lsmeans(m, ~supp)
+```
+
+Because the averaging over factor levels isn't what I typically want to do, I start the analysis making sure the model formula I used in the `lm()` command is the same as the one I pass into `lsmeans()`. 
+
+
 ## Exercises
 
 1. We will examine a dataset that summarizes cars featured in the magazine Motor Trend during the year 1974. In particular we will examine the relationship between the vehicles gas mileage (`mpg`) versus the weight (`wt`) and number of cylinders (`cyl`) of the vehicle.
@@ -422,23 +446,18 @@ lstrends(m, pairwise~logDose*supp, var = 'logDose')
         v. $\hat{\beta}_4$ = ???
         vi. $\hat{\beta}_5$ = ???
         
-    c. Comment on the process by which you could create the interaction columns in the design matrix just using the columns associated with `wt` and `cyl` covariates. _Hint: notice there is simple algebra being done to create the columns associated with the interaction._
-    
-    d. Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
+    c. Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
         ```{r}
         model <- lm(mpg ~ wt*cyl, data=mtcars)
         ```
-        
-    e. Create a vector of fitted values, add it to the data frame `mtcars` and then create a plot that includes the regression lines.
+        Create a vector of fitted values, add it to the data frame `mtcars` and then create a plot that includes the regression lines.
     
-    f. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? Give an associated 95% confidence interval. Calculate this using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
+    d. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? What is the estimated mpg of a 8-cylinder vehicle weight 3.5 tons? Give the associated 95% confidence intervals. Calculate these using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
     
-    g. Recalculate your answer to part (f) using the `glht()` function.
+    e. Recalculate your answer to part (d) using the `glht()` function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?
     
-    h. Recalculate your answer to part (f) using the `lsmeans()` function.
+    f. Recalculate your answer to part (e) using the `lsmeans()` function.
     
-    i. What is the estimated mpg (and 95% confidence interval) of an 8-cylinder vehicle weighing 3.5 tons? Compute this using the `glht()` function and using the `lsmeans()` function.
+    g. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use `glht()` to produce this result. 
     
-    j. What is the estimated difference (and 95% confidence interval) in mpg between the 8 and 6 cylinder vehicles that weigh 3.5 tons? Is there a statistically significant difference in mpg at 3.5 tons? Calculate this result using both the `glht()` and `lsmeans()`. 
-    
-    k. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use either `lsmeans()` or `glht()` to produce this result.  
+    h. Recalculate your answer to part (g) using the `lstrends()` function.
