@@ -1,8 +1,5 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
+
 # Parameter Estimation
 ```{r, results='hide', echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, 
@@ -37,9 +34,9 @@ covariate is denoted $\boldsymbol{x}_{\cdot,p}$ and might be some
 transformation (such as $x^{2}$ or $\log x$) of another column of
 data. The critical point is that the transformation to the data  $\boldsymbol{x}$ does not depend
 on a parameter. Thus the following is _not_ a linear model
-\[
+$$
 y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
-\]
+$$
 
 
 
@@ -121,50 +118,45 @@ $$
 $$
  and then pre-multiply by $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}$.
 
-$$\begin{eqnarray*}
-\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} & = & \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}\\
-\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} & = & \boldsymbol{\beta}
-\end{eqnarray*}$$
+$$\begin{aligned}
+\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} 
+  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta} \\
+  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &= \boldsymbol{\beta} 
+\end{aligned}$$
 
 This exercise suggests that $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$
 is a good place to start when looking for the maximum-likelihood estimator
 for $\boldsymbol{\beta}$. It turns out that this quantity is in fact
 the maximum-likelihood estimator (and equivalently minimizes the sum-of-squared
 error). Therefore we will use it as our estimate of $\boldsymbol{\beta}$.
-$$
-\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
-$$
+$$\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$$
 
 
 
 ### Estimation of Variance Parameter
 
 Recall our model is 
-$$
-y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}
-$$
+$$y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}$$
 where $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
 
 Using our estimates $\hat{\boldsymbol{\beta}}$ we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each $x_i$ value in our dataset.
-$$
-\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i
-$$
+$$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$$
 Using matrix notation, I would write $\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$.
 
 As usual we will find estimates of the noise terms (which we will
 call residuals or errors) via 
-$$\begin{eqnarray*}
-\hat{\epsilon}_{i} & = & y_{i}-\hat{y}_{i}\\
- & = & y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
-\end{eqnarray*}$$
+$$\begin{aligned} \hat{\epsilon}_{i} 
+  &=  y_{i}-\hat{y}_{i}\\
+  &=  y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
+\end{aligned}$$
 
 
 Writing $\hat{\boldsymbol{y}}$ in matrix terms we have
-$$\begin{eqnarray*}
-\hat{\boldsymbol{y}} & = & \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
- & = & \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
- & = & \boldsymbol{H}\boldsymbol{y}
-\end{eqnarray*}$$
+$$\begin{aligned}
+\hat{\boldsymbol{y}} &= \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+ &=  \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
+ &=  \boldsymbol{H}\boldsymbol{y}
+\end{aligned}$$
 where $\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}$
 is often called the *hat-matrix* because it takes $y$ to $\hat{y}$
 and has many interesting theoretical properties.\footnote{Mathematically, $\boldsymbol{H}$ is the projection matrix that takes
@@ -175,25 +167,20 @@ utilizes $\boldsymbol{H}$. }
 
 We can now estimate the error terms via
 
-$$\begin{eqnarray*}
-\hat{\boldsymbol{\epsilon}} & = & \boldsymbol{y}-\hat{\boldsymbol{y}}\\
- & = & \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
- & = & \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
-\end{eqnarray*}$$
+$$\begin{aligned}
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}\\
+ &=  \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
+ &=  \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
+\end{aligned}$$
 
 As usual we estimate $\sigma^{2}$ using the mean-squared error 
-$$\begin{eqnarray*}
-\hat{\sigma}^{2} & = & \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\
-\\
- & = & \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}$$
+$$\begin{aligned} \hat{\sigma}^{2} 
+  &= \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\ \\
+  &=  \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\end{aligned}$$
 
-In the general linear model case where $\boldsymbol{\beta}$ has $p$
-elements (and thus we have $n-p$ degrees of freedom), the formula
-is
-$$\begin{eqnarray*}
-\hat{\sigma}^{2} & = & \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{eqnarray*}$$
+In the general linear model case where $\boldsymbol{\beta}$ has $p$ elements (and thus we have $n-p$ degrees of freedom), the formula is
+$$\hat{\sigma}^{2} = \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
  
 
 ### Expectation and variance of a random vector
@@ -205,35 +192,33 @@ In the following, let $\boldsymbol{A}_{n\times p}$ and $\boldsymbol{b}_{n\times1
 be constants and $\boldsymbol{\epsilon}_{n\times1}$ be a random vector.
 
 Expectations are very similar to the scalar case where
-\[
-E\left[\boldsymbol{\epsilon}\right]=\left[\begin{array}{c}
+$$E\left[\boldsymbol{\epsilon}\right]=\left[\begin{array}{c}
 E\left[\epsilon_{1}\right]\\
 E\left[\epsilon_{2}\right]\\
 \vdots\\
 E\left[\epsilon_{n}\right]
-\end{array}\right]
-\]
+\end{array}\right]$$
 and any constants are pulled through the expectation
-\[
-E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}
-\]
+$$E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}$$
 
 
 Variances are a little different. The variance of the vector $\boldsymbol{\epsilon}$
 is
-\[
+$$
 Var\left(\boldsymbol{\epsilon}\right)=\left[\begin{array}{cccc}
 Var\left(\epsilon_{1}\right) & Cov\left(\epsilon_{1},\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{1},\epsilon_{n}\right)\\
 Cov\left(\epsilon_{2},\epsilon_{1}\right) & Var\left(\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{2},\epsilon_{n}\right)\\
 \vdots & \vdots & \ddots & \vdots\\
 Cov\left(\epsilon_{n},\epsilon_{1}\right) & Cov\left(\epsilon_{n},\epsilon_{2}\right) & \dots & Var\left(\epsilon_{1}\right)
 \end{array}\right]
-\]
- and additive constants are ignored, but multiplicative constants
+$$
+
+and additive constants are ignored, but multiplicative constants
 are pulled out as follows:
-\[
+
+$$
 Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}\right)=\boldsymbol{A}^{T}\,Var\left(\boldsymbol{\epsilon}\right)\,\boldsymbol{A}
-\]
+$$
 
 
 
@@ -242,29 +227,27 @@ Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(
 We next derive the sampling variance of our estimator $\hat{\boldsymbol{\beta}}$
 by first noting that $\boldsymbol{X}$ and $\boldsymbol{\beta}$ are
 constants and therefore 
-\begin{eqnarray*}
-Var\left(\boldsymbol{y}\right) & = & Var\left(\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\right)\\
- & = & Var\left(\boldsymbol{\epsilon}\right)\\
- & = & \sigma^{2}\boldsymbol{I}_{n}
-\end{eqnarray*}
+$$\begin{aligned} Var\left(\boldsymbol{y}\right) 
+  &=  Var\left(\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\right)\\
+  &=  Var\left(\boldsymbol{\epsilon}\right)\\
+  &=  \sigma^{2}\boldsymbol{I}_{n}
+\end{aligned}$$
+
 because the error terms are independent and therefore $Cov\left(\epsilon_{i},\epsilon_{j}\right)=0$
 when $i\ne j$ and $Var\left(\epsilon_{i}\right)=\sigma^{2}$. Recalling
-that constants come out of the variance operator as the constant \emph{squared,
-}
-\begin{eqnarray*}
-Var\left(\hat{\boldsymbol{\beta}}\right) & = & Var\left(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\right)\\
- & = & \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,Var\left(\boldsymbol{y}\right)\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- & = & \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,\sigma^{2}\boldsymbol{I}_{n}\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- & = & \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- & = & \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
-\end{eqnarray*}
+that constants come out of the variance operator as the constant _squared_.
 
+$$\begin{aligned} Var\left(\hat{\boldsymbol{\beta}}\right) 
+  &= Var\left(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\right)\\
+  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,Var\left(\boldsymbol{y}\right)\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,\sigma^{2}\boldsymbol{I}_{n}\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
+\end{aligned}$$
 
 Using this, the standard error (i.e. the estimated standard deviation)
 of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
-\[
-StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
-\]
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
 
 
 
@@ -274,36 +257,30 @@ We can now state the general method of creating confidence intervals
 and perform hypothesis tests for any element of $\boldsymbol{\beta}$. 
 
 The confidence interval formula is (as usual)
-\[
-\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{j}\right)
-\]
- and a test statistic for testing $H_{0}:\,\beta_{j}=0$ versus $H_{a}:\,\beta_{j}\ne0$
-is 
-\[
-t_{n-p}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}
-\]
+$$\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{j}\right)$$
+
+and a test statistic for testing $H_{0}:\,\beta_{j}=0$ versus $H_{a}:\,\beta_{j}\ne0$ is 
+
+$$t_{n-p}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}$$
  
 
 
 ### Summary of pertinent results
-* $\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$ is the unbiased maximum-likelihood estimator of $\boldsymbol{\beta}$.
-* The Central Limit Theorem applies to each element of $\boldsymbol{\beta}$. That is, as $n\to\infty$, the distribution of $\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)$.
-* The error terms can be calculated via
-\begin{eqnarray*}
-\hat{\boldsymbol{y}} & = & \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
-\hat{\boldsymbol{\epsilon}} & = & \boldsymbol{y}-\hat{\boldsymbol{y}}
-\end{eqnarray*}
 
-* The estimate of $\sigma^{2}$ is 
-\[
-\hat{\sigma}^{2}=\frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\]
+The statistic $\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$ is the unbiased maximum-likelihood estimator of $\boldsymbol{\beta}$.
+    
+The Central Limit Theorem applies to each element of $\boldsymbol{\beta}$. That is, as $n\to\infty$, the distribution of $\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)$.
+    
+The error terms can be calculated via
+$$\begin{aligned} \hat{\boldsymbol{y}}  &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{aligned}$$
 
-* The standard error (i.e. the estimated standard deviation) of $\hat{\beta}_{j}$
-(for any $j$ in $1,\dots,p$) is 
-\[
-StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
-\]
+The estimate of $\sigma^{2}$ is 
+$$\hat{\sigma}^{2}=\frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
+
+The standard error (i.e. the estimated standard deviation) of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
 
 ### An example in R
 
@@ -320,7 +297,7 @@ ggplot(my.data) + geom_point(aes(x=x,y=y))
 
 
 First we must create the design matrix $\boldsymbol{X}$. Recall 
-\[
+$$
 \boldsymbol{X}=\left[\begin{array}{cc}
 1 & x_{1}\\
 1 & x_{2}\\
@@ -329,7 +306,7 @@ First we must create the design matrix $\boldsymbol{X}$. Recall
 1 & x_{n-1}\\
 1 & x_{n}
 \end{array}\right]
-\]
+$$
  and can be created in R via the following:
 
 ```{r}
@@ -338,9 +315,9 @@ X <- cbind( rep(1,n), x)
 
 
 Given $\boldsymbol{X}$ and $\boldsymbol{y}$ we can calculate 
-\[
+$$
 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
-\]
+$$
 in R using the following code:
 ```{r}
 XtXinv <- solve( t(X) %*% X )
@@ -351,10 +328,11 @@ beta.hat
 
 Our next step is to calculate the predicted values $\hat{\boldsymbol{y}}$
 and the residuals $\hat{\boldsymbol{\epsilon}}$ 
-\begin{eqnarray*}
-\hat{\boldsymbol{y}} & = & \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
-\hat{\boldsymbol{\epsilon}} & = & \boldsymbol{y}-\hat{\boldsymbol{y}}
-\end{eqnarray*}
+
+$$\begin{aligned}
+\hat{\boldsymbol{y}} &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{aligned}$$
 
 ```{r}
 y.hat <- X %*% beta.hat
@@ -363,12 +341,10 @@ residuals <- y - y.hat
 
 Now that we have the residuals, we can calculate $\hat{\sigma}^{2}$
 and the standard errors of $\hat{\beta}_{j}$
-\[
-\hat{\sigma}^{2}=\frac{1}{n-p}\,\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\]
-\[
-StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}
-\]
+
+$$\hat{\sigma}^{2}=\frac{1}{n-p}\,\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
+
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
 
 ```{r}
 sigma2.hat <- ( t(residuals) %*% residuals) / (n-2)
@@ -420,45 +396,48 @@ all the calculations are identical as in the simple regression case.
 ### Cell means representation
 
 Recall the cell means representation is
-\[
+$$
 y_{i,j}=\mu_{i}+\epsilon_{i,j}
-\]
+$$
 where $y_{i,j}$ is the $j$th observation within the $i$th group.
 To clearly show the creation of the $\boldsymbol{X}$ matrix, let
 the number of groups be $p=3$ and the number of observations per
 group be $n_{i}=4$. We now expand the formula to show all the data.
-\begin{eqnarray*}
-y_{1,1} & = & \mu_{1}+\epsilon_{1,1}\\
-y_{1,2} & = & \mu_{1}+\epsilon_{1,2}\\
-y_{1,3} & = & \mu_{1}+\epsilon_{1,3}\\
-y_{1,4} & = & \mu_{1}+\epsilon_{1,4}\\
-y_{2,1} & = & \mu_{2}+\epsilon_{2,1}\\
-y_{2,2} & = & \mu_{2}+\epsilon_{2,2}\\
-y_{2,3} & = & \mu_{2}+\epsilon_{2,3}\\
-y_{2,4} & = & \mu_{2}+\epsilon_{2,4}\\
-y_{3,1} & = & \mu_{3}+\epsilon_{3,1}\\
-y_{3,2} & = & \mu_{3}+\epsilon_{3,2}\\
-y_{3,3} & = & \mu_{3}+\epsilon_{3,3}\\
-y_{3,4} & = & \mu_{3}+\epsilon_{3,4}
-\end{eqnarray*}
+$$\begin{aligned}
+y_{1,1} &=  \mu_{1}+\epsilon_{1,1}\\
+y_{1,2} &=  \mu_{1}+\epsilon_{1,2}\\
+y_{1,3} &=  \mu_{1}+\epsilon_{1,3}\\
+y_{1,4} &=  \mu_{1}+\epsilon_{1,4}\\
+y_{2,1} &=  \mu_{2}+\epsilon_{2,1}\\
+y_{2,2} &=  \mu_{2}+\epsilon_{2,2}\\
+y_{2,3} &=  \mu_{2}+\epsilon_{2,3}\\
+y_{2,4} &=  \mu_{2}+\epsilon_{2,4}\\
+y_{3,1} &=  \mu_{3}+\epsilon_{3,1}\\
+y_{3,2} &=  \mu_{3}+\epsilon_{3,2}\\
+y_{3,3} &=  \mu_{3}+\epsilon_{3,3}\\
+y_{3,4} &=  \mu_{3}+\epsilon_{3,4}
+\end{aligned}$$
+
 In an effort to write the model as $\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}$
 we will write the above as
-\begin{eqnarray*}
-y_{1,1} & = & 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,1}\\
-y_{1,2} & = & 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,2}\\
-y_{1,3} & = & 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,3}\\
-y_{1,4} & = & 1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,4}\\
-y_{2,1} & = & 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,1}\\
-y_{2,2} & = & 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,2}\\
-y_{2,3} & = & 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,3}\\
-y_{2,4} & = & 0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,4}\\
-y_{3,1} & = & 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,1}\\
-y_{3,2} & = & 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,2}\\
-y_{3,3} & = & 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,3}\\
-y_{3,4} & = & 0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,4}
-\end{eqnarray*}
+
+$$\begin{aligned}
+y_{1,1} &=  1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,1}\\
+y_{1,2} &=  1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,2}\\
+y_{1,3} &=  1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,3}\\
+y_{1,4} &=  1\mu_{1}+0\mu_{2}+0\mu_{3}+\epsilon_{1,4}\\
+y_{2,1} &=  0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,1}\\
+y_{2,2} &=  0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,2}\\
+y_{2,3} &=  0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,3}\\
+y_{2,4} &=  0\mu+1\mu_{2}+0\mu_{3}+\epsilon_{2,4}\\
+y_{3,1} &=  0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,1}\\
+y_{3,2} &=  0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,2}\\
+y_{3,3} &=  0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,3}\\
+y_{3,4} &=  0\mu+0\mu_{2}+1\mu_{3}+\epsilon_{3,4}
+\end{aligned}$$
+
 and we will finally be able to write the matrix version
-\[
+$$
 \underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
 y_{1,1}\\
 y_{1,2}\\
@@ -503,9 +482,8 @@ y_{3,4}
 \epsilon_{3,3}\\
 \epsilon_{3,4}
 \end{array}\right]}}
-\]
-\[
-\]
+$$
+
 Notice that each column of the $\boldsymbol{X}$ matrix is acting
 as an indicator if the observation is an element of the appropriate
 group. As such, these are often called *indicator variables*.
@@ -517,11 +495,11 @@ Another term for these, which I find less helpful, is *dummy variables*.
 In this model representation of ANOVA, we have an overall mean and
 then offsets from the control group (which will be group one). The
 model is thus
-\[
+$$
 y_{i,j}=\mu+\tau_{i}+\epsilon_{i,j}
-\]
+$$
 where $\tau_{1}=0$. We can write this in matrix form as
-\[
+$$
 \underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
 y_{1,1}\\
 y_{1,2}\\
@@ -566,7 +544,7 @@ y_{3,4}
 \epsilon_{3,3}\\
 \epsilon_{3,4}
 \end{array}\right]}}
-\]
+$$
 
 ## Exercises
 
@@ -580,8 +558,8 @@ y_{3,4}
 
     We will be using the cell means model of ANOVA 
     $$ y_{ij}=\beta_{i}+\epsilon_{ij} $$
-    where $\beta_{i}$ is the mean of group $i$ and     $\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
-
+    where $\beta_{i}$ is the mean of group $i$ and $\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
+    
     a. Create one vector of all 24 hostility test scores `y`. (Use the `c()` function.)
     
     b. Create a design matrix `X` with dummy variables for columns that code for what group an observation belongs to. Notice that `X` will be a $24$ rows by $3$ column matrix. _Hint: An R function that might be handy is `cbind(a,b)` which will bind two vectors or matrices together along the columns. (There is also a corresponding `rbind()` function that binds vectors/matrices along rows.) Also you'll like to have the repeat command `rep()`._
@@ -593,7 +571,7 @@ What do you notice about it? In particular, think about the result
 when you right multiply by $\mathbf{y}$. How does this matrix calculate the appropriate group means and using the appropriate group sizes $n_i$?
 
 2. We will calculate the y-intercept and slope estimates in a simple linear model using matrix notation. We will use a data set that gives the diameter at breast height (DBH) versus tree height for a randomly selected set of trees. In addition, for each tree, a ground measurement of crown closure (CC) was taken. Larger values of crown closure indicate more shading and is often associated with taller tree morphology (possibly). We will be interested in creating a regression model that predicts height based on DBH and CC. In the interest of reduced copying, we will only use 10 observations. *(Note: I made this data up and the DBH values might be unrealistic. Don't make fun of me.)*
-
+    
     ```{r, echo=FALSE}
     data <- data.frame(DBH=c(30.5, 31.5, 31.7, 32.3, 33.3, 35.0, 35.4, 35.6, 36.3, 37.8),
                        CC =c(.74,  .69,   .65,  .72,  .58,  .50,  .60,  .70,  .52,  .60),
@@ -601,15 +579,12 @@ when you right multiply by $\mathbf{y}$. How does this matrix calculate the appr
     library(pander)
     pander(t(data))
     ```
-
+    
     We are interested in fitting the regression model
     $$y_{i}=\beta_{0}+\beta_{1}x_{i,1}+\beta_{2}x_{i,2}+\epsilon_{i}$$ where $\beta_{0}$ is the y-intercept and $\beta_{1}$ is the slope parameter associated with DBH and $\beta_{2}$ is the slope parameter associated with Crown Closure.
-
+    
     a) Create a vector of all 10 heights $\mathbf{y}$.
     b) Create the design matrix $\mathbf{X}$.
     c) Find $\hat{\boldsymbol{\beta}}$ using the matrix formula given in class.
     d) Compare your results to the estimated coefficients you get using the `lm()` function. To add the second predictor to the model, your call to `lm()` should look something like `lm(Height ~ DBH + CrownClosure)`. 
-
-
-
 

@@ -32,8 +32,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="3-inference.html">
-<link rel="next" href="5-contrasts.html">
+<link rel="prev" href="index.html">
+<link rel="next" href="2-parameter-estimation.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -261,291 +261,356 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="analysis-of-covariance-ancova" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Analysis of Covariance (ANCOVA)</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)   <span class="co"># for the data </span>
-<span class="kw">library</span>(ggplot2)   <span class="co"># my favorite graphing package</span>
-<span class="kw">library</span>(dplyr)     <span class="co"># for the %&gt;% operator</span></code></pre></div>
-<p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. This model is commonly called ANCOVA which stands for <em>Analysis of Covariance</em>.</p>
-<p>The dataset <code>teengamb</code> in the package <code>faraway</code> has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?</p>
-<p>There are two possible ways that gender could enter the model. Either:</p>
-<ol style="list-style-type: decimal">
-<li><p>We could fit two lines to the data one for males and one for females but require that the lines be parallel (i.e. having the same slopes for income). This is accomplished by having a separate y-intercept for each gender. In effect, the line for the females would be offset by a constant amount from the male line.</p></li>
-<li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender.</p></li>
-</ol>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
-<p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
-<div id="offset-parallel-lines-aka-additive-models" class="section level2">
-<h2><span class="header-section-number">4.1</span> Offset parallel Lines (aka additive models)</h2>
-<p>In order to get offset parallel lines, we want to write a model <span class="math display">\[y_{i}=\begin{cases}
-\beta_{0}+\beta_{1}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
-\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
-\end{cases}\]</span> where <span class="math inline">\(\beta_{1}\)</span> is the vertical offset of the female group regression line to the reference group, which is the males regression line. Because the first <span class="math inline">\(19\)</span> observations are female, we can this in in matrix form as <span class="math display">\[\left[\begin{array}{c}
-y_{1}\\
-\vdots\\
-y_{19}\\
-y_{20}\\
-\vdots\\
-y_{47}
-\end{array}\right]=\left[\begin{array}{ccc}
-1 &amp; 1 &amp; x_{1}\\
-\vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 1 &amp; x_{19}\\
-1 &amp; 0 &amp; x_{20}\\
-\vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 0 &amp; x_{47}
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1}\\
-\vdots\\
-\epsilon_{19}\\
-\epsilon_{20}\\
-\vdots\\
-\epsilon_{47}
-\end{array}\right]\]</span></p>
-<p>I like this representation where <span class="math inline">\(\beta_{1}\)</span> is the offset from the male regression line because it makes it very convenient to test if the offset is equal to zero. The second column of the design matrix referred to as a “dummy variable” or “indicator variable” that codes for the female gender. Notice that even though I have two genders, I only had to add one additional variable to my model because we already had a y-intercept <span class="math inline">\(\beta_{0}\)</span> and we only added one indicator variable for females.</p>
-<p>What if we had a third group? Then we would fit another column of indicator variable for the third group. The new beta coefficient in the model would be the offset of the new group to the reference group. For example we consider <span class="math inline">\(n=9\)</span> observations with <span class="math inline">\(n_i=3\)</span> observations per group where <span class="math inline">\(y_{i,j}\)</span>is the <span class="math inline">\(j\)</span> th replication of the <span class="math inline">\(i\)</span>th group. <span class="math display">\[\left[\begin{array}{c}
-y_{1,1}\\
-y_{1,2}\\
-y_{1,3}\\
-y_{2,1}\\
-y_{2,2}\\
-y_{2,3}\\
-y_{3,1}\\
-y_{3,2}\\
-y_{3,3}
-\end{array}\right]=\left[\begin{array}{cccc}
-1 &amp; 0 &amp; 0 &amp; x_{1,1}\\
-1 &amp; 0 &amp; 0 &amp; x_{1,2}\\
-1 &amp; 0 &amp; 0 &amp; x_{1,3}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,1}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,2}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,3}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,1}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,2}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,3}
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}\\
-\beta_{3}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1,1}\\
-\epsilon_{1,2}\\
-\epsilon_{1,3}\\
-\epsilon_{2,1}\\
-\epsilon_{2,2}\\
-\epsilon_{2,3}\\
-\epsilon_{3,3}\\
-\epsilon_{3,2}\\
-\epsilon_{3,3}
+<div id="matrix-theory" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Matrix Theory</h1>
+<p>Almost all of the calculations done in classical statistics require formulas with large number of subscripts and many different sums. In this chapter we will develop the mathematical machinery to write these formulas in a simple compact formula using <em>matrices</em>.</p>
+<div id="types-of-matrices" class="section level2">
+<h2><span class="header-section-number">1.1</span> Types of Matrices</h2>
+<p>We will first introduce the idea behind a matrix and give several special types of matrices that we will encounter.</p>
+<div id="scalars" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Scalars</h3>
+<p>To begin, we first define a <em>scalar</em>. A scalar is just a single number, either real or complex. The key is that a scalar is just a single number. For example, <span class="math inline">\(6\)</span> is a scalar, as is <span class="math inline">\(-3\)</span>. By convention, variable names for scalars will be lower case and not in bold typeface.</p>
+<p>Examples could be <span class="math inline">\(a=5\)</span>, <span class="math inline">\(b=\sqrt{3}\)</span>, or <span class="math inline">\(\sigma=2\)</span>.</p>
+</div>
+<div id="vectors" class="section level3">
+<h3><span class="header-section-number">1.1.2</span> Vectors</h3>
+<p>A vector is collection of scalars, arranged as a row or column. Our convention will be that a vector will be a lower cased letter but written in a bold type. In other branches of mathematics is common to put a bar over the variable name to denote that it is a vector, but in statistics, we have already used a bar to denote a mean.</p>
+<p>Examples of column vectors could be <span class="math display">\[\boldsymbol{a} = \left[\begin{array}{c} 2\\ -3\\ 4\end{array}\right]
+\;\;\;\;\;
+\boldsymbol{b}=\left[\begin{array}{c} 2\\ 8\\ 3\\ 4\\ 1 \end{array}\right]\]</span></p>
+<p>and examples of row vectors are</p>
+<p><span class="math display">\[
+\boldsymbol{c}=\left[\begin{array}{cccc}
+8 &amp; 10 &amp; 43 &amp; -22\end{array}\right]
+\]</span></p>
+<p><span class="math display">\[
+\boldsymbol{d}=\left[\begin{array}{ccc}
+-1 &amp; 5 &amp; 2\end{array}\right]
+\]</span></p>
+<p>To denote a specific entry in the vector, we will use a subscript. For example, the second element of <span class="math inline">\(\boldsymbol{d}\)</span> is <span class="math inline">\(d_{2}=5\)</span>. Notice, that we do not bold this symbol because the second element of the vector is the scalar value <span class="math inline">\(5\)</span>.</p>
+</div>
+<div id="matrix" class="section level3">
+<h3><span class="header-section-number">1.1.3</span> Matrix</h3>
+<p>Just as a vector is a collection of scalars, a matrix can be viewed as a collection of vectors (all of the same length). We will denote matrices with bold capitalized letters. In general, I try to use letters at the end of the alphabet for matrices. Likewise, I try to use symmetric letters to denote symmetric matrices.</p>
+<p>For example, the following is a matrix with two rows and three columns <span class="math display">\[
+\boldsymbol{W}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{array}\right]
+\]</span> and there is no requirement that the number of rows be equal, less than, or greater than the number of columns. In denoting the size of the matrix, we first refer to the number of rows and then the number of columns. Thus <span class="math inline">\(\boldsymbol{W}\)</span> is a <span class="math inline">\(2\times3\)</span> matrix and it sometimes is helpful to remind ourselves of this by writing <span class="math inline">\(\boldsymbol{W}_{2\times3}\)</span>.</p>
+<p>To pick out a particular element of a matrix, I will again use a subscripting notation, always with the row number first and then column. Notice the notational shift to lowercase, non-bold font. <span class="math display">\[
+w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
+\]</span></p>
+<p>There are times I will wish to refer to a particular row or column of a matrix and we will use the following notation <span class="math display">\[
+\boldsymbol{w}_{1,\cdot}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\end{array}\right]
+\]</span> is the first row of the matrix <span class="math inline">\(\boldsymbol{W}\)</span>. The second column of matrix <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math display">\[
+\boldsymbol{w}_{\cdot,2}=\left[\begin{array}{c}
+2\\
+5
 \end{array}\right]
 \]</span></p>
-<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The paramter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
 </div>
-<div id="lines-with-different-slopes-aka-interaction-model" class="section level2">
-<h2><span class="header-section-number">4.2</span> Lines with different slopes (aka Interaction model)</h2>
-<p>We can now include a discrete random variable and create regression lines that are parallel, but often that is inappropriate, such as in the teenage gambling dataset. We want to be able to fit a model that has different slopes. <span class="math display">\[y_{i}=\begin{cases}
-\left(\beta_{0}+\beta_{1}\right)+\left(\beta_{2}+\beta_{3}\right)x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
-\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
-\end{cases}
-\]</span> Where <span class="math inline">\(\beta_{1}\)</span> is the offset in y-intercept of the female group from the male group, and <span class="math inline">\(\beta_{3}\)</span> is the offset in slope. Now our matrix formula looks like</p>
-<p><span class="math display">\[\left[\begin{array}{c}
-y_{1}\\
-\vdots\\
-y_{19}\\
-y_{20}\\
-\vdots\\
-y_{47}
-\end{array}\right]=\left[\begin{array}{cccc}
-1 &amp; 1 &amp; x_{1} &amp; x_{1}\\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 1 &amp; x_{19} &amp; x_{19}\\
-1 &amp; 0 &amp; x_{20} &amp; 0\\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 0 &amp; x_{47} &amp; 0
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}\\
-\beta_{3}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1}\\
-\vdots\\
-\epsilon_{19}\\
-\epsilon_{20}\\
-\vdots\\
-\epsilon_{47}
+<div id="square-matrices" class="section level3">
+<h3><span class="header-section-number">1.1.4</span> Square Matrices</h3>
+<p>A square matrix is a matrix with the same number of rows as columns. The following are square <span class="math display">\[
+\boldsymbol{Z}=\left[\begin{array}{cc}
+3 &amp; 6\\
+8 &amp; 10
+\end{array}\right]\;\;\;\;\;\;\boldsymbol{X}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+2 &amp; 1 &amp; 2\\
+3 &amp; 2 &amp; 1
 \end{array}\right]
-\]</span> where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(faraway)
-
-<span class="co"># Forces R to recognize that 0, 1 are categorical, also</span>
-<span class="co"># relabels the levels to something I understand.</span>
-teengamb$sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb$sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) 
-
-<span class="co"># Fit a linear model with the interaction of sex and income</span>
-<span class="co"># Interactions can be specified useing a colon :</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex +<span class="st"> </span>income +<span class="st"> </span>sex:income, <span class="dt">data=</span>teengamb )  
-
-<span class="co"># R allows a shortcut for the prior definition</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex *<span class="st"> </span>income, <span class="dt">data=</span>teengamb )
-
-<span class="co"># save the fit, lwr, upr values for each observation</span>
-<span class="co"># these are the yhat and CI </span>
-teengamb &lt;-<span class="st"> </span><span class="kw">cbind</span>(teengamb, <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
-
-<span class="co"># Make a nice plot that includes the regreesion line.</span>
-<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) +<span class="st"> </span>
-<span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),
-                  <span class="dt">alpha=</span>.<span class="dv">3</span>) +<span class="st">   </span><span class="co"># how solid the layer is</span>
-<span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) +
-<span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the model summary</span>
-<span class="kw">summary</span>(m1)</code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = gamble ~ sex * income, data = teengamb)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -56.522  -4.860  -1.790   6.273  93.478 
-## 
-## Coefficients:
-##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       -2.6596     6.3164  -0.421  0.67580    
-## sexFemale          5.7996    11.2003   0.518  0.60724    
-## income             6.5181     0.9881   6.597 4.95e-08 ***
-## sexFemale:income  -6.3432     2.1446  -2.958  0.00502 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 20.98 on 43 degrees of freedom
-## Multiple R-squared:  0.5857, Adjusted R-squared:  0.5568 
-## F-statistic: 20.26 on 3 and 43 DF,  p-value: 2.451e-08</code></pre>
+\]</span></p>
 </div>
-<div id="iris-example" class="section level2">
-<h2><span class="header-section-number">4.3</span> Iris Example</h2>
-<p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span>
-<span class="kw">levels</span>(iris$Species)  <span class="co"># notice the order of levels of Species</span></code></pre></div>
-<pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
-<p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) +
-<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
-<p>We consider the sequence of building successively more complex models:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make virginica the reference group </span>
-iris$Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris$Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)
-
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span>
-m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length +<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span>
-m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length *<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></code></pre></div>
-<p>The three models we consider are the following:</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
-<p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
-<pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)     3.419      0.254  13.484    0.000
-## Sepal.Length   -0.062      0.043  -1.440    0.152</code></pre>
-<p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
-<p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
-<pre><code>##                   Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)          0.669      0.308   2.174    0.031
-## Sepal.Length         0.350      0.046   7.557    0.000
-## Speciessetosa        1.008      0.093  10.798    0.000
-## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
-<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statstically different y-intercept than the reference group.</p>
-<p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
-<pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)                       1.446      0.405   3.572    0.000
-## Sepal.Length                      0.232      0.061   3.790    0.000
-## Speciessetosa                    -2.016      0.686  -2.938    0.004
-## Speciesversicolor                -0.574      0.605  -0.950    0.344
-## Sepal.Length:Speciessetosa        0.567      0.126   4.490    0.000
-## Sepal.Length:Speciesversicolor    0.088      0.097   0.905    0.367</code></pre>
-<p>These parameters are:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Meaning</th>
-<th>R-label</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><em>Reference group y-intercept </em></td>
-<td>(Intercept)</td>
-</tr>
-<tr class="even">
-<td><em>Reference group slope </em></td>
-<td>Sepal.Length</td>
-</tr>
-<tr class="odd">
-<td><em>offset to y-intercept for Setosa</em></td>
-<td>Speciessetosa</td>
-</tr>
-<tr class="even">
-<td><em>offset to y-intercept for Versicolor</em></td>
-<td>Speciesversicolor</td>
-</tr>
-<tr class="odd">
-<td><em>offset to slope for Setosa</em></td>
-<td>Sepal.Length:Speciessetosa</td>
-</tr>
-<tr class="even">
-<td><em>offset to slope for Versicolor</em></td>
-<td>Sepal.Length:Speciesversicolor</td>
-</tr>
-</tbody>
-</table>
-<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two paramters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m2, m3)</code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Model 1: Sepal.Width ~ Sepal.Length + Species
-## Model 2: Sepal.Width ~ Sepal.Length * Species
-##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
-## 1    146 12.193                                 
-## 2    144 10.680  2    1.5132 10.201 7.19e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The F-test concludes that there is sufficent decrease in the SSE to justify adding two additional parameters to the model.</p>
+<div id="symmetric-matrices" class="section level3">
+<h3><span class="header-section-number">1.1.5</span> Symmetric Matrices</h3>
+<p>In statistics we are often interested in square matrices where the <span class="math inline">\(i,j\)</span> element is the same as the <span class="math inline">\(j,i\)</span> element. For example, <span class="math inline">\(x_{1,2}=x_{2,1}\)</span> in the above matrix <span class="math inline">\(\boldsymbol{X}.\)</span></p>
+<p>Consider a matrix <span class="math inline">\(\boldsymbol{D}\)</span> that contains the distance from four towns to each of the other four towns. Let <span class="math inline">\(d_{i,j}\)</span> be the distance from town <span class="math inline">\(i\)</span> to town <span class="math inline">\(j\)</span>. It only makes sense that the distance doesn’t matter which direction you are traveling, and we should therefore require that <span class="math inline">\(d_{i,j}=d_{j,i}\)</span>.</p>
+<p>In this example, it is the values <span class="math inline">\(d_{i,i}\)</span> represent the distance from a town to itself, which should be zero. It turns out that we are often interested in the terms <span class="math inline">\(d_{i,i}\)</span> and I will refer to those terms as the <em>main diagonal</em> of matrix <span class="math inline">\(\boldsymbol{D}\)</span>.</p>
+<p>Symmetric matrices play a large role in statistics because matrices that represent the covariances between random variables must be symmetric because <span class="math inline">\(Cov\left(Y,Z\right)=Cov\left(Z,Y\right)\)</span>.</p>
 </div>
-<div id="exercises-3" class="section level2">
-<h2><span class="header-section-number">4.4</span> Exercises</h2>
+<div id="diagonal-matrices" class="section level3">
+<h3><span class="header-section-number">1.1.6</span> Diagonal Matrices</h3>
+<p>A square matrix that has zero entries in every location except the main diagonal is called a diagonal matrix. Here are two examples: <span class="math display">\[
+\boldsymbol{Q}=\left[\begin{array}{ccc}
+4 &amp; 0 &amp; 0\\
+0 &amp; 5 &amp; 0\\
+0 &amp; 0 &amp; 6
+\end{array}\right]\;\;\;\;\;\;\;\;\boldsymbol{R}=\left[\begin{array}{cccc}
+1 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 2 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 2 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 3
+\end{array}\right]
+\]</span> Sometimes to make matrix more clear, I will replace the <span class="math inline">\(0\)</span> with a dot to emphasize the non-zero components. <span class="math display">\[
+\boldsymbol{R}=\left[\begin{array}{cccc}
+1 &amp; \cdot &amp; \cdot &amp; \cdot\\
+\cdot &amp; 2 &amp; \cdot &amp; \cdot\\
+\cdot &amp; \cdot &amp; 2 &amp; \cdot\\
+\cdot &amp; \cdot &amp; \cdot &amp; 3
+\end{array}\right]
+\]</span></p>
+</div>
+<div id="identity-matrices" class="section level3">
+<h3><span class="header-section-number">1.1.7</span> Identity Matrices</h3>
+<p>A diagonal matrix with main diagonal values exactly <span class="math inline">\(1\)</span> is called the identity matrix. The <span class="math inline">\(3\times3\)</span> identity matrix is denoted <span class="math inline">\(I_{3}\)</span>. <span class="math display">\[
+\boldsymbol{I}_{3}=\left[\begin{array}{ccc}
+1 &amp; \cdot &amp; \cdot\\
+\cdot &amp; 1 &amp; \cdot\\
+\cdot &amp; \cdot &amp; 1
+\end{array}\right]
+\]</span></p>
+</div>
+</div>
+<div id="operations-on-matrices" class="section level2">
+<h2><span class="header-section-number">1.2</span> Operations on Matrices</h2>
+<div id="transpose" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Transpose</h3>
+<p>The simplest operation on a square matrix matrix is called <em>transpose</em>. It is defined as <span class="math inline">\(\boldsymbol{M}=\boldsymbol{W}^{T}\)</span> if and only if <span class="math inline">\(m_{i,j}=w_{j,i}.\)</span></p>
+<p><span class="math display">\[
+\boldsymbol{Z}=\left[\begin{array}{cc}
+1 &amp; 6\\
+8 &amp; 3
+\end{array}\right]\;\;\;\;\;\;\boldsymbol{Z}^{T}=\left[\begin{array}{cc}
+1 &amp; 8\\
+6 &amp; 3
+\end{array}\right]
+\]</span> <span class="math display">\[
+\boldsymbol{M}=\left[\begin{array}{ccc}
+3 &amp; 1 &amp; 2\\
+9 &amp; 4 &amp; 5\\
+8 &amp; 7 &amp; 6
+\end{array}\right]\;\;\;\;\;\boldsymbol{M}^{T}=\left[\begin{array}{ccc}
+3 &amp; 9 &amp; 8\\
+1 &amp; 4 &amp; 7\\
+2 &amp; 5 &amp; 6
+\end{array}\right]
+\]</span> We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.</p>
+<p><span class="math display">\[
+\boldsymbol{W}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+4 &amp; 5 &amp; 6
+\end{array}\right]
+\]</span></p>
+<p><span class="math display">\[
+\boldsymbol{W}^T=\left[\begin{array}{cc}
+1 &amp; 4 \\
+2 &amp; 5 \\
+3 &amp; 6
+\end{array}\right]
+\]</span></p>
+</div>
+<div id="addition-and-subtraction" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Addition and Subtraction</h3>
+<p>Addition and subtraction are performed <em>element-wise</em>. This means that two matrices or vectors can only be added or subtracted if their dimensions match. <span class="math display">\[
+\left[\begin{array}{c}
+1\\
+2\\
+3\\
+4
+\end{array}\right]+\left[\begin{array}{c}
+5\\
+6\\
+7\\
+8
+\end{array}\right]=\left[\begin{array}{c}
+6\\
+8\\
+10\\
+12
+\end{array}\right]
+\]</span> <span class="math display">\[
+\left[\begin{array}{cc}
+5 &amp; 8\\
+2 &amp; 4\\
+11 &amp; 15
+\end{array}\right]-\left[\begin{array}{cc}
+1 &amp; 2\\
+3 &amp; 4\\
+5 &amp; -6
+\end{array}\right]=\left[\begin{array}{cc}
+4 &amp; 6\\
+-1 &amp; 0\\
+6 &amp; 21
+\end{array}\right]
+\]</span></p>
+</div>
+<div id="multiplication" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Multiplication</h3>
+<p>Multiplication is the operation that is vastly different for matrices and vectors than it is for scalars. There is a great deal of mathematical theory that suggests a useful way to define multiplication. What is presented below is referred to as the <em>dot-product</em> of vectors in calculus, and is referred to as the standard <em>inner-product</em> in linear algebra.</p>
+</div>
+<div id="vector-multiplication" class="section level3">
+<h3><span class="header-section-number">1.2.4</span> Vector Multiplication</h3>
+<p>We first define multiplication for a row and column vector. For this multiplication to be defined, both vectors must be the same length. The product is the sum of the element-wise multiplications. <span class="math display">\[
+\left[\begin{array}{cccc}
+1 &amp; 2 &amp; 3 &amp; 4\end{array}\right]\left[\begin{array}{c}
+5\\
+6\\
+7\\
+8
+\end{array}\right]=\left(1\cdot5\right)+\left(2\cdot6\right)+\left(3\cdot7\right)+\left(4\cdot8\right)=5+12+21+32=70
+\]</span></p>
+</div>
+<div id="matrix-multiplication" class="section level3">
+<h3><span class="header-section-number">1.2.5</span> Matrix Multiplication</h3>
+<p>Matrix multiplication is just a sequence of vector multiplications. If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a <span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}\)</span> where <span class="math inline">\(\boldsymbol{x}_{i,\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot, j}\)</span> is the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let <span class="math display">\[
+\boldsymbol{X}=\left[\begin{array}{cccc}
+1 &amp; 2 &amp; 3 &amp; 4\\
+5 &amp; 6 &amp; 7 &amp; 8\\
+9 &amp; 10 &amp; 11 &amp; 12
+\end{array}\right]\;\;\;\;\;\;\;\;\;\boldsymbol{W}=\left[\begin{array}{cc}
+13 &amp; 14\\
+15 &amp; 16\\
+17 &amp; 18\\
+19 &amp; 20
+\end{array}\right]
+\]</span> so <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(3\times4\)</span> (which we remind ourselves by adding a <span class="math inline">\(3\times4\)</span> subscript to <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_{3\times4}\)</span>) and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(\boldsymbol{W}{}_{4\times2}\)</span>. Because the <em>inner</em> dimensions match for this multiplication, then <span class="math inline">\(\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span> is defined where <span class="math display">\[\begin{aligned}
+z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
+ &amp;=  \left(1\cdot13\right)+\left(2\cdot15\right)+\left(3\cdot17\right)+\left(4\cdot19\right)=170
+\end{aligned}\]</span></p>
+<p>and similarly</p>
+<p><span class="math display">\[\begin{aligned}  z_{2,1} 
+  &amp;=  \boldsymbol{x}_{2,\cdot}\boldsymbol{w}_{\cdot,1}\\
+  &amp;= \left(5\cdot13\right)+\left(6\cdot15\right)+\left(7\cdot17\right)+\left(8\cdot19\right) \\
+  &amp;= 426
+\end{aligned}\]</span></p>
+<p>so that</p>
+<p><span class="math display">\[\boldsymbol{Z}=\left[\begin{array}{cc}
+170 &amp; 180\\
+426 &amp; 452\\
+682 &amp; 724
+\end{array}\right]\]</span></p>
+<p>For another example, we note that <span class="math display">\[\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+2 &amp; 3 &amp; 4
+\end{array}\right]\left[\begin{array}{cc}
+1 &amp; 2\\
+2 &amp; 2\\
+1 &amp; 2
+\end{array}\right] =  \left[\begin{array}{cc}
+1+4+3\;\;\; &amp; 2+4+6\\
+2+6+4\;\;\; &amp; 4+6+8
+\end{array}\right] 
+ =  \left[\begin{array}{cc}
+8 &amp; 12\\
+12 &amp; 18
+\end{array}\right] \]</span></p>
+<p>Notice that this definition of multiplication means that the order matters. Above, we calculated <span class="math inline">\(\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span> but we cannot reverse the order because the inner dimensions do not match up.</p>
+</div>
+<div id="scalar-times-a-matrix" class="section level3">
+<h3><span class="header-section-number">1.2.6</span> Scalar times a Matrix</h3>
+<p>Strictly speaking, we are not allowed to multiply a matrix by a scalar because the dimensions do not match. However, it is often notationally convenient. So we define <span class="math inline">\(a\boldsymbol{X}\)</span> to be the <em>element-wise</em> multiplication of each element of <span class="math inline">\(\boldsymbol{X}\)</span> by the scalar <span class="math inline">\(a\)</span>. Because this is just a notational convenience, the mathematical theory about inner-products does not apply to this operation. <span class="math display">\[5\left[\begin{array}{cc}
+4 &amp; 5\\
+7 &amp; 6\\
+9 &amp; 10
+\end{array}\right]=\left[\begin{array}{cc}
+20 &amp; 25\\
+35 &amp; 30\\
+45 &amp; 50
+\end{array}\right]\]</span></p>
+<p>Because of this definition, it is clear that <span class="math inline">\(a\boldsymbol{X}=\boldsymbol{X}a\)</span> and the order does not matter. Thus when mixing scalar multiplication with matrices, it is acceptable to reorder scalars, but not matrices.</p>
+</div>
+<div id="determinant" class="section level3">
+<h3><span class="header-section-number">1.2.7</span> Determinant</h3>
+<p>The determinant is defined only for square matrices and can be thought of as the matrix equivalent of the absolute value or magnitude (i.e. <span class="math inline">\(|-6|=6\)</span>). The determinant gives a measure of the multi-dimensional size of a matrix (say the matrix <span class="math inline">\(\boldsymbol{A}\)</span>) and as such is denoted <span class="math inline">\(\det\left(\boldsymbol{A}\right)\)</span> or <span class="math inline">\(\left|\boldsymbol{A}\right|\)</span>. Generally this is a very tedious thing to calculate by hand and for completeness sake, we will give a definition and small examples.</p>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix <span class="math display">\[\left|\begin{array}{cc}
+a &amp; c\\
+b &amp; d
+\end{array}\right|=ad-cb\]</span></p>
+<p>So a simple example of a determinant is</p>
+<p><span class="math display">\[\left|\begin{array}{cc}
+5 &amp; 2\\
+3 &amp; 10
+\end{array}\right|=50-6=44\]</span></p>
+<p>The determinant can be thought of as the area of the parallelogram created by the row or column vectors of the matrix.</p>
+<p><img src="External_Images/determinant.png" width="250" style="display: block; margin: auto;" /></p>
+</div>
+<div id="inverse" class="section level3">
+<h3><span class="header-section-number">1.2.8</span> Inverse</h3>
+<p>In regular algebra, we are often interested in solving equations such as <span class="math display">\[ 5x=15 \]</span> for <span class="math inline">\(x\)</span>. To do so, we multiply each side of the equation by the inverse of 5, which is <span class="math inline">\(1/5\)</span>.</p>
+<p><span class="math display">\[\begin{aligned}
+5x &amp; =  15\\
+\frac{1}{5}\cdot5\cdot x &amp;=  \frac{1}{5}\cdot15\\
+1\cdot x &amp;=  3\\
+x &amp;=  3
+\end{aligned}\]</span></p>
+<p>For scalars, we know that the inverse of scalar <span class="math inline">\(a\)</span> is the value that when multiplied by <span class="math inline">\(a\)</span> is 1. That is we see to find <span class="math inline">\(a^{-1}\)</span> such that <span class="math inline">\(aa^{-1}=1\)</span>.</p>
+<p>In the matrix case, I am interested in finding <span class="math inline">\(\boldsymbol{A}^{-1}\)</span> such that <span class="math inline">\(\boldsymbol{A}^{-1}\boldsymbol{A}=\boldsymbol{I}\)</span> and <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^{-1}=\boldsymbol{I}\)</span>. For both of these multiplications to be defined, <span class="math inline">\(\boldsymbol{A}\)</span> must be a square matrix and so the inverse is only defined for square matrices.</p>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix <span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
+a &amp; b\\
+c &amp; d
+\end{array}\right]\]</span> the inverse is given by:</p>
+<p><span class="math display">\[\boldsymbol{W}^{-1}=\frac{1}{\det\boldsymbol{W}}\;\left[\begin{array}{cc}
+d &amp; -b\\
+-c &amp; a
+\end{array}\right]\]</span></p>
+<p>For example, suppose <span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
+1 &amp; 2\\
+5 &amp; 3
+\end{array}\right]\]</span></p>
+<p>then <span class="math inline">\(\det W=3-10=-7\)</span> and <span class="math display">\[\begin{aligned}
+\boldsymbol{W}^{-1} &amp;=  \frac{1}{-7}\;\left[\begin{array}{cc}
+3 &amp; -2\\
+-5 &amp; 1
+\end{array}\right]\\ \\
+ &amp;=  \left[\begin{array}{cc}
+-\frac{3}{7} &amp; \frac{2}{7}\\
+\frac{5}{7} &amp; -\frac{1}{7}
+\end{array}\right]
+\end{aligned}\]</span></p>
+<p>and thus <span class="math display">\[\begin{aligned}
+\boldsymbol{W}\boldsymbol{W}^{-1} &amp;=  \left[\begin{array}{cc}
+1 &amp; 2\\
+5 &amp; 3
+\end{array}\right]\left[\begin{array}{cc}
+-\frac{3}{7} &amp; \frac{2}{7}\\
+\frac{5}{7} &amp; -\frac{1}{7}
+\end{array}\right]\\
+\\ \\
+ &amp;=  \left[\begin{array}{cc}
+-\frac{3}{7}+\frac{10}{7}\;\;\; &amp; \frac{2}{7}-\frac{2}{7}\\
+\\
+-\frac{15}{7}+\frac{15}{7}\;\;\; &amp; \frac{10}{7}-\frac{3}{7}
+\end{array}\right]\\
+\\
+ &amp;=  \left[\begin{array}{cc}
+1 &amp; 0\\
+0 &amp; 1
+\end{array}\right]=\boldsymbol{I}_{2}
+\end{aligned}\]</span></p>
+<p>Not every square matrix has an inverse. If the determinant of the matrix (which we think of as some measure of the magnitude or <em>size</em> of the matrix) is zero, then the formula would require us to divide by zero. Just as we cannot find the inverse of zero (i.e. solve <span class="math inline">\(0x=1\)</span> for <span class="math inline">\(x\)</span>), a matrix with zero determinate is said to have no inverse.</p>
+</div>
+</div>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">1.3</span> Exercises</h2>
+<p>Consider the following matrices: <span class="math display">\[\mathbf{A}=\left[\begin{array}{ccc}
+1 &amp; 2 &amp; 3\\
+6 &amp; 5 &amp; 4
+\end{array}\right]\;\;\;\;\;\;\;\mathbf{B}=\left[\begin{array}{ccc}
+6 &amp; 4 &amp; 3\\
+8 &amp; 7 &amp; 6
+\end{array}\right]\;\;\;\;\;\;\;\mathbf{c}=\left[\begin{array}{c}
+1\\
+2\\
+3
+\end{array}\right]\;\;\;\;\;\;\;\mathbf{d}=\left[\begin{array}{c}
+4\\
+5\\
+6
+\end{array}\right]\;\;\;\;\;\;\;\mathbf{E}=\left[\begin{array}{cc}
+1 &amp; 2\\
+2 &amp; 6
+\end{array}\right]\]</span></p>
 <ol style="list-style-type: decimal">
-<li>The in the <code>faraway</code> package, there is a dataset named <code>phbirths</code> that gives babies birth weights along with their gestational time in utero along with the mother’s smoking status.
-<ol style="list-style-type: lower-alpha">
-<li><p>Load and inspect the dataset using</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)    <span class="co"># load the package</span>
-<span class="kw">data</span>(phbirths)      <span class="co"># load the data within the package</span>
-?phbirths</code></pre></div></li>
-<li>Create a plot of the birthweight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</li>
-<li>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</li>
-<li>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</li>
-<li>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</li>
-<li><p>Interpret the relationship between gestational length and mother’s smoking status on birthweight.</p></li>
-</ol></li>
-<li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time.
-<ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number.</li>
-<li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
-</ol></li>
-<li>In the <code>faraway</code> package, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth.
-<ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function.</li>
-<li>Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).</li>
-<li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>? At this point we don’t know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.</li>
-</ol></li>
+<li>Find <span class="math inline">\(\mathbf{Bc}\)</span></li>
+<li>Find <span class="math inline">\(\mathbf{AB}^{T}\)</span></li>
+<li>Find <span class="math inline">\(\mathbf{c}^{T}\mathbf{d}\)</span></li>
+<li>Find <span class="math inline">\(\mathbf{cd}^{T}\)</span></li>
+<li>Confirm that <span class="math display">\[\mathbf{E}^{-1}=\left[\begin{array}{cc}
+  3 &amp; -1\\
+  -1 &amp; 1/2 \end{array}\right]\]</span> is the inverse of <span class="math inline">\(\mathbf{E}\)</span> by calculating <span class="math inline">\(\mathbf{E}\mathbf{E}^{-1}=\mathbf{I}\)</span>.</li>
 </ol>
 
 </div>
@@ -555,8 +620,8 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span 
           </div>
         </div>
       </div>
-<a href="3-inference.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="5-contrasts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="2-parameter-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -585,7 +650,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/raw/master/04_ANCOVA.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/01_Matrix_Operations.Rmd",
 "text": "Edit"
 },
 "download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
