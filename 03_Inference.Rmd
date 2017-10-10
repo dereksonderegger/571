@@ -328,7 +328,8 @@ Perch Example: We might be interested in estimating the weight of a fish based o
 We first look at the data and observe the expected relationship between length and weight.
 
 ```{r}
-file <- 'https://raw.githubusercontent.com/dereksonderegger/STA_571_Book/master/data-raw/Fish.csv'
+file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'  # online
+file <- '~/github/571/data-raw/Fish.csv'                                                   # on my computer
 fish <- read.table(file, header=TRUE, skip=111, sep=',')
 pairs(fish[,c('Weight','Length.1','Length.2','Length.3','Height','Width')])
 ```

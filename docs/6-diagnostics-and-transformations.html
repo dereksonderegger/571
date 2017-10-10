@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-09-29">
+<meta name="date" content="2017-10-10">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -651,9 +651,9 @@ pred.data &lt;-<span class="st"> </span>pred.data %&gt;%<span class="st"> </span
 \log\left(ab\right)           &amp;=    \log a+\log b
 \end{aligned}\]</span></p>
 <p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">scores &lt;-<span class="st"> </span><span class="kw">read.table</span>(
-  <span class="dt">file=</span><span class="st">&#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>,
-  <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span>
+file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span>
+scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)
 scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">gender =</span> female)
 <span class="kw">pairs</span>(write~read+math+gender, <span class="dt">data=</span>scores)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
@@ -767,43 +767,45 @@ difference in <span class="math inline">\(\hat{y}\)</span> values for the first 
 <div id="exercises-5" class="section level2">
 <h2><span class="header-section-number">6.3</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li><p>The dataset <code>infmort</code> in package faraway has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using <code>help(infmort)</code>. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.</p>
+<li>The dataset <code>infmort</code> in package faraway has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using <code>help(infmort)</code>. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
 <ol style="list-style-type: lower-alpha">
 <li><p>Plot the relationship between income and mortality. This can be done using the command</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
 <span class="kw">pairs</span>(mortality ~., <span class="dt">data=</span>infmort)</code></pre></div>
-<p>What do you notice about the relationship between mortality and income?</p></li>
-<li><p>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</p></li>
-<li><p>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</p></li>
-<li><p>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</p></li>
-<li><p>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</p></li>
-<li><p>Examine models that have a <code>region:log(income)</code> interaction and <code>oil:log(income)</code> interaction along with the main effect of the third variable. Are either interaction significant vs the model without interactions? What about a model that contains both interactions?</p></li>
+What do you notice about the relationship between mortality and income?</li>
+<li>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</li>
+<li>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</li>
+<li>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</li>
+<li>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</li>
+<li>Examine models that have a <code>region:log(income)</code> interaction and <code>oil:log(income)</code> interaction along with the main effect of the third variable. Are either interaction significant vs the model without interactions? What about a model that contains both interactions?</li>
 <li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. <em>Hint: graph the data and the predicted values.</em></p></li>
 </ol></li>
-<li><p>Using the <code>pressure</code> data available in the <code>faraway</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model.</p>
+<li>Using the <code>pressure</code> data available in the <code>faraway</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model.
 <ol style="list-style-type: lower-alpha">
-<li><p>Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on.</p></li>
-<li><p>Comment on the interpretability of your (possibly ridiculously complicated) model.</p></li>
+<li>Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on.</li>
+<li>Comment on the interpretability of your (possibly ridiculously complicated) model.</li>
 </ol></li>
-<li><p>Use transformations to find a good model for <code>volume</code> in terms of <code>girth</code> and <code>height</code> using the <code>trees</code> dataset in the <code>faraway</code> package.</p>
+<li>Use transformations to find a good model for <code>volume</code> in terms of <code>girth</code> and <code>height</code> using the <code>trees</code> dataset in the <code>faraway</code> package.
 <ol style="list-style-type: lower-alpha">
-<li><p>Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.</p></li>
-<li><p>Create a prediction interval for the volume of a tree with girth=16 and height=70. Notice that if you have transformed your response variable in you model, you’ll have to back-transform to the original y-scale.</p></li>
+<li>Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.</li>
+<li>Create a prediction interval for the volume of a tree with girth=16 and height=70. Notice that if you have transformed your response variable in you model, you’ll have to back-transform to the original y-scale.</li>
 </ol></li>
-<li><p>For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the time taken polishing a newly manufactured dish versus the dish diameter (in inches), type, and price.</p>
+<li>For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the <code>Time</code> taken polishing a newly manufactured dish versus the dish <code>Diameter</code> (in inches), <code>Type</code>, and <code>Price</code>.
 <ol style="list-style-type: lower-alpha">
 <li><p>The data live in a package I have on GitHub. The following code will download the data package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(devtools)   <span class="co"># You might need to load this package the usual way...</span>
 <span class="kw">install_github</span>(<span class="st">&#39;dereksonderegger/dsData&#39;</span>) <span class="co"># load an R package that lives on GitHub.</span></code></pre></div></li>
 <li><p>Load the data and examine it using the commands</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dsData)
+<span class="kw">data</span>(<span class="st">&#39;Dishes&#39;</span>)
 <span class="kw">str</span>(Dishes)
 <span class="kw">pairs</span>(Time ~<span class="st"> </span>., <span class="dt">data=</span>Dishes)</code></pre></div>
-<p>Comment on the relationships and possible transformations to be made.</p></li>
-<li><p>Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.</p></li>
-<li><p>Examine the diagnostic plots. What stands out to you?</p></li>
-<li><p>While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.</p></li>
-<li><p>What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?</p></li>
+Comment on the relationships and possible transformations to be made.</li>
+<li>Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.</li>
+<li>Examine the diagnostic plots. What stands out to you?</li>
+<li>While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.</li>
+<li>What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?<br />
+</li>
 <li><p>How does a 20% increase in Price affect the polishing time?</p></li>
 </ol></li>
 </ol>
