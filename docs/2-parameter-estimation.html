@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-10">
+<meta name="date" content="2017-10-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -465,8 +465,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.032105
-## x  1.829168</code></pre>
+##   -3.654983
+## x  2.168886</code></pre>
 <p>Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span></p>
 <p><span class="math display">\[\begin{aligned}
 \hat{\boldsymbol{y}} &amp;=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -483,13 +483,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -2.032105
-## x  1.829168</code></pre>
+##   -3.654983
+## x  2.168886</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 1.736911</code></pre>
+## [1,] 2.613919</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 0.7485144 0.1279736</code></pre>
+<pre><code>## [1] 1.1264575 0.1925905</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -498,18 +498,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -2.9882 -1.1060  0.5366  1.2672  2.1906 
+## -4.3815 -1.7924 -0.4243  1.3338  5.8276 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.0321     0.7485  -2.715   0.0142 *  
-## x             1.8292     0.1280  14.293 2.88e-11 ***
+## (Intercept)  -3.6550     1.1265  -3.245   0.0045 ** 
+## x             2.1689     0.1926  11.262 1.39e-09 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.737 on 18 degrees of freedom
-## Multiple R-squared:  0.919,  Adjusted R-squared:  0.9145 
-## F-statistic: 204.3 on 1 and 18 DF,  p-value: 2.882e-11</code></pre>
+## Residual standard error: 2.614 on 18 degrees of freedom
+## Multiple R-squared:  0.8757, Adjusted R-squared:  0.8688 
+## F-statistic: 126.8 on 1 and 18 DF,  p-value: 1.393e-09</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -517,14 +517,14 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lower&#39;</span>,<span class="st">&#39;upper&#39;</span>)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
-<pre><code>##               lower      upper
-## Intercept -3.604675 -0.4595342
-## x          1.560306  2.0980309</code></pre>
+<pre><code>##               lower     upper
+## Intercept -6.021582 -1.288383
+## x          1.764268  2.573503</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
-<pre><code>##                 2.5 %     97.5 %
-## (Intercept) -3.604675 -0.4595342
-## x            1.560306  2.0980309</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -6.021582 -1.288383
+## x            1.764268  2.573503</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

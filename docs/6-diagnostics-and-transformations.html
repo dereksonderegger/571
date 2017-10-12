@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-10">
+<meta name="date" content="2017-10-11">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -777,7 +777,7 @@ What do you notice about the relationship between mortality and income?</li>
 <li>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</li>
 <li>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</li>
 <li>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</li>
-<li>Examine models that have a <code>region:log(income)</code> interaction and <code>oil:log(income)</code> interaction along with the main effect of the third variable. Are either interaction significant vs the model without interactions? What about a model that contains both interactions?</li>
+<li>Examine models that have all three main effects and either the <code>region:log(income)</code> or <code>oil:log(income)</code> interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?</li>
 <li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. <em>Hint: graph the data and the predicted values.</em></p></li>
 </ol></li>
 <li>Using the <code>pressure</code> data available in the <code>faraway</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model.

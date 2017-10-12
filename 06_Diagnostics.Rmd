@@ -690,7 +690,7 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     c. Use the `boxcox()` function in the library MASS to determine a what a good transformation to the mortality response variable.
     d. Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.
     e. Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, `income` or `log(income)`? 
-    f. Examine models that have a `region:log(income)` interaction and `oil:log(income)` interaction along with the main effect of the third variable. Are either interaction significant vs the model without interactions? What about a model that contains both interactions?
+    f. Examine models that have all three main effects and either the `region:log(income)` or `oil:log(income)` interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?
     g. Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. *Hint: graph the data and the predicted values.*
 
 2. Using the `pressure` data available in the `faraway` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model. 
