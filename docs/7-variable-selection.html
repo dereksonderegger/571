@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-11">
+<meta name="date" content="2017-10-12">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -289,7 +289,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ol>
 <div id="example---u.s.-life-expectancy" class="section level3">
 <h3><span class="header-section-number">7.2.1</span> Example - U.S. Life Expectancy</h3>
-<p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of vnew to the model.</p>
+<p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of <code>vnew</code> to the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
 <span class="kw">library</span>(dplyr)   <span class="co"># for the %&gt;% operator!</span>
 
@@ -308,9 +308,11 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 <p>We should first look at the</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
-<p>I want to add a quadratic effect for HS.Grad rate and for Income. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data$HS.Grad<span class="fl">.2</span> &lt;-<span class="st"> </span>state.data$HS.Grad ^<span class="st"> </span><span class="dv">2</span>
-state.data$Income<span class="fl">.2</span>  &lt;-<span class="st"> </span>state.data$Income  ^<span class="st"> </span><span class="dv">2</span>
+<p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span>state.data %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad ^<span class="st"> </span><span class="dv">2</span>,
+          <span class="dt">Income.2  =</span> Income  ^<span class="st"> </span><span class="dv">2</span>)
+
 <span class="co"># explicitly define my starting model</span>
 m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>
 <span class="st">                    </span>Murder +<span class="st"> </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data=</span>state.data)
@@ -457,7 +459,7 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 </div>
 <div id="example" class="section level3">
 <h3><span class="header-section-number">7.3.3</span> Example</h3>
-<p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function add1() which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
+<p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function <code>add1()</code> which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define the biggest model I wish to consider</span>
 biggest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>Murder +<span class="st"> </span>
 <span class="st">                      </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>Area +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>

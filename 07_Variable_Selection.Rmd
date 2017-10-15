@@ -43,7 +43,7 @@ Stepwise, forward, and backward selection are commonly used but there are some i
 
 ### Example - U.S. Life Expectancy
 
-Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a `lm()` object and adds or removes things from the formula. The notation `. ~ .` means to leave the response and all the predictors alone, while `. ~ . + vnew` will add the main effect of vnew to the model.
+Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a `lm()` object and adds or removes things from the formula. The notation `. ~ .` means to leave the response and all the predictors alone, while `. ~ . + vnew` will add the main effect of `vnew` to the model.
 
 ```{r, message=FALSE, warning=FALSE}
 library(faraway)
@@ -56,16 +56,18 @@ str(state.data)
 
 
 We should first look at the 
-```{r}
+```{r, fig.height=5}
 pairs(Life.Exp ~ ., data=state.data)
 ```
 
 
-I want to add a quadratic effect for HS.Grad rate and for Income. We'll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.
+I want to add a quadratic effect for `HS.Grad` rate and for `Income`. We'll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.
 
 ```{r}
-state.data$HS.Grad.2 <- state.data$HS.Grad ^ 2
-state.data$Income.2  <- state.data$Income  ^ 2
+state.data <- state.data %>%
+  mutate( HS.Grad.2 = HS.Grad ^ 2,
+          Income.2  = Income  ^ 2)
+
 # explicitly define my starting model
 m1 <- lm(Life.Exp ~ Population + Income + Illiteracy + 
                 	Murder + HS.Grad + Frost + HS.Grad.2 + Income.2, data=state.data)
@@ -181,7 +183,7 @@ $$R_{adj}^{2}=1-\frac{RSS_{C}/\left(n-p\right)}{RSS_{S}/\left(n-1\right)}$$
 With this adjusted definition, adding a variable to the model that has no predictive power will decrease $R_{adj}^{2}$.
 
 ### Example
-Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function add1() which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.
+Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function `add1()` which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.
 
 ```{r}
 # Define the biggest model I wish to consider
@@ -200,7 +202,6 @@ Clearly the additiona of `Murder` to the model results in the lowest AIC value, 
 m <- update(m, . ~ . + Murder)  # add murder to the model
 add1(m, scope=biggest)          # what should I add next?
 ```
-
 
 There is a companion function to `add1()` that finds the best term to drop. It is conveniently named `drop1()` but here the `scope` parameter defines the smallest model to be considered.
 
@@ -254,13 +255,9 @@ Using these results, we can calculate the difference in AIC values to be the sam
  
 ## Exercises
 1. Consider the `prostate` data from the `faraway` package. The variable `lpsa` is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use `lpsa` as the response and all the other variables as predictors (no interactions). Determine the “best” model using:
-
     a. Backward elimination using the analysis of variance F-statistic as the criteria.
-
     b. Forward selection using AIC as the criteria.
 
 2. Again from the `faraway` package, use the `divusa` which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use `divorce` as the response variable and all other variables as the predictors.
-
     a. Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test='F' to use an F-test instead of AIC.
-
     b. Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?
