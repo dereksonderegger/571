@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-12">
+<meta name="date" content="2017-10-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -201,9 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
 <li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
-<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
-</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a></li>
 <li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
@@ -267,7 +265,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">library</span>(faraway)
 <span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(multcompView)</code></pre></div>
+<span class="kw">library</span>(multcompView)
+<span class="kw">library</span>(lsmeans)</code></pre></div>
 <p>Given a categorical covariate (which I will call a factor) with <span class="math inline">\(I\)</span> levels, we are interested in fitting the model <span class="math display">\[y_{ij}=\mu+\tau_{i}+\epsilon_{ij}\]</span> where <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>, <span class="math inline">\(\mu\)</span> is the overall mean, and <span class="math inline">\(\tau_{i}\)</span> are the offset of factor level <span class="math inline">\(i\)</span> from <span class="math inline">\(\mu\)</span>. Unfortunately this model is not identifiable because I could add a constant (say <span class="math inline">\(5\)</span>) to <span class="math inline">\(\mu\)</span> and subtract that same constant from each of the <span class="math inline">\(\tau_{i}\)</span> values and the group mean <span class="math inline">\(\mu+\tau_{i}\)</span> would not change. There are two easy restrictions we could make to make the model identifiable:</p>
 <ol style="list-style-type: decimal">
 <li><p>Set <span class="math inline">\(\mu=0\)</span>. In this case, <span class="math inline">\(\tau_{i}\)</span> represents the expected value of an observation in group level <span class="math inline">\(i\)</span>. We call this the “cell means” representation.</p></li>
@@ -324,6 +323,8 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag ~<span class="st
 <p>The residual plots however, might need a little bit of extra work, because there are only four possible predicted values (actually <span class="math inline">\(3\)</span> because group <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> have the same predicted values). Note that we actually have <span class="math inline">\(n=24\)</span> observations, but I can only see 16 of them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co">#  Residals vs fitted</span></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">1</span>) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>diet))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-152-2.png" width="672" /></p>
 <p>To remedy this, we will plot the residuals vs fitted by hand, and add a little bit of random noise to the fitted value, just so that we don’t have points stack up on top of each other. Lets also add a different shape for each diet.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coagulation$fitted &lt;-<span class="st"> </span><span class="kw">predict</span>(m)
 coagulation$resid &lt;-<span class="st"> </span><span class="kw">resid</span>(m)
@@ -335,73 +336,50 @@ coagulation$resid &lt;-<span class="st"> </span><span class="kw">resid</span>(m)
 <h2><span class="header-section-number">8.4</span> Pairwise Comparisons</h2>
 <p>After detecting differences in the factor levels, we are often interested in which factor levels are different from which. Often we are interested in comparing the mean of level <span class="math inline">\(i\)</span> with the mean of level <span class="math inline">\(j\)</span>. As usual we let the vector of parameter estimates be <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> then the contrast of interested can be written as <span class="math display">\[\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm t_{n-p}^{1-\alpha/2}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}\]</span> for some vector <span class="math inline">\(\boldsymbol{c}\)</span>.</p>
 <p>Unfortunately this interval does not take into account the multiple comparisons issue (i.e. we are making <span class="math inline">\(I(I-1)/2\)</span> contrasts if our factor has <span class="math inline">\(I\)</span> levels). To account for this, we will not use a quantile from a t-distribution, but from Tukey’s studentized range distribution <span class="math inline">\(q_{n,n-I}\)</span> divided by <span class="math inline">\(\sqrt{2}\)</span>. The intervals we will use are: <span class="math display">\[\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm\frac{q_{n,n-I}^{1-\alpha/2}}{\sqrt{2}}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}\]</span></p>
-<p>There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use <code>TukeyHSD()</code>. This function will calculate all of these pairwise intervals using the above formula, which is commonly known as Tukey’s Honestly Significant Differences. This function expects to receive output from the aov() function. The aov() is similar to lm() but does not accept continuous covariates in the model. Because it is possible to convert a <code>lm</code> output object to an <code>aov</code> object, I typically will do the following</p>
+<p>There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the <code>lsmeans</code> package. This package computes the above intervals which are commonly known as Tukey’s Honestly Significant Differences.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag ~<span class="st"> </span>diet, <span class="dt">data=</span>coagulation)   <span class="co"># use the lm() function as usual</span>
-Pvalues &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>( <span class="kw">aov</span>(m), <span class="dt">level=</span>.<span class="dv">90</span> ) <span class="co"># convert to the format that TukeyHSD likes...</span>
-Pvalues</code></pre></div>
-<pre><code>##   Tukey multiple comparisons of means
-##     95% family-wise confidence level
+<span class="kw">lsmeans</span>(m, <span class="dt">specs=</span> pairwise~diet) %&gt;%
+<span class="st">  </span><span class="kw">summary</span>(<span class="dt">level=</span><span class="fl">0.90</span>)</code></pre></div>
+<pre><code>## $lsmeans
+##  diet lsmean        SE df lower.CL upper.CL
+##  A        61 1.1832160 20 58.95929 63.04071
+##  B        66 0.9660918 20 64.33376 67.66624
+##  C        68 0.9660918 20 66.33376 69.66624
+##  D        61 0.8366600 20 59.55700 62.44300
 ## 
-## Fit: aov(formula = m)
+## Confidence level used: 0.9 
 ## 
-## $diet
-##     diff         lwr       upr     p adj
-## B-A    5   0.7245544  9.275446 0.0183283
-## C-A    7   2.7245544 11.275446 0.0009577
-## D-A    0  -4.0560438  4.056044 1.0000000
-## C-B    2  -1.8240748  5.824075 0.4766005
-## D-B   -5  -8.5770944 -1.422906 0.0044114
-## D-C   -7 -10.5770944 -3.422906 0.0001268</code></pre>
+## $contrasts
+##  contrast      estimate       SE df t.ratio p.value
+##  A - B    -5.000000e+00 1.527525 20  -3.273  0.0183
+##  A - C    -7.000000e+00 1.527525 20  -4.583  0.0010
+##  A - D    -2.991428e-15 1.449138 20   0.000  1.0000
+##  B - C    -2.000000e+00 1.366260 20  -1.464  0.4766
+##  B - D     5.000000e+00 1.278019 20   3.912  0.0044
+##  C - D     7.000000e+00 1.278019 20   5.477  0.0001
+## 
+## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <p>Here we see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar to each other, but different than <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and that <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not statistically different from each other at the <span class="math inline">\(0.10\)</span> level.</p>
-<div id="presentation-of-results" class="section level3">
-<h3><span class="header-section-number">8.4.1</span> Presentation of Results</h3>
-<p>The display of <code>TukeyHSD</code> is pretty annoying and often I want to turn the vector of adjusted p-values into a matrix of p-values. We want a matrix that is <span class="math inline">\(p \times p\)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Convert to a matrix of adjusted p-values</span>
-Pmatrix &lt;-<span class="st"> </span><span class="kw">vec2mat</span>( Pvalues$diet[, <span class="st">&#39;p adj&#39;</span>] )
-Pmatrix</code></pre></div>
-<pre><code>##             B            C            D            A
-## B 1.000000000 0.4766005178 0.0044113688 0.0183282757
-## C 0.476600518 1.0000000000 0.0001267866 0.0009576856
-## D 0.004411369 0.0001267866 1.0000000000 1.0000000000
-## A 0.018328276 0.0009576856 1.0000000000 1.0000000000</code></pre>
-<p>From this matrix of adjusted p-values, there are many functions that will be helpful. One very common thing is to use a lettering scheme that indicates which groups are different. So if two groups share a letter, they are not significantly different.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">multcompLetters</span>(Pmatrix)</code></pre></div>
-<pre><code>##   B   C   D   A 
-## &quot;a&quot; &quot;a&quot; &quot;b&quot; &quot;b&quot;</code></pre>
-<p>To make our lives easier while making graphs, we <em>really</em> want to be able to add these back into our original data frame. Unfortunately the <code>multcompView</code> package that does this doesn’t really make it easy to do this. So I wrote us a little function that will suffice:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Create a data frame with significant groupings </span>
-<span class="co">#&#39;</span>
-<span class="co">#&#39; This function runs TukeyHSD on the input model and then creates a data frame</span>
-<span class="co">#&#39; with a column for the factor and a second for the Significance Group</span>
-<span class="co">#&#39; </span>
-<span class="co">#&#39; @param model The output of a lm() or aov() call that can be coerced to an aov object.</span>
-<span class="co">#&#39; @param variable The variable of interest.</span>
-<span class="co">#&#39; @output A data frame with a column for factor and another for the signicance group.</span>
-make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, variable){ 
-  Tukey &lt;-<span class="st"> </span><span class="kw">TukeyHSD</span>(<span class="kw">aov</span>(model))[[variable]]
-  temp &lt;-<span class="st"> </span>Tukey[,<span class="st">&#39;p adj&#39;</span>] %&gt;%
-<span class="st">    </span><span class="kw">vec2mat</span>() %&gt;%
-<span class="st">    </span><span class="kw">multcompLetters</span>()
-  out &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">names</span>(temp$Letters), <span class="dt">SigGroup=</span>temp$Letters)
-  <span class="kw">colnames</span>(out)[<span class="dv">1</span>] &lt;-<span class="st"> </span>variable
-  out
-}  </code></pre></div>
-<p>Now that the function is defined, we can happily use it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(m, <span class="st">&#39;diet&#39;</span>) </code></pre></div>
-<pre><code>##   diet SigGroup
-## B    B        a
-## C    C        a
-## D    D        b
-## A    A        b</code></pre>
-<p>This is useful, but it will be more useful when I merge this small data frame with the original data and then each observation will have an associated significance group.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coagulation &lt;-<span class="st"> </span>coagulation %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>( <span class="kw">make_TukeyHSD_letters</span>(m, <span class="st">&#39;diet&#39;</span>) )</code></pre></div>
-<pre><code>## Joining, by = &quot;diet&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag, <span class="dt">color=</span>SigGroup)) +
-<span class="st">  </span><span class="kw">geom_boxplot</span>() +
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="kw">aes</span>(<span class="dt">label=</span>SigGroup), <span class="dt">y=</span><span class="fl">71.5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
-</div>
+<p>Often I want to produce the “Compact Letter Display” which identifies which groups are signicantly different.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LetterData &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m, <span class="dt">specs=</span> pairwise~diet) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>)
+LetterData</code></pre></div>
+<pre><code>##  diet lsmean        SE df lower.CL upper.CL .group
+##  A        61 1.1832160 20 58.53185 63.46815  a    
+##  D        61 0.8366600 20 59.25476 62.74524  a    
+##  B        66 0.9660918 20 63.98477 68.01523   b   
+##  C        68 0.9660918 20 65.98477 70.01523   b   
+## 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>I can easily add these to my boxplot with the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_boxplot</span>() +
+<span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> ) +
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>LetterData, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">label=</span>.group), <span class="dt">y=</span><span class="dv">73</span>, <span class="dt">size=</span><span class="dv">10</span> ) +
+<span class="st">  </span><span class="kw">ylim</span>(<span class="dv">56</span>, <span class="dv">74</span>)  <span class="co"># don&#39;t cut off the text I just added</span></code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
 </div>
 <div id="exercises-7" class="section level2">
 <h2><span class="header-section-number">8.5</span> Exercises</h2>
@@ -428,7 +406,7 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, variable){
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,

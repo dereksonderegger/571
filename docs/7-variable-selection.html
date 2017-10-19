@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-12">
+<meta name="date" content="2017-10-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -201,9 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
 <li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
-<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
-</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a></li>
 <li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
@@ -652,15 +650,15 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span clas
 <div id="exercises-6" class="section level2">
 <h2><span class="header-section-number">7.4</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li><p>Consider the <code>prostate</code> data from the <code>faraway</code> package. The variable <code>lpsa</code> is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use <code>lpsa</code> as the response and all the other variables as predictors (no interactions). Determine the “best” model using:</p>
+<li>Consider the <code>prostate</code> data from the <code>faraway</code> package. The variable <code>lpsa</code> is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use <code>lpsa</code> as the response and all the other variables as predictors (no interactions). Determine the “best” model using:
 <ol style="list-style-type: lower-alpha">
-<li><p>Backward elimination using the analysis of variance F-statistic as the criteria.</p></li>
-<li><p>Forward selection using AIC as the criteria.</p></li>
+<li>Backward elimination using the analysis of variance F-statistic as the criteria.</li>
+<li>Forward selection using AIC as the criteria.</li>
 </ol></li>
-<li><p>Again from the <code>faraway</code> package, use the <code>divusa</code> which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use <code>divorce</code> as the response variable and all other variables as the predictors.</p>
+<li>Again from the <code>faraway</code> package, use the <code>divusa</code> which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use <code>divorce</code> as the response variable and all other variables as the predictors.
 <ol style="list-style-type: lower-alpha">
-<li><p>Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test=‘F’ to use an F-test instead of AIC.</p></li>
-<li><p>Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?</p></li>
+<li>Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test=‘F’ to use an F-test instead of AIC.</li>
+<li>Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?</li>
 </ol></li>
 </ol>
 
@@ -683,7 +681,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span clas
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,

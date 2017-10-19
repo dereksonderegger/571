@@ -10,6 +10,7 @@ library(faraway)
 library(ggplot2)
 library(dplyr)
 library(multcompView)
+library(lsmeans)
 ```
 
 
@@ -74,6 +75,7 @@ The residual plots however, might need a little bit of extra work, because there
 
 ```{r, fig.height=3}
 plot(m, which=1)  #  Residals vs fitted
+autoplot(m, which=1) + geom_point(aes(color=diet))
 ```
 
 
@@ -95,68 +97,31 @@ $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm t_{n-p}^{1-\alpha/2}\;\hat{\sigm
 Unfortunately this interval does not take into account the multiple comparisons issue (i.e. we are making $I(I-1)/2$ contrasts if our factor has $I$ levels). To account for this, we will not use a quantile from a t-distribution, but from Tukey's studentized range distribution $q_{n,n-I}$ divided by $\sqrt{2}$. The intervals we will use are:
 $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm\frac{q_{n,n-I}^{1-\alpha/2}}{\sqrt{2}}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}$$
 
-There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use `TukeyHSD()`. This function will calculate all of these pairwise intervals using the above formula, which is commonly known as Tukey's Honestly Significant Differences. This function expects to receive output from the aov() function. The aov() is similar to lm() but does not accept continuous covariates in the model. Because it is possible to convert a `lm` output object to an `aov` object, I typically will do the following
+There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the `lsmeans` package. This package computes the above intervals which are commonly known as Tukey's Honestly Significant Differences. 
 
 ```{r}
 m <- lm(coag ~ diet, data=coagulation)   # use the lm() function as usual
-Pvalues <- TukeyHSD( aov(m), level=.90 ) # convert to the format that TukeyHSD likes...
-Pvalues
+lsmeans(m, specs= pairwise~diet) %>%
+  summary(level=0.90)
 ```
 
 Here we see that diets $A$ and $D$ are similar to each other, but different than $B$ and $C$ and that $B$ and $C$ are not statistically different from each other at the $0.10$ level.
 
-### Presentation of Results
-The display of `TukeyHSD` is pretty annoying and often I want to turn the vector of adjusted p-values into a matrix of p-values. We want a matrix that is $p \times p$.
+Often I want to produce the "Compact Letter Display" which identifies which groups are signicantly different. 
 
 ```{r}
-# Convert to a matrix of adjusted p-values
-Pmatrix <- vec2mat( Pvalues$diet[, 'p adj'] )
-Pmatrix
+LetterData <- lsmeans(m, specs= pairwise~diet) %>% 
+  cld(Letters=letters, level=0.95)
+LetterData
 ```
 
-From this matrix of adjusted p-values, there are many functions that will be helpful. One very common thing is to use a lettering scheme that indicates which groups are different. So if two groups share a letter, they are not significantly different.
-
+I can easily add these to my boxplot with the following:
 ```{r}
-multcompLetters(Pmatrix)
-```
-
-To make our lives easier while making graphs, we *really* want to be able to add these back into our original data frame.  Unfortunately the `multcompView` package that does this doesn't really make it easy to do this.  So I wrote us a little function that will suffice:
-
-```{r}
-#' Create a data frame with significant groupings 
-#'
-#' This function runs TukeyHSD on the input model and then creates a data frame
-#' with a column for the factor and a second for the Significance Group
-#' 
-#' @param model The output of a lm() or aov() call that can be coerced to an aov object.
-#' @param variable The variable of interest.
-#' @output A data frame with a column for factor and another for the signicance group.
-make_TukeyHSD_letters <- function(model, variable){ 
-  Tukey <- TukeyHSD(aov(model))[[variable]]
-  temp <- Tukey[,'p adj'] %>%
-    vec2mat() %>%
-    multcompLetters()
-  out <- data.frame(group = names(temp$Letters), SigGroup=temp$Letters)
-  colnames(out)[1] <- variable
-  out
-}  
-```
-
-Now that the function is defined, we can happily use it.
-```{r}
-make_TukeyHSD_letters(m, 'diet') 
-```
-
-This is useful, but it will be more useful when I merge this small data frame
-with the original data and then each observation will have an associated significance group.
-
-```{r}
-coagulation <- coagulation %>%
-  left_join( make_TukeyHSD_letters(m, 'diet') )
-
-ggplot(coagulation, aes(x=diet, y=coag, color=SigGroup)) +
-  geom_boxplot() +
-  geom_text( aes(label=SigGroup), y=71.5)
+ggplot(coagulation, aes(x=diet, y=coag)) + 
+	geom_boxplot() +
+	labs( x='Diet', y='Coagulation Time' ) +
+  geom_text( data=LetterData, aes(x=diet, label=.group), y=73, size=10 ) +
+  ylim(56, 74)  # don't cut off the text I just added
 ```
 
 

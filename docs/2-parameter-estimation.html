@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-12">
+<meta name="date" content="2017-10-19">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -201,9 +201,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>8.1</b> An Example</a></li>
 <li class="chapter" data-level="8.2" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>8.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="8.3" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>8.3</b> Diagnostics</a></li>
-<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a><ul>
-<li class="chapter" data-level="8.4.1" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#presentation-of-results"><i class="fa fa-check"></i><b>8.4.1</b> Presentation of Results</a></li>
-</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>8.4</b> Pairwise Comparisons</a></li>
 <li class="chapter" data-level="8.5" data-path="8-one-way-anova.html"><a href="8-one-way-anova.html#exercises-7"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-two-way-anova.html"><a href="9-two-way-anova.html"><i class="fa fa-check"></i><b>9</b> Two-way ANOVA</a><ul>
@@ -465,8 +463,8 @@ my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span c
 beta.hat &lt;-<span class="st"> </span>XtXinv %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y
 beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -1.540079
-## x  1.715665</code></pre>
+##   -4.101381
+## x  2.173886</code></pre>
 <p>Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span> and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span></p>
 <p><span class="math display">\[\begin{aligned}
 \hat{\boldsymbol{y}} &amp;=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
@@ -483,13 +481,13 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 <p>We now print out the important values and compare them to the summary output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">beta.hat</code></pre></div>
 <pre><code>##        [,1]
-##   -1.540079
-## x  1.715665</code></pre>
+##   -4.101381
+## x  2.173886</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sigma.hat</code></pre></div>
 <pre><code>##          [,1]
-## [1,] 2.684012</code></pre>
+## [1,] 1.494102</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std.errs</code></pre></div>
-<pre><code>## [1] 1.1566638 0.1977549</code></pre>
+<pre><code>## [1] 0.6438770 0.1100837</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y~x)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## 
@@ -498,18 +496,18 @@ std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat 
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -4.4829 -1.5435 -0.4711  1.3567  5.4834 
+## -2.9788 -0.6920 -0.3493  1.1863  2.6271 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -1.5401     1.1567  -1.331      0.2    
-## x             1.7157     0.1978   8.676 7.58e-08 ***
+## (Intercept)  -4.1014     0.6439   -6.37 5.33e-06 ***
+## x             2.1739     0.1101   19.75 1.20e-13 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 2.684 on 18 degrees of freedom
-## Multiple R-squared:  0.807,  Adjusted R-squared:  0.7963 
-## F-statistic: 75.27 on 1 and 18 DF,  p-value: 7.579e-08</code></pre>
+## Residual standard error: 1.494 on 18 degrees of freedom
+## Multiple R-squared:  0.9559, Adjusted R-squared:  0.9534 
+## F-statistic:   390 on 1 and 18 DF,  p-value: 1.199e-13</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lwr &lt;-<span class="st"> </span>beta.hat -<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
 upr &lt;-<span class="st"> </span>beta.hat +<span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) *<span class="st"> </span>std.errs
@@ -518,13 +516,13 @@ CI &lt;-<span class="st"> </span><span class="kw">cbind</span>(lwr,upr)
 <span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)
 CI</code></pre></div>
 <pre><code>##               lower     upper
-## Intercept -3.970140 0.8899812
-## x          1.300197 2.1311322</code></pre>
+## Intercept -5.454117 -2.748646
+## x          1.942609  2.405163</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(model)</code></pre></div>
 <pre><code>##                 2.5 %    97.5 %
-## (Intercept) -3.970140 0.8899812
-## x            1.300197 2.1311322</code></pre>
+## (Intercept) -5.454117 -2.748646
+## x            1.942609  2.405163</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">
@@ -699,59 +697,59 @@ y_{3,4}
 <li><p>Examine the matrix <span class="math inline">\(\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\mathbf{X}^{T}\)</span>. What do you notice about it? In particular, think about the result when you right multiply by <span class="math inline">\(\mathbf{y}\)</span>. How does this matrix calculate the appropriate group means and using the appropriate group sizes <span class="math inline">\(n_i\)</span>?</p></li>
 </ol></li>
 <li><p>We will calculate the y-intercept and slope estimates in a simple linear model using matrix notation. We will use a data set that gives the diameter at breast height (DBH) versus tree height for a randomly selected set of trees. In addition, for each tree, a ground measurement of crown closure (CC) was taken. Larger values of crown closure indicate more shading and is often associated with taller tree morphology (possibly). We will be interested in creating a regression model that predicts height based on DBH and CC. In the interest of reduced copying, we will only use 10 observations. <em>(Note: I made this data up and the DBH values might be unrealistic. Don’t make fun of me.)</em></p>
-<table style="width:86%;">
+<table style="width:100%;">
 <colgroup>
-<col width="18%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="5%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
-<col width="6%" />
+<col width="15%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="7%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
 </colgroup>
 <tbody>
 <tr class="odd">
 <td align="center"><strong>DBH</strong></td>
-<td>30.5</td>
-<td>31.5</td>
-<td>31.7</td>
-<td>32.3</td>
-<td>33.3</td>
-<td align="left">35</td>
-<td>35.4</td>
-<td>35.6</td>
-<td>36.3</td>
-<td>37.8</td>
+<td align="center">30.5</td>
+<td align="center">31.5</td>
+<td align="center">31.7</td>
+<td align="center">32.3</td>
+<td align="center">33.3</td>
+<td align="center">35</td>
+<td align="center">35.4</td>
+<td align="center">35.6</td>
+<td align="center">36.3</td>
+<td align="center">37.8</td>
 </tr>
 <tr class="even">
 <td align="center"><strong>CC</strong></td>
-<td>0.74</td>
-<td>0.69</td>
-<td>0.65</td>
-<td>0.72</td>
-<td>0.58</td>
-<td align="left">0.5</td>
-<td>0.6</td>
-<td>0.7</td>
-<td>0.52</td>
-<td>0.6</td>
+<td align="center">0.74</td>
+<td align="center">0.69</td>
+<td align="center">0.65</td>
+<td align="center">0.72</td>
+<td align="center">0.58</td>
+<td align="center">0.5</td>
+<td align="center">0.6</td>
+<td align="center">0.7</td>
+<td align="center">0.52</td>
+<td align="center">0.6</td>
 </tr>
 <tr class="odd">
 <td align="center"><strong>Height</strong></td>
-<td>58</td>
-<td>64</td>
-<td>65</td>
-<td>70</td>
-<td>68</td>
-<td align="left">63</td>
-<td>78</td>
-<td>80</td>
-<td>74</td>
-<td>76</td>
+<td align="center">58</td>
+<td align="center">64</td>
+<td align="center">65</td>
+<td align="center">70</td>
+<td align="center">68</td>
+<td align="center">63</td>
+<td align="center">78</td>
+<td align="center">80</td>
+<td align="center">74</td>
+<td align="center">76</td>
 </tr>
 </tbody>
 </table>
@@ -783,7 +781,7 @@ y_{3,4}
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
 <script>
-require(["gitbook"], function(gitbook) {
+gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
