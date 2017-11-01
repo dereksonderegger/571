@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-19">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -361,7 +361,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">data</span>(pulp)
 <span class="co"># set the contrasts to sum-to-zero constraint</span>
 op &lt;-<span class="st"> </span><span class="kw">options</span>(<span class="dt">contrasts=</span><span class="kw">c</span>(<span class="st">&#39;contr.sum&#39;</span>, <span class="st">&#39;contr.poly&#39;</span>))
-m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright ~<span class="st"> </span>operator, <span class="dt">data=</span>pulp)
+m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright <span class="op">~</span><span class="st"> </span>operator, <span class="dt">data=</span>pulp)
 <span class="kw">summary</span>(m)</code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
 ## operator     3   1.34  0.4467   4.204 0.0226 *
@@ -373,7 +373,7 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright ~<span class=
 ##       60.40       -0.16       -0.34        0.22</code></pre>
 <p>The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28</p>
 <p>To fit the random effects model we will use the package <code>lme4</code> which stands for Linear Mixed Effects and the 4 represents that the package is written in the S4 dialect of R (which means a few things will be new to us).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( bright ~<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>(<span class="dv">1</span>|operator), <span class="dt">data=</span>pulp )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( bright <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>operator), <span class="dt">data=</span>pulp )
 <span class="kw">summary</span>(m2)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: bright ~ 1 + (1 | operator)
@@ -412,14 +412,14 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright ~<span class=
 <p>Blocks are properties of experimental designs and usually we are not interested in the block levels <em>per se</em> but need to account for the variability introduced by them.</p>
 <p>Recall the agriculture experiment in the dataset <code>oatvar</code> from the <code>faraway</code> package. We had 8 different varieties of oats and we had 5 different fields (which we called blocks). Because of limitations on how we plant, we could only divide the blocks into 8 plots and in each plot we planted one of the varieties.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
-<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span> variety)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">facet_wrap</span>(~block, <span class="dt">labeller=</span>label_both)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-204-1.png" width="672" /></p>
+<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span> variety)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>block, <span class="dt">labeller=</span>label_both)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
 <p>In this case, we don’t really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
-model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield ~<span class="st"> </span>variety +<span class="st"> </span>(<span class="dv">1</span>|block), <span class="dt">data=</span>oatvar)
-<span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>oatvar)
+model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>oatvar)
+<span class="kw">anova</span>(model.<span class="dv">0</span>, model.<span class="dv">1</span>)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: oatvar
 ## Models:
@@ -431,7 +431,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate. R doesn’t do this by default because there isn’t a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the <code>car::Anova</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car::<span class="kw">Anova</span>(model<span class="fl">.1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: yield
@@ -441,7 +441,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Notice that this is using a Chi-squared test statistic. This is actually using the Likelihood Ratio Test which is an approximate test, but should be reasonable. Now that we have chosen our model, we can examine is model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">1</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ variety + (1 | block)
 ##    Data: oatvar
@@ -482,7 +482,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 <p>Why do we care about this? This actually tells us quite a lot about the spatial variability. Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.</p>
 <p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don’t have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package <code>nlme</code>) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit.</p>
 <p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately <code>TukeyHSD</code> doesn’t work with objects created by <code>lmer</code> so we have to turn to another package. In this case, we could use either <code>multcomp</code> and build the contrast vectors <span class="math inline">\(\boldsymbol{c}\)</span> that we used previously or we could use the package <code>lsmeans</code>, which automates much of this.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>( model<span class="fl">.1</span>, pairwise ~<span class="st"> </span>variety)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
 <pre><code>## Loading required namespace: lmerTest</code></pre>
 <pre><code>## $lsmeans
 ##  variety lsmean       SE    df lower.CL upper.CL
@@ -545,19 +545,19 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 <span class="co">#&#39; make_TukeyHSD_letters(model, ~ wool)</span>
 <span class="co">#&#39; make_TukeyHSD_letters(model, ~ tension)</span>
 <span class="co">#&#39; make_TukeyHSD_letters(model, ~ wool+tension)</span>
-make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, formula, <span class="dt">threshold=</span><span class="fl">0.05</span>){ 
-  formula2 &lt;-<span class="st"> </span><span class="kw">update.formula</span>( formula, pairwise ~<span class="st"> </span>.)
-  temp &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(model, formula2)$contrasts %&gt;%
+make_TukeyHSD_letters &lt;-<span class="st"> </span><span class="cf">function</span>(model, formula, <span class="dt">threshold=</span><span class="fl">0.05</span>){ 
+  formula2 &lt;-<span class="st"> </span><span class="kw">update.formula</span>( formula, pairwise <span class="op">~</span><span class="st"> </span>.)
+  temp &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(model, formula2)<span class="op">$</span>contrasts <span class="op">%&gt;%</span>
 <span class="st">    </span><span class="kw">summary</span>()  
-  temp2 &lt;-<span class="st"> </span>temp$p.value
-  <span class="kw">names</span>(temp2) &lt;-<span class="st"> </span>temp$contrast 
-  temp &lt;-<span class="st"> </span>temp2 %&gt;%<span class="st"> </span><span class="kw">vec2mat</span>(<span class="dt">sep=</span><span class="st">&#39; - &#39;</span>) %&gt;%<span class="st"> </span><span class="kw">multcompLetters</span>(<span class="dt">threshold=</span>threshold)
-  out &lt;-<span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">names</span>(temp$Letters), <span class="dt">SigGroup=</span>temp$Letters)
-  <span class="kw">colnames</span>(out)[<span class="dv">1</span>] &lt;-<span class="st">   </span><span class="kw">Reduce</span>(paste, <span class="kw">deparse</span>(formula)) %&gt;%<span class="st"> </span><span class="kw">str_replace</span>(<span class="kw">fixed</span>(<span class="st">&#39;~&#39;</span>),<span class="st">&#39;&#39;</span>)
+  temp2 &lt;-<span class="st"> </span>temp<span class="op">$</span>p.value
+  <span class="kw">names</span>(temp2) &lt;-<span class="st"> </span>temp<span class="op">$</span>contrast 
+  temp &lt;-<span class="st"> </span>temp2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">vec2mat</span>(<span class="dt">sep=</span><span class="st">&#39; - &#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">multcompLetters</span>(<span class="dt">threshold=</span>threshold)
+  out &lt;-<span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">names</span>(temp<span class="op">$</span>Letters), <span class="dt">SigGroup=</span>temp<span class="op">$</span>Letters)
+  <span class="kw">colnames</span>(out)[<span class="dv">1</span>] &lt;-<span class="st">   </span><span class="kw">Reduce</span>(paste, <span class="kw">deparse</span>(formula)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="kw">fixed</span>(<span class="st">&#39;~&#39;</span>),<span class="st">&#39;&#39;</span>)
   <span class="kw">rownames</span>(out) &lt;-<span class="st"> </span><span class="ot">NULL</span>
   out
 }  </code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(model<span class="fl">.1</span>, ~<span class="st"> </span>variety)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
 <pre><code>##   variety SigGroup
 ## 1       1       ab
 ## 2       2       ac
@@ -568,25 +568,25 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span>function(model, formula, <sp
 ## 7       7       ab
 ## 8       8       ac</code></pre>
 <p>As usual we’ll join this information into the original data table and then make a nice summary graph.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oatvar &lt;-<span class="st"> </span>oatvar %&gt;%
-<span class="st">  </span><span class="kw">left_join</span>( <span class="kw">make_TukeyHSD_letters</span>(model<span class="fl">.1</span>, ~variety) ) %&gt;%
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oatvar &lt;-<span class="st"> </span>oatvar <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">left_join</span>( <span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span>variety) ) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LetterHeight=</span><span class="dv">500</span>)</code></pre></div>
-<pre><code>## Joining, by = c(&quot;variety&quot;, &quot;SigGroup&quot;)</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) +
+<pre><code>## Joining, by = &quot;variety&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label=</span>SigGroup, <span class="dt">y=</span>LetterHeight))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
 <hr />
 <p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(penicillin)
-<span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) +
-<span class="st">  </span><span class="kw">geom_point</span>() +<span class="st"> </span>
-<span class="st">  </span><span class="kw">facet_wrap</span>( ~<span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
+<span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
 <p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st">  </span><span class="dv">1</span>    +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
-model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>treat +<span class="st"> </span>(<span class="dv">1</span> |<span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
-<span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st">  </span><span class="dv">1</span>    <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
+model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
+<span class="kw">anova</span>(model.<span class="dv">0</span>, model.<span class="dv">1</span>)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: penicillin
 ## Models:
@@ -595,7 +595,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ##         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)
 ## model.0  3 127.33 130.31 -60.662   121.33                         
 ## model.1  6 129.28 135.25 -58.639   117.28 4.0474      3     0.2564</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car::<span class="kw">Anova</span>(model<span class="fl">.1</span>, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: yield
@@ -605,7 +605,7 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>It looks like we don’t have a significant effect of the treatments. Next we’ll examine the simple model to understand the variability.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model<span class="fl">.0</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">0</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ 1 + (1 | blend)
 ##    Data: penicillin
@@ -631,12 +631,12 @@ model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">l
 <h2><span class="header-section-number">11.4</span> Nested Effects</h2>
 <p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are <em>crossed</em> with site.</p>
 <p>We’ve already seen a number of nested designs when we looked at split plot designs. Recall the <code>AgData</code> set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot. We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-216-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
 <p>So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following model definitions are equivalent</span>
-model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Irrigation +<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot) +<span class="st"> </span>(<span class="dv">1</span>|plot:subplot), <span class="dt">data=</span>AgData )
-model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Irrigation +<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot/subplot), <span class="dt">data=</span>AgData)
-car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">:</span>subplot), <span class="dt">data=</span>AgData )
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)
+car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: yield
@@ -647,7 +647,7 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We’ll remove the irrigation covariate and refit the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield ~<span class="st"> </span>Fertilizer +<span class="st"> </span>(<span class="dv">1</span>|plot/subplot), <span class="dt">data=</span>AgData)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)
 <span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ Fertilizer + (1 | plot/subplot)
@@ -680,17 +680,17 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
 <p>The experimental units for the CO<span class="math inline">\(_2\)</span> treatment will be called a ring, and we have nine rings. We have three treatments (A,B,C) which correspond to an elevated CO<span class="math inline">\(_2\)</span> treatment, an ambient CO<span class="math inline">\(_2\)</span> treatment with all the fans, and a pure control. For each ring we’ll have some measure of productivity but we have six replicate observations per ring.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;HierarchicalData&quot;</span>, <span class="dt">package =</span> <span class="st">&#39;dsData&#39;</span>)
 <span class="kw">head</span>(HierarchicalData)</code></pre></div>
-<pre><code>##   Trt Ring rep        y
+<pre><code>##   Trt Ring Rep        y
 ## 1   A    1   1 363.9684
 ## 2   A    1   2 312.0613
 ## 3   A    1   3 332.9916
 ## 4   A    1   4 320.0109
 ## 5   A    1   5 292.2656
 ## 6   A    1   6 315.8136</code></pre>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
 <p>We can easily fit this model using random effects for each ring.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y ~<span class="st"> </span>Trt +<span class="st"> </span>(<span class="dv">1</span>|Ring), <span class="dt">data=</span>HierarchicalData )
-car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y <span class="op">~</span><span class="st"> </span>Trt <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring), <span class="dt">data=</span>HierarchicalData )
+car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: y
@@ -701,12 +701,12 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the <code>predict</code> function, but now we have the option of including the random effects or not.</p>
 <p>First lets consider the predicted values if we completely ignore the Ring random effect.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> ~<span class="st"> </span><span class="dv">0</span>),  <span class="co"># don&#39;t include any random effects </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>),  <span class="co"># don&#39;t include any random effects </span>
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
 <p>Now we consider the predicted values, but created using the Ring random effect. These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is <em>required</em> to be 0.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ranef</span>(model)</code></pre></div>
 <pre><code>## $Ring
@@ -720,56 +720,56 @@ car::<span class="kw">Anova</span>(model, <span class="dt">type=</span><span cla
 ## 7  -21.814405
 ## 8    2.548287
 ## 9   19.266118</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">ranef</span>(model)$Ring)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sum</span>(<span class="kw">ranef</span>(model)<span class="op">$</span>Ring)</code></pre></div>
 <pre><code>## [1] -5.317524e-12</code></pre>
 <p>Also notice that the sum of the random effects <em>within a treatment</em> is zero! (Recall Ring 1:3 was treatment A, 4:6 was treatment B, and 7:9 was treatment C).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> ~<span class="st"> </span>(<span class="dv">1</span>|Ring)),  <span class="co"># Include Ring Random effect</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring)),  <span class="co"># Include Ring Random effect</span>
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
 <p>We interpret the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.</p>
 <hr />
 <p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.</p>
 <p>In terms of notation, we will refer to the 6 labs as <span class="math inline">\(L_{i}\)</span> and the lab technicians as <span class="math inline">\(T_{ij}\)</span> and we note that <span class="math inline">\(j\)</span> is either 1 or 2 which doesn’t uniquely identify the technician unless we include the lab subscript as well. Finally the sub-samples are nested within the technicians and we denote them as <span class="math inline">\(S_{ijk}\)</span>. Finally our “pure” error is the two measurements from the same sub-sample. So the model we wish to fit is: <span class="math display">\[y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}\]</span> where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)\)</span>, <span class="math inline">\(T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)\)</span>, <span class="math inline">\(S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)\)</span>, <span class="math inline">\(\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>.</p>
 <p>We need a convenient way to tell <code>lmer</code> which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell <code>lmer</code> to create it and use it). Likewise there are 24 sub-samples and 48 “pure” random effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(eggs, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
-model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>(<span class="dv">1</span>|Lab) +<span class="st"> </span>(<span class="dv">1</span>|Lab:Technician) +
-<span class="st">                     </span>(<span class="dv">1</span>|Lab:Technician:Sample), <span class="dt">data=</span>eggs)
-model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span class="st"> </span><span class="dv">1</span> +<span class="st"> </span>(<span class="dv">1</span>|Lab/Technician/Sample), <span class="dt">data=</span>eggs)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~<span class="dv">0</span>))
-<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician) <span class="op">+</span>
+<span class="st">                     </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician<span class="op">:</span>Sample), <span class="dt">data=</span>eggs)
+model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample), <span class="dt">data=</span>eggs)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))
+<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average Value Only&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab)))
-<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab)))
+<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab/Technician)))
-<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician)))
+<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Lab/Technician/Sample)))
-<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>Lab+Technician) +
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample)))
+<span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician + Sample Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
 <p>No that we have an idea of how things vary, we can look at the summary table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -849,12 +849,12 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat ~<span cla
 </table>
 <p>Our model can be written as <span class="math display">\[y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}\]</span> and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We’ll regard both position and run as crossed random effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(abrasion, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
-<span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) +
+<span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
 <p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear ~<span class="st"> </span>material +<span class="st"> </span>(<span class="dv">1</span>|run) +<span class="st"> </span>(<span class="dv">1</span>|position), <span class="dt">data=</span>abrasion)
-car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)
+car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: wear
@@ -864,7 +864,7 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(m, ~<span class="st"> </span>material)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(m, <span class="op">~</span><span class="st"> </span>material)</code></pre></div>
 <pre><code>##   material SigGroup
 ## 1        A        a
 ## 2        B        b
@@ -902,7 +902,7 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 ## materialC -0.361  0.500       
 ## materialD -0.361  0.500  0.500</code></pre>
 <p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run effect.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear ~<span class="st"> </span>material +<span class="st"> </span>(<span class="dv">1</span>|position), <span class="dt">data=</span>abrasion)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)
 <span class="kw">anova</span>(m, m2)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: abrasion
@@ -922,13 +922,13 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 <p>In this case the correlation structure is that observations on the same person/object should be more similar than observations between two people/objects. As a result we need to account for repeated measures by including the person/object as a random effect.</p>
 <p>To demonstrate a longitudinal study we turn to the data set <code>sleepstudy</code> in the <code>lme4</code> library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(sleepstudy, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)
-<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) +
-<span class="st">    </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
+<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
 <p>We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction ~<span class="st"> </span>Days +<span class="st"> </span>(<span class="dv">1</span>|Subject), <span class="dt">data=</span>sleepstudy)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Subject), <span class="dt">data=</span>sleepstudy)
 <span class="kw">summary</span>(m1)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: Reaction ~ Days + (1 | Subject)
@@ -976,26 +976,26 @@ car::<span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="
 ## 371   -3.294273
 ## 372   18.115747</code></pre>
 <p>To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately <span class="math inline">\(10.4\)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m1, <span class="dt">re.form=</span>~(<span class="dv">1</span>|Subject)))
-<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) +
-<span class="st">    </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>() +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m1, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Subject)))
+<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-240-1.png" width="672" /></p>
 <p>This isn’t too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Random effects for intercept and Slope </span>
-m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction ~<span class="st"> </span>Days +<span class="st"> </span>( <span class="dv">1</span>+Days |<span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)
+m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>( <span class="dv">1</span><span class="op">+</span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)
 
-sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span>~(<span class="dv">1</span>+Days|Subject)))
-<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) +
-<span class="st">    </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_point</span>() +<span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_line</span>() +
+sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))
+<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
 <p>This appears to fit the observed data quite a bit better, but it is useful to test this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m1, m2)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
@@ -1010,26 +1010,26 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </sp
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.</p>
 <p>It is instructive to look at this example from the top down. First we plot the population regression line.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span>~<span class="dv">0</span>))
-<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +<span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))
+<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>)</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))
+<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span>~(<span class="dv">1</span>+Days|Subject)))
-<span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) +
-<span class="st">  </span><span class="kw">facet_wrap</span>(~<span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) +<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-246-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
 <p>Finally we want to go back and look at the coefficients for the complex model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -1084,8 +1084,8 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy %&gt;%<span class="st"> </sp
 <span class="co"># for each rat, then it will connect points at the same week but for different</span>
 <span class="co"># rats. The solution is to add an aesthetic that does the equivalent of the</span>
 <span class="co"># dplyr function group_by(). In ggplot2, this aesetheic is &quot;group&quot;. </span>
-<span class="kw">ggplot</span>(ratdrink, <span class="kw">aes</span>(<span class="dt">y=</span>wt, <span class="dt">x=</span>weeks, <span class="dt">color=</span>treat)) +<span class="st">    </span>
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) +
+<span class="kw">ggplot</span>(ratdrink, <span class="kw">aes</span>(<span class="dt">y=</span>wt, <span class="dt">x=</span>weeks, <span class="dt">color=</span>treat)) <span class="op">+</span><span class="st">    </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>subject))  <span class="co"># play with removing the group=subject aesthetic...</span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intercept perform as well as the model with random offsets in both the y-intercept and slope?</li>

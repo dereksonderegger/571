@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-19">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -384,24 +384,24 @@ y_{47}
 
 <span class="co"># Forces R to recognize that 0, 1 are categorical, also</span>
 <span class="co"># relabels the levels to something I understand.</span>
-teengamb$sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb$sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) 
+teengamb<span class="op">$</span>sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb<span class="op">$</span>sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) 
 
 <span class="co"># Fit a linear model with the interaction of sex and income</span>
 <span class="co"># Interactions can be specified useing a colon :</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex +<span class="st"> </span>income +<span class="st"> </span>sex:income, <span class="dt">data=</span>teengamb )  
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  
 
 <span class="co"># R allows a shortcut for the prior definition</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble ~<span class="st"> </span>sex *<span class="st"> </span>income, <span class="dt">data=</span>teengamb )
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )
 
 <span class="co"># save the fit, lwr, upr values for each observation</span>
 <span class="co"># these are the yhat and CI </span>
 teengamb &lt;-<span class="st"> </span><span class="kw">cbind</span>(teengamb, <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
 
 <span class="co"># Make a nice plot that includes the regreesion line.</span>
-<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) +<span class="st"> </span>
+<span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span>
 <span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),
-                  <span class="dt">alpha=</span>.<span class="dv">3</span>) +<span class="st">   </span><span class="co"># how solid the layer is</span>
-<span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) +
+                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span>
+<span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span>
 <span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># print the model summary</span>
@@ -431,30 +431,30 @@ teengamb &lt;-<span class="st"> </span><span class="kw">cbind</span>(teengamb, <
 <h2><span class="header-section-number">4.3</span> Iris Example</h2>
 <p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span>
-<span class="kw">levels</span>(iris$Species)  <span class="co"># notice the order of levels of Species</span></code></pre></div>
+<span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></code></pre></div>
 <pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
 <p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
 <p>We consider the sequence of building successively more complex models:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># make virginica the reference group </span>
-iris$Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris$Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)
+iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris<span class="op">$</span>Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)
 
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span>
-m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length +<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span>
-m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span class="st"> </span>Sepal.Length *<span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span>
+m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span>
+m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></code></pre></div>
 <p>The three models we consider are the following:</p>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
 <pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)     3.419      0.254  13.484    0.000
 ## Sepal.Length   -0.062      0.043  -1.440    0.152</code></pre>
 <p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
 <p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
 <pre><code>##                   Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)          0.669      0.308   2.174    0.031
 ## Sepal.Length         0.350      0.046   7.557    0.000
@@ -462,7 +462,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width ~<span 
 ## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
 <p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statstically different y-intercept than the reference group.</p>
 <p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
 <pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)                       1.446      0.405   3.572    0.000
 ## Sepal.Length                      0.232      0.061   3.790    0.000

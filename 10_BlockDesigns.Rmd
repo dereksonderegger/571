@@ -8,13 +8,9 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r, message=FALSE, warning=FALSE}
 # packages for this chapter
 library(tidyverse)    # ggplot2, dplyr, etc...
-library(multcompView) # TukeyLetters stuff
-library(devtools)
-#install_github('dereksonderegger/dsData')  # some datasets I've made up; only install once...
-library(dsData)
-library(faraway)
-library(MASS)         # for the oats dataset
+library(lsmeans)      # TukeyLetters stuff
 ```
+
 Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large.  For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.
 
 Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables.  We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are *nested*.
@@ -38,7 +34,7 @@ Example 2. We are interested in how a mouse responds to five different materials
 The dataset oatvar in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.
 
 ```{r, message=FALSE, warning=FALSE}
-data(oatvar)
+data('oatvar', package='faraway')
 ggplot(oatvar, aes(y=yield, x=block, color=variety)) + 
 	geom_point(size=5) +
 	geom_line(aes(x=as.integer(block))) # connect the dots
@@ -76,34 +72,15 @@ Fortunately in this case, we don't care about the blocking variable and includin
 
 
 ```{r}
-#' Create a data frame with significant groupings 
-#'
-#' This function runs TukeyHSD on the input model and then creates a data frame
-#' with a column for the factor and a second for the Significance Group
-#' 
-#' @param model The output of a lm() or aov() call that can be coerced to an aov object.
-#' @param variable The variable of interest.
-#' @output A data frame with a column for factor and another for the signicance group.
-make_TukeyHSD_letters <- function(model, variable){ 
-  Tukey <- TukeyHSD(aov(model))[[variable]]
-  temp <- Tukey[,'p adj'] %>%
-    vec2mat() %>%
-    multcompLetters()
-  out <- data.frame(group = names(temp$Letters), SigGroup=temp$Letters)
-  colnames(out)[1] <- variable
-  out
-}  
-```
-
-```{r}
 # Ignore any p-values regarding block, but I'm happy with the analysis for variety
-oatvar <- oatvar %>%
-  left_join( make_TukeyHSD_letters( m1, 'variety') )
+letter_df <- lsmeans(m1, ~variety) %>% 
+  cld(Letters=letters) %>% 
+  dplyr::select(variety, .group) %>%
+  mutate(yield = 500)
 
 ggplot(oatvar, aes(x=variety, y=yield)) +
   geom_boxplot() +
-  geom_text( aes(label=SigGroup), y=505) +
-  scale_y_continuous(limits=c(200, 510))  # give me some room for letters
+  geom_text( data=letter_df, aes(label=.group) ) 
 ```
 
 
@@ -111,7 +88,7 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
 There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can't be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment.
 
 ```{r, echo=FALSE}
-data('AgData')
+data('AgData', package='dsData')
 # The data is actually more complex than described. For this example we'll look
 # at the simpler analysis where we model the mean yield in each subplot.
 AgData <- AgData %>% 
@@ -137,20 +114,23 @@ So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer,
 
 I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios).  So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.
 
-
 We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.
 
 ```{r}
+# AgData came from my data package, dsData, however I did some summarization
+# first.
+
 # To analyze Irrigation, average over the subplots first...
 Irrigation.data <-   AgData %>% 
   group_by(plot, Irrigation) %>%
-  summarise( yield = mean(yield)) 
+  summarise( yield = mean(yield)) %>%
+  as.data.frame()  # the aov command doesn't like tibbles.
 
 # Now do a standard analysis. I use the aov() command instead of lm()
 # because we will shortly do something very tricky that can only be
 # done with aov(). For the most part, everything is 
 # identical from what you are used to.
-m <- aov( yield ~ Irrigation, data=data.frame(Irrigation.data) )
+m <- aov( yield ~ Irrigation, data=Irrigation.data )
 anova(m)
 ```
 
@@ -162,7 +142,6 @@ Next we can do the appropriate analysis for the fertilizer, recognizing that all
 m <- aov( yield ~ plot + Fertilizer, data=AgData )
 summary(m)
 ```
-
 
 Ideally I wouldn't have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.
 
@@ -196,10 +175,7 @@ When we want to infer if the amount of noise explained by adding Irrigation or F
 
 A second example of a slightly more complex split plot is given in the package `MASS` under the dataset `oats`. From the help file the data describes the following experiment:
     
-    The yield of oats from a split-plot field trial using three varieties and 
-    four levels of manurial treatment. The experiment was laid out in 6 blocks 
-    of 3 main plots, each split into 4 sub-plots. The varieties were applied to 
-    the main plots and the manurial treatments to the sub-plots.
+> The yield of oats from a split-plot field trial using three varieties and four levels of manurial treatment. The experiment was laid out in 6 blocks of 3 main plots, each split into 4 sub-plots. The varieties were applied to the main plots and the manurial treatments to the sub-plots.
     
 This is a lot to digest so lets unpack it. First we have 6 blocks and we'll replicate the exact same experiment in each block.  Within a block, we'll split it into three sections, which we'll call plots (within the block).  Finally within each plot, we'll have 4 subplots.  
 
@@ -208,7 +184,7 @@ We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of
 One issue that makes this issue confusing for students is that most texts get lazy and don't define the blocks, plots, and sub-plots when there are no replicates in a particular level.  I prefer to be clear about defining those so.
 
 ```{r}
-data(oats)
+data('oats', package='MASS')
 oats <- oats %>% mutate(
   Nf = ordered(N, levels = sort(levels(N))),  # make manure an ordered factor
   plot = as.integer(V),                       # plot

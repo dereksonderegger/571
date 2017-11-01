@@ -718,7 +718,7 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     c. Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.
     d. Examine the diagnostic plots. What stands out to you?
     e. While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.
-    f. What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the `pairs()` plot?  
-    g. How does a 20% increase in Price affect the polishing time? 
+    f. Using your model from part (e), what is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the `pairs()` plot?  
+    g. How does a 20% increase in Price affect the polishing Time? 
 
 

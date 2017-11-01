@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-19">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -304,21 +304,21 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Frost     : num  20 152 15 65 20 166 139 103 11 60 ...
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span>state.data %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad ^<span class="st"> </span><span class="dv">2</span>,
-          <span class="dt">Income.2  =</span> Income  ^<span class="st"> </span><span class="dv">2</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,
+          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>)
 
 <span class="co"># explicitly define my starting model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>
-<span class="st">                    </span>Murder +<span class="st"> </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data=</span>state.data)
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
+<span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>, <span class="dt">data=</span>state.data)
 <span class="co">#</span>
 <span class="co"># Define the same model, but using shorthand</span>
 <span class="co"># The &#39;.&#39; means everything else in the data frame</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp ~<span class="st"> </span>., <span class="dt">data=</span>state.data)
-<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)
+<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   63.413      7.449   8.513    0.000
 ## Population     0.000      0.000   1.310    0.198
@@ -332,8 +332,8 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp ~<span cla
 ## Income.2       0.000      0.000  -1.618    0.114</code></pre>
 <p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. We will first remove the term with the highest p-value, which is the state’s <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Graduation Rate from the model from the model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>HS.Grad -<span class="st"> </span>HS.Grad<span class="fl">.2</span>)
-<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad.<span class="dv">2</span>)
+<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   62.497      6.395   9.772    0.000
 ## Population     0.000      0.000   0.838    0.407
@@ -344,8 +344,8 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span c
 ## Area           0.000      0.000   1.688    0.099
 ## Income.2       0.000      0.000  -1.750    0.087</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next remove Illiteracy</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Illiteracy)
-<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)
+<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   61.779      5.367  11.510    0.000
 ## Population     0.000      0.000   0.860    0.394
@@ -355,8 +355,8 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span c
 ## Area           0.000      0.000   1.736    0.090
 ## Income.2       0.000      0.000  -2.069    0.045</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># And Population...</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Population)
-<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Population)
+<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   59.985      4.931  12.166    0.000
 ## Income         0.006      0.002   2.702    0.010
@@ -365,8 +365,8 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span c
 ## Area           0.000      0.000   1.746    0.088
 ## Income.2       0.000      0.000  -2.533    0.015</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Area from the model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span class="st"> </span>Area)
-<span class="kw">summary</span>(m1)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Area)
+<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   63.685      4.552  13.990    0.000
 ## Income         0.004      0.002   2.078    0.043
@@ -397,7 +397,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .~. -<span c
 ## Multiple R-squared:  0.7042, Adjusted R-squared:  0.6779 
 ## F-statistic: 26.78 on 4 and 45 DF,  p-value: 2.112e-11</code></pre>
 <p>We are left with a model that adequately explains <code>Life.Exp</code> but we should be careful to note that just because a covariate was removed from the model does not imply that it isn’t related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is <code>Income</code> and thus replacing <code>Illiteracy</code> shows that illiteracy is associated with lower life expectancy, but it is not as predictive as <code>Income</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Illiteracy+Murder+Frost, <span class="dt">data=</span>state.data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)
 <span class="kw">summary</span>(m2)</code></pre></div>
 <pre><code>## 
 ## Call:
@@ -459,11 +459,11 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 <h3><span class="header-section-number">7.3.3</span> Example</h3>
 <p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function <code>add1()</code> which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define the biggest model I wish to consider</span>
-biggest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>Murder +<span class="st"> </span>
-<span class="st">                      </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>Area +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>
+biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>
+<span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
 
 <span class="co"># Define the model I wish to start with</span>
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)
 
 <span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></code></pre></div>
 <pre><code>## Single term additions
@@ -482,7 +482,7 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class
 ## HS.Grad.2   1    27.414 60.885  13.848
 ## Income.2    1     7.464 80.835  28.020</code></pre>
 <p>Clearly the additiona of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . ~<span class="st"> </span>. +<span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
 <span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></code></pre></div>
 <pre><code>## Single term additions
 ## 
@@ -500,10 +500,10 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class
 ## Income.2    1    1.8972 32.564 -15.441</code></pre>
 <p>There is a companion function to <code>add1()</code> that finds the best term to drop. It is conveniently named <code>drop1()</code> but here the <code>scope</code> parameter defines the smallest model to be considered.</p>
 <p>It would be nice if all of this work was automated. Again, R makes our life easy and the function <code>step()</code> does exactly this. The set of models searched is determined by the scope argument which can be a <em>list</em> of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If <code>scope</code> is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smallest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span><span class="dv">1</span>
-biggest &lt;-<span class="st"> </span>Life.Exp ~<span class="st"> </span>Population +<span class="st"> </span>Income +<span class="st"> </span>Illiteracy +<span class="st"> </span>
-<span class="st">                      </span>Murder +<span class="st"> </span>HS.Grad +<span class="st"> </span>Frost +<span class="st"> </span>Area +<span class="st"> </span>HS.Grad<span class="fl">.2</span> +<span class="st"> </span>Income<span class="fl">.2</span>
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Income, <span class="dt">data=</span>state.data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>
+biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
+<span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)
 <span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</code></pre></div>
 <pre><code>## Start:  AIC=26.28
 ## Life.Exp ~ Income
@@ -605,16 +605,16 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class
 <p>Notice that our model selected by <code>step()</code> is not the same model we obtained when we started with the biggest model and removed things based on p-values.</p>
 <p>The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># m1 was</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Income +<span class="st"> </span>Murder +<span class="st"> </span>Frost +<span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data =</span> state.data)
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>, <span class="dt">data =</span> state.data)
 <span class="kw">AIC</span>(m1)</code></pre></div>
 <pre><code>## [1] 121.4293</code></pre>
 <p>and the model selected by the stepwise algorithm was</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp ~<span class="st"> </span>Murder +<span class="st"> </span>Frost +<span class="st"> </span>HS.Grad +<span class="st"> </span>Population, <span class="dt">data =</span> state.data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Population, <span class="dt">data =</span> state.data)
 <span class="kw">AIC</span>(m3)</code></pre></div>
 <pre><code>## [1] 115.7326</code></pre>
 <p>Because <code>step()</code> and <code>AIC()</code> are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.</p>
 <p>First we calculate the difference using the AIC() function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1) -<span class="st"> </span><span class="kw">AIC</span>(m3)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</code></pre></div>
 <pre><code>## [1] 5.696681</code></pre>
 <p>and next we use <code>add1()</code> on both models to see what the AIC values for each.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</code></pre></div>

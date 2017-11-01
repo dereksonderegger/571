@@ -270,7 +270,7 @@ Consider the two-way ANOVA with factors $A$ and $B$ which have levels $I$ and $J
 +-----------+----------------------+----------------------------------+------------------------------------+----------------+-------------------------------------------+
 |  **B**    | $df_B=J-1$           | $SS_B = RSS_A - RSS_{A+B}$       | $MS_B = SS_B/df_B$                 | $MS_B / MSE$   | $Pr(F_{df_B,df_{\epsilon}} \ge F_B$       |
 +-----------+----------------------+----------------------------------+------------------------------------+----------------+-------------------------------------------+
-| **AB**    | $df_{AB}=(I-1)(J-1)$ | $SS_{A*B} = RSS_{A*B}-RSS_{A+B}$ | $MS_{AB} = SS_{AB} / df_{AB}$      | $MS_{AB}  MSE$ | $Pr(F_{df_{AB},df_{\epsilon}} \ge F_{AB}$ |
+| **AB**    | $df_{AB}=(I-1)(J-1)$ | $SS_{A*B} = RSS_{A+B}-RSS_{A*B}$ | $MS_{AB} = SS_{AB} / df_{AB}$      | $MS_{AB}/ MSE$ | $Pr(F_{df_{AB},df_{\epsilon}} \ge F_{AB}$ |
 +-----------+----------------------+----------------------------------+------------------------------------+----------------+-------------------------------------------+
 | **Error** | $df_{\epsilon}=n-IJ$ | $RSS_{A*B}$                      | $MSE = RSS_{A*B} / df_{\epsilon}$  |                |                                           |
 +-----------+----------------------+----------------------------------+------------------------------------+----------------+-------------------------------------------+
@@ -317,7 +317,7 @@ We next fit our linear model and examine the diagnostic plots.
 
 ```{r}
 model <- lm(breaks ~ tension + wool, data=warpbreaks)
-autoplot(model, which=c(1,2))
+autoplot(model, which=c(1,2)) + geom_point( aes(color=tension:wool))
 ```
 
 The residuals vs fitted values plot is a little worrisome and appears to be an issue with non-constant variance, but the normality assumption looks good. We'll check for a Box-Cox transformation next.
@@ -344,7 +344,8 @@ autoplot(model.2, which=c(1,2))
 Then we'll do an F-test to see if it is a better model than the main effects model. The p-value is marginally significant, so we'll keep the interaction in the model, but recognize that it is a weak interaction. 
 
 ```{r}
-anova(model.1, model.2)
+anova(model.1, model.2)  # explicitly look model1 vs model2
+anova(model.2)           # table of sequentially added terms in model 2
 ```
 
 

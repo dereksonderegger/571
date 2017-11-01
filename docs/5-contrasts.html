@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-19">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -328,18 +328,18 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)   =   \sqrt{\hat{\
        <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>)
 groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;Group1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;Group2&#39;</span>,<span class="dv">7</span>),<span class="kw">rep</span>(<span class="st">&#39;Group3&#39;</span>,<span class="dv">9</span>) ))</code></pre></div>
 <p>We can fit the offset model and obtain the design matrix and estimate of <span class="math inline">\(\hat{\sigma}\)</span> via the following code.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>groups)            <span class="co"># Fit the ANOVA model (offset representation)</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>groups)            <span class="co"># Fit the ANOVA model (offset representation)</span>
 <span class="kw">coef</span>(m)                        <span class="co"># Show me beta.hat</span></code></pre></div>
 <pre><code>##  (Intercept) groupsGroup2 groupsGroup3 
 ##     86.75000    -11.17857    -15.75000</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(m)           <span class="co"># obtains the design matrix</span>
-sigma.hat &lt;-<span class="st"> </span><span class="kw">summary</span>(m)$sigma  <span class="co"># create the summary table and grab sigma.hat </span>
+sigma.hat &lt;-<span class="st"> </span><span class="kw">summary</span>(m)<span class="op">$</span>sigma  <span class="co"># create the summary table and grab sigma.hat </span>
 beta.hat &lt;-<span class="st"> </span><span class="kw">coef</span>(m)
-XtX.inv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) %*%<span class="st"> </span>X )</code></pre></div>
+XtX.inv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</code></pre></div>
 <p>Now we calculate</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)  <span class="co"># define my contrast</span>
-ctb &lt;-<span class="st"> </span><span class="kw">t</span>(contr) %*%<span class="st"> </span>beta.hat
-std.err &lt;-<span class="st"> </span>sigma.hat *<span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">t</span>(contr) %*%<span class="st"> </span>XtX.inv %*%<span class="st"> </span>contr )
+ctb &lt;-<span class="st"> </span><span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>beta.hat
+std.err &lt;-<span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>XtX.inv <span class="op">%*%</span><span class="st"> </span>contr )
 ctb</code></pre></div>
 <pre><code>##          [,1]
 ## [1,] 75.57143</code></pre>
@@ -347,8 +347,8 @@ ctb</code></pre></div>
 <pre><code>##          [,1]
 ## [1,] 1.622994</code></pre>
 <p>and notice this is the exact same estimate and standard error we got for group two when we fit the cell means model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CellMeansModel &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>groups -<span class="st"> </span><span class="dv">1</span>)
-<span class="kw">summary</span>(CellMeansModel)$coefficients</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CellMeansModel &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>groups <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)
+<span class="kw">summary</span>(CellMeansModel)<span class="op">$</span>coefficients</code></pre></div>
 <pre><code>##              Estimate Std. Error  t value     Pr(&gt;|t|)
 ## groupsGroup1 86.75000   1.518172 57.14108 1.567052e-24
 ## groupsGroup2 75.57143   1.622994 46.56296 1.117034e-22
@@ -364,8 +364,8 @@ ctb</code></pre></div>
        <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,
        <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>)
 groups &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;Group1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;Group2&#39;</span>,<span class="dv">7</span>),<span class="kw">rep</span>(<span class="st">&#39;Group3&#39;</span>,<span class="dv">9</span>) ))
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>groups)
-<span class="kw">summary</span>(m)$coefficients</code></pre></div>
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>groups)
+<span class="kw">summary</span>(m)<span class="op">$</span>coefficients</code></pre></div>
 <pre><code>##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept)   86.75000   1.518172 57.141079 1.567052e-24
 ## groupsGroup2 -11.17857   2.222377 -5.030008 5.583942e-05
@@ -390,7 +390,7 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Mean of Group 1&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),
                <span class="st">&quot;Mean of Group 2&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),
                <span class="st">&quot;Mean of Group 3&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>),
-               <span class="st">&quot;Diff G2-G3&quot;</span>     =<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,-<span class="dv">1</span>)) 
+               <span class="st">&quot;Diff G2-G3&quot;</span>     =<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)) 
 test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)
 <span class="kw">summary</span>(test)</code></pre></div>
 <pre><code>## 
@@ -414,39 +414,39 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6464
+## Quantile = 2.6484
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7323 90.7677
-## Mean of Group 2 == 0 75.5714  71.2763 79.8665
-## Mean of Group 3 == 0 71.0000  67.2121 74.7879
-## Diff G2-G3 == 0       4.5714  -1.1554 10.2982</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7293 90.7707
+## Mean of Group 2 == 0 75.5714  71.2731 79.8698
+## Mean of Group 3 == 0 71.0000  67.2092 74.7908
+## Diff G2-G3 == 0       4.5714  -1.1597 10.3025</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
 <p>In the ANCOVA case, there are more interesting contrasts to be made. For this example we will use the <code>ToothGrowth</code> dataset. This data measuring the effects of different dose levels of vitamin C on tooth growth of guinea pigs. The two different delivery methods are encoded by the variable supp which has levels of orange juice (OJ) and ascorbic acid (VC).</p>
 <p>We first fit a ANCOVA model with an interaction between log(dose) level and delivery method and graph the result.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)
-ToothGrowth$logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth$dose )
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"> </span>logDose *<span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
+ToothGrowth<span class="op">$</span>logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth<span class="op">$</span>dose )
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">~</span><span class="st"> </span>logDose <span class="op">*</span><span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
 
 <span class="co"># predict() gives me the yhat values and optional CI</span>
 <span class="co"># these are just the &quot;contrasts&quot; defined by X matrix! </span>
-ToothGrowth$len.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">1</span>]
-ToothGrowth$len.lwr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">2</span>]
-ToothGrowth$len.upr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">3</span>]
+ToothGrowth<span class="op">$</span>len.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">1</span>]
+ToothGrowth<span class="op">$</span>len.lwr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">2</span>]
+ToothGrowth<span class="op">$</span>len.upr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">3</span>]
 
 <span class="co"># Plot the results using ggplot2</span>
-<span class="kw">ggplot</span>( ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">col=</span>supp, <span class="dt">fill=</span>supp)) +
-<span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) +
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len.hat)) +
+<span class="kw">ggplot</span>( ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">col=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len.hat)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>len.lwr, <span class="dt">ymax=</span>len.upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 <p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)$coefficient</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)<span class="op">$</span>coefficient</code></pre></div>
 <pre><code>##                 Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept)    20.663333  0.6791481 30.425371 1.629404e-36
 ## logDose         9.254889  1.2000095  7.712346 2.302639e-10
@@ -468,10 +468,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425  &lt; 1e-10 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712 4.01e-10 ***
-## Intercept VC == 0  16.9633     0.6791  24.977  &lt; 1e-10 ***
-## Slope     VC == 0  13.0997     1.2000  10.916  &lt; 1e-10 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -504,8 +504,8 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
       &amp;=    \boldsymbol{c}_{2}^{T}\hat{\boldsymbol{\beta}}
       \end{aligned}\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#                                Int  logDose  suppVC   logDose:suppVC</span>
-contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   -<span class="fl">0.69</span>,    <span class="dv">0</span>,          <span class="dv">0</span>         ),
-               <span class="st">&quot;VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   -<span class="fl">0.69</span>,    <span class="dv">1</span>,        -<span class="fl">0.69</span>       ))
+contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   <span class="op">-</span><span class="fl">0.69</span>,    <span class="dv">0</span>,          <span class="dv">0</span>         ),
+               <span class="st">&quot;VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   <span class="op">-</span><span class="fl">0.69</span>,    <span class="dv">1</span>,        <span class="op">-</span><span class="fl">0.69</span>       ))
 test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)
 <span class="kw">summary</span>(test)</code></pre></div>
 <pre><code>## 
@@ -530,7 +530,7 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 0 &amp; 0 &amp; -1 &amp; 0.69\end{array}\right]\hat{\boldsymbol{\beta}}
 \end{aligned}\]</span></p>
 <p>and we can calculate</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, -<span class="dv">1</span>, <span class="fl">0.69</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="fl">0.69</span>))
 test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)
 <span class="kw">summary</span>(test)</code></pre></div>
 <pre><code>## 
@@ -545,7 +545,7 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
 <p>When we do the same test, but at dose level 2 (logDose =<span class="math inline">\(\log2=0.69\)</span>) we see that the difference is not statistically significant.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; dose 2&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, -<span class="dv">1</span>, -<span class="fl">0.69</span>))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; dose 2&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="fl">0.69</span>))
 test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)
 <span class="kw">summary</span>(test)</code></pre></div>
 <pre><code>## 
@@ -567,11 +567,11 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 <h3><span class="header-section-number">5.3.1</span> Simple Regression</h3>
 <p>There is a dataset built into R named <code>trees</code> which describes a set of <span class="math inline">\(n=31\)</span> cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(trees)
-model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume ~<span class="st"> </span>Girth, <span class="dt">data=</span>trees )
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span>Girth, <span class="dt">data=</span>trees )
 trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
-<span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) +
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) +
+<span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 <p>Using the <code>summary()</code> function, we can test hypotheses about if the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.</p>
@@ -581,7 +581,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 <pre><code>##        fit      lwr      upr
 ## 1 13.71511 11.44781 15.98240
 ## 2 23.84682 22.16204 25.53159</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> ~Girth, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) )  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> <span class="op">~</span>Girth, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) )  </code></pre></div>
 <pre><code>##  Girth   lsmean        SE df lower.CL upper.CL
 ##     10 13.71511 1.1085761 29 11.44781 15.98240
 ##     12 23.84682 0.8237582 29 22.16204 25.53159
@@ -590,7 +590,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 <p>The <code>lsmeans()</code> function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out. In the simple regression case, the <code>specs</code> argument is just the single covariate.</p>
 <p>We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth? In other words, we want to test <span class="math display">\[ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0\]</span> <span class="math display">\[ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0\]</span></p>
 <p>In this case, we want to look at all possible pairwise differences between the predicted values at <span class="math inline">\(10\)</span> and <span class="math inline">\(12\)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> pairwise~Girth,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,
         <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) ) </code></pre></div>
 <pre><code>## $lsmeans
 ##  Girth   lsmean        SE df lower.CL upper.CL
@@ -603,7 +603,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 ##  contrast  estimate        SE df t.ratio p.value
 ##  10 - 12  -10.13171 0.4947539 29 -20.478  &lt;.0001</code></pre>
 <p>Notice that if I was interested in 3 points, we would get all of the differences.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> pairwise~Girth,
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,
         <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) ) </code></pre></div>
 <pre><code>## $lsmeans
 ##  Girth   lsmean        SE df lower.CL upper.CL
@@ -629,12 +629,12 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
           <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,
           <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>),
   <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) +
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>()</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
 <p>To use the <code>lsmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT ~<span class="st"> </span>Method, <span class="dt">data=</span>Hostility )
-<span class="kw">lsmeans</span>(model, pairwise~Method)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )
+<span class="kw">lsmeans</span>(model, pairwise<span class="op">~</span>Method)</code></pre></div>
 <pre><code>## $lsmeans
 ##  Method   lsmean       SE df lower.CL upper.CL
 ##  M1     86.75000 1.518172 21 83.59279 89.90721
@@ -655,16 +655,16 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 <h3><span class="header-section-number">5.3.3</span> ANCOVA</h3>
 <p>We will return to the <code>ToothGrowth</code> dataset and calculate all the interesting contrasts we previously built by hand.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)
-ToothGrowth$logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth$dose )
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(len ~<span class="st"> </span>logDose *<span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
+ToothGrowth<span class="op">$</span>logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth<span class="op">$</span>dose )
+m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">~</span><span class="st"> </span>logDose <span class="op">*</span><span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
 ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGrowth, <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
-<span class="kw">ggplot</span>(ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">color=</span>supp, <span class="dt">fill=</span>supp)) +
-<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) +
-<span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) +
+<span class="kw">ggplot</span>(ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">color=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">y=</span>len) )</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
 <p>First, lets get the y-intercept for each group. In the following code, the formula with the <code>| supp</code> part says that we want to do all the calculations for each level of the supplement types. The call to <code>lsmeans()</code> calculates the response at logDose level 0. By passing the result of the <code>lsmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose |<span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>logDose <span class="op">|</span><span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## supp = OJ:
 ##  logDose   lsmean        SE df lower.CL upper.CL t.ratio p.value
@@ -676,7 +676,7 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC supplements. We also wanted to calculate the contrast between the two supplement predictions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise~logDose*supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>)) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## $lsmeans
 ##  logDose supp   lsmean       SE df lower.CL upper.CL t.ratio p.value
@@ -693,7 +693,7 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>We next make the same comparison for logdose = 0.69 (i.e. dose=2).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise~logDose*supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>.<span class="dv">69</span>)) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
 <pre><code>## $lsmeans
 ##  logDose supp   lsmean       SE df lower.CL upper.CL t.ratio p.value
@@ -708,13 +708,13 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>While <code>lsmeans()</code> makes it very easy to calculate the <span class="math inline">\(\hat{y}\)</span> value for some covariate combination or some difference of <span class="math inline">\(\hat{y}\)</span> values, it doesn’t handle slope parameters particularly well. The companion function <code>lstrends()</code> is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lstrends</span>(m, ~logDose*supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lstrends</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</code></pre></div>
 <pre><code>##  logDose supp logDose.trend       SE df  lower.CL upper.CL
 ##        0 OJ        9.254889 1.200009 56  6.850981 11.65880
 ##        0 VC       13.099671 1.200009 56 10.695763 15.50358
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lstrends</span>(m, pairwise~logDose*supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lstrends</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</code></pre></div>
 <pre><code>## $lstrends
 ##  logDose supp logDose.trend       SE df  lower.CL upper.CL
 ##        0 OJ        9.254889 1.200009 56  6.850981 11.65880
@@ -729,14 +729,14 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 <h4><span class="header-section-number">5.3.3.1</span> Common <code>lsmeans()</code> mistake</h4>
 <p>It is very common to make a mistake using <code>lsmeans()</code> or <code>lstrends()</code> if you don’t understand what the specification formula means. In particular what happens if you were to use <code>~logDose</code> instead of the correct <code>~logDose*supp</code>.</p>
 <p>Consider the case where we are interested in making predictions for each suppliment type at <span class="math inline">\(1/2\)</span> dose (logDose=-0.69).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose*supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</code></pre></div>
 <pre><code>##  logDose supp   lsmean       SE df lower.CL upper.CL
 ##    -0.69 OJ   14.27746 1.070905 56 12.13218 16.42274
 ##    -0.69 VC    7.92456 1.070905 56  5.77928 10.06984
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>If I were to accidently forget the <code>supp</code> part of this, then <code>lsmeans()</code> would figure that I wanted to <em>average</em> over the two levels and give me the average of <span class="math inline">\(14.28\)</span> and <span class="math inline">\(7.92\)</span>, which is <span class="math inline">\(11.1\)</span>. With the interaction term in the model, it is unlikely that I would want to do this, but <code>lsmeans()</code> complains a little but lets me do it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>-.<span class="dv">69</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
 <pre><code>##  logDose   lsmean       SE df lower.CL upper.CL
 ##    -0.69 11.10101 0.757244 56 9.584068 12.61795
@@ -744,13 +744,13 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 ## Results are averaged over the levels of: supp 
 ## Confidence level used: 0.95</code></pre>
 <p>What would happen if we only use <code>supp</code> in the formula specification? In this case we are lucky because the <code>logDose=-0.69</code> specified what dose level to look at. If we had forgotten to specify this, then we would have done this calculation at the mean <code>logDose</code> value, which happens to be zero.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~supp*logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>supp<span class="op">*</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>))</code></pre></div>
 <pre><code>##  supp logDose   lsmean        SE df lower.CL upper.CL
 ##  OJ         0 20.66333 0.6791481 56 19.30284 22.02383
 ##  VC         0 16.96333 0.6791481 56 15.60284 18.32383
 ## 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, ~supp)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>supp)</code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
 <pre><code>##  supp   lsmean        SE df lower.CL upper.CL
 ##  OJ   20.66333 0.6791481 56 19.30284 22.02383
@@ -768,20 +768,20 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(dplyr)
 <span class="kw">data</span>(mtcars)
-mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$cyl)     <span class="co"># treat cylinders as categorical</span>
-<span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x=</span>wt, <span class="dt">col=</span>cyl)) +
-<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>mpg, <span class="dt">shape=</span>cyl), <span class="dt">size=</span><span class="dv">4</span>) +
-<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) +
-<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) +
+mtcars<span class="op">$</span>cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars<span class="op">$</span>cyl)     <span class="co"># treat cylinders as categorical</span>
+<span class="kw">ggplot</span>(mtcars, <span class="kw">aes</span>(<span class="dt">x=</span>wt, <span class="dt">col=</span>cyl)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>mpg, <span class="dt">shape=</span>cyl), <span class="dt">size=</span><span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&#39;Cylinders&#39;</span>, <span class="dt">shape=</span><span class="st">&#39;Cylinders&#39;</span>)</code></pre></div>
 <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-87-1.png" width="672" />
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars.small &lt;-<span class="st"> </span>mtcars %&gt;%<span class="st">      </span>
-<span class="st">  </span><span class="kw">group_by</span>(cyl) %&gt;%<span class="st">             </span><span class="co"># For each cylinder group</span>
-<span class="st">  </span><span class="kw">arrange</span>(cyl, wt) %&gt;%<span class="st">          </span><span class="co"># Reorder my dataset</span>
-<span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span>:<span class="dv">3</span>)                    <span class="co"># grab first three rows of each group</span>
-<span class="kw">model.matrix</span>(  <span class="kw">lm</span>(mpg ~<span class="st"> </span>wt*cyl, <span class="dt">data=</span>mtcars.small) )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars.small &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st">      </span>
+<span class="st">  </span><span class="kw">group_by</span>(cyl) <span class="op">%&gt;%</span><span class="st">             </span><span class="co"># For each cylinder group</span>
+<span class="st">  </span><span class="kw">arrange</span>(cyl, wt) <span class="op">%&gt;%</span><span class="st">          </span><span class="co"># Reorder my dataset</span>
+<span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)                    <span class="co"># grab first three rows of each group</span>
+<span class="kw">model.matrix</span>(  <span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt<span class="op">*</span>cyl, <span class="dt">data=</span>mtcars.small) )</code></pre></div>
 <pre><code>##   (Intercept)    wt cyl6 cyl8 wt:cyl6 wt:cyl8
 ## 1           1 1.513    0    0   0.000   0.000
 ## 2           1 1.615    0    0   0.000   0.000
@@ -812,7 +812,7 @@ mtcars$cyl &lt;-<span class="st"> </span><span class="kw">factor</span>(mtcars$c
 <li><span class="math inline">\(\hat{\beta}_5\)</span> = ???</li>
 </ol></li>
 <li><p>Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg ~<span class="st"> </span>wt*cyl, <span class="dt">data=</span>mtcars)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(mpg <span class="op">~</span><span class="st"> </span>wt<span class="op">*</span>cyl, <span class="dt">data=</span>mtcars)</code></pre></div>
 <p>Create a vector of fitted values, add it to the data frame <code>mtcars</code> and then create a plot that includes the regression lines.</p></li>
 <li><p>What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? What is the estimated mpg of a 8-cylinder vehicle weight 3.5 tons? Give the associated 95% confidence intervals. Calculate these using the <code>predict()</code> function. <em>Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).</em></p></li>
 <li><p>Recalculate your answer to part (d) using the <code>glht()</code> function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?</p></li>

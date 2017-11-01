@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-19">
+<meta name="date" content="2017-10-31">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -278,22 +278,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="co"># The anscombe dataset has 8 columns - x1,x2,x3,x4,y1,y2,y3,y4</span>
 <span class="co"># and I want it to have 3 columns - Set, X, Y</span>
 Anscombe &lt;-<span class="st"> </span><span class="kw">rbind</span>( 
-  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x1, <span class="dt">y=</span>anscombe$y1, <span class="dt">set=</span><span class="st">&#39;Set 1&#39;</span>),
-  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x2, <span class="dt">y=</span>anscombe$y2, <span class="dt">set=</span><span class="st">&#39;Set 2&#39;</span>),
-  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x3, <span class="dt">y=</span>anscombe$y3, <span class="dt">set=</span><span class="st">&#39;Set 3&#39;</span>),
-  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe$x4, <span class="dt">y=</span>anscombe$y4, <span class="dt">set=</span><span class="st">&#39;Set 4&#39;</span>)) 
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x1, <span class="dt">y=</span>anscombe<span class="op">$</span>y1, <span class="dt">set=</span><span class="st">&#39;Set 1&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x2, <span class="dt">y=</span>anscombe<span class="op">$</span>y2, <span class="dt">set=</span><span class="st">&#39;Set 2&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x3, <span class="dt">y=</span>anscombe<span class="op">$</span>y3, <span class="dt">set=</span><span class="st">&#39;Set 3&#39;</span>),
+  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x4, <span class="dt">y=</span>anscombe<span class="op">$</span>y4, <span class="dt">set=</span><span class="st">&#39;Set 4&#39;</span>)) 
 
 <span class="co"># order them by their x values, and add an index column</span>
-Anscombe &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(set) %&gt;%<span class="st">       </span><span class="co"># Every subsequent action happens by dataset</span>
-<span class="st">  </span><span class="kw">arrange</span>(x,y) %&gt;%<span class="st">        </span><span class="co"># sort them on the x-values and if tied, by y-value</span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">index =</span> <span class="dv">1</span>:<span class="kw">n</span>() ) <span class="co"># give each observation within a set, an ID number</span>
+Anscombe &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(set) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># Every subsequent action happens by dataset</span>
+<span class="st">  </span><span class="kw">arrange</span>(x,y) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># sort them on the x-values and if tied, by y-value</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">index =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">n</span>() ) <span class="co"># give each observation within a set, an ID number</span>
 
 <span class="co"># Make a nice graph</span>
-<span class="kw">ggplot</span>(Anscombe, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) +
-<span class="st"> </span><span class="kw">geom_point</span>() +
-<span class="st"> </span><span class="kw">facet_wrap</span>(~set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) +
-<span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y~x, <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre></div>
+<span class="kw">ggplot</span>(Anscombe, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span>
+<span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) <span class="op">+</span>
+<span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y<span class="op">~</span>x, <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <div id="measures-of-influence" class="section level3">
 <h3><span class="header-section-number">6.1.1</span> Measures of Influence</h3>
@@ -311,12 +311,12 @@ Anscombe &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span>
 <div id="example---anscombes-set-3" class="section level5">
 <h5><span class="header-section-number">6.1.1.1.1</span> Example - Anscombe’s set 3</h5>
 <p>For the third dataset, the outlier is the ninth observation with <span class="math inline">\(x_{9}=13\)</span> and <span class="math inline">\(y_{9}=12.74\)</span>. We calculate the standardized residuals using the function <code>rstandard()</code> and plot them</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>(set ==<span class="st"> &#39;Set 3&#39;</span>) <span class="co"># Just set 3</span>
-model &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data=</span>Set3)               <span class="co"># Fit the regression line</span>
-Set3$stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(model)           <span class="co"># rstandard() returns the standardized residuals</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>) <span class="co"># Just set 3</span>
+model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)               <span class="co"># Fit the regression line</span>
+Set3<span class="op">$</span>stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(model)           <span class="co"># rstandard() returns the standardized residuals</span>
 
-<span class="kw">ggplot</span>(Set3, <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>stdresid)) +<span class="st">    </span><span class="co"># make a plot</span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
+<span class="kw">ggplot</span>(Set3, <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>stdresid)) <span class="op">+</span><span class="st">    </span><span class="co"># make a plot</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Observation Index&#39;</span>, 
        <span class="dt">y=</span><span class="st">&#39;Standardized Residuals&#39;</span>, 
        <span class="dt">title=</span><span class="st">&#39;Standardized Residuals vs Observation Index&#39;</span>)</code></pre></div>
@@ -329,18 +329,18 @@ Set3$stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(mo
 <p>The extremely large standardized residual suggests that this data point is important, but we would like to quantify how important this observation actually is.</p>
 <p>One way to quantify this is to look at the elements of <span class="math inline">\(\boldsymbol{H}\)</span>. Because <span class="math display">\[\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}\]</span> then the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\boldsymbol{H}\)</span> is a vector of weights that tell us how influential a point <span class="math inline">\(y_{j}\)</span> is for calculating the predicted value <span class="math inline">\(\hat{y}_{i}\)</span>. If I look at just the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>, these are how much weight a point has on its predicted value. As such, I can think of the <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> as the amount of leverage a particular data point has on the regression line.</p>
 <p>Fortunately there is already a function <code>hatvalues()</code> to compute these <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> values for me. We will compare the leverages from Anscombe’s set 3 versus set 4.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>( set ==<span class="st"> &#39;Set 3&#39;</span>)
-Set4 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>( set ==<span class="st"> &#39;Set 4&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>)
+Set4 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 4&#39;</span>)
 
-model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data =</span> Set3 )
-model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data =</span> Set4 )
+model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set3 )
+model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set4 )
 
-Set3 &lt;-<span class="st"> </span>Set3 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model3))  <span class="co"># add leverage columns</span>
-Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model4))
+Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model3))  <span class="co"># add leverage columns</span>
+Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model4))
 
-<span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) +
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">facet_grid</span>( . ~<span class="st"> </span>set )</code></pre></div>
+<span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>( . <span class="op">~</span><span class="st"> </span>set )</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 <p>This leverage idea only picks out the <em>potential</em> for a specific value of <span class="math inline">\(x\)</span> to be influential, but does not actually measure influence. It has picked out the issue with the fourth data set, but does not adequately address the outlier in set 3.</p>
 </div>
@@ -348,13 +348,13 @@ Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span cla
 <h4><span class="header-section-number">6.1.1.3</span> Cook’s Distance</h4>
 <p>To attempt to measure the actual influence of an observation <span class="math inline">\(\left\{ y_{i},\boldsymbol{x}_{i}^{T}\right\}\)</span> on the linear model, we consider the effect on the regression if we removed the observation and fit the same model. Let <span class="math display">\[\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\]</span> be the vector of predicted values, where <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is created using all of the data, and <span class="math inline">\(\hat{\boldsymbol{y}}_{(i)}=\boldsymbol{X}\hat{\boldsymbol{\beta}}_{(i)}\)</span> be the vector of predicted values where <span class="math inline">\(\hat{\boldsymbol{\beta}}_{(i)}\)</span> was estimated using all of the data except the <span class="math inline">\(i\)</span>th observation. Letting <span class="math inline">\(p\)</span> be the number of <span class="math inline">\(\beta_{j}\)</span> parameters as usual we define Cook’s distance of the <span class="math inline">\(i\)</span>th observation as <span class="math display">\[ D_{i} = \frac{\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)^{T}\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)}{p\hat{\sigma}^{2}}\]</span> which boils down to saying if the predicted values have large changes when the <span class="math inline">\(i\)</span>th element is removed, then the distance is big. It can be shown that this formula can be simplified to <span class="math display">\[D_{i}=\frac{\hat{\epsilon}_{i}^{*}\boldsymbol{H}_{ii}}{p\left(1-H_{ii}\right)}\]</span> which expresses Cook’s distance in terms of the <span class="math inline">\(i\)</span>th studentized residual and the <span class="math inline">\(i\)</span>th leverage.</p>
 <p>Nicely, the R function <code>cooks.distance()</code> will calculate Cook’s distance.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Set3 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model3))  
-Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model4))
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model3))  
+Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model4))
 
 <span class="co"># Note: The high leverage point in set 4 has a Cook&#39;s distance of Infinity.</span>
-<span class="kw">ggplot</span>(<span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>cooksd)) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">facet_grid</span>(. ~<span class="st"> </span>set) +
+<span class="kw">ggplot</span>(<span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>cooksd)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>set) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Cook&#39;s Distance&quot;</span>)</code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
@@ -365,10 +365,10 @@ Set4 &lt;-<span class="st"> </span>Set4 %&gt;%<span class="st"> </span><span cla
 <h3><span class="header-section-number">6.1.2</span> Diagnostic Plots</h3>
 <p>After fitting a linear model in R, you have the option of looking at diagnostic plots that help to decide if any assumptions are being violated. We will step through each of the plots that are generated by the function <code>plot(model)</code> or using <code>ggplot2</code> using the package <code>ggfortify</code>.</p>
 <p>In the package <code>ggfortify</code> there is a function that will calculate the diagnostics measures and add them to your dataset. This will simplify our graphing process.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set1 &lt;-<span class="st"> </span>Anscombe %&gt;%<span class="st"> </span><span class="kw">filter</span>(set ==<span class="st"> &#39;Set 1&#39;</span>)
-model &lt;-<span class="st"> </span><span class="kw">lm</span>( y ~<span class="st"> </span>x, <span class="dt">data=</span>Set1)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set1 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 1&#39;</span>)
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set1)
 Set1 &lt;-<span class="st"> </span><span class="kw">fortify</span>(model)  <span class="co"># add dignostic measures to the dataset</span>
-Set1 %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># show the dataset nicely</span></code></pre></div>
+Set1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># show the dataset nicely</span></code></pre></div>
 <pre><code>##        y  x  .hat .sigma .cooksd .fitted .resid .stdresid
 ## 1   4.26  4 0.318  1.273   0.123   5.000 -0.740    -0.725
 ## 2   5.68  5 0.236  1.310   0.004   5.501  0.179     0.166
@@ -392,11 +392,11 @@ Set1 %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="d
                   <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),
   <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,
                   <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) 
-<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) +<span class="st"> </span>
+<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
 <p>Looking at the data, it seems that we are violating the assumption that a linear model is appropriate, but we will fit the model anyway and look at the residual graph.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )
 <span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># which=1 tells R to only make the first plot</span></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)        <span class="co"># need the ggfortify library for autoplot.lm() to work</span>
@@ -425,14 +425,14 @@ Set1 %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="d
 \epsilon_{n}
 \end{array}\right]\end{aligned}\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add a new column that is carapace^2</span>
-Eggs2 &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace^<span class="dv">2</span> )
-model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace +<span class="st"> </span>carapace<span class="fl">.2</span>,    <span class="dt">data=</span>Eggs2 )
+Eggs2 &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace<span class="op">^</span><span class="dv">2</span> )
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span>carapace.<span class="dv">2</span>,    <span class="dt">data=</span>Eggs2 )
 
 <span class="co"># make R do it inside the formula... convenient</span>
-model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span>carapace +<span class="st"> </span><span class="kw">I</span>(carapace^<span class="dv">2</span>), <span class="dt">data=</span>Eggs )
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(carapace<span class="op">^</span><span class="dv">2</span>), <span class="dt">data=</span>Eggs )
 
 <span class="co"># Fit an arbitrary degree polynomial</span>
-model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dv">2</span>),        <span class="dt">data=</span>Eggs )
+model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dv">2</span>),        <span class="dt">data=</span>Eggs )
 
 <span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span>
 <span class="co"># otherwise you can skip it and R will do the right thing.</span>
@@ -440,11 +440,11 @@ model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size ~<sp
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-99-1.png" width="672" /></p>
 <p>Now our residual plot versus fitted values does not show any trend, suggesting that the quadratic model is fitting the data well. Graphing the original data along with the predicted values confirms this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span>
-Eggs &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )
+Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )
 
-<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace)) +
-<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) +
+<span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
 </div>
@@ -454,10 +454,10 @@ Eggs &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span cla
 <p>To illustrate this, we turn to another dataset in the Faraway book. The dataset airquality uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and windspeed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.</p>
 <p>We first graph all pairs of variables in the dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(airquality)
-<span class="kw">pairs</span>(~<span class="st"> </span>Ozone +<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</code></pre></div>
+<span class="kw">pairs</span>(<span class="op">~</span><span class="st"> </span>Ozone <span class="op">+</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
 <p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance amongst the predictors.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone ~<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
 <p>As we feared, we have both a non-constant variance and a non-linear relationship. A transformation of the <span class="math inline">\(y\)</span> variable might be able to fix our problem.</p>
@@ -472,17 +472,17 @@ Eggs &lt;-<span class="st"> </span>Eggs %&gt;%<span class="st"> </span><span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span>
 
 n &lt;-<span class="st"> </span><span class="dv">10</span>
-data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">observed =</span> <span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) ) %&gt;%
-<span class="st">  </span><span class="kw">arrange</span>(observed) %&gt;%
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">theoretical =</span> <span class="kw">qnorm</span>( (<span class="dv">1</span>:n -.<span class="dv">5</span>)/n ) )
+data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">observed =</span> <span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(observed) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">theoretical =</span> <span class="kw">qnorm</span>( (<span class="dv">1</span><span class="op">:</span>n <span class="op">-</span>.<span class="dv">5</span>)<span class="op">/</span>n ) )
 
-<span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>theoretical, <span class="dt">y=</span>observed) ) +<span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_point</span>() +
-<span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) +<span class="st"> </span>
+<span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>theoretical, <span class="dt">y=</span>observed) ) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
 <p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the airquality example, R will calculate the qqplot for us.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone ~<span class="st"> </span>Solar.R +<span class="st"> </span>Wind +<span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
 <p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
@@ -503,7 +503,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <p>This plot lets the user examine the which observations have a high potential for being influential (i.e. high leverage) versus how large the residual is. Because Cook’s distance is a function of those two traits, we can also divide the graph up into regions by the value of Cook’s Distance.</p>
 <p>Returning to Anscombe’s third set of data, we see</p>
 <p>&lt;&lt;&gt;&gt;=</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>x, <span class="dt">data=</span>Set3)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)
 <span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
 <p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the ggfortify version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
@@ -538,7 +538,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
 <span class="kw">library</span>(MASS)
 <span class="kw">data</span>(gala)
-g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
+g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
 <span class="kw">boxcox</span>(g)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 <p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
@@ -569,15 +569,15 @@ g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
 <span class="kw">data</span>(gala)
 <span class="co"># look at all the scatterplots</span>
-<span class="kw">pairs</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span>Area +<span class="st"> </span>Elevation +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</code></pre></div>
+<span class="kw">pairs</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
 <p>Looking at these graphs, I think I should transform <code>elevation</code>, <code>Adjacent</code>, and <code>Area</code> and perhaps a log transformation is a good idea.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>( <span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Elevation) +<span class="st"> </span><span class="kw">log</span>(Area) +<span class="st"> </span>
-<span class="st">                       </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>( <span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Elevation) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span>
+<span class="st">                       </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 <p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st">  </span><span class="kw">log</span>(Area) +<span class="st"> </span>Nearest +<span class="st"> </span>Scruz +<span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)
-<span class="kw">summary</span>(m.c)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></code></pre></div>
 <pre><code>##               Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      3.122      0.208  14.979    0.000
 ## log(Area)        0.398      0.044   9.027    0.000
@@ -585,7 +585,7 @@ g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species ~<span class=
 ## Scruz           -0.003      0.003  -1.238    0.227
 ## log(Adjacent)   -0.021      0.045  -0.468    0.644</code></pre>
 <p>We will remove all the parameters that appear to be superfluous, and perorm an F-test to confirm that the simple model is sufficient.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
 <span class="kw">anova</span>(m.s, m.c)</code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -627,11 +627,11 @@ log.Species.CI       <span class="co"># Log(Species) scale</span></code></pre></
 <p>Notice that on the species-scale, we see that the fitted value is not in the center of the confidence interval.</p>
 <p>To help us understand what the log transformations are doing, we can produce a plot with the island Area on the x-axis and the expected number of Species on the y-axis and hopefully that will help us understand the relationship between the two.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span>:<span class="dv">50</span>)
-pred.data &lt;-<span class="st"> </span>pred.data %&gt;%<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
-<span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) +
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) +
-<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) +
+pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span><span class="op">:</span><span class="dv">50</span>)
+pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+<span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 </div>
@@ -652,14 +652,14 @@ pred.data &lt;-<span class="st"> </span>pred.data %&gt;%<span class="st"> </span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span>
 file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span>
 scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)
-scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span class="kw">mutate</span>(<span class="dt">gender =</span> female)
-<span class="kw">pairs</span>(write~read+math+gender, <span class="dt">data=</span>scores)</code></pre></div>
+scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">gender =</span> female)
+<span class="kw">pairs</span>(write<span class="op">~</span>read<span class="op">+</span>math<span class="op">+</span>gender, <span class="dt">data=</span>scores)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <div id="log-transformed-response-untransformed-covariates" class="section level4">
 <h4><span class="header-section-number">6.2.3.1</span> Log-transformed response, untransformed covariates</h4>
 <p>We consider the model where we have transformed the response variable and just an intercept term. <span class="math display">\[\log y=\beta_{0}+\epsilon\]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)
-<span class="kw">summary</span>(m)$coef %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.948      0.014 288.402        0</code></pre>
 <p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>.</p>
@@ -667,8 +667,8 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 \beta_{0}+\epsilon &amp; \;\;\textrm{if female}\\
 \beta_{0}+\beta_{1}+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender, <span class="dt">data=</span>scores)
-<span class="kw">summary</span>(m)$coef %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.995      0.018 222.949        0
 ## gendermale    -0.103      0.027  -3.887        0</code></pre>
@@ -683,8 +683,8 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
 \beta_{0}+\beta_{1}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
 <p>We will use the reading score read to predict the writing score. Then <span class="math inline">\(\hat{\beta}_{2}\)</span> is the predicted increase in <code>log(write)</code> for every 1-unit increase in read score. The interpretation of <span class="math inline">\(\hat{\beta}_{0}\)</span> is now <span class="math inline">\(\log\hat{y}\)</span> when <span class="math inline">\(x=0\)</span> and therefore <span class="math inline">\(\hat{y}=e^{\hat{\beta}_{0}}\)</span> when <span class="math inline">\(x=0\)</span>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender +<span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span>
-<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span>
+<span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.412      0.055  62.452        0
 ## gendermale    -0.116      0.021  -5.516        0
@@ -721,8 +721,8 @@ scores &lt;-<span class="st"> </span>scores %&gt;%<span class="st"> </span><span
     &amp; = \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
     \end{aligned}\]</span></p>
 <p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 has the same effect on <span class="math inline">\(\hat{y}\)</span> as changing x from 50 to 100.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( write ~<span class="st"> </span>gender +<span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
-<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( write <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)  -59.076      9.948  -5.938        0
 ## gendermale    -5.431      1.013  -5.362        0
@@ -745,16 +745,16 @@ difference in <span class="math inline">\(\hat{y}\)</span> values for the first 
 \frac{\hat{y}_{2}}{\hat{y}_{1}} &amp;=  \left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}
 \end{aligned}\]</span></p>
 <p>This allows us to examine the effect of some arbitrary percentage increase in <span class="math inline">\(x\)</span> value as a percentage increase in <span class="math inline">\(y\)</span> value.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) ~<span class="st"> </span>gender +<span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
-<span class="kw">summary</span>(m)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)
+<span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    1.714      0.205   8.358        0
 ## gendermale    -0.114      0.021  -5.483        0
 ## log(read)      0.581      0.052  11.148        0</code></pre>
 <p>which implies for a <span class="math inline">\(10\)</span>% increase in <code>read</code> score, we should see a <span class="math inline">\(1.10^{0.581}=1.05\)</span> multiplier in <code>write</code> score. That is to say, a <span class="math inline">\(10\%\)</span> increase in reading score results in a <span class="math inline">\(5\%\)</span> increase in writing score.</p>
 <p>For the Galapagos islands, we had</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) ~<span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
-<span class="kw">summary</span>(m.s)$coefficients %&gt;%<span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
+<span class="kw">summary</span>(m.s)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    2.904      0.157  18.484        0
 ## log(Area)      0.389      0.042   9.342        0</code></pre>
@@ -769,7 +769,7 @@ difference in <span class="math inline">\(\hat{y}\)</span> values for the first 
 <ol style="list-style-type: lower-alpha">
 <li><p>Plot the relationship between income and mortality. This can be done using the command</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
-<span class="kw">pairs</span>(mortality ~., <span class="dt">data=</span>infmort)</code></pre></div>
+<span class="kw">pairs</span>(mortality <span class="op">~</span>., <span class="dt">data=</span>infmort)</code></pre></div>
 What do you notice about the relationship between mortality and income?</li>
 <li>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</li>
 <li>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</li>
@@ -797,14 +797,14 @@ What do you notice about the relationship between mortality and income?</li>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dsData)
 <span class="kw">data</span>(<span class="st">&#39;Dishes&#39;</span>)
 <span class="kw">str</span>(Dishes)
-<span class="kw">pairs</span>(Time ~<span class="st"> </span>., <span class="dt">data=</span>Dishes)</code></pre></div>
+<span class="kw">pairs</span>(Time <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>Dishes)</code></pre></div>
 Comment on the relationships and possible transformations to be made.</li>
 <li>Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.</li>
 <li>Examine the diagnostic plots. What stands out to you?</li>
 <li>While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.</li>
-<li>What is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?<br />
+<li>Using your model from part (e), what is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?<br />
 </li>
-<li><p>How does a 20% increase in Price affect the polishing time?</p></li>
+<li><p>How does a 20% increase in Price affect the polishing Time?</p></li>
 </ol></li>
 </ol>
 
