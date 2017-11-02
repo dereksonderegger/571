@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -315,8 +315,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because <span class="math display">\[\begin{aligned}
   df_\epsilon   &amp;=  n-p \\
         &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
-        &amp;=  n-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
-        &amp;=  n-12 \\
+        &amp;=  40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+        &amp;=  40-12 \\
         &amp;=  28
  \end{aligned}\]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)
@@ -333,7 +333,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></code></pre></div>
 <p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
 <p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
-<p>But the F-value and p-value for testing if <code>block</code> is significant is wrong! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong.</p>
+<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do anystatistical inference at the block scale!</p>
+<p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span>
+letter_df &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)
+
+<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
+<p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)
 <span class="kw">summary</span>(m3)</code></pre></div>
 <pre><code>## 
@@ -347,21 +359,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Residuals 28  37433    1337                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate I care about is the most deeply nested effect, then I can do my usual analysis and recognize the p-values for the blocking variable is wrong, but I don’t care about it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span>
-letter_df &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)
-
-<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-185-1.png" width="672" /></p>
+<p>Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don’t have any replication of the blocks. So our analysis respects that blocks are present, but does not attempt any statistical analyses on them.</p>
 </div>
 <div id="split-plot-designs" class="section level2">
 <h2><span class="header-section-number">10.2</span> Split-plot designs</h2>
-<p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment.</p>
+<p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.</p>
+<pre><code>## # A tibble: 6 x 5
+## # Groups:   plot, subplot, Fertilizer [6]
+##     plot subplot Fertilizer Irrigation    yield
+##   &lt;fctr&gt;  &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;    &lt;dbl&gt;
+## 1      1       1        Low        Low 20.17485
+## 2      1       2       High        Low 24.43602
+## 3      1       3        Low        Low 18.03842
+## 4      1       4       High        Low 20.98167
+## 5      2       1        Low        Low 23.21987
+## 6      2       2       High        Low 26.50586</code></pre>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
 <p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
 <p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
@@ -392,9 +404,9 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )
 <span class="kw">summary</span>(m)</code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
-## plot         7 286.73   40.96   3.225 0.0156 *
-## Fertilizer   1   7.14    7.14   0.563 0.4608  
-## Residuals   23 292.12   12.70                 
+## plot         7 286.73   40.96   3.202 0.0161 *
+## Fertilizer   1   5.05    5.05   0.395 0.5360  
+## Residuals   23 294.22   12.79                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ideally I wouldn’t have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.</p>
@@ -412,8 +424,8 @@ m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class=
 ## 
 ## Error: plot:subplot
 ##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Fertilizer  1   7.14   7.145   0.563  0.461
-## Residuals  23 292.12  12.701</code></pre>
+## Fertilizer  1   5.05   5.049   0.395  0.536
+## Residuals  23 294.22  12.792</code></pre>
 <p>In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.</p>
 <p>What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)
@@ -422,9 +434,9 @@ m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class=
 ## 
 ## Response: yield
 ##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
-## Irrigation  1 104.26 104.258  6.3706 0.01733 *
-## Fertilizer  1   7.14   7.145  0.4366 0.51399  
-## Residuals  29 474.60  16.365                  
+## Irrigation  1 104.26 104.258  6.3426 0.01756 *
+## Fertilizer  1   5.05   5.049  0.3071 0.58369  
+## Residuals  29 476.69  16.438                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. <span class="math display">\[\begin{aligned}
@@ -447,7 +459,7 @@ oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span clas
   <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></code></pre></div>
 <p>As always we first create a graph to examine the data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>B, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>B<span class="op">*</span>plot, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>

@@ -44,8 +44,8 @@ While there is one unusual observation in block IV, there doesn't appear to be a
 $$\begin{aligned}
   df_\epsilon	&=	n-p \\
 	    &=	n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
-	    &=	n-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
-	    &=	n-12 \\
+	    &=	40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+	    &=	40-12 \\
 	    &=	28
  \end{aligned}$$
  
@@ -59,16 +59,9 @@ Because this is an orthogonal design, the sums of squares doesn't change regardl
 
 In determining the significance of `variety` the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have $28$ residual degrees of freedom.
 
-But the F-value and p-value for testing if `block` is significant is wrong!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong.
+But the F-value and p-value for testing if `block` is significant is nonsense!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can't do anystatistical inference at the block scale!
 
-
-```{r}
-m3 <- aov( yield ~ block + variety + Error(block), data=oatvar)
-summary(m3)
-```
-
-
-Fortunately in this case, we don't care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn't interested in estimating it.  If the only covariate I care about is the most deeply nested effect, then I can do my usual analysis and recognize the p-values for the blocking variable is wrong, but I don't care about it.
+Fortunately in this case, we don't care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn't interested in estimating it.  If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don't care about it.
 
 
 ```{r}
@@ -83,9 +76,18 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
   geom_text( data=letter_df, aes(label=.group) ) 
 ```
 
+However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about.  To make R do the correct analysis, we have to denote the nesting.  In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the `Error()` function within our formula.  By default, `Error()` just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.
+
+```{r}
+m3 <- aov( yield ~ block + variety + Error(block), data=oatvar)
+summary(m3)
+```
+
+Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don't have any replication of the blocks.  So our analysis respects that blocks are present, but does not attempt any statistical analyses on them. 
+
 
 ## Split-plot designs
-There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can't be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment.
+There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can't be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.
 
 ```{r, echo=FALSE}
 data('AgData', package='dsData')
@@ -94,6 +96,7 @@ data('AgData', package='dsData')
 AgData <- AgData %>% 
   group_by(plot, subplot, Fertilizer, Irrigation) %>% 
   summarise( yield = mean(yield))
+head(AgData)
 ```
 
 ```{r, echo=FALSE}
@@ -193,9 +196,9 @@ oats <- oats %>% mutate(
 
 
 As always we first create a graph to examine the data
-```{r}
+```{r, fig.height=4}
 ggplot(oats, aes(x=Nf, y=Y, color=V)) +
-  facet_wrap( ~ B, ncol=3) +
+  facet_wrap( ~ B*plot, ncol=3) +
   geom_point() +
   geom_line(aes(x=as.integer(Nf)))
 ```

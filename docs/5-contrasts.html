@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -414,16 +414,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6484
+## Quantile = 2.6465
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7293 90.7707
-## Mean of Group 2 == 0 75.5714  71.2731 79.8698
-## Mean of Group 3 == 0 71.0000  67.2092 74.7908
-## Diff G2-G3 == 0       4.5714  -1.1597 10.3025</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7322 90.7678
+## Mean of Group 2 == 0 75.5714  71.2762 79.8666
+## Mean of Group 3 == 0 71.0000  67.2120 74.7880
+## Diff G2-G3 == 0       4.5714  -1.1555 10.2983</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -468,10 +468,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-08 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-08 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-08 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-08 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425  &lt; 1e-10 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712  3.9e-10 ***
+## Intercept VC == 0  16.9633     0.6791  24.977  &lt; 1e-10 ***
+## Slope     VC == 0  13.0997     1.2000  10.916  &lt; 1e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>

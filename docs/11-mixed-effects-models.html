@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-10-31">
+<meta name="date" content="2017-11-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -484,50 +484,51 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 <p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately <code>TukeyHSD</code> doesn’t work with objects created by <code>lmer</code> so we have to turn to another package. In this case, we could use either <code>multcomp</code> and build the contrast vectors <span class="math inline">\(\boldsymbol{c}\)</span> that we used previously or we could use the package <code>lsmeans</code>, which automates much of this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
 <pre><code>## Loading required namespace: lmerTest</code></pre>
+<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
 <pre><code>## $lsmeans
-##  variety lsmean       SE    df lower.CL upper.CL
-##  1        334.4 21.03996 15.26 289.6196 379.1804
-##  2        376.6 21.03996 15.26 331.8196 421.3804
-##  3        362.6 21.03996 15.26 317.8196 407.3804
-##  4        286.8 21.03996 15.26 242.0196 331.5804
-##  5        439.4 21.03996 15.26 394.6196 484.1804
-##  6        330.6 21.03996 15.26 285.8196 375.3804
-##  7        318.4 21.03996 15.26 273.6196 363.1804
-##  8        384.2 21.03996 15.26 339.4196 428.9804
+##  variety lsmean       SE df asymp.LCL asymp.UCL
+##  1        334.4 21.03996 NA  293.1624  375.6376
+##  2        376.6 21.03996 NA  335.3624  417.8376
+##  3        362.6 21.03996 NA  321.3624  403.8376
+##  4        286.8 21.03996 NA  245.5624  328.0376
+##  5        439.4 21.03996 NA  398.1624  480.6376
+##  6        330.6 21.03996 NA  289.3624  371.8376
+##  7        318.4 21.03996 NA  277.1624  359.6376
+##  8        384.2 21.03996 NA  342.9624  425.4376
 ## 
-## Degrees-of-freedom method: satterthwaite 
+## Degrees-of-freedom method: asymptotic 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast estimate       SE df t.ratio p.value
-##  1 - 2       -42.2 23.12491 28  -1.825  0.6095
-##  1 - 3       -28.2 23.12491 28  -1.219  0.9192
-##  1 - 4        47.6 23.12491 28   2.058  0.4638
-##  1 - 5      -105.0 23.12491 28  -4.541  0.0022
-##  1 - 6         3.8 23.12491 28   0.164  1.0000
-##  1 - 7        16.0 23.12491 28   0.692  0.9966
-##  1 - 8       -49.8 23.12491 28  -2.154  0.4078
-##  2 - 3        14.0 23.12491 28   0.605  0.9985
-##  2 - 4        89.8 23.12491 28   3.883  0.0116
-##  2 - 5       -62.8 23.12491 28  -2.716  0.1595
-##  2 - 6        46.0 23.12491 28   1.989  0.5062
-##  2 - 7        58.2 23.12491 28   2.517  0.2295
-##  2 - 8        -7.6 23.12491 28  -0.329  1.0000
-##  3 - 4        75.8 23.12491 28   3.278  0.0491
-##  3 - 5       -76.8 23.12491 28  -3.321  0.0446
-##  3 - 6        32.0 23.12491 28   1.384  0.8569
-##  3 - 7        44.2 23.12491 28   1.911  0.5549
-##  3 - 8       -21.6 23.12491 28  -0.934  0.9798
-##  4 - 5      -152.6 23.12491 28  -6.599  &lt;.0001
-##  4 - 6       -43.8 23.12491 28  -1.894  0.5658
-##  4 - 7       -31.6 23.12491 28  -1.366  0.8644
-##  4 - 8       -97.4 23.12491 28  -4.212  0.0051
-##  5 - 6       108.8 23.12491 28   4.705  0.0014
-##  5 - 7       121.0 23.12491 28   5.232  0.0003
-##  5 - 8        55.2 23.12491 28   2.387  0.2859
-##  6 - 7        12.2 23.12491 28   0.528  0.9994
-##  6 - 8       -53.6 23.12491 28  -2.318  0.3194
-##  7 - 8       -65.8 23.12491 28  -2.845  0.1237
+##  contrast estimate       SE df z.ratio p.value
+##  1 - 2       -42.2 23.12491 NA  -1.825  0.6030
+##  1 - 3       -28.2 23.12491 NA  -1.219  0.9264
+##  1 - 4        47.6 23.12491 NA   2.058  0.4423
+##  1 - 5      -105.0 23.12491 NA  -4.541  0.0002
+##  1 - 6         3.8 23.12491 NA   0.164  1.0000
+##  1 - 7        16.0 23.12491 NA   0.692  0.9972
+##  1 - 8       -49.8 23.12491 NA  -2.154  0.3804
+##  2 - 3        14.0 23.12491 NA   0.605  0.9988
+##  2 - 4        89.8 23.12491 NA   3.883  0.0026
+##  2 - 5       -62.8 23.12491 NA  -2.716  0.1177
+##  2 - 6        46.0 23.12491 NA   1.989  0.4892
+##  2 - 7        58.2 23.12491 NA   2.517  0.1882
+##  2 - 8        -7.6 23.12491 NA  -0.329  1.0000
+##  3 - 4        75.8 23.12491 NA   3.278  0.0233
+##  3 - 5       -76.8 23.12491 NA  -3.321  0.0202
+##  3 - 6        32.0 23.12491 NA   1.384  0.8650
+##  3 - 7        44.2 23.12491 NA   1.911  0.5430
+##  3 - 8       -21.6 23.12491 NA  -0.934  0.9828
+##  4 - 5      -152.6 23.12491 NA  -6.599  &lt;.0001
+##  4 - 6       -43.8 23.12491 NA  -1.894  0.5550
+##  4 - 7       -31.6 23.12491 NA  -1.366  0.8725
+##  4 - 8       -97.4 23.12491 NA  -4.212  0.0007
+##  5 - 6       108.8 23.12491 NA   4.705  0.0001
+##  5 - 7       121.0 23.12491 NA   5.232  &lt;.0001
+##  5 - 8        55.2 23.12491 NA   2.387  0.2476
+##  6 - 7        12.2 23.12491 NA   0.528  0.9995
+##  6 - 8       -53.6 23.12491 NA  -2.318  0.2836
+##  7 - 8       -65.8 23.12491 NA  -2.845  0.0841
 ## 
 ## P value adjustment: tukey method for comparing a family of 8 estimates</code></pre>
 <p>This looks remarkably similar to the output from TukeyHSD and just as confusing. Ideally the function <code>make_TukeyHSD_letters()</code> could be modified to handle this model as well.</p>
@@ -558,6 +559,8 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span><span class="cf">function</s
   out
 }  </code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
+<pre><code>## Loading required namespace: lmerTest</code></pre>
+<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
 <pre><code>##   variety SigGroup
 ## 1       1       ab
 ## 2       2       ac
@@ -571,6 +574,8 @@ make_TukeyHSD_letters &lt;-<span class="st"> </span><span class="cf">function</s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oatvar &lt;-<span class="st"> </span>oatvar <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">left_join</span>( <span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span>variety) ) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LetterHeight=</span><span class="dv">500</span>)</code></pre></div>
+<pre><code>## Loading required namespace: lmerTest</code></pre>
+<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
 <pre><code>## Joining, by = &quot;variety&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) <span class="op">+</span>
@@ -865,6 +870,8 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(m, <span class="op">~</span><span class="st"> </span>material)</code></pre></div>
+<pre><code>## Loading required namespace: lmerTest</code></pre>
+<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
 <pre><code>##   material SigGroup
 ## 1        A        a
 ## 2        B        b
