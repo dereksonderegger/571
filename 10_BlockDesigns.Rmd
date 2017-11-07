@@ -59,7 +59,7 @@ Because this is an orthogonal design, the sums of squares doesn't change regardl
 
 In determining the significance of `variety` the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have $28$ residual degrees of freedom.
 
-But the F-value and p-value for testing if `block` is significant is nonsense!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can't do anystatistical inference at the block scale!
+But the F-value and p-value for testing if `block` is significant is nonsense!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can't do any statistical inference at the block scale!
 
 Fortunately in this case, we don't care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn't interested in estimating it.  If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don't care about it.
 
@@ -79,7 +79,7 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
 However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about.  To make R do the correct analysis, we have to denote the nesting.  In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the `Error()` function within our formula.  By default, `Error()` just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.
 
 ```{r}
-m3 <- aov( yield ~ block + variety + Error(block), data=oatvar)
+m3 <- aov( yield ~ variety + Error(block), data=oatvar)
 summary(m3)
 ```
 
@@ -169,7 +169,7 @@ anova(bad.model)
 In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different.  Notice that the sums-of-squares in this **wrong** analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. 
 $$\begin{aligned}
   RSS_{total} &= RSS_{Fertilizer} + RSS_{Irrigation} \\
-        304.0 &= 129.6 + 174.4
+        476.7 &= 294.2 + 182.5
   \end{aligned}$$
 
 When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool. 
@@ -196,9 +196,10 @@ oats <- oats %>% mutate(
 
 
 As always we first create a graph to examine the data
-```{r, fig.height=4}
+```{r, fig.height=7}
+oats <- oats %>% mutate(B_Plot = interaction(B, plot)) 
 ggplot(oats, aes(x=Nf, y=Y, color=V)) +
-  facet_wrap( ~ B*plot, ncol=3) +
+  facet_grid( B ~ plot, labeller=label_both) +
   geom_point() +
   geom_line(aes(x=as.integer(Nf)))
 ```

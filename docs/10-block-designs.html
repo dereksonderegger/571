@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-11-02">
+<meta name="date" content="2017-11-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -333,7 +333,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></code></pre></div>
 <p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
 <p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
-<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do anystatistical inference at the block scale!</p>
+<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do any statistical inference at the block scale!</p>
 <p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span>
 letter_df &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -346,12 +346,12 @@ letter_df &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m1, <spa
 <span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-184-1.png" width="672" /></p>
 <p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)
 <span class="kw">summary</span>(m3)</code></pre></div>
 <pre><code>## 
 ## Error: block
-##       Df Sum Sq Mean Sq
-## block  4  33396    8349
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  4  33396    8349               
 ## 
 ## Error: Within
 ##           Df Sum Sq Mean Sq F value  Pr(&gt;F)    
@@ -441,7 +441,7 @@ m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class=
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. <span class="math display">\[\begin{aligned}
   RSS_{total} &amp;= RSS_{Fertilizer} + RSS_{Irrigation} \\
-        304.0 &amp;= 129.6 + 174.4
+        476.7 &amp;= 294.2 + 182.5
   \end{aligned}\]</span></p>
 <p>When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool.</p>
 <hr />
@@ -458,8 +458,9 @@ oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span clas
   <span class="dt">plot =</span> <span class="kw">as.integer</span>(V),                       <span class="co"># plot</span>
   <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></code></pre></div>
 <p>As always we first create a graph to examine the data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>B<span class="op">*</span>plot, <span class="dt">ncol=</span><span class="dv">3</span>) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">B_Plot =</span> <span class="kw">interaction</span>(B, plot)) 
+<span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>
