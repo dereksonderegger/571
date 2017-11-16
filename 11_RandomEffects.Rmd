@@ -10,18 +10,15 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-library(faraway)
-library(MASS)
-library(lme4)
-library(tidyverse)
-library(lsmeans)
-library(multcompView)
-library(car)
-library(stringr)
+library(tidyverse)  # dplyr, tidyr, ggplot
+library(stringr)    # string manipulation stuff
+
+library(lme4)       # Our primary analysis routine
+library(lsmeans)    # Pairwise contrasts
+
 # library(devtools)
-# install_github('dereksonderegger/dsData')  # some datasets I've made up; only install once...
+# install_github('dereksonderegger/dsData')  # datasets I've made; only install once...
 library(dsData)
-library(pander)
 ```
 
 
@@ -198,13 +195,20 @@ model.0 <- lmer( yield ~ (1|block), data=oatvar)
 model.1 <- lmer( yield ~ variety + (1|block), data=oatvar)
 anova(model.0, model.1)
 ```
+
+Notice that this is doing a Likelihood Ratio Test 
+$$-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24$$
+
 This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. R doesn't do this by default because there isn't a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the `car::Anova` function.
 
 ```{r}
+# car::Anova(model.1, type=3, test.statistic='F')  # Using Wald F tests; won't give a LRT
 car::Anova(model.1, type=3)  # Type III anova table (just as we've had before)
 ```
 
-Notice that this is using a Chi-squared test statistic. This is actually using the Likelihood Ratio Test which is an approximate test, but should be reasonable. Now that we have chosen our model, we can examine is model.
+By default, `car::Anova() is the Wald Chi-Square test instead of the LRT, and should be reasonable. Using `test.statistic='F'` will give another test, but `car::Anova()` refuses to do a LRT because the `car` package authors believe that the Wald tests are more appropriate. There is quite a bit of debate among statisticians about which test should be recommended and this is an active area of research. Recent work suggests that permutate based tests are most widely applicable, but reasonably general software has not yet emerged (to my knowledge). Fortunately in this case, we don't see any qualitative difference because the variety term is still statisitcally significant.
+
+Now that we have chosen our model, we can examine is model.
 ```{r}
 summary(model.1)
 ```
@@ -215,56 +219,21 @@ Why do we care about this? This actually tells us quite a lot about the spatial 
 
 Next we turn to the fixed effects.  These will be the offsets from the reference group, as we've typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don't have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don't know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of `lme4` are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package `nlme`) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit. 
 
-We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately `TukeyHSD` doesn't work with objects created by `lmer` so we have to turn to another package. In this case, we could use either `multcomp` and build the contrast vectors $\boldsymbol{c}$ that we used previously or we could use the package `lsmeans`, which automates much of this.
+We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `lsmeans`, which automates much of this.
 
-```{r}
-lsmeans( model.1, pairwise ~ variety)
-```
-
-This looks remarkably similar to the output from TukeyHSD and just as confusing.  Ideally the function `make_TukeyHSD_letters()` could be modified to handle this model as well.
-
-```{r}
-#' Create a data frame with significant groupings 
-#'
-#' This function runs TukeyHSD on the input model and then creates a data frame
-#' with a column for the factor and a second for the Significance Group
-#' 
-#' @param model The output of a lm(), aov(), or lme().
-#' @param variable The variable of interest.
-#' @param threshold maximum p-value for statistical significance
-#' @output A data frame with a column for factor and another for the signicance group.
-#' @examples
-#' model <- lm( breaks ~ wool + tension, data=warpbreaks )
-#' make_TukeyHSD_letters(model, ~ wool)
-#' make_TukeyHSD_letters(model, ~ tension)
-#' make_TukeyHSD_letters(model, ~ wool+tension)
-make_TukeyHSD_letters <- function(model, formula, threshold=0.05){ 
-  formula2 <- update.formula( formula, pairwise ~ .)
-  temp <- lsmeans(model, formula2)$contrasts %>%
-    summary()  
-  temp2 <- temp$p.value
-  names(temp2) <- temp$contrast 
-  temp <- temp2 %>% vec2mat(sep=' - ') %>% multcompLetters(threshold=threshold)
-  out <-  data.frame(group = names(temp$Letters), SigGroup=temp$Letters)
-  colnames(out)[1] <-   Reduce(paste, deparse(formula)) %>% str_replace(fixed('~'),'')
-  rownames(out) <- NULL
-  out
-}  
-```
-
-```{r}
-make_TukeyHSD_letters(model.1, ~ variety)
+```{r, warning=FALSE, message=FALSE}
+LetterResults <- lsmeans( model.1, pairwise ~ variety) %>% cld(Letters=letters)
+LetterResults
 ```
 
 As usual we'll join this information into the original data table and then make a nice summary graph.
 ```{r}
-oatvar <- oatvar %>%
-  left_join( make_TukeyHSD_letters(model.1, ~variety) ) %>%
-  mutate(LetterHeight=500)
+LetterResults <- LetterResults %>% 
+  mutate(LetterHeight=500,  .group = str_trim(.group))
 
 ggplot(oatvar, aes(x=variety, y=yield)) +
   geom_point(aes(color=block)) +
-  geom_text(aes(label=SigGroup, y=LetterHeight))
+  geom_text(data=LetterResults, aes(label=.group, y=LetterHeight))
 ```
 
 
@@ -492,17 +461,17 @@ If two effects are not nested, we say they are *crossed(. In the penicillin exam
 
 An example is a Latin square experiment to look the effects of abrasion on four different material types (A, B, C, and D). We have a machine to do the abrasion test with four positions and we did 4 different machine runs. Our data looks like the following setup:
 ```{r, echo=FALSE}
-data(abrasion, package='faraway')
+data('abrasion', package='faraway')
 abrasion %>% dplyr::select(run,position,material) %>%
   mutate(position = paste('Position:',position)) %>%
   spread(key=position, value=material) %>%
-  pander()
+  pander::pander()
 ```
 Our model can be written as $$y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}$$
 and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We'll regard both position and run as crossed random effects.
 
 ```{r}
-data(abrasion, package='faraway')
+data('abrasion', package='faraway')
 ggplot(abrasion, aes(x=material, y=wear, color=position, shape=run)) +
   geom_point(size=3)
 ```
@@ -516,7 +485,7 @@ car::Anova(m, type=3)
 
 The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
 ```{r}
-make_TukeyHSD_letters(m, ~ material)
+lsmeans(m, specs=pairwise~material) %>% cld(Letters=letters) 
 ```
 So material D is in between materials B and C for abrasion resistance.
 

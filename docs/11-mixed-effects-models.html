@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-11-07">
+<meta name="date" content="2017-11-16">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -261,18 +261,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="mixed-effects-models" class="section level1">
 <h1><span class="header-section-number">Chapter 11</span> Mixed Effects Models</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
-<span class="kw">library</span>(MASS)
-<span class="kw">library</span>(lme4)
-<span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(lsmeans)
-<span class="kw">library</span>(multcompView)
-<span class="kw">library</span>(car)
-<span class="kw">library</span>(stringr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot</span>
+<span class="kw">library</span>(stringr)    <span class="co"># string manipulation stuff</span>
+
+<span class="kw">library</span>(lme4)       <span class="co"># Our primary analysis routine</span>
+<span class="kw">library</span>(lsmeans)    <span class="co"># Pairwise contrasts</span>
+
 <span class="co"># library(devtools)</span>
-<span class="co"># install_github(&#39;dereksonderegger/dsData&#39;)  # some datasets I&#39;ve made up; only install once...</span>
-<span class="kw">library</span>(dsData)
-<span class="kw">library</span>(pander)</code></pre></div>
+<span class="co"># install_github(&#39;dereksonderegger/dsData&#39;)  # datasets I&#39;ve made; only install once...</span>
+<span class="kw">library</span>(dsData)</code></pre></div>
 <p>The assumption of independent observations is often not supported and dependent data arises in a wide variety of situations. The dependency structure could be very simple such as rabbits within a litter being correlated and the litters being independent. More complex hierarchies of correlation are possible. For example we might expect voters in a particular part of town (called a precinct) to vote similarly, and particular districts in a state tend to vote similarly as well, which might result in a precinct / district / state hierarchy of correlation.</p>
 <p>Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models. In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.</p>
 <p>Mixed effects models combine what we call “fixed” and “random” effects.</p>
@@ -430,8 +427,10 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## model.1 10 421.67 438.56 -200.84   401.67 39.27      7  1.736e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that this is doing a Likelihood Ratio Test <span class="math display">\[-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24\]</span></p>
 <p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate. R doesn’t do this by default because there isn’t a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the <code>car::Anova</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># car::Anova(model.1, type=3, test.statistic=&#39;F&#39;)  # Using Wald F tests; won&#39;t give a LRT</span>
+car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
 <pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
 ## 
 ## Response: yield
@@ -440,7 +439,8 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## variety      57.987  7  3.803e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Notice that this is using a Chi-squared test statistic. This is actually using the Likelihood Ratio Test which is an approximate test, but should be reasonable. Now that we have chosen our model, we can examine is model.</p>
+<p>By default, <code>car::Anova() is the Wald Chi-Square test instead of the LRT, and should be reasonable. Using</code>test.statistic=‘F’<code>will give another test, but</code>car::Anova()<code>refuses to do a LRT because the</code>car` package authors believe that the Wald tests are more appropriate. There is quite a bit of debate among statisticians about which test should be recommended and this is an active area of research. Recent work suggests that permutate based tests are most widely applicable, but reasonably general software has not yet emerged (to my knowledge). Fortunately in this case, we don’t see any qualitative difference because the variety term is still statisitcally significant.</p>
+<p>Now that we have chosen our model, we can examine is model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">1</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ variety + (1 | block)
@@ -481,113 +481,38 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 <p>We start with the Random effects. This section shows us the <em>block-to-block</em> variability (and the square root of that, the Standard Deviation) as well as the “pure-error”, labeled residuals, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted <em>within</em> the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.</p>
 <p>Why do we care about this? This actually tells us quite a lot about the spatial variability. Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.</p>
 <p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don’t have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package <code>nlme</code>) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit.</p>
-<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. Unfortunately <code>TukeyHSD</code> doesn’t work with objects created by <code>lmer</code> so we have to turn to another package. In this case, we could use either <code>multcomp</code> and build the contrast vectors <span class="math inline">\(\boldsymbol{c}\)</span> that we used previously or we could use the package <code>lsmeans</code>, which automates much of this.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
-<pre><code>## Loading required namespace: lmerTest</code></pre>
-<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
-<pre><code>## $lsmeans
-##  variety lsmean       SE df asymp.LCL asymp.UCL
-##  1        334.4 21.03996 NA  293.1624  375.6376
-##  2        376.6 21.03996 NA  335.3624  417.8376
-##  3        362.6 21.03996 NA  321.3624  403.8376
-##  4        286.8 21.03996 NA  245.5624  328.0376
-##  5        439.4 21.03996 NA  398.1624  480.6376
-##  6        330.6 21.03996 NA  289.3624  371.8376
-##  7        318.4 21.03996 NA  277.1624  359.6376
-##  8        384.2 21.03996 NA  342.9624  425.4376
+<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package <code>lsmeans</code>, which automates much of this.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LetterResults &lt;-<span class="st"> </span><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)
+LetterResults</code></pre></div>
+<pre><code>##  variety lsmean       SE    df lower.CL upper.CL .group
+##  4        286.8 21.03996 15.26 242.0196 331.5804  a    
+##  7        318.4 21.03996 15.26 273.6196 363.1804  ab   
+##  6        330.6 21.03996 15.26 285.8196 375.3804  ab   
+##  1        334.4 21.03996 15.26 289.6196 379.1804  ab   
+##  3        362.6 21.03996 15.26 317.8196 407.3804   b   
+##  2        376.6 21.03996 15.26 331.8196 421.3804   bc  
+##  8        384.2 21.03996 15.26 339.4196 428.9804   bc  
+##  5        439.4 21.03996 15.26 394.6196 484.1804    c  
 ## 
-## Degrees-of-freedom method: asymptotic 
+## Degrees-of-freedom method: satterthwaite 
 ## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast estimate       SE df z.ratio p.value
-##  1 - 2       -42.2 23.12491 NA  -1.825  0.6030
-##  1 - 3       -28.2 23.12491 NA  -1.219  0.9264
-##  1 - 4        47.6 23.12491 NA   2.058  0.4423
-##  1 - 5      -105.0 23.12491 NA  -4.541  0.0002
-##  1 - 6         3.8 23.12491 NA   0.164  1.0000
-##  1 - 7        16.0 23.12491 NA   0.692  0.9972
-##  1 - 8       -49.8 23.12491 NA  -2.154  0.3804
-##  2 - 3        14.0 23.12491 NA   0.605  0.9988
-##  2 - 4        89.8 23.12491 NA   3.883  0.0026
-##  2 - 5       -62.8 23.12491 NA  -2.716  0.1177
-##  2 - 6        46.0 23.12491 NA   1.989  0.4892
-##  2 - 7        58.2 23.12491 NA   2.517  0.1882
-##  2 - 8        -7.6 23.12491 NA  -0.329  1.0000
-##  3 - 4        75.8 23.12491 NA   3.278  0.0233
-##  3 - 5       -76.8 23.12491 NA  -3.321  0.0202
-##  3 - 6        32.0 23.12491 NA   1.384  0.8650
-##  3 - 7        44.2 23.12491 NA   1.911  0.5430
-##  3 - 8       -21.6 23.12491 NA  -0.934  0.9828
-##  4 - 5      -152.6 23.12491 NA  -6.599  &lt;.0001
-##  4 - 6       -43.8 23.12491 NA  -1.894  0.5550
-##  4 - 7       -31.6 23.12491 NA  -1.366  0.8725
-##  4 - 8       -97.4 23.12491 NA  -4.212  0.0007
-##  5 - 6       108.8 23.12491 NA   4.705  0.0001
-##  5 - 7       121.0 23.12491 NA   5.232  &lt;.0001
-##  5 - 8        55.2 23.12491 NA   2.387  0.2476
-##  6 - 7        12.2 23.12491 NA   0.528  0.9995
-##  6 - 8       -53.6 23.12491 NA  -2.318  0.2836
-##  7 - 8       -65.8 23.12491 NA  -2.845  0.0841
-## 
-## P value adjustment: tukey method for comparing a family of 8 estimates</code></pre>
-<p>This looks remarkably similar to the output from TukeyHSD and just as confusing. Ideally the function <code>make_TukeyHSD_letters()</code> could be modified to handle this model as well.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#&#39; Create a data frame with significant groupings </span>
-<span class="co">#&#39;</span>
-<span class="co">#&#39; This function runs TukeyHSD on the input model and then creates a data frame</span>
-<span class="co">#&#39; with a column for the factor and a second for the Significance Group</span>
-<span class="co">#&#39; </span>
-<span class="co">#&#39; @param model The output of a lm(), aov(), or lme().</span>
-<span class="co">#&#39; @param variable The variable of interest.</span>
-<span class="co">#&#39; @param threshold maximum p-value for statistical significance</span>
-<span class="co">#&#39; @output A data frame with a column for factor and another for the signicance group.</span>
-<span class="co">#&#39; @examples</span>
-<span class="co">#&#39; model &lt;- lm( breaks ~ wool + tension, data=warpbreaks )</span>
-<span class="co">#&#39; make_TukeyHSD_letters(model, ~ wool)</span>
-<span class="co">#&#39; make_TukeyHSD_letters(model, ~ tension)</span>
-<span class="co">#&#39; make_TukeyHSD_letters(model, ~ wool+tension)</span>
-make_TukeyHSD_letters &lt;-<span class="st"> </span><span class="cf">function</span>(model, formula, <span class="dt">threshold=</span><span class="fl">0.05</span>){ 
-  formula2 &lt;-<span class="st"> </span><span class="kw">update.formula</span>( formula, pairwise <span class="op">~</span><span class="st"> </span>.)
-  temp &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(model, formula2)<span class="op">$</span>contrasts <span class="op">%&gt;%</span>
-<span class="st">    </span><span class="kw">summary</span>()  
-  temp2 &lt;-<span class="st"> </span>temp<span class="op">$</span>p.value
-  <span class="kw">names</span>(temp2) &lt;-<span class="st"> </span>temp<span class="op">$</span>contrast 
-  temp &lt;-<span class="st"> </span>temp2 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">vec2mat</span>(<span class="dt">sep=</span><span class="st">&#39; - &#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">multcompLetters</span>(<span class="dt">threshold=</span>threshold)
-  out &lt;-<span class="st">  </span><span class="kw">data.frame</span>(<span class="dt">group =</span> <span class="kw">names</span>(temp<span class="op">$</span>Letters), <span class="dt">SigGroup=</span>temp<span class="op">$</span>Letters)
-  <span class="kw">colnames</span>(out)[<span class="dv">1</span>] &lt;-<span class="st">   </span><span class="kw">Reduce</span>(paste, <span class="kw">deparse</span>(formula)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">str_replace</span>(<span class="kw">fixed</span>(<span class="st">&#39;~&#39;</span>),<span class="st">&#39;&#39;</span>)
-  <span class="kw">rownames</span>(out) &lt;-<span class="st"> </span><span class="ot">NULL</span>
-  out
-}  </code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span><span class="st"> </span>variety)</code></pre></div>
-<pre><code>## Loading required namespace: lmerTest</code></pre>
-<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
-<pre><code>##   variety SigGroup
-## 1       1       ab
-## 2       2       ac
-## 3       3        a
-## 4       4        b
-## 5       5        c
-## 6       6       ab
-## 7       7       ab
-## 8       8       ac</code></pre>
+## P value adjustment: tukey method for comparing a family of 8 estimates 
+## significance level used: alpha = 0.05</code></pre>
 <p>As usual we’ll join this information into the original data table and then make a nice summary graph.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oatvar &lt;-<span class="st"> </span>oatvar <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">left_join</span>( <span class="kw">make_TukeyHSD_letters</span>(model.<span class="dv">1</span>, <span class="op">~</span>variety) ) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LetterHeight=</span><span class="dv">500</span>)</code></pre></div>
-<pre><code>## Loading required namespace: lmerTest</code></pre>
-<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
-<pre><code>## Joining, by = &quot;variety&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LetterResults &lt;-<span class="st"> </span>LetterResults <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LetterHeight=</span><span class="dv">500</span>,  <span class="dt">.group =</span> <span class="kw">str_trim</span>(.group))
+
+<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label=</span>SigGroup, <span class="dt">y=</span>LetterHeight))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-210-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">data=</span>LetterResults, <span class="kw">aes</span>(<span class="dt">label=</span>.group, <span class="dt">y=</span>LetterHeight))</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-208-1.png" width="672" /></p>
 <hr />
 <p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(penicillin)
 <span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-209-1.png" width="672" /></p>
 <p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st">  </span><span class="dv">1</span>    <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
 model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
@@ -636,7 +561,7 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 <h2><span class="header-section-number">11.4</span> Nested Effects</h2>
 <p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are <em>crossed</em> with site.</p>
 <p>We’ve already seen a number of nested designs when we looked at split plot designs. Recall the <code>AgData</code> set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot. We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-215-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
 <p>So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following model definitions are equivalent</span>
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">:</span>subplot), <span class="dt">data=</span>AgData )
@@ -692,7 +617,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="d
 ## 4   A    1   4 320.0109
 ## 5   A    1   5 292.2656
 ## 6   A    1   6 315.8136</code></pre>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-219-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
 <p>We can easily fit this model using random effects for each ring.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y <span class="op">~</span><span class="st"> </span>Trt <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring), <span class="dt">data=</span>HierarchicalData )
 car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
@@ -711,7 +636,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="d
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-222-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-220-1.png" width="672" /></p>
 <p>Now we consider the predicted values, but created using the Ring random effect. These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is <em>required</em> to be 0.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ranef</span>(model)</code></pre></div>
 <pre><code>## $Ring
@@ -733,7 +658,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="d
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
           <span class="dt">my.text =</span> <span class="kw">paste</span>(<span class="st">&#39;yhat =&#39;</span>, y.hat),
           <span class="dt">text.height =</span> <span class="fl">1.8</span>)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-223-1.png" width="672" /></p>
 <p>We interpret the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.</p>
 <hr />
 <p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.</p>
@@ -750,7 +675,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average Value Only&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
@@ -758,7 +683,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
@@ -766,7 +691,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample)))
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
@@ -774,7 +699,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician + Sample Offset&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-228-1.png" width="672" /></p>
 <p>No that we have an idea of how things vary, we can look at the summary table.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -853,10 +778,10 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 </tbody>
 </table>
 <p>Our model can be written as <span class="math display">\[y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}\]</span> and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We’ll regard both position and run as crossed random effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(abrasion, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;abrasion&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
 <span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
 <p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)
 car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
@@ -869,14 +794,17 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">make_TukeyHSD_letters</span>(m, <span class="op">~</span><span class="st"> </span>material)</code></pre></div>
-<pre><code>## Loading required namespace: lmerTest</code></pre>
-<pre><code>## Install package &#39;lmerTest&#39; to obtain Satterthwaite degrees of freedom</code></pre>
-<pre><code>##   material SigGroup
-## 1        A        a
-## 2        B        b
-## 3        C        c
-## 4        D       bc</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="dt">specs=</span>pairwise<span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </code></pre></div>
+<pre><code>##  material lsmean       SE   df lower.CL upper.CL .group
+##  B        220.00 7.668252 7.48 202.0985 237.9015  a    
+##  D        230.50 7.668252 7.48 212.5985 248.4015  ab   
+##  C        241.75 7.668252 7.48 223.8485 259.6515   b   
+##  A        265.75 7.668252 7.48 247.8485 283.6515    c  
+## 
+## Degrees-of-freedom method: satterthwaite 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## significance level used: alpha = 0.05</code></pre>
 <p>So material D is in between materials B and C for abrasion resistance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -933,7 +861,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-236-1.png" width="672" /></p>
 <p>We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Subject), <span class="dt">data=</span>sleepstudy)
 <span class="kw">summary</span>(m1)</code></pre></div>
@@ -990,7 +918,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-240-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
 <p>This isn’t too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Random effects for intercept and Slope </span>
 m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>( <span class="dv">1</span><span class="op">+</span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)
@@ -1002,7 +930,7 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</spa
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
 <p>This appears to fit the observed data quite a bit better, but it is useful to test this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m1, m2)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
@@ -1022,21 +950,21 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</spa
 <span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-241-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))
 <span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-242-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-245-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-243-1.png" width="672" /></p>
 <p>Finally we want to go back and look at the coefficients for the complex model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m2)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
