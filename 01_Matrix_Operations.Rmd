@@ -1,6 +1,23 @@
 
 # Matrix Theory
 
+```{r, echo=FALSE}
+# Unattach any packages that happen to already be loaded. In general this is unecessary
+# but is important for the creation of the book to not have package namespaces
+# fighting unexpectedly.
+pkgs = names(sessionInfo()$otherPkgs)
+if( length(pkgs > 0)){
+  pkgs = paste('package:', pkgs, sep = "")
+  for( i in 1:length(pkgs)){
+    detach(pkgs[i], character.only = TRUE, force=TRUE)
+  }
+}
+
+# Set my default chunk options 
+knitr::opts_chunk$set( fig.height=3, cache=TRUE )
+```
+
+
 Almost all of the calculations done in classical statistics require
 formulas with large number of subscripts and many different sums.
 In this chapter we will develop the mathematical machinery to write

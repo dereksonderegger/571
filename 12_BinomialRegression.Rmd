@@ -1,15 +1,23 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Binomial Regression
 
-```{r, results='hide', echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.height=3)
+```{r, echo=FALSE}
+# Unattach any packages that happen to already be loaded. In general this is unecessary
+# but is important for the creation of the book to not have package namespaces
+# fighting unexpectedly.
+pkgs = names(sessionInfo()$otherPkgs)
+if( length(pkgs > 0)){
+  pkgs = paste('package:', pkgs, sep = "")
+  for( i in 1:length(pkgs)){
+    detach(pkgs[i], character.only = TRUE, force=TRUE)
+  }
+}
+
+# Set my default chunk options 
+knitr::opts_chunk$set( fig.height=3 )
 ```
+
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)   # dplyr, tidyr, ggplot2
+library(tidyverse)   # dplyr, tidyr, ggplot2, etc...
 library(lsmeans)
 # Usual library loading stuff
 #library(multcomp); library(multcompView)
@@ -138,18 +146,35 @@ Notice that the summary table includes an estimate of the standard error of each
 The sigmoid curve shown prior was the result of the logit model and we can estimate the probability of occupancy for any value of CCU. Surprisingly, R does not have a built-in function for the logit and ilogit function, but the faraway package does include them.
 
 ```{r}
+# Here are two ways to calculate the phat value for CCU = 1
 new.df <- data.frame(CCU=1)
-ilogit( predict(m1, newdata=new.df) )          # The following are the
-predict(m1, newdata=new.df, type='response')   # same result
+faraway::ilogit( predict(m1, newdata=new.df) )          
+predict(m1, newdata=new.df, type='response')   
 
+# But the predict() function won't give you a confidence interval.
+# Lets get this value through lsmeans() instead.
+lsmeans::lsmeans(m1, ~CCU, type='response', at=list(CCU=1))
+
+# Finally a nice graph
 new.df <- data.frame( CCU=seq(0,5, by=.01) )
-yhat.df <- new.df %>% mutate(fit = ilogit( predict(m1, newdata=new.df) ) )
+yhat.df <- new.df %>% mutate(fit = predict(m1, newdata=new.df, type='response') ) 
 ggplot(Mayflies, aes(x=CCU)) +
   geom_point(aes(y=Occupancy)) +
   geom_line( data=yhat.df, aes(y=fit), color='red') 
 ```
 
 
+Suppose that we were to give a predicted Presense/Absense class based on the $\hat{p}$ value. Lets predict presense if the probability is greater than 0.5 and absent if the the probability is less that 0.5. 
+
+```{r}
+Mayflies <- Mayflies %>%
+  mutate(phat = predict(m1, type='response')) %>%
+  mutate(chat = ifelse(phat >0.5, 1, 0)) 
+
+table(Truth = Mayflies$Occupancy, Prediction = Mayflies$chat)
+```
+
+This scheme has misclassified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.
 
 ## Deviance
 

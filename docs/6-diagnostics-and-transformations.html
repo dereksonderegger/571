@@ -294,7 +294,7 @@ Anscombe &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><s
 <span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) <span class="op">+</span>
 <span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y<span class="op">~</span>x, <span class="dt">se=</span><span class="ot">FALSE</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 <div id="measures-of-influence" class="section level3">
 <h3><span class="header-section-number">6.1.1</span> Measures of Influence</h3>
 <div id="standardized-residuals-aka-studentized" class="section level4">
@@ -320,7 +320,7 @@ Set3<span class="op">$</span>stdresid &lt;-<span class="st"> </span><span class=
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Observation Index&#39;</span>, 
        <span class="dt">y=</span><span class="st">&#39;Standardized Residuals&#39;</span>, 
        <span class="dt">title=</span><span class="st">&#39;Standardized Residuals vs Observation Index&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 <p>and we notice that the outlier residual is really big. If the model assumptions were true, then the standardized residuals should follow a standard normal distribution, and I would need to have hundreds of observations before I wouldn’t be surprised to see a residual more than 3 standard deviations from 0.</p>
 </div>
 </div>
@@ -341,7 +341,7 @@ Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span clas
 <span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>( . <span class="op">~</span><span class="st"> </span>set )</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
 <p>This leverage idea only picks out the <em>potential</em> for a specific value of <span class="math inline">\(x\)</span> to be influential, but does not actually measure influence. It has picked out the issue with the fourth data set, but does not adequately address the outlier in set 3.</p>
 </div>
 <div id="cooks-distance" class="section level4">
@@ -357,7 +357,7 @@ Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span clas
 <span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>set) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Cook&#39;s Distance&quot;</span>)</code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
 <p>Some texts will give a rule of thumb that points with Cook’s distances greater than 1 should be considered influential, while other books claim a reasonable rule of thumb is <span class="math inline">\(4/\left(n-p-1\right)\)</span> where <span class="math inline">\(n\)</span> is the sample size, and <span class="math inline">\(p\)</span> is the number of parameters in <span class="math inline">\(\boldsymbol{\beta}\)</span>. My take on this, is that you should look for values that are highly different from the rest of your data.</p>
 </div>
 </div>
@@ -394,14 +394,14 @@ Set1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rou
                   <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) 
 <span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
 <p>Looking at the data, it seems that we are violating the assumption that a linear model is appropriate, but we will fit the model anyway and look at the residual graph.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )
 <span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># which=1 tells R to only make the first plot</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)        <span class="co"># need the ggfortify library for autoplot.lm() to work</span>
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-99-1.png" width="672" /></p>
 <p>The red/blue lines going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in <code>carapace length</code>. We will create a new covariate, <code>carapace.2</code>, which is the square of the carapace length and add it to the model.</p>
 <p>In general I could write the quadratic model as <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}\]</span> and note that my model is still a linear model with respect to covariates <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^{2}\)</span> because I can still write the model as <span class="math display">\[\begin{aligned} \boldsymbol{y}    
   &amp;=    \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon} \\
@@ -437,7 +437,7 @@ model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <spa
 <span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span>
 <span class="co"># otherwise you can skip it and R will do the right thing.</span>
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>, <span class="dt">data=</span>Eggs)  </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-99-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
 <p>Now our residual plot versus fitted values does not show any trend, suggesting that the quadratic model is fitting the data well. Graphing the original data along with the predicted values confirms this.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span>
 Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )
@@ -446,7 +446,7 @@ Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span clas
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
 </div>
 <div id="heteroskedasticity" class="section level5">
 <h5><span class="header-section-number">6.1.2.1.2</span> Heteroskedasticity</h5>
@@ -455,11 +455,11 @@ Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span clas
 <p>We first graph all pairs of variables in the dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(airquality)
 <span class="kw">pairs</span>(<span class="op">~</span><span class="st"> </span>Ozone <span class="op">+</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-101-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
 <p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance amongst the predictors.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
 <p>As we feared, we have both a non-constant variance and a non-linear relationship. A transformation of the <span class="math inline">\(y\)</span> variable might be able to fix our problem.</p>
 </div>
 </div>
@@ -467,7 +467,7 @@ Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span clas
 <h4><span class="header-section-number">6.1.2.2</span> QQplots</h4>
 <p>If we are taking a sample of size <span class="math inline">\(n=10\)</span> from a standard normal distribution, then I should expect that the smallest observation will be negative. Intuitively, you would expect the smallest observation to be near the <span class="math inline">\(10\)</span>th percentile of the standard normal, and likewise the second smallest should be near the <span class="math inline">\(20\)</span>th percentile.</p>
 <p>This idea needs a little modification because the largest observation cannot be near the <span class="math inline">\(100\)</span>th percentile (because that is <span class="math inline">\(\infty\)</span>). So we’ll adjust the estimates to still be spaced at <span class="math inline">\((1/n)\)</span> quantile increments, but starting at the <span class="math inline">\(0.5/n\)</span> quantile instead of the <span class="math inline">\(1/n\)</span> quantile. So the smallest observation should be near the <span class="math inline">\(0.05\)</span> quantile, the second smallest should be near the <span class="math inline">\(0.15\)</span> quantile, and the largest observation should be near the <span class="math inline">\(0.95\)</span> quantile. I will refer to these as the <em>theoretical quantiles</em>.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
 <p>I can then graph the theoretical quantiles vs my observed values and if they lie on the 1-to-1 line, then my data comes from a standard normal distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span>
 
@@ -480,11 +480,11 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-104-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
 <p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the airquality example, R will calculate the qqplot for us.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
 <p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</code></pre></div>
 <pre><code>## 
@@ -505,10 +505,10 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <p>&lt;&lt;&gt;&gt;=</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)
 <span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-107-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
 <p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the ggfortify version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 </div>
 </div>
 </div>
@@ -540,7 +540,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <span class="kw">data</span>(gala)
 g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)
 <span class="kw">boxcox</span>(g)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
 <p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
 <p>Thoughts on the Box-Cox transformation:</p>
 <ol style="list-style-type: decimal">
@@ -570,11 +570,11 @@ g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="
 <span class="kw">data</span>(gala)
 <span class="co"># look at all the scatterplots</span>
 <span class="kw">pairs</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
 <p>Looking at these graphs, I think I should transform <code>elevation</code>, <code>Adjacent</code>, and <code>Area</code> and perhaps a log transformation is a good idea.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>( <span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Elevation) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span>
 <span class="st">                       </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
 <p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)
 <span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></code></pre></div>
@@ -633,14 +633,14 @@ pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 </div>
 </div>
 <div id="interpretation-of-log-transformed-variables" class="section level3">
 <h3><span class="header-section-number">6.2.3</span> Interpretation of log transformed variables</h3>
 <p>One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Here we look at the interpretation of log transformed variables.</p>
 <p>To begin with, we need to remind ourselves of what the functions <span class="math inline">\(\log x\)</span> and <span class="math inline">\(e^{x}\)</span> look like.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <p>In particular we notice that <span class="math display">\[e^{0}=1\]</span> and <span class="math display">\[\log\left(1\right)=0\]</span> and the functions <span class="math inline">\(e^{x}\)</span> and <span class="math inline">\(\log x\)</span> are inverse functions of each other.</p>
 <p><span class="math display">\[e^{\log x}=\log\left(e^{x}\right)=x\]</span></p>
 <p>Also it is important to note that the <span class="math inline">\(\log\)</span> function has some interesting properties in that it makes operations “1-operation easier”. <span class="math display">\[\begin{aligned} 
@@ -654,7 +654,7 @@ file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>               
 scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)
 scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">gender =</span> female)
 <span class="kw">pairs</span>(write<span class="op">~</span>read<span class="op">+</span>math<span class="op">+</span>gender, <span class="dt">data=</span>scores)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <div id="log-transformed-response-untransformed-covariates" class="section level4">
 <h4><span class="header-section-number">6.2.3.1</span> Log-transformed response, untransformed covariates</h4>
 <p>We consider the model where we have transformed the response variable and just an intercept term. <span class="math display">\[\log y=\beta_{0}+\epsilon\]</span></p>

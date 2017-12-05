@@ -680,7 +680,7 @@ y0</code></pre></div>
 file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span>
 fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)
 <span class="kw">pairs</span>(fish[,<span class="kw">c</span>(<span class="st">&#39;Weight&#39;</span>,<span class="st">&#39;Length.1&#39;</span>,<span class="st">&#39;Length.2&#39;</span>,<span class="st">&#39;Length.3&#39;</span>,<span class="st">&#39;Height&#39;</span>,<span class="st">&#39;Width&#39;</span>)])</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length.<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)
 <span class="kw">summary</span>(model)</code></pre></div>

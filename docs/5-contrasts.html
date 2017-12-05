@@ -414,16 +414,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6474
+## Quantile = 2.6452
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7307 90.7693
-## Mean of Group 2 == 0 75.5714  71.2746 79.8682
-## Mean of Group 3 == 0 71.0000  67.2106 74.7894
-## Diff G2-G3 == 0       4.5714  -1.1576 10.3005</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7341 90.7659
+## Mean of Group 2 == 0 75.5714  71.2782 79.8646
+## Mean of Group 3 == 0 71.0000  67.2138 74.7862
+## Diff G2-G3 == 0       4.5714  -1.1528 10.2957</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -444,7 +444,7 @@ ToothGrowth<span class="op">$</span>len.upr &lt;-<span class="st"> </span><span 
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len.hat)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>len.lwr, <span class="dt">ymax=</span>len.upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)<span class="op">$</span>coefficient</code></pre></div>
 <pre><code>##                 Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -468,10 +468,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425  &lt; 1e-10 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712 3.12e-10 ***
+## Intercept VC == 0  16.9633     0.6791  24.977  &lt; 1e-10 ***
+## Slope     VC == 0  13.0997     1.2000  10.916  &lt; 1e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -573,7 +573,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
 <p>Using the <code>summary()</code> function, we can test hypotheses about if the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># We could find the regression line heights and CI using </span>
 <span class="co"># either predict() or lsmeans()</span>
@@ -631,7 +631,7 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
   <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
 <p>To use the <code>lsmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )
 <span class="kw">lsmeans</span>(model, pairwise<span class="op">~</span>Method)</code></pre></div>
@@ -662,7 +662,7 @@ ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGro
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">y=</span>len) )</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <p>First, lets get the y-intercept for each group. In the following code, the formula with the <code>| supp</code> part says that we want to do all the calculations for each level of the supplement types. The call to <code>lsmeans()</code> calculates the response at logDose level 0. By passing the result of the <code>lsmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="op">~</span>logDose <span class="op">|</span><span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</code></pre></div>
@@ -774,7 +774,7 @@ mtcars<span class="op">$</span>cyl &lt;-<span class="st"> </span><span class="kw
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&#39;Cylinders&#39;</span>, <span class="dt">shape=</span><span class="st">&#39;Cylinders&#39;</span>)</code></pre></div>
-<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-87-1.png" width="672" />
+<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-88-1.png" width="672" />
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars.small &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span><span class="st">      </span>

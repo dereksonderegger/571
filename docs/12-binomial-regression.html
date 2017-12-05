@@ -261,7 +261,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="binomial-regression" class="section level1">
 <h1><span class="header-section-number">Chapter 12</span> Binomial Regression</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2, etc...</span>
 <span class="kw">library</span>(lsmeans)
 <span class="co"># Usual library loading stuff</span>
 <span class="co">#library(multcomp); library(multcompView)</span>
@@ -322,15 +322,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 5 0.97002630         1
 ## 6 1.08037011         1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-248-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
 <p>If I just fit a regular linear model to this data, we fit the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )
 Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))
 <span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-249-1.png" width="672" /></p>
-<p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-250-1.png" width="672" /></p>
+<p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-251-1.png" width="672" /></p>
 <p>We need a way to convert our covariate data <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X\beta}\)</span> from something that can take values from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span> to something that is constrained between 0 and 1 so that we can fit the model <span class="math display">\[w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)\]</span> There are several options for the link function <span class="math inline">\(g^{-1}\left(\cdot\right)\)</span> that are commonly used. We use the notation <span class="math inline">\(y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}\)</span> is unconstrained and can be in <span class="math inline">\(\left(-\infty, +\infty\right)\)</span> while <span class="math inline">\(p_{i}=g^{-1}\left(y_{i}\right)\)</span> is constrained to <span class="math inline">\(\left[0,1\right]\)</span>. When convenient, we will drop the <span class="math inline">\(i\)</span> subscript while keeping the domain restrictions.</p>
 <ol style="list-style-type: decimal">
 <li><p>Logit (log odds) transformation. The link function is <span class="math display">\[g\left(p\right)=\log\left[\underset{\textrm{odds}}{\underbrace{\frac{p}{1-p}}}\right]=y\]</span> with inverse <span class="math display">\[g^{-1}\left(y\right)=\frac{1}{1+e^{-y}}\]</span> and we think of <span class="math inline">\(g\left(p\right)\)</span> as the log odds function.</p></li>
@@ -379,19 +379,40 @@ m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( (Occupancy <span c
 ## Number of Fisher Scoring iterations: 7</code></pre>
 <p>Notice that the summary table includes an estimate of the standard error of each <span class="math inline">\(\hat{\beta}_{j}\)</span> and a standardized value and z-test that are calculated in the usual manner <span class="math inline">\(z_{j}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}\)</span> but these only approximately follow a standard normal distribution (due to the CLT results for Maximum Likelihood Estimators). We should regard the p-values given as approximate.</p>
 <p>The sigmoid curve shown prior was the result of the logit model and we can estimate the probability of occupancy for any value of CCU. Surprisingly, R does not have a built-in function for the logit and ilogit function, but the faraway package does include them.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">CCU=</span><span class="dv">1</span>)
-<span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) )          <span class="co"># The following are the</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Here are two ways to calculate the phat value for CCU = 1</span>
+new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">CCU=</span><span class="dv">1</span>)
+faraway<span class="op">::</span><span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) )          </code></pre></div>
 <pre><code>##        1 
 ## 0.886042</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)   <span class="co"># same result</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)   </code></pre></div>
 <pre><code>##        1 
 ## 0.886042</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )
-yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) ) )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># But the predict() function won&#39;t give you a confidence interval.</span>
+<span class="co"># Lets get this value through lsmeans() instead.</span>
+lsmeans<span class="op">::</span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</code></pre></div>
+<pre><code>##  CCU response        SE df asymp.LCL asymp.UCL
+##    1 0.886042 0.1285373 NA 0.6341134   1.13797
+## 
+## Unknown transformation &quot;(.==&quot;: no transformation done 
+## Confidence level used: 0.95</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Finally a nice graph</span>
+new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )
+yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) ) 
 <span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-253-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-254-1.png" width="672" /></p>
+<p>Suppose that we were to give a predicted Presense/Absense class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presense if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) 
+
+<span class="kw">table</span>(<span class="dt">Truth =</span> Mayflies<span class="op">$</span>Occupancy, <span class="dt">Prediction =</span> Mayflies<span class="op">$</span>chat)</code></pre></div>
+<pre><code>##      Prediction
+## Truth  0  1
+##     0 21  1
+##     1  2  6</code></pre>
+<p>This scheme has misclassified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.</p>
 </div>
 <div id="deviance" class="section level2">
 <h2><span class="header-section-number">12.2</span> Deviance</h2>
@@ -665,7 +686,7 @@ probs &lt;-<span class="st"> </span><span class="kw">cbind</span>(probs, yhat)
 <span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
 <p>Alternatively, we might want to do this calculation via <code>lsmeans</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsmeans<span class="op">::</span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </code></pre></div>
 <pre><code>##  conc       prob         SE df  asymp.LCL asymp.UCL
@@ -730,7 +751,7 @@ true.var &lt;-<span class="st"> </span>p<span class="op">*</span>(<span class="d
 <span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-274-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
 <p>We see that the sample variances fall neatly about the true variance of <span class="math inline">\(2.4\)</span> in the case where the data is distributed with a constant value for <span class="math inline">\(p\)</span>. However adding a small amount of random noise about the parameter <span class="math inline">\(p\)</span>, and we’d have more variance in the samples.</p>
 <p>The extra uncertainty of the probability of success results in extra variability in the responses.</p>
 <p>We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed <span class="math display">\[D\left(\boldsymbol{y},\boldsymbol{\theta}\right)\stackrel{\cdot}{\sim}\chi_{df}^{2}\]</span> where <span class="math inline">\(df\)</span> is the residual degrees of freedom in the model. Because the <span class="math inline">\(\chi_{k}^{2}\)</span> is the sum of <span class="math inline">\(k\)</span> independent, squared standard normal random variables, it has an expectation <span class="math inline">\(k\)</span> and variance <span class="math inline">\(2k\)</span>. For binomial data with group sizes (say larger than 5), this approximation isn’t too bad and we can detect overdispersion. For binary responses, the approximation is quite poor and we cannot detect overdispersion.</p>
@@ -769,7 +790,7 @@ troutegg <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
 <p>We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">+</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)
 <span class="kw">summary</span>(m)</code></pre></div>
