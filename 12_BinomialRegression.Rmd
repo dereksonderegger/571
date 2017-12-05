@@ -6,17 +6,15 @@ output:
 # Binomial Regression
 
 ```{r, results='hide', echo=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
-                      fig.height=3)
+knitr::opts_chunk$set(echo = TRUE, fig.height=3)
 ```
 ```{r, message=FALSE, warning=FALSE}
-# Usual library loading stuff
-library(multcomp); library(multcompView)
+library(tidyverse)   # dplyr, tidyr, ggplot2
 library(lsmeans)
-library(MASS)
-library(faraway)
-library(ggplot2)
-library(dplyr)
+# Usual library loading stuff
+#library(multcomp); library(multcompView)
+#library(MASS)
+#library(faraway)
 ```
 
 
@@ -31,8 +29,11 @@ and notably this assumes that the data are independent. This model has $E\left[\
 |   Model                  |  Predictor Type             | Response                    |
 +==========================+=============================+=============================+
 | Simple Linear Regression | 1 Continuous                | Continuous Normal Response  |
++--------------------------+-----------------------------+-----------------------------+
 | 1-way ANOVA              | 1 Categorical               | Continuous Normal Response  |
++--------------------------+-----------------------------+-----------------------------+
 | 2-way ANOVA              | 2 Categorical               | Continuous Normal Response  |
++--------------------------+-----------------------------+-----------------------------+
 | ANCOVA                   | 1 Continuous, 1 Categorical | Continuous Normal Response  |
 +--------------------------+-----------------------------+-----------------------------+
 
@@ -56,7 +57,8 @@ In the normal distribution case, we estimated the expected value of my response 
 Example: Suppose we are interested in the abundance of mayflies in a stream. Because mayflies are sensitive to metal pollution, I might be interested in looking at the presence/absence of mayflies in a stream relative to a pollution gradient. Here the pollution gradient is measured in Cumulative Criterion Units (CCU: CCU is defined as the ratio of the measured metal concentration to the hardness adjusted chronic criterion concentration, and then summed across each metal) where larger values imply more metal pollution. 
 
 ```{r}
-data(Mayflies, package='dsData')
+data('Mayflies', package='dsData')
+head(Mayflies)
 ggplot(Mayflies, aes(x=CCU, y=Occupancy)) + geom_point()
 ```
 
@@ -117,9 +119,11 @@ and we substitute that into the equation and simplify. Fortunately we don't have
 Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $y_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
 
 ```{r}
-# The following are equivalent
+# The following are equivalent and a "success" is if the site is 
+# occupied. If you were to switch it so a success is that the site
+# is not occupied, the signs on all the beta coefficients would switch.
 m1 <- glm( cbind(Occupancy, 1-Occupancy) ~ CCU, data=Mayflies, family=binomial )
-m1 <- glm(                     Occupancy ~ CCU, data=Mayflies, family=binomial )
+m1 <- glm( (Occupancy == 1)              ~ CCU, data=Mayflies, family=binomial )
 ```
 
 
@@ -164,15 +168,15 @@ $$LRT=D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{simple}\right)-D\left(\bo
  
 
 ```{r}
-m0 <- glm( Occupancy ~ 1, data=Mayflies, family=binomial )
+m0 <- glm( (Occupancy==1) ~ 1, data=Mayflies, family=binomial )
 anova(m0, m1)
 1 - pchisq( 22.146, df=1 )
 ```
 
-A convenient way to get R to calculate the LRT $\chi^{2}$ p-value for you is to use the `drop1()` function.
+A convenient way to get R to calculate the LRT $\chi^{2}$ p-value for you is to specify the `test=LRT` inside the `anova` function.
 
 ```{r}
-drop1(m1, test='Chi')
+anova(m1, test='LRT')
 ```
 
 The inference of this can be confirmed by looking at the AIC values of the two models as well.
@@ -289,8 +293,8 @@ To investigate how to interpret these effects, we will consider an example of th
 
 We can fit the saturated model (6 parameters to fit 6 different probabilities) as
 ```{r}
-data(babyfood, package='faraway')
-babyfood
+data('babyfood', package='faraway')
+head(babyfood)
 ```
 ```{r}
 m2 <- glm( cbind(disease,nondisease) ~ sex * food, family=binomial, data=babyfood )
@@ -300,14 +304,14 @@ summary(m2)
 
 It is nice to look at the single term deletions to see if the interaction term could be dropped from the model.
 ```{r}
-drop1(m2, test='Chi')
+anova(m2, test='LRT')
 ```
 
 
 Given this, we will look use the reduced model with out the interaction and check if we could reduce the model any more.
 ```{r}
 m1 <- glm( cbind(disease, nondisease) ~ sex + food, family=binomial, data=babyfood)
-drop1(m1, test='Chi')
+drop1(m1, test='Chi')  # all single term deletions, using LRT 
 ```
 
 From this we see that we cannot reduce the model any more and we will interpret the coefficients of this model.
@@ -347,7 +351,7 @@ We should be careful in drawing conclusions here because this study was a retros
 To demonstrate the ideas in this section, we'll use a toxicology study that examined insect mortality as a function of increasing concentrations of an insecticide. 
 
 ```{r}
-data(bliss, package='faraway')
+data('bliss', package='faraway')
 ```
 
 We first fit the logistic regression model and plot the results
@@ -381,6 +385,13 @@ ggplot(bliss, aes(x=conc)) +
   xlab('Concentration') + ylab('Proportion Alive')
 ```
 
+Alternatively, we might want to do this calculation via `lsmeans`.
+
+```{r}
+lsmeans::lsmeans(m1, ~conc, at=list(conc=c(0:4)), type='response') 
+```
+
+
 The next thing we want to do is come up with a confidence intervals for the concentration level that results in the death of $100(p)\%$ of the insects. Often we are interested in the case of $p=0.5$. This is often called LD50, which is the lethal dose for 50% of the population. Using the link function you can set the $p$ value and solve for the concentration value to find 
 $$\hat{x}_{p}=\frac{\textrm{logit}\left(p\right)-\hat{\beta}_{0}}{\hat{\beta}_{1}}$$
 which gives us a point estimate of LD(p). To get a confidence interval we need to find the standard error of $\hat{x}_{p}$. Since this is a non-linear function of $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ which are correlated, we must be careful in the calculation. The actual calculation is done using the Delta Method Approximation:
@@ -388,7 +399,7 @@ $$Var\left(g\left(\hat{\boldsymbol{\theta}}\right)\right)=g'\left(\boldsymbol{\t
 Fortunately we don't have to do these calculations by hand and can use the `dose.p()` function in the `MASS` package. 
 
 ```{r}
-LD <- dose.p(m1, p=c(.25, .5, .75))
+LD <- MASS::dose.p(m1, p=c(.25, .5, .75))
 LD
 ```
 
@@ -440,8 +451,6 @@ ggplot(sim.data, aes(x=var, y=..density..)) +
 
 We see that the sample variances fall neatly about the true variance of $2.4$ in the case where the data is distributed with a constant value for $p$. However adding a small amount of random noise about the parameter $p$, and we'd have more variance in the samples.
 
-fig.height=4
-N <- 1000 
 The extra uncertainty of the probability of success results in extra variability in the responses. 
 
 We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed 
@@ -499,7 +508,6 @@ and note that this is quite a bit larger than $1$, which is what it should be in
 
 ```{r}
 drop1(m, scale=sigma2, test='F')
-
 ```
 and conclude that both location and period are significant predictors of trout egg survivorship. 
 
@@ -510,18 +518,15 @@ m2 <- glm(cbind(survive,perish) ~ location + period,
           family=quasibinomial, data=troutegg) 
 summary(m2)
 drop1(m2, test='F')
+# anova(m2, test='F')
 ```
 
 While each of the time periods is different than the first, it looks like periods 7,8, and 11 are different from each other. As usual, we need to turn to the `lsmeans` package.
 
 ```{r}
-lsmeans(m2, pairwise~period)
+lsmeans(m2, pairwise~period) %>% cld(Letters=letters)
 ```
 
-We would like the letter groups as well.
-```{r}
-cld(lsmeans(m2, pairwise~period), Letters=letters)
-```
 
 Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately lme4 supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.
 

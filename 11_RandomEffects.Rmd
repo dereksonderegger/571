@@ -14,7 +14,8 @@ library(tidyverse)  # dplyr, tidyr, ggplot
 library(stringr)    # string manipulation stuff
 
 library(lme4)       # Our primary analysis routine
-library(lsmeans)    # Pairwise contrasts
+#library(lmerTest)    # A user friendly interface to lme4 that produces p-values
+library(lsmeans)     # Pairwise contrasts
 
 # library(devtools)
 # install_github('dereksonderegger/dsData')  # datasets I've made; only install once...
@@ -155,11 +156,11 @@ coef(m)
 
 The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28
  
-To fit the random effects model we will use the package `lme4` which stands for Linear Mixed Effects and the 4 represents that the package is written in the S4 dialect of R (which means a few things will be new to us).
+To fit the random effects model we will use the package `lmerTest` which is a nicer user interface to the package `lme4`. The reason we won't use `lme4` directly is that the authors of `lme4` refuse to calculate p-values. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don't know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of `lme4` are adamant that until robust methods are developed, they prefer to not calculate any p-values. There are other packages out there that recognize that we need approximate p-values and the package `lmerTest` provides reasonable answers that match was SAS calculates.
 
 ```{r, warning=FALSE, message=FALSE}
 m2 <- lmer( bright ~ 1 + (1|operator), data=pulp )
-summary(m2)
+summary(m2)  # because there are no fixed effects, lmerTest bailed out to lme4.
 ```
 
 Notice that the estimate of the fixed effect (the overall mean) is the same in the fixed-effects ANOVA and in the mixed model. However the fixed effects ANOVA estimates the effect of each operator while the mixed model is interested in estimating the variance between operators. In the model statement the (1|operator) denotes the random effect and this notation tells us to fit a model with a random intercept term for each operator. Here the variance associated with the operators is $\sigma_{\gamma}^{2}=0.068$ while the “pure error” is $\sigma_{\epsilon}^{2}=0.106$. The column for standard deviation is not the variability associated with our estimate, but is simply the square-root of the variance terms $\sigma_{\gamma}$ and $\sigma_{\epsilon}$. This was fit using the REML method. 
@@ -182,7 +183,7 @@ Blocks are properties of experimental designs and usually we are not interested 
 Recall the agriculture experiment in the dataset `oatvar` from the `faraway` package. We had 8 different varieties of oats and we had 5 different fields (which we called blocks).  Because of limitations on how we plant, we could only divide the blocks into 8 plots and in each plot we planted one of the varieties.  
 
 ```{r}
-library(faraway)
+data('oatvar', package='faraway')
 ggplot(oatvar, aes(y=yield, x= variety)) + 
   geom_point() +
   facet_wrap(~block, labeller=label_both)
@@ -199,14 +200,13 @@ anova(model.0, model.1)
 Notice that this is doing a Likelihood Ratio Test 
 $$-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24$$
 
-This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. R doesn't do this by default because there isn't a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the `car::Anova` function.
+This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. 
 
 ```{r}
-# car::Anova(model.1, type=3, test.statistic='F')  # Using Wald F tests; won't give a LRT
-car::Anova(model.1, type=3)  # Type III anova table (just as we've had before)
+anova(model.1)
 ```
 
-By default, `car::Anova() is the Wald Chi-Square test instead of the LRT, and should be reasonable. Using `test.statistic='F'` will give another test, but `car::Anova()` refuses to do a LRT because the `car` package authors believe that the Wald tests are more appropriate. There is quite a bit of debate among statisticians about which test should be recommended and this is an active area of research. Recent work suggests that permutate based tests are most widely applicable, but reasonably general software has not yet emerged (to my knowledge). Fortunately in this case, we don't see any qualitative difference because the variety term is still statisitcally significant.
+There is quite a bit of debate among statisticians about which test should be recommended in different scenarios using random effects and this is an active area of research. In this case, instead of performing a LRT, the `lmerTest` package opted to use a Satterthwaite approximation.
 
 Now that we have chosen our model, we can examine is model.
 ```{r}
@@ -217,12 +217,13 @@ We start with the Random effects.  This section shows us the *block-to-block* va
 
 Why do we care about this? This actually tells us quite a lot about the spatial variability.  Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.  
 
-Next we turn to the fixed effects.  These will be the offsets from the reference group, as we've typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don't have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don't know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of `lme4` are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package `nlme`) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit. 
+Next we turn to the fixed effects.  These will be the offsets from the reference group, as we've typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), 
 
-We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `lsmeans`, which automates much of this.
+We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `lsmeans`, which automates much of this (and uses `lmerTest` produced p-values for the tests).
 
 ```{r, warning=FALSE, message=FALSE}
-LetterResults <- lsmeans( model.1, pairwise ~ variety) %>% cld(Letters=letters)
+# currently lmerTest and lsmeans packages fight and we have to specify which package to use
+LetterResults <- lsmeans::lsmeans( model.1, pairwise ~ variety) %>% cld(Letters=letters)
 LetterResults
 ```
 
@@ -253,18 +254,18 @@ It looks like there is definitely a `Blend` effect (e.g. Blend1 is much better t
 ```{r}
 model.0 <- lmer(yield ~  1    + (1 | blend), data=penicillin)
 model.1 <- lmer(yield ~ treat + (1 | blend), data=penicillin)
-anova(model.0, model.1)
+anova(model.0, model.1)  # Analysis using a LRT
 ```
 
 ```{r}
-car::Anova(model.1, type=3)
+anova(model.1)  # using whatever lmerTest thinks is appropriate 
 ```
 
 
 It looks like we don't have a significant effect of the treatments. Next we'll examine the simple model to understand the variability.
 
 ```{r}
-summary(model.0)
+summary(model.0)   # the lack of fixed effects caused lmerTest to revert to lme4
 ```
 
 We see that the noise is more in the within blend rather than the between blends.  If my job were to understand the variability and figure out how to improve production, this suggests that understanding the both how variability is introduced at the blend level *and* at the run level.  The run level has slightly more variability, so I might start there.
@@ -299,7 +300,7 @@ So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When
 # The following model definitions are equivalent
 model <- lmer(yield ~ Irrigation + Fertilizer + (1|plot) + (1|plot:subplot), data=AgData )
 model <- lmer(yield ~ Irrigation + Fertilizer + (1|plot/subplot), data=AgData)
-car::Anova(model, type=3)
+anova(model)
 ```
 As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We'll remove the irrigation covariate and refit the model.
 
@@ -336,12 +337,12 @@ ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
 We can easily fit this model using random effects for each ring.
 ```{r}
 model <- lmer( y ~ Trt + (1|Ring), data=HierarchicalData )
-car::Anova(model, type=3)
+anova(model)
 ```
 
 To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the `predict` function, but now we have the option of including the random effects or not. 
 
-First lets consider the predicted values if we completely ignore the Ring random effect.
+First lets consider the predicted values if we completely ignore the Ring random effect while making predictions.
 
 ```{r}
 HierarchicalData <- HierarchicalData %>%
@@ -404,7 +405,7 @@ where $L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)$, $T_{ij}\stackre
 We need a convenient way to tell `lmer` which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell `lmer` to create it and use it). Likewise there are 24 sub-samples and 48 “pure” random effects.
 
 ```{r}
-data(eggs, package='faraway')
+data('eggs', package='faraway')
 model <- lmer( Fat ~ 1 + (1|Lab) + (1|Lab:Technician) +
                      (1|Lab:Technician:Sample), data=eggs)
 model <- lmer( Fat ~ 1 + (1|Lab/Technician/Sample), data=eggs)
@@ -416,7 +417,7 @@ eggs <- eggs %>%
 ggplot(eggs, aes(x=Sample, y=Fat)) + 
   geom_point() +
   geom_line(aes(y=yhat, x=as.integer(Sample)), color='red') +
-  facet_grid(. ~ Lab+Technician) +
+  facet_grid(. ~ Lab:Technician) +
   ggtitle('Average Value Only')
 ```
 
@@ -457,7 +458,7 @@ summary(model)
 ```
 
 ## Crossed Effects
-If two effects are not nested, we say they are *crossed(. In the penicillin example, the treatments and blends were not nested and are therefore crossed. 
+If two effects are not nested, we say they are *crossed*. In the penicillin example, the treatments and blends were not nested and are therefore crossed. 
 
 An example is a Latin square experiment to look the effects of abrasion on four different material types (A, B, C, and D). We have a machine to do the abrasion test with four positions and we did 4 different machine runs. Our data looks like the following setup:
 ```{r, echo=FALSE}
@@ -480,7 +481,7 @@ It certainly looks like the materials are different.  I don't think the run matt
 
 ```{r}
 m <- lmer( wear ~ material + (1|run) + (1|position), data=abrasion)
-car::Anova(m, type=3)
+anova(m)
 ```
 
 The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
@@ -492,14 +493,14 @@ So material D is in between materials B and C for abrasion resistance.
 ```{r}
 summary(m)
 ```
-Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run effect.
+Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.
 
 ```{r}
 m2 <- lmer( wear ~ material + (1|position), data=abrasion)
 anova(m, m2)
 ```
 
-Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model have a lower AIC) and so we could interpret this as decent evidence for a run effect.  Similarly the Likelihood Ratio Test gives a p-value of about $0.02$. So while the run effect wasn't visible in our initial graph, it looks like it is a statistically significant effect.
+Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect.  Similarly the Likelihood Ratio Test gives a p-value of about $0.02$. So while the run effect wasn't visible in our initial graph, it looks like it is a statistically significant effect.
 
 ## Repeated Measures / Longitudinal Studies
 
@@ -510,7 +511,7 @@ In this case the correlation structure is that observations on the same person/o
 To demonstrate a longitudinal study we turn to the data set `sleepstudy` in the `lme4` library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.
 
 ```{r}
-data(sleepstudy, package='lme4')
+data('sleepstudy', package='lme4')
 ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
     facet_wrap(~ Subject, ncol=6) + 
     geom_point() + 
@@ -559,8 +560,6 @@ anova(m1, m2)
 ```
 
 Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.
-
-
 
 It is instructive to look at this example from the top down. First we plot the population regression line.
 ```{r}
@@ -612,7 +611,7 @@ summary(m2)
     d. Test the significance of the supplier effect.
     e. Is there a significant difference between the operators?
 
-3. An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 rats and divided them into three groups.  The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats' growth.
+3. An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups.  The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats' growth. The data are available in the `faraway` package as `ratdrink`.
 *I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.* The following R code might be helpful for the initial visualization.
     ```{r, eval=FALSE}
     # we need to force ggplot to only draw lines between points for the same

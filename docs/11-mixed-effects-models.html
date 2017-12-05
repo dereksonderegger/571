@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-11-16">
+<meta name="date" content="2017-12-05">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -265,7 +265,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">library</span>(stringr)    <span class="co"># string manipulation stuff</span>
 
 <span class="kw">library</span>(lme4)       <span class="co"># Our primary analysis routine</span>
-<span class="kw">library</span>(lsmeans)    <span class="co"># Pairwise contrasts</span>
+<span class="co">#library(lmerTest)    # A user friendly interface to lme4 that produces p-values</span>
+<span class="kw">library</span>(lsmeans)     <span class="co"># Pairwise contrasts</span>
 
 <span class="co"># library(devtools)</span>
 <span class="co"># install_github(&#39;dereksonderegger/dsData&#39;)  # datasets I&#39;ve made; only install once...</span>
@@ -369,9 +370,9 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright <span class="
 <pre><code>## (Intercept)   operator1   operator2   operator3 
 ##       60.40       -0.16       -0.34        0.22</code></pre>
 <p>The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28</p>
-<p>To fit the random effects model we will use the package <code>lme4</code> which stands for Linear Mixed Effects and the 4 represents that the package is written in the S4 dialect of R (which means a few things will be new to us).</p>
+<p>To fit the random effects model we will use the package <code>lmerTest</code> which is a nicer user interface to the package <code>lme4</code>. The reason we won’t use <code>lme4</code> directly is that the authors of <code>lme4</code> refuse to calculate p-values. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. There are other packages out there that recognize that we need approximate p-values and the package <code>lmerTest</code> provides reasonable answers that match was SAS calculates.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( bright <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>operator), <span class="dt">data=</span>pulp )
-<span class="kw">summary</span>(m2)</code></pre></div>
+<span class="kw">summary</span>(m2)  <span class="co"># because there are no fixed effects, lmerTest bailed out to lme4.</span></code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: bright ~ 1 + (1 | operator)
 ##    Data: pulp
@@ -408,7 +409,7 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright <span class="
 <h2><span class="header-section-number">11.3</span> Blocks as Random Variables</h2>
 <p>Blocks are properties of experimental designs and usually we are not interested in the block levels <em>per se</em> but need to account for the variability introduced by them.</p>
 <p>Recall the agriculture experiment in the dataset <code>oatvar</code> from the <code>faraway</code> package. We had 8 different varieties of oats and we had 5 different fields (which we called blocks). Because of limitations on how we plant, we could only divide the blocks into 8 plots and in each plot we planted one of the varieties.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
 <span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span> variety)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>block, <span class="dt">labeller=</span>label_both)</code></pre></div>
@@ -428,18 +429,12 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Notice that this is doing a Likelihood Ratio Test <span class="math display">\[-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24\]</span></p>
-<p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate. R doesn’t do this by default because there isn’t a completely reliable algorithm for figuring out the correct degrees of freedom for the residual. One way you can get these is to use the <code>car::Anova</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># car::Anova(model.1, type=3, test.statistic=&#39;F&#39;)  # Using Wald F tests; won&#39;t give a LRT</span>
-car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)  <span class="co"># Type III anova table (just as we&#39;ve had before)</span></code></pre></div>
-<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
-## 
-## Response: yield
-##               Chisq Df Pr(&gt;Chisq)    
-## (Intercept) 252.605  1  &lt; 2.2e-16 ***
-## variety      57.987  7  3.803e-10 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>By default, <code>car::Anova() is the Wald Chi-Square test instead of the LRT, and should be reasonable. Using</code>test.statistic=‘F’<code>will give another test, but</code>car::Anova()<code>refuses to do a LRT because the</code>car` package authors believe that the Wald tests are more appropriate. There is quite a bit of debate among statisticians about which test should be recommended and this is an active area of research. Recent work suggests that permutate based tests are most widely applicable, but reasonably general software has not yet emerged (to my knowledge). Fortunately in this case, we don’t see any qualitative difference because the variety term is still statisitcally significant.</p>
+<p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model.<span class="dv">1</span>)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+##         Df Sum Sq Mean Sq F value
+## variety  7  77524   11075  8.2839</code></pre>
+<p>There is quite a bit of debate among statisticians about which test should be recommended in different scenarios using random effects and this is an active area of research. In this case, instead of performing a LRT, the <code>lmerTest</code> package opted to use a Satterthwaite approximation.</p>
 <p>Now that we have chosen our model, we can examine is model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">1</span>)</code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
@@ -480,9 +475,10 @@ car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv
 ## variety8 -0.550  0.500  0.500  0.500  0.500  0.500  0.500</code></pre>
 <p>We start with the Random effects. This section shows us the <em>block-to-block</em> variability (and the square root of that, the Standard Deviation) as well as the “pure-error”, labeled residuals, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted <em>within</em> the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.</p>
 <p>Why do we care about this? This actually tells us quite a lot about the spatial variability. Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.</p>
-<p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), but we don’t have any p-values denoting if these differences could be due to random chance or if the differences are statistical significant. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. A previous version of this software (package <code>nlme</code>) will produce p-values but at the cost of flexibility in the types of mixed models that can be fit.</p>
-<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package <code>lsmeans</code>, which automates much of this.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LetterResults &lt;-<span class="st"> </span><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)
+<p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1),</p>
+<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package <code>lsmeans</code>, which automates much of this (and uses <code>lmerTest</code> produced p-values for the tests).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># currently lmerTest and lsmeans packages fight and we have to specify which package to use</span>
+LetterResults &lt;-<span class="st"> </span>lsmeans<span class="op">::</span><span class="kw">lsmeans</span>( model.<span class="dv">1</span>, pairwise <span class="op">~</span><span class="st"> </span>variety) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)
 LetterResults</code></pre></div>
 <pre><code>##  variety lsmean       SE    df lower.CL upper.CL .group
 ##  4        286.8 21.03996 15.26 242.0196 331.5804  a    
@@ -516,7 +512,7 @@ LetterResults</code></pre></div>
 <p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st">  </span><span class="dv">1</span>    <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
 model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)
-<span class="kw">anova</span>(model.<span class="dv">0</span>, model.<span class="dv">1</span>)</code></pre></div>
+<span class="kw">anova</span>(model.<span class="dv">0</span>, model.<span class="dv">1</span>)  <span class="co"># Analysis using a LRT</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: penicillin
 ## Models:
@@ -525,17 +521,12 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 ##         Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)
 ## model.0  3 127.33 130.31 -60.662   121.33                         
 ## model.1  6 129.28 135.25 -58.639   117.28 4.0474      3     0.2564</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">car<span class="op">::</span><span class="kw">Anova</span>(model.<span class="dv">1</span>, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
-## 
-## Response: yield
-##                 Chisq Df Pr(&gt;Chisq)    
-## (Intercept) 1152.0000  1     &lt;2e-16 ***
-## treat          3.7168  3     0.2937    
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model.<span class="dv">1</span>)  <span class="co"># using whatever lmerTest thinks is appropriate </span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+##       Df Sum Sq Mean Sq F value
+## treat  3     70  23.333  1.2389</code></pre>
 <p>It looks like we don’t have a significant effect of the treatments. Next we’ll examine the simple model to understand the variability.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">0</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">0</span>)   <span class="co"># the lack of fixed effects caused lmerTest to revert to lme4</span></code></pre></div>
 <pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
 ## Formula: yield ~ 1 + (1 | blend)
 ##    Data: penicillin
@@ -566,16 +557,11 @@ model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">l
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following model definitions are equivalent</span>
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">:</span>subplot), <span class="dt">data=</span>AgData )
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)
-car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
-## 
-## Response: yield
-##                Chisq Df Pr(&gt;Chisq)    
-## (Intercept) 178.0285  1  &lt; 2.2e-16 ***
-## Irrigation    3.4281  1     0.0641 .  
-## Fertilizer   30.9421  1  2.658e-08 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<span class="kw">anova</span>(model)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+##            Df  Sum Sq Mean Sq F value
+## Irrigation  1  3.4769  3.4769  3.4281
+## Fertilizer  1 31.3825 31.3825 30.9421</code></pre>
 <p>As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We’ll remove the irrigation covariate and refit the model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)
 <span class="kw">summary</span>(model)</code></pre></div>
@@ -620,17 +606,12 @@ car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="d
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-217-1.png" width="672" /></p>
 <p>We can easily fit this model using random effects for each ring.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y <span class="op">~</span><span class="st"> </span>Trt <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring), <span class="dt">data=</span>HierarchicalData )
-car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
-## 
-## Response: y
-##               Chisq Df Pr(&gt;Chisq)    
-## (Intercept) 270.952  1  &lt; 2.2e-16 ***
-## Trt          11.435  2   0.003288 ** 
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<span class="kw">anova</span>(model)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+##     Df Sum Sq Mean Sq F value
+## Trt  2  10776  5388.1  5.7176</code></pre>
 <p>To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the <code>predict</code> function, but now we have the option of including the random effects or not.</p>
-<p>First lets consider the predicted values if we completely ignore the Ring random effect.</p>
+<p>First lets consider the predicted values if we completely ignore the Ring random effect while making predictions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">HierarchicalData &lt;-<span class="st"> </span>HierarchicalData <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>),  <span class="co"># don&#39;t include any random effects </span>
           <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),
@@ -664,7 +645,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(model, <span class="d
 <p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.</p>
 <p>In terms of notation, we will refer to the 6 labs as <span class="math inline">\(L_{i}\)</span> and the lab technicians as <span class="math inline">\(T_{ij}\)</span> and we note that <span class="math inline">\(j\)</span> is either 1 or 2 which doesn’t uniquely identify the technician unless we include the lab subscript as well. Finally the sub-samples are nested within the technicians and we denote them as <span class="math inline">\(S_{ijk}\)</span>. Finally our “pure” error is the two measurements from the same sub-sample. So the model we wish to fit is: <span class="math display">\[y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}\]</span> where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)\)</span>, <span class="math inline">\(T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)\)</span>, <span class="math inline">\(S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)\)</span>, <span class="math inline">\(\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>.</p>
 <p>We need a convenient way to tell <code>lmer</code> which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell <code>lmer</code> to create it and use it). Likewise there are 24 sub-samples and 48 “pure” random effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(eggs, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;eggs&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician) <span class="op">+</span>
 <span class="st">                     </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician<span class="op">:</span>Sample), <span class="dt">data=</span>eggs)
 model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample), <span class="dt">data=</span>eggs)</code></pre></div>
@@ -673,7 +654,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">:</span>Technician) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average Value Only&#39;</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-225-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span>
@@ -727,7 +708,7 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 </div>
 <div id="crossed-effects" class="section level2">
 <h2><span class="header-section-number">11.5</span> Crossed Effects</h2>
-<p>If two effects are not nested, we say they are *crossed(. In the penicillin example, the treatments and blends were not nested and are therefore crossed.</p>
+<p>If two effects are not nested, we say they are <em>crossed</em>. In the penicillin example, the treatments and blends were not nested and are therefore crossed.</p>
 <p>An example is a Latin square experiment to look the effects of abrasion on four different material types (A, B, C, and D). We have a machine to do the abrasion test with four positions and we did 4 different machine runs. Our data looks like the following setup:</p>
 <table style="width:86%;">
 <colgroup>
@@ -784,15 +765,10 @@ model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span clas
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
 <p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)
-car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">type=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>## Analysis of Deviance Table (Type III Wald chisquare tests)
-## 
-## Response: wear
-##                Chisq Df Pr(&gt;Chisq)    
-## (Intercept) 1201.030  1  &lt; 2.2e-16 ***
-## material      75.453  3  2.897e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<span class="kw">anova</span>(m)</code></pre></div>
+<pre><code>## Analysis of Variance Table
+##          Df Sum Sq Mean Sq F value
+## material  3 4621.5  1540.5  25.151</code></pre>
 <p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m, <span class="dt">specs=</span>pairwise<span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </code></pre></div>
 <pre><code>##  material lsmean       SE   df lower.CL upper.CL .group
@@ -836,7 +812,7 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 ## materialB -0.361              
 ## materialC -0.361  0.500       
 ## materialD -0.361  0.500  0.500</code></pre>
-<p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run effect.</p>
+<p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)
 <span class="kw">anova</span>(m, m2)</code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
@@ -849,14 +825,14 @@ car<span class="op">::</span><span class="kw">Anova</span>(m, <span class="dt">t
 ## m   7 134.32 139.73 -60.162   120.32 5.4164      1    0.01995 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model have a lower AIC) and so we could interpret this as decent evidence for a run effect. Similarly the Likelihood Ratio Test gives a p-value of about <span class="math inline">\(0.02\)</span>. So while the run effect wasn’t visible in our initial graph, it looks like it is a statistically significant effect.</p>
+<p>Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect. Similarly the Likelihood Ratio Test gives a p-value of about <span class="math inline">\(0.02\)</span>. So while the run effect wasn’t visible in our initial graph, it looks like it is a statistically significant effect.</p>
 </div>
 <div id="repeated-measures-longitudinal-studies" class="section level2">
 <h2><span class="header-section-number">11.6</span> Repeated Measures / Longitudinal Studies</h2>
 <p>In repeated measurement experiments, repeated observations are taken on each subject. When those repeated measurements are taken over a sequence of time, we call it a longitudinal study. Typically covariates are also observed at the same time points and we are interested in how the response is related to the covariates.</p>
 <p>In this case the correlation structure is that observations on the same person/object should be more similar than observations between two people/objects. As a result we need to account for repeated measures by including the person/object as a random effect.</p>
 <p>To demonstrate a longitudinal study we turn to the data set <code>sleepstudy</code> in the <code>lme4</code> library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(sleepstudy, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;sleepstudy&#39;</span>, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)
 <span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span>
@@ -1013,7 +989,7 @@ sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</spa
 <li>Test the significance of the supplier effect.</li>
 <li>Is there a significant difference between the operators?</li>
 </ol></li>
-<li><p>An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 rats and divided them into three groups. The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats’ growth. <em>I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.</em> The following R code might be helpful for the initial visualization.</p>
+<li><p>An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups. The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats’ growth. The data are available in the <code>faraway</code> package as <code>ratdrink</code>. <em>I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.</em> The following R code might be helpful for the initial visualization.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># we need to force ggplot to only draw lines between points for the same</span>
 <span class="co"># rat.  If I haven&#39;t already defined some aesthetic that is different</span>
 <span class="co"># for each rat, then it will connect points at the same week but for different</span>
