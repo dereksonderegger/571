@@ -19,10 +19,6 @@ knitr::opts_chunk$set( fig.height=3 )
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)   # dplyr, tidyr, ggplot2, etc...
 library(lsmeans)
-# Usual library loading stuff
-#library(multcomp); library(multcompView)
-#library(MASS)
-#library(faraway)
 ```
 
 

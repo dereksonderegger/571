@@ -262,11 +262,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="binomial-regression" class="section level1">
 <h1><span class="header-section-number">Chapter 12</span> Binomial Regression</h1>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2, etc...</span>
-<span class="kw">library</span>(lsmeans)
-<span class="co"># Usual library loading stuff</span>
-<span class="co">#library(multcomp); library(multcompView)</span>
-<span class="co">#library(MASS)</span>
-<span class="co">#library(faraway)</span></code></pre></div>
+<span class="kw">library</span>(lsmeans)</code></pre></div>
 <p>The general linear model assumes that the observed data is distributed <span class="math display">\[\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0,\sigma^2)\]</span> which can be re-written as <span class="math display">\[\boldsymbol{y}\sim N\left(\boldsymbol{\mu}=\boldsymbol{X\beta},\sigma^{2}\boldsymbol{I}\right)\]</span> and notably this assumes that the data are independent. This model has <span class="math inline">\(E\left[\boldsymbol{y}\right]=\boldsymbol{X\beta}\)</span>. This model is quite flexible and includes:</p>
 <table>
 <colgroup>
