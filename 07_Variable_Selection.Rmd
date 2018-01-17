@@ -22,7 +22,7 @@ Given a set of data, we are interested in selecting the best subset of predictor
 
 2. Unnecessary predictors add noise to the estimates of other quantities and will waste degrees of freedom, possibly increasing the estimate of $\hat{\sigma}^{2}$.
 
-3. We might have variables that are collinear.
+3. We might have variables that are co-linear.
 
 The problems that arise in the diagnostics of a model will often lead a researcher to consider other models, for example to include a quadratic term to account for curvature. The model building process is often an iterative procedure where we build a model, examine the diagnostic plots and consider what could be added or modified to correct issues observed.
 
@@ -175,7 +175,7 @@ $$BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\ri
 
 and this criterion punishes large models more than AIC does (because $\log n>2$ for $n\ge8$)
 
-The AIC value of a linear model can be found using the AIC() on a lm() object.
+The AIC value of a linear model can be found using the AIC() on a `lm()`() object.
 
 ```{r}
 AIC(m1)
@@ -207,7 +207,7 @@ m <- lm(Life.Exp ~ 1, data=state.data)
 add1(m, scope=biggest)  # what is the best addition to make?
 ```
 
-Clearly the additiona of `Murder` to the model results in the lowest AIC value, so we will add `Murder` to the model. Notice the `<none>` row corresponds to the model m which we started with and it has a `RSS=88.299`. For each model considered, R will calculate the `RSS_{C}` for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.
+Clearly the addition of `Murder` to the model results in the lowest AIC value, so we will add `Murder` to the model. Notice the `<none>` row corresponds to the model m which we started with and it has a `RSS=88.299`. For each model considered, R will calculate the `RSS_{C}` for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.
 
 ```{r}
 m <- update(m, . ~ . + Murder)  # add murder to the model
@@ -269,6 +269,6 @@ Using these results, we can calculate the difference in AIC values to be the sam
     a. Backward elimination using the analysis of variance F-statistic as the criteria.
     b. Forward selection using AIC as the criteria.
 
-2. Again from the `faraway` package, use the `divusa` which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use `divorce` as the response variable and all other variables as the predictors.
+2. Again from the `faraway` package, use the `divusa` which has divorce rates for each year from 1920-1996 along with other population information for each year. Use `divorce` as the response variable and all other variables as the predictors.
     a. Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test='F' to use an F-test instead of AIC.
     b. Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?

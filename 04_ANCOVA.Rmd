@@ -127,7 +127,7 @@ y_{3,3}
 \end{array}\right]
 $$ 
 
-In this model, $\beta_0$ is the y-intercept for group $1$. The paramter $\beta_1$ is the vertical offset from the reference group (group $1$) for the second group.  Similarly $\beta_2$ is the vertical offset for group $3$. All groups will share the same slope, $\beta_4$.  
+In this model, $\beta_0$ is the y-intercept for group $1$. The parameter $\beta_1$ is the vertical offset from the reference group (group $1$) for the second group.  Similarly $\beta_2$ is the vertical offset for group $3$. All groups will share the same slope, $\beta_4$.  
 
 ## Lines with different slopes (aka Interaction model)
 
@@ -257,7 +257,7 @@ Moving onto the next most complicated model, where each species has their own y-
 summary(m2)$coefficients %>% round(digits=3)  
 ```
 
-The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to *Setosa* and *Versicolor*, respectively. We have that the slope associated with increasing Sepal Length is significant and that *Setosa* has a statistically different y-intercept than the reference group *Virginica* and that *Versicolor* does not have a statstically different y-intercept than the reference group.
+The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to *Setosa* and *Versicolor*, respectively. We have that the slope associated with increasing Sepal Length is significant and that *Setosa* has a statistically different y-intercept than the reference group *Virginica* and that *Versicolor* does not have a statistically different y-intercept than the reference group.
 
 Finally we consider the most complicated model that includes two more slope parameters
 ```{r}
@@ -275,13 +275,13 @@ These parameters are:
  *offset to slope for Setosa*            |  Sepal.Length:Speciessetosa     
  *offset to slope for Versicolor*        |  Sepal.Length:Speciesversicolor 
 
-It appears that slope for *Setosa* is different from the reference group *Virginica*. However because we've added $2$ parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope.  Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two paramters.
+It appears that slope for *Setosa* is different from the reference group *Virginica*. However because we've added $2$ parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope.  Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.
 
 ```{r}
 anova(m2, m3)
 ```
 
-The F-test concludes that there is sufficent decrease in the SSE to justify adding two additional parameters to the model. 
+The F-test concludes that there is sufficient decrease in the SSE to justify adding two additional parameters to the model. 
 
 ## Exercises
 
@@ -292,14 +292,14 @@ The F-test concludes that there is sufficent decrease in the SSE to justify addi
         data(phbirths)      # load the data within the package
         ?phbirths
         ```
-    b. Create a plot of the birthweight vs the gestational age. Color code the points based on the mother's smoking status. Does it appear that smoking matters?
+    b. Create a plot of the birth weight vs the gestational age. Color code the points based on the mother's smoking status. Does it appear that smoking matters?
     c. Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data.  Which model is preferred?
     d. Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).
     e. Now consider only the "full term babies" which are babies with gestational age at birth $\ge 36$ weeks. With this reduced dataset, repeat parts c,d.
-    f. Interpret the relationship between gestational length and mother's smoking status on birthweight.
+    f. Interpret the relationship between gestational length and mother's smoking status on birth weight.
 
 
-2. The in the `faraway` package, there is a dataset named `clot` that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma.  Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time. 
+2. The in the `faraway` package, there is a dataset named `clot` that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma.  Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to ascertain if the lot number makes any difference in clotting time. 
     a. Log transform the `time` and `conc` variable and plot the log-transformed data with color of the data point indicating the lot number. 
     b. Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does `lot` matter?
 

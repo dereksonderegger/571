@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -398,7 +398,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-254-1.png" width="672" /></p>
-<p>Suppose that we were to give a predicted Presense/Absense class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presense if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
+<p>Suppose that we were to give a predicted Presence/Absence class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) 
@@ -408,7 +408,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 ## Truth  0  1
 ##     0 21  1
 ##     1  2  6</code></pre>
-<p>This scheme has misclassified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.</p>
+<p>This scheme has mis-classified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.</p>
 </div>
 <div id="deviance" class="section level2">
 <h2><span class="header-section-number">12.2</span> Deviance</h2>
@@ -489,7 +489,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <li><p>I think the probability that she will not spit up on me today is <span class="math inline">\(p_{1}=0.10\)</span>. My wife disagrees and believes the probability is <span class="math inline">\(p_{2}=0.01\)</span>. We can look at those probabilities and recognize that we differ in our assessment by a factor of <span class="math inline">\(10\)</span> because <span class="math inline">\(10=p_{1}/p_{2}\)</span>. If we had assessed the chance of her spitting up using odds, I would have calculated <span class="math inline">\(o_{1}=0.1/0.9=1/9\)</span>. My wife, on the other hand, would have calculated <span class="math inline">\(o_{2}=.01/.99=1/99\)</span>. The odds ratio of these is <span class="math inline">\(\left[1/9\right] / \left[1/99\right] = 99/9 =11\)</span>. This shows that she is much more certain that the event will not happen and the multiplying factor of the pair of odds is 11.</p></li>
 <li><p>But what if we were to consider the probability that my daughter will spit up? The probabilities assigned by me versus my wife are <span class="math inline">\(p_{1}=0.9\)</span> and <span class="math inline">\(p_{2}=0.99\)</span>. How should I assess that our probabilities differ by a factor of 10, because <span class="math inline">\(p_{1}/p_{2}=0.91\ne10\)</span>? The odds ratio remains the same calculation, however. The odds I would give are <span class="math inline">\(o_1=.9/.1=9\)</span> vs my wife’s odds <span class="math inline">\(o_2 = .99/.01 = 99\)</span>. The odds ratio is now <span class="math inline">\(9/99=1/11\)</span> and gives the same information as I calculated from the where we defined a success as my daughter not spitting up.</p></li>
 </ul>
-<p>To try to clear up the verbage we’ll consider a few different cases:</p>
+<p>To try to clear up the verbiage we’ll consider a few different cases:</p>
 <table>
 <colgroup>
 <col width="19%" />
@@ -498,9 +498,9 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 </colgroup>
 <thead>
 <tr class="header">
-<th>Probablity</th>
+<th>Probability</th>
 <th>Odds</th>
-<th>Verbage</th>
+<th>Verbiage</th>
 </tr>
 </thead>
 <tbody>
@@ -545,7 +545,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <th></th>
 <th>Formula <code>f</code></th>
 <th>Breast Milk <code>b</code></th>
-<th>Breast Milk + Suppliment <code>s</code></th>
+<th>Breast Milk + Supplement <code>s</code></th>
 </tr>
 </thead>
 <tbody>
@@ -908,9 +908,9 @@ sigma2</code></pre></div>
 <div id="exercises-11" class="section level2">
 <h2><span class="header-section-number">12.8</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (ie cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.
+<li>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (i.e. cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.
 <ol style="list-style-type: lower-alpha">
-<li>Fit a binomial regression with <code>Class</code> as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that glm wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?</li>
+<li>Fit a binomial regression with <code>Class</code> as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that <code>glm</code> wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?</li>
 <li>Use AIC as the criterion to determine the best subset of variables using the step function.</li>
 <li><p>Use the reduced model to give the estimated probability that a tumor with associated predictor variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Adhes=</span><span class="dv">1</span>, <span class="dt">BNucl=</span><span class="dv">1</span>, <span class="dt">Chrom=</span><span class="dv">3</span>, <span class="dt">Epith=</span><span class="dv">2</span>, <span class="dt">Mitos=</span><span class="dv">1</span>, 

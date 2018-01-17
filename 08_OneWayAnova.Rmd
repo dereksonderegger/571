@@ -117,7 +117,7 @@ lsmeans(m, specs= pairwise~diet) %>%
 
 Here we see that diets $A$ and $D$ are similar to each other, but different than $B$ and $C$ and that $B$ and $C$ are not statistically different from each other at the $0.10$ level.
 
-Often I want to produce the "Compact Letter Display" which identifies which groups are signicantly different. 
+Often I want to produce the "Compact Letter Display" which identifies which groups are significantly different. 
 
 ```{r}
 LetterData <- lsmeans(m, specs= pairwise~diet) %>% 

@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -557,7 +557,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 </table>
 <p><em>Note, if the table is cut off, you can change decrease your font size and have it all show up…</em></p>
 <p>This arrangement of the ANOVA table is referred to as “Type I” sum of squares.</p>
-<p>We can examine this table in the fruit trees example using the anova() command but just passing a single model.</p>
+<p>We can examine this table in the fruit trees example using the <code>anova()</code>() command but just passing a single model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
 <span class="kw">anova</span>( m4 )</code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -662,7 +662,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<p>So we see that each variety is significantly different from all the others and among the pesticides, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are indistigishable as are <span class="math inline">\(B\)</span> and <span class="math inline">\(D\)</span>, but there is a difference between the <span class="math inline">\(A,C\)</span> and <span class="math inline">\(B,D\)</span> groups.</p>
+<p>So we see that each variety is significantly different from all the others and among the pesticides, <span class="math inline">\(A\)</span> and <span class="math inline">\(C\)</span> are indistinguishable as are <span class="math inline">\(B\)</span> and <span class="math inline">\(D\)</span>, but there is a difference between the <span class="math inline">\(A,C\)</span> and <span class="math inline">\(B,D\)</span> groups.</p>
 </div>
 </div>
 <div id="interaction-model" class="section level2">
@@ -970,7 +970,7 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ##   `diff(wool.means)`
 ##                &lt;dbl&gt;
 ## 1         -0.1521536</code></pre>
-<p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The <code>lsmeans</code> package choses to take the average of the cell means.</p>
+<p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The <code>lsmeans</code> package chooses to take the average of the cell means.</p>
 </div>
 </div>
 <div id="exercises-8" class="section level2">
@@ -984,7 +984,7 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 <li>Perform an appropriate statistical test to see if the interaction is statistically significant.</li>
 <li>What do you conclude about the poisons and treatment (application) types?</li>
 </ol></li>
-<li>In the <code>faraway</code> package, the dataset <code>butterfat</code> has information about the the percent of the milk was butterfat (more is better) taken from <span class="math inline">\(n=100\)</span> cows. There are <span class="math inline">\(5\)</span> different breeds of cows and <span class="math inline">\(2\)</span> different ages. We are interested in asessing if <code>Age</code> and <code>Breed</code> affect the butterfat content
+<li>In the <code>faraway</code> package, the dataset <code>butterfat</code> has information about the the percent of the milk was butterfat (more is better) taken from <span class="math inline">\(n=100\)</span> cows. There are <span class="math inline">\(5\)</span> different breeds of cows and <span class="math inline">\(2\)</span> different ages. We are interested in assessing if <code>Age</code> and <code>Breed</code> affect the butterfat content
 <ol style="list-style-type: lower-alpha">
 <li>Graph the data. Do you think an interaction model is justified?</li>
 <li>Perform an appropriate set of tests to select a model for predicting <code>Butterfat</code>.</li>

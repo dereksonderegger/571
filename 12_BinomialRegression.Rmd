@@ -160,7 +160,7 @@ ggplot(Mayflies, aes(x=CCU)) +
 ```
 
 
-Suppose that we were to give a predicted Presense/Absense class based on the $\hat{p}$ value. Lets predict presense if the probability is greater than 0.5 and absent if the the probability is less that 0.5. 
+Suppose that we were to give a predicted Presence/Absence class based on the $\hat{p}$ value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5. 
 
 ```{r}
 Mayflies <- Mayflies %>%
@@ -170,7 +170,7 @@ Mayflies <- Mayflies %>%
 table(Truth = Mayflies$Occupancy, Prediction = Mayflies$chat)
 ```
 
-This scheme has misclassified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.
+This scheme has mis-classified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.
 
 ## Deviance
 
@@ -280,10 +280,10 @@ The second is that it is easier to compare odds than to compare probabilities. F
 
 * But what if we were to consider the probability that my daughter will spit up? The probabilities assigned by me versus my wife are $p_{1}=0.9$ and $p_{2}=0.99$. How should I assess that our probabilities differ by a factor of 10, because $p_{1}/p_{2}=0.91\ne10$? The odds ratio remains the same calculation, however. The odds I would give are $o_1=.9/.1=9$ vs my wife's odds $o_2 = .99/.01 = 99$. The odds ratio is now $9/99=1/11$ and gives the same information as I calculated from the where we defined a success as my daughter not spitting up.
 
-To try to clear up the verbage we'll consider a few different cases:
+To try to clear up the verbiage we'll consider a few different cases:
 
 +----------------+-------------------------------------------+------------------------+
-|  Probablity    |               Odds                        |      Verbage           |
+|  Probability   |               Odds                        |      Verbiage          |
 +================+===========================================+========================+
 |   $p=.95$      |  $\frac{95}{5} = \frac{19}{1} = 19$       |   19 to 1 odds for     |
 +----------------+-------------------------------------------+------------------------+
@@ -304,7 +304,7 @@ and we can interpret $\beta_{1}$ and $\beta_{2}$ as the increase in the log odds
 To investigate how to interpret these effects, we will consider an example of the rates of respiratory disease of babies in the first year based on covariates of gender and feeding method (breast milk, formula from a bottle, or a combination of the two). The data percentages of babies suffering respiratory disease are
 
 +---------------+------------------+------------------+------------------------------+
-|               | Formula `f`      | Breast Milk `b`  | Breast Milk + Suppliment `s` |
+|               | Formula `f`      | Breast Milk `b`  | Breast Milk + Supplement `s` |
 +===============+==================+==================+==============================+
 |  Males `M`    | $\frac{77}{485}$ | $\frac{47}{494}$ | $\frac{19}{147}$             |
 +---------------+------------------+------------------+------------------------------+
@@ -553,8 +553,8 @@ Looking at this experiment, we might consider that location really ought to be a
 
 ## Exercises
 
-1. The dataset `faraway::wbca` comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (ie cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called 'fine needle aspiration', which draws only a small sample of tissue, could be effective in determining tumor status.
-    a. Fit a binomial regression with `Class` as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that glm wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?
+1. The dataset `faraway::wbca` comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (i.e. cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called 'fine needle aspiration', which draws only a small sample of tissue, could be effective in determining tumor status.
+    a. Fit a binomial regression with `Class` as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that `glm` wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?
     b. Use AIC as the criterion to determine the best subset of variables using the step function.
     c. Use the reduced model to give the estimated probability that a tumor with associated predictor variables
         ```{r}

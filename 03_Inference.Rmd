@@ -155,7 +155,7 @@ t
 ```
 
 
-All that hand calculation is tedious, so we can again use the anova() command to compare the two models.
+All that hand calculation is tedious, so we can again use the `anova()`() command to compare the two models.
 
 ```{r}
 anova(M.s, M.c)
@@ -246,7 +246,7 @@ upper <- beta.hat + qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
 cbind(lower, upper)
 ```
 
-That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the confint() command.
+That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the `confint()`() command.
 
 ```{r}
 confint(model)

@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -342,7 +342,7 @@ y_{3,3}
 \epsilon_{3,3}
 \end{array}\right]
 \]</span></p>
-<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The paramter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
+<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The parameter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
 </div>
 <div id="lines-with-different-slopes-aka-interaction-model" class="section level2">
 <h2><span class="header-section-number">4.2</span> Lines with different slopes (aka Interaction model)</h2>
@@ -460,7 +460,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span c
 ## Sepal.Length         0.350      0.046   7.557    0.000
 ## Speciessetosa        1.008      0.093  10.798    0.000
 ## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
-<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statstically different y-intercept than the reference group.</p>
+<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
 <p>Finally we consider the most complicated model that includes two more slope parameters</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m3)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </code></pre></div>
 <pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
@@ -505,7 +505,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span c
 </tr>
 </tbody>
 </table>
-<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two paramters.</p>
+<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(m2, m3)</code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
@@ -516,7 +516,7 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span c
 ## 2    144 10.680  2    1.5132 10.201 7.19e-05 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The F-test concludes that there is sufficent decrease in the SSE to justify adding two additional parameters to the model.</p>
+<p>The F-test concludes that there is sufficient decrease in the SSE to justify adding two additional parameters to the model.</p>
 </div>
 <div id="exercises-3" class="section level2">
 <h2><span class="header-section-number">4.4</span> Exercises</h2>
@@ -527,13 +527,13 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span c
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)    <span class="co"># load the package</span>
 <span class="kw">data</span>(phbirths)      <span class="co"># load the data within the package</span>
 ?phbirths</code></pre></div></li>
-<li>Create a plot of the birthweight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</li>
+<li>Create a plot of the birth weight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</li>
 <li>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</li>
 <li>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</li>
 <li>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</li>
-<li><p>Interpret the relationship between gestational length and mother’s smoking status on birthweight.</p></li>
+<li><p>Interpret the relationship between gestational length and mother’s smoking status on birth weight.</p></li>
 </ol></li>
-<li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to assertain if the lot number makes any difference in clotting time.
+<li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to ascertain if the lot number makes any difference in clotting time.
 <ol style="list-style-type: lower-alpha">
 <li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number.</li>
 <li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>

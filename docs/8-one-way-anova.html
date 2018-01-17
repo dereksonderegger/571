@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -360,7 +360,7 @@ coagulation<span class="op">$</span>resid &lt;-<span class="st"> </span><span cl
 ## 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <p>Here we see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar to each other, but different than <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and that <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not statistically different from each other at the <span class="math inline">\(0.10\)</span> level.</p>
-<p>Often I want to produce the “Compact Letter Display” which identifies which groups are signicantly different.</p>
+<p>Often I want to produce the “Compact Letter Display” which identifies which groups are significantly different.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LetterData &lt;-<span class="st"> </span><span class="kw">lsmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>diet) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>)
 LetterData</code></pre></div>

@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -267,7 +267,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Model misspecification. Our assumption that <span class="math inline">\(E\left[\boldsymbol{y}\right]=\boldsymbol{X}\boldsymbol{\beta}\)</span> might be wrong and we might need to include different covariates in the model to get a satisfactory result.</p></li>
 <li><p>Error distribution. We have assumed that <span class="math inline">\(\boldsymbol{\epsilon}\sim MVN\left(\boldsymbol{0},\sigma^{2}\boldsymbol{I}\right)\)</span> but autocorrelation, heteroscedasticity, and non-normality might be present.</p></li>
 </ol>
-<p>Often problems with one of these can be corrected by tranforming either the explanatory or response variables.</p>
+<p>Often problems with one of these can be corrected by transforming either the explanatory or response variables.</p>
 <div id="detecting-assumption-violations" class="section level2">
 <h2><span class="header-section-number">6.1</span> Detecting Assumption Violations</h2>
 <p>Throughout this chapter I will use data created by Francis Anscombe that show how simple linear regression can be misused. In particular, these data sets will show how our diagnostic measures will detect various departures from the model assumptions.</p>
@@ -451,12 +451,12 @@ Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span clas
 <div id="heteroskedasticity" class="section level5">
 <h5><span class="header-section-number">6.1.2.1.2</span> Heteroskedasticity</h5>
 <p>The plot of residuals versus fitted values can detect heteroskedasticity (non-constant variance) in the error terms.</p>
-<p>To illustrate this, we turn to another dataset in the Faraway book. The dataset airquality uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and windspeed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.</p>
+<p>To illustrate this, we turn to another dataset in the Faraway book. The dataset <code>airquality</code> uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and wind speed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.</p>
 <p>We first graph all pairs of variables in the dataset.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(airquality)
 <span class="kw">pairs</span>(<span class="op">~</span><span class="st"> </span>Ozone <span class="op">+</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-102-1.png" width="672" /></p>
-<p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance amongst the predictors.</p>
+<p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance among the predictors.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-103-1.png" width="672" /></p>
@@ -481,7 +481,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-105-1.png" width="672" /></p>
-<p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the airquality example, R will calculate the qqplot for us.</p>
+<p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the air quality example, R will calculate the qqplot for us.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-106-1.png" width="672" /></p>
@@ -506,7 +506,7 @@ data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span cla
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)
 <span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
-<p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the ggfortify version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
+<p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the <code>ggfortify</code> version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-109-1.png" width="672" /></p>
 </div>
@@ -584,7 +584,7 @@ g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="
 ## Nearest          0.000      0.013  -0.022    0.983
 ## Scruz           -0.003      0.003  -1.238    0.227
 ## log(Adjacent)   -0.021      0.045  -0.468    0.644</code></pre>
-<p>We will remove all the parameters that appear to be superfluous, and perorm an F-test to confirm that the simple model is sufficient.</p>
+<p>We will remove all the parameters that appear to be superfluous, and perform an F-test to confirm that the simple model is sufficient.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)
 <span class="kw">anova</span>(m.s, m.c)</code></pre></div>
 <pre><code>## Analysis of Variance Table

@@ -398,12 +398,12 @@ lstrends(m, pairwise~logDose*supp, var = 'logDose')
 #### Common `lsmeans()` mistake
 It is very common to make a mistake using `lsmeans()` or `lstrends()` if you don't understand what the specification formula means. In particular what happens if you were to use `~logDose` instead of the correct `~logDose*supp`.
 
-Consider the case where we are interested in making predictions for each suppliment type at $1/2$ dose (logDose=-0.69).
+Consider the case where we are interested in making predictions for each supplement type at $1/2$ dose (logDose=-0.69).
 ```{r}
 lsmeans(m, ~logDose*supp, at=list(logDose=-.69))
 ```
 
-If I were to accidently forget the `supp` part of this, then `lsmeans()` would figure that I wanted to _average_ over the two levels and give me the average of $14.28$ and $7.92$, which is $11.1$. With the interaction term in the model, it is unlikely that I would want to do this, but `lsmeans()` complains a little but lets me do it.
+If I were to accidentally forget the `supp` part of this, then `lsmeans()` would figure that I wanted to _average_ over the two levels and give me the average of $14.28$ and $7.92$, which is $11.1$. With the interaction term in the model, it is unlikely that I would want to do this, but `lsmeans()` complains a little but lets me do it.
 
 ```{r}
 lsmeans(m, ~logDose, at=list(logDose=-.69))

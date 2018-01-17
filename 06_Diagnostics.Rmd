@@ -27,7 +27,7 @@ We will be interested in analyzing whether or not our linear model is a good mod
 
   3. Error distribution. We have assumed that $\boldsymbol{\epsilon}\sim MVN\left(\boldsymbol{0},\sigma^{2}\boldsymbol{I}\right)$ but autocorrelation, heteroscedasticity, and non-normality might be present.
 
-Often problems with one of these can be corrected by tranforming either the explanatory or response variables.
+Often problems with one of these can be corrected by transforming either the explanatory or response variables.
 
 ## Detecting Assumption Violations
 Throughout this chapter I will use data created by Francis Anscombe that show how simple linear regression can be misused. In particular, these data sets will show how our diagnostic measures will detect various departures from the model assumptions.
@@ -261,7 +261,7 @@ ggplot(Eggs, aes(x=carapace)) +
 
 The plot of residuals versus fitted values can detect heteroskedasticity (non-constant variance) in the error terms. 
 
-To illustrate this, we turn to another dataset in the Faraway book. The dataset airquality uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and windspeed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.
+To illustrate this, we turn to another dataset in the Faraway book. The dataset `airquality` uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and wind speed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.
 
 We first graph all pairs of variables in the dataset.
 
@@ -271,7 +271,7 @@ pairs(~ Ozone + Solar.R + Wind + Temp, data=airquality)
 ```
 
 
-and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don't know if those trends will remain after fitting the model, because there is some covariance amongst the predictors.
+and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don't know if those trends will remain after fitting the model, because there is some covariance among the predictors.
 
 ```{r, fig.height=3}
 model <- lm(Ozone ~ Solar.R + Wind + Temp, data=airquality)
@@ -323,7 +323,7 @@ ggplot(data, aes(x=theoretical, y=observed) ) +
 ```
 
 
-In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the airquality example, R will calculate the qqplot for us.
+In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the air quality example, R will calculate the qqplot for us.
 
 ```{r}
 model <- lm(Ozone ~ Solar.R + Wind + Temp, data=airquality)
@@ -355,7 +355,7 @@ model3 <- lm(y ~ x, data=Set3)
 autoplot(model3, which=5)
 ```
 
-that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the ggfortify version. The base version of R adds some contour lines that mark where the contours of where Cook's distance is 1/2 and 1. 
+that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the `ggfortify` version. The base version of R adds some contour lines that mark where the contours of where Cook's distance is 1/2 and 1. 
 
 ```{r}
 plot(model3, which=5)
@@ -463,7 +463,7 @@ summary(m.c)$coefficients %>% round(digits=3) # more readable...
 ```
 
 
-We will remove all the parameters that appear to be superfluous, and perorm an F-test to confirm that the simple model is sufficient. 
+We will remove all the parameters that appear to be superfluous, and perform an F-test to confirm that the simple model is sufficient. 
 
 ```{r}
 m.s <- lm(log(Species) ~ log(Area), data=gala)

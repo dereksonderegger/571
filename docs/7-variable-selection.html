@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2017-12-05">
+<meta name="date" content="2018-01-17">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -265,7 +265,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ol style="list-style-type: decimal">
 <li><p>Occam’s Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.</p></li>
 <li><p>Unnecessary predictors add noise to the estimates of other quantities and will waste degrees of freedom, possibly increasing the estimate of <span class="math inline">\(\hat{\sigma}^{2}\)</span>.</p></li>
-<li><p>We might have variables that are collinear.</p></li>
+<li><p>We might have variables that are co-linear.</p></li>
 </ol>
 <p>The problems that arise in the diagnostics of a model will often lead a researcher to consider other models, for example to include a quadratic term to account for curvature. The model building process is often an iterative procedure where we build a model, examine the diagnostic plots and consider what could be added or modified to correct issues observed.</p>
 <div id="nested-models" class="section level2">
@@ -444,7 +444,7 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 <p>Another criterion that might be used is <em>Bayes Information Criterion</em> (BIC) which is</p>
 <p><span class="math display">\[BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)+p\log n\]</span></p>
 <p>and this criterion punishes large models more than AIC does (because <span class="math inline">\(\log n&gt;2\)</span> for <span class="math inline">\(n\ge8\)</span>)</p>
-<p>The AIC value of a linear model can be found using the AIC() on a lm() object.</p>
+<p>The AIC value of a linear model can be found using the AIC() on a <code>lm()</code>() object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1)</code></pre></div>
 <pre><code>## [1] 121.4293</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m2)</code></pre></div>
@@ -481,7 +481,7 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class=
 ## Area        1     1.017 87.282  31.856
 ## HS.Grad.2   1    27.414 60.885  13.848
 ## Income.2    1     7.464 80.835  28.020</code></pre>
-<p>Clearly the additiona of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
+<p>Clearly the addition of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
 <span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></code></pre></div>
 <pre><code>## Single term additions
@@ -655,7 +655,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class
 <li>Backward elimination using the analysis of variance F-statistic as the criteria.</li>
 <li>Forward selection using AIC as the criteria.</li>
 </ol></li>
-<li>Again from the <code>faraway</code> package, use the <code>divusa</code> which has diviorce rates for each year from 1920-1996 along with other population information for each year. Use <code>divorce</code> as the response variable and all other variables as the predictors.
+<li>Again from the <code>faraway</code> package, use the <code>divusa</code> which has divorce rates for each year from 1920-1996 along with other population information for each year. Use <code>divorce</code> as the response variable and all other variables as the predictors.
 <ol style="list-style-type: lower-alpha">
 <li>Determine the best model using stepwise selection starting from the intercept only model and the most complex model being all main effects (no interactions). Use the F-statistic to determine significance. Note: add1(), drop1(), and step() allow an option of test=‘F’ to use an F-test instead of AIC.</li>
 <li>Following the stepwise selection, comment on the relationship between p-values used and the AIC difference observed. Do the AIC rules of thumb match the p-value interpretation?</li>
