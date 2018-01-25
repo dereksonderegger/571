@@ -338,11 +338,20 @@ Perch Example: We might be interested in estimating the weight of a fish based o
  
 We first look at the data and observe the expected relationship between length and weight.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'  # online
 file <- '~/github/571/data-raw/Fish.csv'                                                   # on my computer
 fish <- read.table(file, header=TRUE, skip=111, sep=',')
-pairs(fish[,c('Weight','Length.1','Length.2','Length.3','Height','Width')])
+
+### generate a pairs plot in a couple of different ways...
+# pairs(fish)
+# pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )
+# pairs( Weight ~ ., data=fish )
+
+fish %>%
+  dplyr::select(Weight, Length.1, Length.2, Length.3, Height, Width) %>%
+  GGally::ggpairs(upper=list(continuous='points'),
+                  lower=list(continuous='cor'))
 ```
 
 Naively, we might consider the linear model with all the length effects present.

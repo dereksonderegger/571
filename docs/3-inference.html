@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-01-17">
+<meta name="date" content="2018-01-25">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -679,7 +679,16 @@ y0</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span>
 file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span>
 fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)
-<span class="kw">pairs</span>(fish[,<span class="kw">c</span>(<span class="st">&#39;Weight&#39;</span>,<span class="st">&#39;Length.1&#39;</span>,<span class="st">&#39;Length.2&#39;</span>,<span class="st">&#39;Length.3&#39;</span>,<span class="st">&#39;Height&#39;</span>,<span class="st">&#39;Width&#39;</span>)])</code></pre></div>
+
+### generate a pairs plot in a couple of different ways...
+<span class="co"># pairs(fish)</span>
+<span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span>
+<span class="co"># pairs( Weight ~ ., data=fish )</span>
+
+fish <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length.<span class="dv">1</span>, Length.<span class="dv">2</span>, Length.<span class="dv">3</span>, Height, Width) <span class="op">%&gt;%</span>
+<span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),
+                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length.<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)
