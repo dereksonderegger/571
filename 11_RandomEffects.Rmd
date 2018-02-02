@@ -24,9 +24,9 @@ knitr::opts_chunk$set( fig.height=3 )
 library(tidyverse)  # dplyr, tidyr, ggplot
 library(stringr)    # string manipulation stuff
 
-library(lme4)       # Our primary analysis routine
-#library(lmerTest)    # A user friendly interface to lme4 that produces p-values
-library(lsmeans)     # Pairwise contrasts
+#library(lme4)       # Our primary analysis routine
+library(lmerTest)    # A user friendly interface to lme4 that produces p-values
+library(emmeans)     # For all of my pairwise contrasts
 
 # library(devtools)
 # install_github('dereksonderegger/dsData')  # datasets I've made; only install once...
@@ -230,11 +230,10 @@ Why do we care about this? This actually tells us quite a lot about the spatial 
 
 Next we turn to the fixed effects.  These will be the offsets from the reference group, as we've typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1), 
 
-We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `lsmeans`, which automates much of this (and uses `lmerTest` produced p-values for the tests).
+We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `emmeans`, which automates much of this (and uses `lmerTest` produced p-values for the tests).
 
 ```{r, warning=FALSE, message=FALSE}
-# currently lmerTest and lsmeans packages fight and we have to specify which package to use
-LetterResults <- lsmeans::lsmeans( model.1, pairwise ~ variety) %>% cld(Letters=letters)
+LetterResults <- emmeans( model.1, ~ variety) %>% cld(Letters=letters)
 LetterResults
 ```
 
@@ -497,7 +496,8 @@ anova(m)
 
 The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
 ```{r}
-lsmeans(m, specs=pairwise~material) %>% cld(Letters=letters) 
+emmeans(m, specs= pairwise~material) 
+emmeans(m, specs= ~material) %>% cld(Letters=letters) 
 ```
 So material D is in between materials B and C for abrasion resistance.
 

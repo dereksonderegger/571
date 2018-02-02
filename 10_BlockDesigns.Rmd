@@ -19,7 +19,7 @@ knitr::opts_chunk$set( fig.height=3 )
 ```{r, message=FALSE, warning=FALSE}
 # packages for this chapter
 library(tidyverse)    # ggplot2, dplyr, etc...
-library(lsmeans)      # TukeyLetters stuff
+library(emmeans)     # TukeyLetters stuff
 ```
 
 Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large.  For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.
@@ -77,7 +77,7 @@ Fortunately in this case, we don't care about the blocking variable and includin
 
 ```{r}
 # Ignore any p-values regarding block, but I'm happy with the analysis for variety
-letter_df <- lsmeans(m1, ~variety) %>% 
+letter_df <- emmeans(m1, ~variety) %>% 
   cld(Letters=letters) %>% 
   dplyr::select(variety, .group) %>%
   mutate(yield = 500)

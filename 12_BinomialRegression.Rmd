@@ -18,7 +18,7 @@ knitr::opts_chunk$set( fig.height=3 )
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)   # dplyr, tidyr, ggplot2, etc...
-library(lsmeans)
+library(emmeans)
 ```
 
 
@@ -542,14 +542,14 @@ drop1(m2, test='F')
 # anova(m2, test='F')
 ```
 
-While each of the time periods is different than the first, it looks like periods 7,8, and 11 are different from each other. As usual, we need to turn to the `lsmeans` package.
+While each of the time periods is different than the first, it looks like periods 7,8, and 11 aren't different from each other. As usual, we need to turn to the `emmeans` package for looking at the pairwise differences between the periods. 
 
 ```{r}
-lsmeans(m2, pairwise~period) %>% cld(Letters=letters)
+emmeans(m2, pairwise~period) 
+emmeans(m2, ~period) %>% cld(Letters=letters)
 ```
 
-
-Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately lme4 supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.
+Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately `lme4` supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.
 
 ## Exercises
 

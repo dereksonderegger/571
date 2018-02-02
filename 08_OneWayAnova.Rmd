@@ -19,8 +19,8 @@ knitr::opts_chunk$set( fig.height=3 )
 library(faraway)
 library(ggplot2)
 library(dplyr)
-library(multcompView)
-library(lsmeans)
+library(emmeans)
+library(ggfortify)   # for the autoplot function on lm() objects
 ```
 
 
@@ -75,7 +75,6 @@ where there really are only $4$ parameters that define the expected value becaus
 It is still important to check the diagnostics plots, but certain diagnostic plots will be useless. In particular, we need to be concerned about constant variance among the groups and normality of the residuals.
 
 ```{r, fig.height=3}
-library(ggfortify)
 m <- lm(coag ~ diet, data=coagulation)
 autoplot(m, which=2)  #  QQ plot
 ```
@@ -107,11 +106,11 @@ $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm t_{n-p}^{1-\alpha/2}\;\hat{\sigm
 Unfortunately this interval does not take into account the multiple comparisons issue (i.e. we are making $I(I-1)/2$ contrasts if our factor has $I$ levels). To account for this, we will not use a quantile from a t-distribution, but from Tukey's studentized range distribution $q_{n,n-I}$ divided by $\sqrt{2}$. The intervals we will use are:
 $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm\frac{q_{n,n-I}^{1-\alpha/2}}{\sqrt{2}}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}$$
 
-There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the `lsmeans` package. This package computes the above intervals which are commonly known as Tukey's Honestly Significant Differences. 
+There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the `emmeans` package. This package computes the above intervals which are commonly known as Tukey's Honestly Significant Differences. 
 
 ```{r}
 m <- lm(coag ~ diet, data=coagulation)   # use the lm() function as usual
-lsmeans(m, specs= pairwise~diet) %>%
+emmeans(m, specs= pairwise~diet) %>%
   summary(level=0.90)
 ```
 
@@ -120,8 +119,9 @@ Here we see that diets $A$ and $D$ are similar to each other, but different than
 Often I want to produce the "Compact Letter Display" which identifies which groups are significantly different. 
 
 ```{r}
-LetterData <- lsmeans(m, specs= pairwise~diet) %>% 
-  cld(Letters=letters, level=0.95)
+LetterData <- emmeans(m, specs= ~ diet) %>%  # cld() will freak out if you have pairwise here...
+  cld(Letters=letters, level=0.95) %>%
+  mutate( y = 73 )   # height to place the letters at. 
 LetterData
 ```
 
@@ -130,8 +130,7 @@ I can easily add these to my boxplot with the following:
 ggplot(coagulation, aes(x=diet, y=coag)) + 
 	geom_boxplot() +
 	labs( x='Diet', y='Coagulation Time' ) +
-  geom_text( data=LetterData, aes(x=diet, label=.group), y=73, size=10 ) +
-  ylim(56, 74)  # don't cut off the text I just added
+  geom_text( data=LetterData, aes(x=diet, y=y, label=.group), size=10 ) 
 ```
 
 

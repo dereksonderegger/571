@@ -20,7 +20,7 @@ library(faraway)
 library(ggplot2)
 library(dplyr)
 library(ggfortify)
-library(multcompView)
+library(emmeans)
 ```
 
 
@@ -208,20 +208,20 @@ anova( m2, m3 )
 
 As in the one-way ANOVA, we are interested in which factor levels differ. For example, we might suspect that it makes sense to group pesticides B and D together and claim that they are better than the group of A and C. 
 
-Just as we did in the one-way ANOVA model, this is such a common thing to do that there is an easy way to do this, using `lsmeans`. 
+Just as we did in the one-way ANOVA model, this is such a common thing to do that there is an easy way to do this, using `emmeans`. 
 
 ```{r}
 m3 <- lm(Yield ~ Var + Pest, data=fruit)
-lsmeans(m3, spec=pairwise~Var)
-lsmeans(m3, spec=pairwise~Pest)
+emmeans(m3, spec=pairwise~Var)
+emmeans(m3, spec=pairwise~Pest)
 ```
 
 These outputs are nice and they show the main effects of variety and pesticide. Similar to the 1-way ANOVA, we also want to be able to calculate the compact letter display.
 
 ```{r}
 m3 <- lm(Yield ~ Var + Pest, data=fruit)
-lsmeans(m3, spec=pairwise~Var) %>% cld(Letters=letters)
-lsmeans(m3, spec=pairwise~Pest) %>% cld(Letters=letters)
+emmeans(m3, spec= ~Var) %>% cld(Letters=letters)
+emmeans(m3, spec= ~Pest) %>% cld(Letters=letters)
 ```
 
 
@@ -298,7 +298,6 @@ All of the line segments are close to parallel so, we don't expect the interacti
 
 ```{r}
 anova( m4 )
-
 ```
 
 Examining the ANOVA table, we see that the interaction effect is not significant and we will stay with simpler model `Yield~Var+Pest`. 
@@ -380,18 +379,18 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 
 This test reduces to testing if $\alpha_{2}-\alpha_{3}+\left(\alpha\beta\right)_{22}-\left(\alpha\beta\right)_{23}=0$. Calculating this difference from the estimated values of the summery table we have $-.6012+.6003+.6281-.2221=0.4051$, we don't know if that is significantly different than zero. 
 
-In the main effects model, we were able to read off the necessary test using `lsmeans`. Fortunately, we can do the same thing here. In this case, we'll look at the interactions piece of the `lsmeans` command. In this case, we find the test H:B - M:B in the last row of the interactions.
+In the main effects model, we were able to read off the necessary test using `emmeans`. Fortunately, we can do the same thing here. In this case, we'll look at the interactions piece of the `emmeans` command. In this case, we find the test H:B - M:B in the last row of the interactions.
 
 ```{r}
-lsmeans(model.2, specs= pairwise~tension )
-lsmeans(model.2, specs= pairwise~wool )
-lsmeans(model.2, specs= pairwise~tension*wool)
+emmeans(model.2, specs= pairwise~tension )
+emmeans(model.2, specs= pairwise~wool )
+emmeans(model.2, specs= pairwise~tension*wool)
 ```
 
 
-The last call to `lsmeans` gives us all the pairwise tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.
+The last call to `emmeans` gives us all the pairwise tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.
 
-Using `lsmeans`, we can see the wool effect difference between types B and A is $-0.1522$. We can calculate the mean number of log breaks for each wool type and take the difference by the following:
+Using `emmeans`, we can see the wool effect difference between types B and A is $-0.1522$. We can calculate the mean number of log breaks for each wool type and take the difference by the following:
 
 ```{r}
 warpbreaks %>% 
@@ -400,7 +399,7 @@ warpbreaks %>%
   summarise( diff(wool.means) )
 ```
 
-In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The `lsmeans` package chooses to take the average of the cell means.
+In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The `emmeans` package chooses to take the average of the cell means.
 
 ## Exercises
 1. In the `faraway` package, the data set `rats` has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective. 

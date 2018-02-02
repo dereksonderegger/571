@@ -18,7 +18,7 @@ knitr::opts_chunk$set( fig.height=3 )
 ```{r, warning=FALSE, message=FALSE}
 library(ggplot2)
 library(dplyr)
-library(lsmeans)    # for lsmeans()
+library(emmeans)    # for emmeans()
 library(multcomp)   # for glht() 
 ```
 
@@ -282,10 +282,10 @@ test <- glht(m, linfct=contr)
 summary(test)
 ```
 
-## Using `lsmeans` Package
-Specifying the contrasts by hand is extremely difficult to do correctly and instead we would prefer to specify the contrasts using language like "create all possible pairwise contrasts" where each pair is just a subtraction.  The R-package `lsmeans` tries to simply the creation of common contrasts. 
+## Using `emmeans` Package
+Specifying the contrasts by hand is extremely difficult to do correctly and instead we would prefer to specify the contrasts using language like "create all possible pairwise contrasts" where each pair is just a subtraction.  The R-package `emmeans` tries to simply the creation of common contrasts. 
 
-To show how to use the `lsmeans` package, we'll consider a bunch of common models and show how to address common statistical questions for each.
+To show how to use the `emmeans` package, we'll consider a bunch of common models and show how to address common statistical questions for each.
 
 ### Simple Regression
 There is a dataset built into R named `trees` which describes a set of $n=31$ cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.
@@ -305,12 +305,12 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 
 ```{r}
 # We could find the regression line heights and CI using 
-# either predict() or lsmeans()
+# either predict() or emmeans()
 predict(model, newdata=data.frame(Girth=c(10,12)), interval='conf' )
-lsmeans(model, specs = ~Girth, at=list(Girth=c(10,12)) )  
+emmeans(model, specs = ~Girth, at=list(Girth=c(10,12)) )  
 ```
 
-The `lsmeans()` function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out.  In the simple regression case, the `specs` argument is just the single covariate.
+The `emmeans()` function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out.  In the simple regression case, the `specs` argument is just the single covariate.
 
 We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth?  In other words, we want to test
 $$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0$$ 
@@ -319,16 +319,36 @@ $$ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0$$
 In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$.
 
 ```{r}
-lsmeans(model, specs = pairwise~Girth,
+emmeans(model, specs = pairwise~Girth,
         at=list(Girth=c(10,12)) ) 
 ```
 
 Notice that if I was interested in 3 points, we would get all of the differences.
 
 ```{r}
-lsmeans(model, specs = pairwise~Girth,
+emmeans(model, specs = pairwise~Girth,
         at=list(Girth=c(10,11,12)) ) 
 ```
+
+In this very simple case, the slope parameter is easily available as a parameter value, but we could use the `emtrends()` function to obtain the slope.  
+
+```{r}
+emtrends( model, ~Girth, 'Girth' )
+```
+This output is a bit mysterious because because of the `13.248` component. What has happened is that `emtrends` is telling us the slope of the line at a particular point on the x-axis (the mean of all the girth values). While this doesn't matter in this example, because the slope is the same for all values of girth, if we had fit a quadratic model, it would not.
+
+```{r}
+model <- lm( Volume ~ poly(Girth, 2), data=trees )      # Girth + Girth^2
+trees <- trees %>% dplyr::select(Volume, Girth) %>% cbind(predict(model, interval='conf'))
+ggplot(trees, aes(x=Girth, y=Volume)) +
+  geom_point() +
+  geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
+  geom_line( aes(y=fit) )
+
+emtrends( model, ~ poly(Girth,2), 'Girth',
+          at=list(Girth=c(10,11,12)) )
+```
+
 
 ### 1-way ANOVA
 To consider the pairwise contrasts between different levels we will consider the college student hostility data again. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used $24$ students who obtained high and nearly equal scores in the experiment. Eight subjects were selected at random from among the $24$ problem cases and were treated with method 1, seven of the remaining $16$ students were selected at random and treated with method 2 while the remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table.
@@ -346,11 +366,11 @@ ggplot(Hostility, aes(x=Method, y=HLT)) +
   geom_boxplot()
 ```
 
-To use the `lsmeans()`, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.
+To use the `emmeans()`, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.
 
 ```{r}
 model <- lm( HLT ~ Method, data=Hostility )
-lsmeans(model, pairwise~Method)
+emmeans(model, pairwise~Method)
 ```
 
 ### ANCOVA
@@ -367,56 +387,56 @@ ggplot(ToothGrowth, aes(x=logDose, color=supp, fill=supp)) +
   geom_point( aes(y=len) )
 ```
 
-First, lets get the y-intercept for each group. In the following code, the formula with the `| supp` part says that we want to do all the calculations for each level of the supplement types. The call to `lsmeans()` calculates the response at logDose level 0. By passing the result of the `lsmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
+First, lets get the y-intercept for each group. In the following code, the formula with the `| supp` part says that we want to do all the calculations for each level of the supplement types. The call to `emmeans()` calculates the response at logDose level 0. By passing the result of the `emmeans()` function call to the `summary()` function, we can tell the summary function to print out both the confidence intervals and t-tests.
 
 
 ```{r}
-lsmeans(m, ~logDose | supp, at=list(logDose=0)) %>% 
+emmeans(m, ~logDose | supp, at=list(logDose=0)) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
 
 Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC supplements. We also wanted to calculate the contrast between the two supplement predictions.
 
 ```{r}
-lsmeans(m, pairwise~logDose*supp, at=list(logDose=-.69)) %>% 
+emmeans(m, pairwise~logDose*supp, at=list(logDose=-.69)) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
 
 We next make the same comparison for logdose = 0.69 (i.e. dose=2).
 ```{r}
-lsmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>% 
+emmeans(m, pairwise~logDose*supp, at=list(logDose=.69)) %>% 
   summary(infer=c(TRUE,TRUE))
 ```
 
-While `lsmeans()` makes it very easy to calculate the $\hat{y}$ value for some covariate combination or some difference of $\hat{y}$ values, it doesn't handle slope parameters particularly well.  The companion function `lstrends()` is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.
+While `emmeans()` makes it very easy to calculate the $\hat{y}$ value for some covariate combination or some difference of $\hat{y}$ values, it doesn't handle slope parameters particularly well.  The companion function `emtrends()` is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.
 
 ```{r}
-lstrends(m, ~logDose*supp, var = 'logDose')
-lstrends(m, pairwise~logDose*supp, var = 'logDose')
+emtrends(m, ~logDose*supp, var = 'logDose')
+emtrends(m, pairwise~logDose*supp, var = 'logDose')
 ```
 
-#### Common `lsmeans()` mistake
-It is very common to make a mistake using `lsmeans()` or `lstrends()` if you don't understand what the specification formula means. In particular what happens if you were to use `~logDose` instead of the correct `~logDose*supp`.
+#### Common `emmeans()` mistake
+It is very common to make a mistake using `emmeans()` or `emtrends()` if you don't understand what the specification formula means. In particular what happens if you were to use `~logDose` instead of the correct `~logDose*supp`.
 
 Consider the case where we are interested in making predictions for each supplement type at $1/2$ dose (logDose=-0.69).
 ```{r}
-lsmeans(m, ~logDose*supp, at=list(logDose=-.69))
+emmeans(m, ~logDose*supp, at=list(logDose=-.69))
 ```
 
-If I were to accidentally forget the `supp` part of this, then `lsmeans()` would figure that I wanted to _average_ over the two levels and give me the average of $14.28$ and $7.92$, which is $11.1$. With the interaction term in the model, it is unlikely that I would want to do this, but `lsmeans()` complains a little but lets me do it.
+If I were to accidentally forget the `supp` part of this, then `emmeans()` would figure that I wanted to _average_ over the two levels and give me the average of $14.28$ and $7.92$, which is $11.1$. With the interaction term in the model, it is unlikely that I would want to do this, but `emmeans()` complains a little but lets me do it.
 
 ```{r}
-lsmeans(m, ~logDose, at=list(logDose=-.69))
+emmeans(m, ~logDose, at=list(logDose=-.69))
 ```
 
 What would happen if we only use `supp` in the formula specification? In this case we are lucky because the `logDose=-0.69` specified what dose level to look at.  If we had forgotten to specify this, then we would have done this calculation at the mean `logDose` value, which happens to be zero.
 
 ```{r}
-lsmeans(m, ~supp*logDose, at=list(logDose=0))
-lsmeans(m, ~supp)
+emmeans(m, ~supp*logDose, at=list(logDose=0))
+emmeans(m, ~supp)
 ```
 
-Because the averaging over factor levels isn't what I typically want to do, I start the analysis making sure the model formula I used in the `lm()` command is the same as the one I pass into `lsmeans()`. 
+Because the averaging over factor levels isn't what I typically want to do, I start the analysis making sure the model formula I used in the `lm()` command is the same as the one I pass into `emmeans()`. 
 
 
 ## Exercises
@@ -467,8 +487,8 @@ Because the averaging over factor levels isn't what I typically want to do, I st
     
     e. Recalculate your answer to part (d) using the `glht()` function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?
     
-    f. Recalculate your answer to part (e) using the `lsmeans()` function.
+    f. Recalculate your answer to part (e) using the `emmeans()` function.
     
     g. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use `glht()` to produce this result. 
     
-    h. Recalculate your answer to part (g) using the `lstrends()` function.
+    h. Recalculate your answer to part (g) using the `emtrends()` function.

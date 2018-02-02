@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-01-25">
+<meta name="date" content="2018-02-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -166,7 +166,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.2.1" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova"><i class="fa fa-check"></i><b>5.2.1</b> 1-way ANOVA</a></li>
 <li class="chapter" data-level="5.2.2" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>5.2.2</b> ANCOVA example</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#using-lsmeans-package"><i class="fa fa-check"></i><b>5.3</b> Using <code>lsmeans</code> Package</a><ul>
+<li class="chapter" data-level="5.3" data-path="5-contrasts.html"><a href="5-contrasts.html#using-emmeans-package"><i class="fa fa-check"></i><b>5.3</b> Using <code>emmeans</code> Package</a><ul>
 <li class="chapter" data-level="5.3.1" data-path="5-contrasts.html"><a href="5-contrasts.html#simple-regression-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="5.3.2" data-path="5-contrasts.html"><a href="5-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>5.3.2</b> 1-way ANOVA</a></li>
 <li class="chapter" data-level="5.3.3" data-path="5-contrasts.html"><a href="5-contrasts.html#ancova"><i class="fa fa-check"></i><b>5.3.3</b> ANCOVA</a></li>
@@ -266,7 +266,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(ggfortify)
-<span class="kw">library</span>(multcompView)</code></pre></div>
+<span class="kw">library</span>(emmeans)</code></pre></div>
 <p>Given a response that is predicted by two different categorical variables. Suppose we denote the levels of the first factor as <span class="math inline">\(\alpha_{i}\)</span> and has <span class="math inline">\(I\)</span> levels. The second factor has levels <span class="math inline">\(\beta_{j}\)</span> and has <span class="math inline">\(J\)</span> levels. As usual we let <span class="math inline">\(\epsilon_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>, and we wish to fit the model</p>
 <p><span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\epsilon_{ijk}\]</span></p>
 <p>which has the main effects of each covariate or possibly the model with the interaction <span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}+\epsilon_{ijk}\]</span></p>
@@ -319,7 +319,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </table>
 <p>In this case we see that increased humidity increases the amount of fungal growth, but the amount of increase depends on the temperature. At 2 C, the increase is humidity increases are significant, but at 10 C the increases are larger, and at 30 C the increases are larger yet. The effect of changing from one humidity level to the next <em>depends on which temperature level we are at</em>. This change in effect of humidity is an interaction effect. A memorable example is that chocolate by itself is good. Strawberries by themselves are also good. But the combination of chocolate and strawberries is a delight greater than the sum of the individual treats.</p>
 <p>We can look at a graph of the Humidity and Temperature vs the Response and see the effect of increasing humidity changes based on the temperature level. Just as in the ANCOVA model, the interaction manifested itself in non-parallel slopes, the interaction manifests itself in non-parallel slopes when I connect the dots across the factor levels.</p>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-160-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
 <p>Unfortunately the presence of a significant interaction term in the model makes interpretation difficult, but examining the interaction plots can be quite helpful in understanding the effects. Notice in this example, we 3 levels of temperature and 4 levels of humidity for a total of 12 different possible treatment combinations. In general I will refer to these combinations as cells.</p>
 <div id="orthogonality" class="section level2">
 <h2><span class="header-section-number">9.1</span> Orthogonality</h2>
@@ -475,11 +475,11 @@ fruit<span class="op">$</span>Yield &lt;-<span class="st"> </span><span class="k
 <p>The first thing to do (as always) is to look at our data</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">y=</span>Yield, <span class="dt">shape=</span>Var)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
 <p>The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don’t expect that the interaction effect will be significant. We next fit a linear model and look at the diagnostic plots.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
 <span class="kw">autoplot</span>(m3, <span class="dt">which=</span><span class="dv">1</span><span class="op">:</span><span class="dv">2</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
 <p>There might be a little curvature in the fitted vs residuals, but because we can’t fit a polynomial to a categorical variable, and the QQ-plot looks good, we’ll ignore it for now and eventually consider an interaction term. Just for fun, we can examine the smaller models with just Variety or Pesticide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var, <span class="dt">data=</span>fruit)
 m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
@@ -597,11 +597,11 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 <div id="estimating-contrasts" class="section level3">
 <h3><span class="header-section-number">9.2.3</span> Estimating Contrasts</h3>
 <p>As in the one-way ANOVA, we are interested in which factor levels differ. For example, we might suspect that it makes sense to group pesticides B and D together and claim that they are better than the group of A and C.</p>
-<p>Just as we did in the one-way ANOVA model, this is such a common thing to do that there is an easy way to do this, using <code>lsmeans</code>.</p>
+<p>Just as we did in the one-way ANOVA model, this is such a common thing to do that there is an easy way to do this, using <code>emmeans</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
-<span class="kw">lsmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Var)</code></pre></div>
-<pre><code>## $lsmeans
-##  Var lsmean       SE df lower.CL upper.CL
+<span class="kw">emmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Var)</code></pre></div>
+<pre><code>## $emmeans
+##  Var emmean       SE df lower.CL upper.CL
 ##  1   46.875 2.587922 18 41.43798 52.31202
 ##  2   59.250 2.587922 18 53.81298 64.68702
 ##  3   78.250 2.587922 18 72.81298 83.68702
@@ -617,9 +617,9 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 ## 
 ## Results are averaged over the levels of: Pest 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Pest)</code></pre></div>
-<pre><code>## $lsmeans
-##  Pest   lsmean       SE df lower.CL upper.CL
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Pest)</code></pre></div>
+<pre><code>## $emmeans
+##  Pest   emmean       SE df lower.CL upper.CL
 ##  A    53.00000 2.988274 18 46.72187 59.27813
 ##  B    67.83333 2.988274 18 61.55520 74.11146
 ##  C    51.16667 2.988274 18 44.88854 57.44480
@@ -641,8 +641,8 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <p>These outputs are nice and they show the main effects of variety and pesticide. Similar to the 1-way ANOVA, we also want to be able to calculate the compact letter display.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)
-<span class="kw">lsmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Var) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</code></pre></div>
-<pre><code>##  Var lsmean       SE df lower.CL upper.CL .group
+<span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Var) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</code></pre></div>
+<pre><code>##  Var emmean       SE df lower.CL upper.CL .group
 ##  1   46.875 2.587922 18 41.43798 52.31202  a    
 ##  2   59.250 2.587922 18 53.81298 64.68702   b   
 ##  3   78.250 2.587922 18 72.81298 83.68702    c  
@@ -651,8 +651,8 @@ m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="o
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(m3, <span class="dt">spec=</span>pairwise<span class="op">~</span>Pest) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</code></pre></div>
-<pre><code>##  Pest   lsmean       SE df lower.CL upper.CL .group
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Pest) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</code></pre></div>
+<pre><code>##  Pest   emmean       SE df lower.CL upper.CL .group
 ##  C    51.16667 2.988274 18 44.88854 57.44480  a    
 ##  A    53.00000 2.988274 18 46.72187 59.27813  a    
 ##  B    67.83333 2.988274 18 61.55520 74.11146   b   
@@ -790,7 +790,7 @@ fruit<span class="op">$</span>y.hat &lt;-<span class="st"> </span><span class="k
 <span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">shape=</span>Var, <span class="dt">y=</span>Yield)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>y.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(Pest)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-169-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
 <p>All of the line segments are close to parallel so, we don’t expect the interaction to be significant.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>( m4 )</code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -815,22 +815,22 @@ fruit<span class="op">$</span>y.hat &lt;-<span class="st"> </span><span class="k
 <span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span>breaks, <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool), <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_dodge</span>(<span class="dt">width=</span>.<span class="dv">35</span>)) <span class="co"># offset the wool groups </span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-171-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
 <p>We next fit our linear model and examine the diagnostic plots.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(breaks <span class="op">~</span><span class="st"> </span>tension <span class="op">+</span><span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">color=</span>tension<span class="op">:</span>wool))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-172-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
 <p>The residuals vs fitted values plot is a little worrisome and appears to be an issue with non-constant variance, but the normality assumption looks good. We’ll check for a Box-Cox transformation next.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MASS<span class="op">::</span><span class="kw">boxcox</span>(model)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-173-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
 <p>This suggests we should make a log transformation, though because the confidence interval is quite wide we might consider if the increased difficulty in interpretation makes sufficient progress towards making the data meet the model assumptions.. The diagnostic plots of the resulting model look better for the constant variance assumption, but the normality is now a worse off. Because the Central Limit Theorem helps deal with the normality question, I’d rather stabilize the variance at the cost of the normality.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) <span class="op">~</span><span class="st"> </span>tension <span class="op">+</span><span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model.<span class="dv">1</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-174-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-176-1.png" width="672" /></p>
 <p>Next we’ll fit the interaction model and check the diagnostic plots. The diagnostic plots look good and this appears to be a legitimate model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model.<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(breaks) <span class="op">~</span><span class="st"> </span>tension <span class="op">*</span><span class="st"> </span>wool, <span class="dt">data=</span>warpbreaks)
 <span class="kw">autoplot</span>(model.<span class="dv">2</span>, <span class="dt">which=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-175-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
 <p>Then we’ll do an F-test to see if it is a better model than the main effects model. The p-value is marginally significant, so we’ll keep the interaction in the model, but recognize that it is a weak interaction.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">anova</span>(model.<span class="dv">1</span>, model.<span class="dv">2</span>)  <span class="co"># explicitly look model1 vs model2</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
@@ -858,7 +858,7 @@ fruit<span class="op">$</span>y.hat &lt;-<span class="st"> </span><span class="k
 <span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span><span class="kw">log</span>(breaks), <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>logy.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(tension)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-177-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-179-1.png" width="672" /></p>
 <p>We can see that it appears that wool A has a decrease in breaks between low and medium tension, while wool B has a decrease in breaks between medium and high. It is actually quite difficult to see this interaction when we examine the model coefficients.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(model.<span class="dv">2</span>)</code></pre></div>
 <pre><code>## 
@@ -888,11 +888,11 @@ H_{0}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right) &amp;\ne    0
 \end{aligned}\]</span></p>
 <p>This test reduces to testing if <span class="math inline">\(\alpha_{2}-\alpha_{3}+\left(\alpha\beta\right)_{22}-\left(\alpha\beta\right)_{23}=0\)</span>. Calculating this difference from the estimated values of the summery table we have <span class="math inline">\(-.6012+.6003+.6281-.2221=0.4051\)</span>, we don’t know if that is significantly different than zero.</p>
-<p>In the main effects model, we were able to read off the necessary test using <code>lsmeans</code>. Fortunately, we can do the same thing here. In this case, we’ll look at the interactions piece of the <code>lsmeans</code> command. In this case, we find the test H:B - M:B in the last row of the interactions.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>tension )</code></pre></div>
+<p>In the main effects model, we were able to read off the necessary test using <code>emmeans</code>. Fortunately, we can do the same thing here. In this case, we’ll look at the interactions piece of the <code>emmeans</code> command. In this case, we find the test H:B - M:B in the last row of the interactions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>tension )</code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
-<pre><code>## $lsmeans
-##  tension   lsmean         SE df lower.CL upper.CL
+<pre><code>## $emmeans
+##  tension   emmean         SE df lower.CL upper.CL
 ##  L       3.500162 0.08815128 48 3.322922 3.677402
 ##  M       3.213038 0.08815128 48 3.035798 3.390278
 ##  H       3.010887 0.08815128 48 2.833647 3.188127
@@ -910,10 +910,10 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ## Results are averaged over the levels of: wool 
 ## Results are given on the log (not the response) scale. 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>wool )</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>wool )</code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
-<pre><code>## $lsmeans
-##  wool   lsmean         SE df lower.CL upper.CL
+<pre><code>## $emmeans
+##  wool   emmean         SE df lower.CL upper.CL
 ##  A    3.317439 0.07197522 48 3.172723 3.462155
 ##  B    3.165286 0.07197522 48 3.020570 3.310001
 ## 
@@ -927,9 +927,9 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ## 
 ## Results are averaged over the levels of: tension 
 ## Results are given on the log (not the response) scale.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lsmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>tension<span class="op">*</span>wool)</code></pre></div>
-<pre><code>## $lsmeans
-##  tension wool   lsmean        SE df lower.CL upper.CL
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(model.<span class="dv">2</span>, <span class="dt">specs=</span> pairwise<span class="op">~</span>tension<span class="op">*</span>wool)</code></pre></div>
+<pre><code>## $emmeans
+##  tension wool   emmean        SE df lower.CL upper.CL
 ##  L       A    3.717945 0.1246647 48 3.467290 3.968601
 ##  M       A    3.116750 0.1246647 48 2.866094 3.367405
 ##  H       A    3.117623 0.1246647 48 2.866967 3.368278
@@ -960,8 +960,8 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ## 
 ## Results are given on the log (not the response) scale. 
 ## P value adjustment: tukey method for comparing a family of 6 estimates</code></pre>
-<p>The last call to <code>lsmeans</code> gives us all the pairwise tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.</p>
-<p>Using <code>lsmeans</code>, we can see the wool effect difference between types B and A is <span class="math inline">\(-0.1522\)</span>. We can calculate the mean number of log breaks for each wool type and take the difference by the following:</p>
+<p>The last call to <code>emmeans</code> gives us all the pairwise tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.</p>
+<p>Using <code>emmeans</code>, we can see the wool effect difference between types B and A is <span class="math inline">\(-0.1522\)</span>. We can calculate the mean number of log breaks for each wool type and take the difference by the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">warpbreaks <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">group_by</span>(wool) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">summarise</span>( <span class="dt">wool.means =</span> <span class="kw">mean</span>(<span class="kw">log</span>(breaks)) ) <span class="op">%&gt;%</span>
@@ -970,7 +970,7 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 ##   `diff(wool.means)`
 ##                &lt;dbl&gt;
 ## 1         -0.1521536</code></pre>
-<p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The <code>lsmeans</code> package chooses to take the average of the cell means.</p>
+<p>In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The <code>emmeans</code> package chooses to take the average of the cell means.</p>
 </div>
 </div>
 <div id="exercises-8" class="section level2">
