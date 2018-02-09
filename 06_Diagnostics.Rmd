@@ -106,7 +106,7 @@ and we notice that the outlier residual is really big. If the model assumptions 
 The extremely large standardized residual suggests that this data point is important, but we would like to quantify how important this observation actually is.
 
 One way to quantify this is to look at the elements of $\boldsymbol{H}$. Because $$\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}$$
-then the $i$th row of $\boldsymbol{H}$ is a vector of weights that tell us how influential a point $y_{j}$ is for calculating the predicted value $\hat{y}_{i}$. If I look at just the main diagonal of $\boldsymbol{H}$, these are how much weight a point has on its predicted value. As such, I can think of the $\boldsymbol{H}_{ii}$ as the amount of leverage a particular data point has on the regression line. 
+then the $i$th row of $\boldsymbol{H}$ is a vector of weights that tell us how influential a point $y_{j}$ is for calculating the predicted value $\hat{y}_{i}$. If I look at just the main diagonal of $\boldsymbol{H}$, these are how much weight a point has on its predicted value. As such, I can think of the $\boldsymbol{H}_{ii}$ as the amount of leverage a particular data point has on the regression line. It can be shown that the leverages must be $0 \le \boldsymbol{H}_{ii} \le 1$ and that $\sum \boldsymbol{H}_{ii} = p$.
 
 Fortunately there is already a function `hatvalues()` to compute these $\boldsymbol{H}_{ii}$ values for me. We will compare the leverages from Anscombe's set 3 versus set 4.
 

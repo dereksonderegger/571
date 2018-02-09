@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-02-02">
+<meta name="date" content="2018-02-09">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -327,7 +327,7 @@ Set3<span class="op">$</span>stdresid &lt;-<span class="st"> </span><span class=
 <div id="leverage" class="section level4">
 <h4><span class="header-section-number">6.1.1.2</span> Leverage</h4>
 <p>The extremely large standardized residual suggests that this data point is important, but we would like to quantify how important this observation actually is.</p>
-<p>One way to quantify this is to look at the elements of <span class="math inline">\(\boldsymbol{H}\)</span>. Because <span class="math display">\[\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}\]</span> then the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\boldsymbol{H}\)</span> is a vector of weights that tell us how influential a point <span class="math inline">\(y_{j}\)</span> is for calculating the predicted value <span class="math inline">\(\hat{y}_{i}\)</span>. If I look at just the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>, these are how much weight a point has on its predicted value. As such, I can think of the <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> as the amount of leverage a particular data point has on the regression line.</p>
+<p>One way to quantify this is to look at the elements of <span class="math inline">\(\boldsymbol{H}\)</span>. Because <span class="math display">\[\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}\]</span> then the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\boldsymbol{H}\)</span> is a vector of weights that tell us how influential a point <span class="math inline">\(y_{j}\)</span> is for calculating the predicted value <span class="math inline">\(\hat{y}_{i}\)</span>. If I look at just the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>, these are how much weight a point has on its predicted value. As such, I can think of the <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> as the amount of leverage a particular data point has on the regression line. It can be shown that the leverages must be <span class="math inline">\(0 \le \boldsymbol{H}_{ii} \le 1\)</span> and that <span class="math inline">\(\sum \boldsymbol{H}_{ii} = p\)</span>.</p>
 <p>Fortunately there is already a function <code>hatvalues()</code> to compute these <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> values for me. We will compare the leverages from Anscombe’s set 3 versus set 4.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>)
 Set4 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 4&#39;</span>)
