@@ -25,7 +25,7 @@ We will be interested in analyzing whether or not our linear model is a good mod
 
   2. Model misspecification. Our assumption that $E\left[\boldsymbol{y}\right]=\boldsymbol{X}\boldsymbol{\beta}$ might be wrong and we might need to include different covariates in the model to get a satisfactory result.
 
-  3. Error distribution. We have assumed that $\boldsymbol{\epsilon}\sim MVN\left(\boldsymbol{0},\sigma^{2}\boldsymbol{I}\right)$ but autocorrelation, heteroscedasticity, and non-normality might be present.
+  3. Error distribution. We have assumed that $\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)$ but autocorrelation, heteroscedasticity, and non-normality might be present.
 
 Often problems with one of these can be corrected by transforming either the explanatory or response variables.
 
@@ -366,8 +366,8 @@ plot(model3, which=5)
 Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms. 
 
 Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
-$$y=\beta_{0}+\beta_{1}x+\epsilon$$
- where $\epsilon\sim N\left(0,\sigma^{2}\right)$, the necessary assumptions are:
+$$y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i$$
+ where $\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)$, the necessary assumptions are:
 
 1. Independent errors
 2. Errors have constant variance, no matter what the x-value (or equivalently the fitted value)
@@ -375,6 +375,62 @@ $$y=\beta_{0}+\beta_{1}x+\epsilon$$
 4. The model contains all the appropriate covariates and no more.
 
 In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4.
+
+### A review of $\log(x)$ and $e^x$
+One of the most common transformations that is used on either the response $y$ or the covariates $x$ is the $\log()$ function.  In this next section we will consider $\log()$ with base $e$. However, if you prefer $\log_2()$ or $\log_{10}$ you may substitute $e$ with $2$ or $10$ everywhere. 
+
+In primary school you might have learned that the $\log()$ function looks like this:
+```{r, fig.height=3, echo=FALSE}
+data <- data.frame( x=seq(.04,8, by=.01) ) %>%
+  mutate( y = log(x) )
+ggplot(data, aes(x=x, y=y)) + 
+  geom_line() +
+  scale_x_continuous(breaks=c(0,1,2,4,6,8)) +
+  labs(x='x', y='log(x)')
+```
+
+Critical aspects to notice about $\log(x)$:
+
+  1. As $x \to 0$, $\log(x) \to -\infty$.
+  2. At $x=1$ we have $log(x=1) = 0$.
+  3. As $x \to \infty$, $\log(x) \to \infty$ as well, but at a *much* slower rate.
+  4. Even though $log(x)$ is only defined for $x>0$, the result can take on any real value, positive or negative.
+    
+The inverse function of $\log(x)$ is $e^x = \exp(x)$, where $e=2.71828\dots$ which looks like this:
+```{r, fig.height=3, echo=FALSE}
+data <- data.frame( x=seq(-3,2, by=.01) ) %>%
+  mutate( y = exp(x) )
+ggplot(data, aes(x=x, y=y)) + 
+  geom_line() +
+  labs(x='x', y='exp(x)') +
+  scale_y_continuous(breaks=c(0,1,2,4,6,8)) 
+```
+
+Critical aspects to notice about $e^x$:
+
+  1. as $x \to -\infty$, $e^x \to 0$.
+  2. At $x =0$ we have $e^0 = 1$.
+  3. as $x \to \infty$, $e^x \to \infty$ as well, but at a *much* faster rate.
+  4. The function $e^x$ can be evaluated for any real number, but the result is always $>0$.
+    
+Finally we have that $e^x$ and $log(x)$ are inverse functions of each other by the following identity:
+$$x = \log\left( e^x \right )$$ and
+$$x = e^{\log(x)} \;\;\; \textrm{ if } x >0$$
+
+The reason we like using a $\log()$ transformation is that it acts differentially on large values than small.  In particular for $x >1$ we have that $\log(x)$ makes all of the smaller, but the transformation on big values of $x$ is more extreme.  Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we'd like to reduce that.
+
+```{r, echo=FALSE, fig.height=3, warning=FALSE, message=FALSE}
+N <- 1000
+data <- data.frame(x = exp(rnorm(N, mean=3, sd=1))) %>%
+  arrange(x) %>%
+  mutate( y = 1:n() )
+P1 <- ggplot(data, aes(x=x)) + 
+  geom_histogram(aes(y=..density..))
+P2 <- ggplot(data, aes(x=log(x))) + 
+  geom_histogram(aes(y=..density..))
+STA578::multiplot(P1, P2, layout = matrix(1:2, nrow=1))
+```
+
 
 ### Transforming the Response
 
@@ -400,11 +456,13 @@ In the case that $\lambda\ne 0$, then a researcher will usually use the simpler 
 Finding the best transformation can be done by adding the $\lambda$ parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don't have to do this by hand, as the function `boxcox()` in the `MASS` library will do all the heavy calculation for us.
 
 ```{r, warning=FALSE, message=FALSE}
-library(faraway)
-library(MASS)
-data(gala)
+data(gala, package='faraway')
 g <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
-boxcox(g)
+
+# I don't like loading the MASS package because it includes a select() function
+# that fights with dplyr::select(), so whenever I use a function in the MASS
+# package, I just call it using the package::function() naming.
+MASS::boxcox(g)  
 ```
 
 
@@ -415,7 +473,7 @@ Thoughts on the Box-Cox transformation:
 1. In general, I prefer to using a larger-than-optimal model when picking a transformation and then go about the model building process. After a suitable model has been chosen, I'll double check the my transformation was appropriate given the model that I ended up with.
 2. Outliers can have a profound effect on this method. If the “optimal” transformation is extreme ($\lambda=5$ or something silly) then you might have to remove the outliers and refit the transformation.
 3. If the range of the response $y$ is small, then the method is not as sensitive.
-4. These are not the only possible transformations. For example, for binary data, the `logit` and `probit` transformations are common.
+4. These are not the only possible transformations. For example, for binary data, the `logit` and `probit` transformations are common. In classical non-parametric statistics, we take a rank transformation to the y-values.
 
 ### Transforming the predictors
 
@@ -440,25 +498,41 @@ Picking a good transformation for a covariate is quite difficult, but most field
 To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in `faraway`.
 
 ```{r, fig.height=4}
-library(faraway)
-data(gala)
+data('gala', package='faraway')
 # look at all the scatterplots
-pairs(log(Species) ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
+gala %>% 
+  mutate(LogSpecies = log(Species)) %>%
+  dplyr::select(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) %>%
+  GGally::ggpairs(upper=list(continuous='points'), lower=list(continuous='cor'))
+
 ```
 
 
-Looking at these graphs, I think I should transform `elevation`, `Adjacent`, and `Area` and perhaps a log transformation is a good idea. 
+Looking at these graphs, I think I should definately transform `Area` and `Adjacent`, and I wouldn't object to doing the same to `Elevation`, `Nearest` and `Scruz`. Given the high leverages, a log transformation should be a good idea. One problem is that $\log(0) = -\infty$.  A quick look at the data set summary:
 
 ```{r}
-pairs( log(Species) ~ log(Elevation) + log(Area) + 
-                       Nearest + Scruz + log(Adjacent), data=gala)
+gala %>% 
+  dplyr::select(Species, Area, Elevation, Nearest,Scruz, Adjacent) %>%
+  summary()
 ```
 
+reveals that `Scruz` has a zero value, and so a log transformation will result in a $-\infty$. So, lets take the square root of `Scruz`
+
+
+```{r}
+gala %>%
+  mutate(LogSpecies = log(Species), LogElevation=log(Elevation), LogArea=log(Area), LogNearest=log(Nearest),
+         SqrtScruz=sqrt(Scruz), LogAdjacent=log(Adjacent)) %>%
+  dplyr::select(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) %>%
+  GGally::ggpairs(upper=list(continuous='points'), lower=list(continuous='cor'))
+pairs( log(Species) ~ log(Elevation) + log(Area) + 
+                       log(Nearest) + sqrt(Scruz) + log(Adjacent), data=gala)
+```
 
 Looking at these graphs, it is clear that `log(Elevation)` and `log(Area)` are highly correlated and we should probably have one or the other, but not both in the model.
 
 ```{r}
-m.c <- lm(log(Species) ~  log(Area) + Nearest + Scruz + log(Adjacent), data=gala)
+m.c <- lm(log(Species) ~  log(Area) + log(Nearest) + sqrt(Scruz) + log(Adjacent), data=gala)
 summary(m.c)$coefficients %>% round(digits=3) # more readable...
 ```
 
@@ -536,7 +610,11 @@ $$\begin{aligned}
 \log\left(\frac{a}{b}\right)	&=	\log a-\log b \\
 \log\left(ab\right)	          &=	\log a+\log b
 \end{aligned}$$
- 
+
+
+One final aspect of exponents that we will utilize is that
+$$ e^{a+b} = e^a e^b$$
+
 To investigate the effects of a log transformation, we'll examine a dataset that predicts the writing scores of $n=200$ students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group. 
 
 ```{r}
@@ -547,6 +625,7 @@ scores <- scores %>% mutate(gender = female)
 pairs(write~read+math+gender, data=scores)
 ```
 
+These data look pretty dencent, and I'm not certain that I would do *any* transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a student's writing score.
 
 #### Log-transformed response, untransformed covariates
 
@@ -571,6 +650,7 @@ $$\log y=\begin{cases}
 m <- lm(log(write) ~ gender, data=scores)
 summary(m)$coef %>% round(digits=3)
 ```
+
 
 The intercept is now the mean of the log-transformed `write` responses for the females and thus $e^{\hat{\beta}_0} = \hat{y}_{f}$ and the offset for males is the change in `log(write)` from the female group. Notice that for the males, we have
 $$\begin{aligned}
@@ -619,12 +699,12 @@ $$\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\be
 and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22$$ or a 22% increase in writing score for a 20-point increase in reading score.
 
 In short, we can interpret $e^{\hat{\beta}_{i}}$ as the percent increase/decrease in the non-transformed response variable.
-Some students get confused by what is meant by a $\%$ increase or decrease in $x$.
+Some students get confused by what is meant by a $\%$ increase or decrease in $y$.
 
-  * A $75\%$ decrease in $x$ has a resulting value of $\left(1-0.75\right)x=\left(0.25\right) x$
-  * A $75\%$ increase in $x$ has a resulting value of $\left(1+0.75\right)x=\left(1.75\right) x$
-  * A $100\%$ increase in $x$ has a resulting value of $\left(1+1.00\right)x=2x$ and is a doubling of $x$.
-  * A $50\%$ decrease in $x$ has a resulting value of $\left(1-0.5\right)x=\left(0.5\right) x$ and is a halving of $x$.
+  * A $75\%$ decrease in $y$ has a resulting value of $\left(1-0.75\right)y=\left(0.25\right) y$
+  * A $75\%$ increase in $y$ has a resulting value of $\left(1+0.75\right)y=\left(1.75\right) y$
+  * A $100\%$ increase in $y$ has a resulting value of $\left(1+1.00\right)y=2x$ and is a doubling of $y$.
+  * A $50\%$ decrease in $y$ has a resulting value of $\left(1-0.5\right)y=\left(0.5\right) x$ and is a halving of $y$.
 
 
 #### Untransformed response, log-transformed covariate
@@ -660,7 +740,7 @@ difference in $\hat{y}$ values for the first and second students and the second 
 
 #### Log-transformed response, log-transformed covariate
 
-This combines the interpretation of the in the previous two section. We consider
+This combines the interpretations in the previous two sections. We consider
 $$\log y=\beta_{0}+\beta_{2}\log x+\epsilon$$ 
 and we again consider two $x$ values (again $x_{1}$ and $x_{2}$). We then examine the difference in the $\log\hat{y}$ values as 
 $$\begin{aligned}
@@ -703,13 +783,13 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     f. Examine models that have all three main effects and either the `region:log(income)` or `oil:log(income)` interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?
     g. Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. *Hint: graph the data and the predicted values.*
 
-2. Using the `pressure` data available in the `faraway` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model. 
+2. Using the `pressure` data available in the `faraway` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial. 
     a. Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on. 
     b. Comment on the interpretability of your (possibly ridiculously complicated) model.
 
 3. Use transformations to find a good model for `volume` in terms of `girth` and `height` using the `trees` dataset in the `faraway` package.
     a. Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.
-    b. Create a prediction interval for the volume of a tree with girth=16 and height=70. Notice that if you have transformed your response variable in you model, you'll have to back-transform to the original y-scale.
+    b. Create a prediction interval for the volume of a tree with `girth=16` and `height=70`. Notice that if you have transformed your response variable in you model, you'll have to back-transform to the original y-scale.
 
 4. For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the `Time` taken polishing a newly manufactured dish versus the dish `Diameter` (in inches), `Type`, and `Price`.
     a. The data live in a package I have on GitHub. The following code will download the data package:
@@ -725,10 +805,9 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
         pairs(Time ~ ., data=Dishes)
         ```
       Comment on the relationships and possible transformations to be made.
-    c. Fit a linear model predicting Time as a function the main of Diameter, Price, and Type, but with no interaction.
+    c. Fit a linear model predicting `Time` as a function the main of `Diameter`, `Price`, and `Type`, but with no interaction.
     d. Examine the diagnostic plots. What stands out to you?
     e. While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.
     f. Using your model from part (e), what is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the `pairs()` plot?  
     g. How does a 20% increase in Price affect the polishing Time? 
-
 

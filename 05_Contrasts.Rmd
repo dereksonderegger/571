@@ -455,11 +455,12 @@ Because the averaging over factor levels isn't what I typically want to do, I st
     ```
     a. Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix $\boldsymbol{X}$ for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:
         ```{r}
-        mtcars.small <- mtcars %>%      
-          group_by(cyl) %>%             # For each cylinder group
-          arrange(cyl, wt) %>%          # Reorder my dataset
-          slice(1:3)                    # grab first three rows of each group
-        model.matrix(  lm(mpg ~ wt*cyl, data=mtcars.small) )
+        mtcars %>%      
+          group_by(cyl) %>%              # For each cylinder group
+          arrange(cyl, wt) %>%           # Reorder my dataset
+          slice(1:3)  %>%                # grab first three rows of each group
+          lm( mpg ~ wt*cyl, data=. ) %>% # Linear model
+          model.matrix()
         ```
         _Hint: the purpose of this step is to make sure everyone knows the column order of the design matrix so that you interprete the $\beta$ terms in the correct order._
         

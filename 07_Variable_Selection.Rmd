@@ -223,7 +223,7 @@ smallest <- Life.Exp ~ 1
 biggest <- Life.Exp ~ Population + Income + Illiteracy + 
                       Murder + HS.Grad + Frost + Area + HS.Grad.2 + Income.2
 m <- lm(Life.Exp ~ Income, data=state.data)
-step(m, scope=list(lower=smallest, upper=biggest))
+stats::step(m, scope=list(lower=smallest, upper=biggest))
 ```
 
 Notice that our model selected by `step()` is not the same model we obtained when we started with the biggest model and removed things based on p-values. 
