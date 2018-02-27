@@ -17,6 +17,11 @@ if( length(pkgs > 0)){
 knitr::opts_chunk$set( fig.height=3 )
 ```
 
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)  # dplyr, tidyr, ggplot2
+```
+
+
 We have previously looked at ANOVA and regression models and, in many
 ways, they felt very similar. In this chapter we will introduce the
 theory that allows us to understand both models as a particular flavor
@@ -298,7 +303,6 @@ $$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymb
 Here we will work an example in R and see the calculations. Consider
 the following data:
 ```{r, fig.height=3, warning=FALSE}
-library(ggplot2)
 n <- 20
 x <- seq(0,10, length=n)
 y <- -3 + 2*x + rnorm(n, sd=2)
@@ -587,8 +591,7 @@ when you right multiply by $\mathbf{y}$. How does this matrix calculate the appr
     data <- data.frame(DBH=c(30.5, 31.5, 31.7, 32.3, 33.3, 35.0, 35.4, 35.6, 36.3, 37.8),
                        CC =c(.74,  .69,   .65,  .72,  .58,  .50,  .60,  .70,  .52,  .60),
                     Height=c(58,    64,    65,   70,   68,   63,   78,   80,   74,   76))
-    library(pander)
-    pander(t(data))
+    pander::pander(t(data))
     ```
     
     We are interested in fitting the regression model

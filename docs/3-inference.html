@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-02-22">
+<meta name="date" content="2018-02-27">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -262,6 +262,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="inference" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Inference</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></code></pre></div>
 <div id="f-tests" class="section level2">
 <h2><span class="header-section-number">3.1</span> F-tests</h2>
 <p>We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.</p>
@@ -310,9 +311,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tbody>
 </table>
 <p>We will first read in the data set from the package <code>faraway</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)    <span class="co"># load the library </span>
-<span class="kw">data</span>(gala)          <span class="co"># import the data set</span>
-<span class="kw">head</span>(gala)          <span class="co"># show the first couple of rows</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)     <span class="co"># import the data set</span>
+<span class="kw">head</span>(gala)                          <span class="co"># show the first couple of rows</span></code></pre></div>
 <pre><code>##              Species Endemics  Area Elevation Nearest Scruz Adjacent
 ## Baltra            58       23 25.09       346     0.6   0.6     1.84
 ## Bartolome         31       21  1.24       109     0.6  26.3   572.33
@@ -690,7 +690,7 @@ fish <span class="op">%&gt;%</span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length.<span class="dv">1</span>, Length.<span class="dv">2</span>, Length.<span class="dv">3</span>, Height, Width) <span class="op">%&gt;%</span>
 <span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),
                   <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length.<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Length.<span class="dv">3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)
 <span class="kw">summary</span>(model)</code></pre></div>
@@ -751,8 +751,7 @@ fish <span class="op">%&gt;%</span>
 <h2><span class="header-section-number">3.5</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li><p>The dataset prostate in package <code>faraway</code> has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
-<span class="kw">data</span>(prostate)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(prostate, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
 <span class="kw">head</span>(prostate)</code></pre></div>
 <p>It is possible to get information about the data set using the command <code>help(prostate)</code>. Fit a model with <code>lpsa</code> as the response and all the other variables as predictors.</p>
 <ol style="list-style-type: lower-alpha">

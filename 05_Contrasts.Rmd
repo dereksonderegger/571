@@ -16,8 +16,7 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-library(ggplot2)
-library(dplyr)
+library(tidyverse)  # ggplot2, dplyr, tidyr
 library(emmeans)    # for emmeans()
 library(multcomp)   # for glht() 
 ```

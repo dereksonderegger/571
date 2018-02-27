@@ -15,6 +15,10 @@ if( length(pkgs > 0)){
 knitr::opts_chunk$set( fig.height=3 )
 ```
 
+```{r}
+library(tidyverse)  # ggplot2, dplyr, tidyr
+```
+
 ## F-tests
 
 We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.
@@ -44,9 +48,8 @@ We will consider a data set from Johnson and Raven (1973) which also appears in 
 We will first read in the data set from the package `faraway`.
 
 ```{r}
-library(faraway)    # load the library 
-data(gala)          # import the data set
-head(gala)          # show the first couple of rows
+data('gala', package='faraway')     # import the data set
+head(gala)                          # show the first couple of rows
 ```
 
 
@@ -379,8 +382,7 @@ In general, you should be very careful with the interpretation of the regression
 ## Exercises
 1. The dataset prostate in package `faraway` has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.
     ```{r, eval=FALSE}
-    library(faraway)
-    data(prostate)
+    data(prostate, package='faraway')
     head(prostate)
     ```
     It is possible to get information about the data set using the command `help(prostate)`. Fit a model with `lpsa` as the response and all the other variables as predictors.

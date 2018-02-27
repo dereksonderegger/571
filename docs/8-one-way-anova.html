@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-02-22">
+<meta name="date" content="2018-02-27">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -284,7 +284,7 @@ H_{a}:\;\;y_{ij}    =   \mu+\alpha_{i}+\epsilon_{ij}
 <span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> )</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-158-1.png" width="672" /></p>
 <p>Just by looking at the graph, we expect to see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar while <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are different from <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> and possibly from each other, too. We first fit the offset model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)
 <span class="kw">summary</span>(m)</code></pre></div>
@@ -319,18 +319,18 @@ H_{a}:\;\;y_{ij}    =   \mu+\alpha_{i}+\epsilon_{ij}
 <p>It is still important to check the diagnostics plots, but certain diagnostic plots will be useless. In particular, we need to be concerned about constant variance among the groups and normality of the residuals.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)
 <span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">2</span>)  <span class="co">#  QQ plot</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-158-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-160-1.png" width="672" /></p>
 <p>The residual plots however, might need a little bit of extra work, because there are only four possible predicted values (actually <span class="math inline">\(3\)</span> because group <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> have the same predicted values). Note that we actually have <span class="math inline">\(n=24\)</span> observations, but I can only see 16 of them.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co">#  Residals vs fitted</span></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>diet))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-159-2.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-161-2.png" width="672" /></p>
 <p>To remedy this, we will plot the residuals vs fitted by hand, and add a little bit of random noise to the fitted value, just so that we don’t have points stack up on top of each other. Lets also add a different shape for each diet.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">coagulation<span class="op">$</span>fitted &lt;-<span class="st"> </span><span class="kw">predict</span>(m)
 coagulation<span class="op">$</span>resid &lt;-<span class="st"> </span><span class="kw">resid</span>(m)
 <span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>fitted, <span class="dt">y=</span>resid, <span class="dt">shape=</span>diet, <span class="dt">color=</span>diet)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_jitter</span>(<span class="dt">w=</span><span class="fl">0.3</span>, <span class="dt">h=</span><span class="dv">0</span>))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-160-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
 </div>
 <div id="pairwise-comparisons" class="section level2">
 <h2><span class="header-section-number">8.4</span> Pairwise Comparisons</h2>
@@ -375,7 +375,7 @@ LetterData</code></pre></div>
 <span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>LetterData, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>y, <span class="dt">label=</span>.group), <span class="dt">size=</span><span class="dv">10</span> ) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
 </div>
 <div id="exercises-7" class="section level2">
 <h2><span class="header-section-number">8.5</span> Exercises</h2>

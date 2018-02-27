@@ -17,9 +17,7 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-library(faraway)   # for the data 
-library(ggplot2)   # my favorite graphing package
-library(dplyr)     # for the %>% operator
+library(tidyverse)  # ggplot2, tidyr, dplyr
 ```
 
 
@@ -34,8 +32,7 @@ There are two possible ways that gender could enter the model. Either:
 2. We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender.
 
 ```{r, fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
-library(ggplot2)
-library(faraway)
+data('teengamb', package='faraway')
 teengamb$sex <- factor(teengamb$sex, labels=c('Male','Female')) 
 m1 <- lm( gamble ~ sex + income, data=teengamb )  
 m2 <- lm( gamble ~ sex * income, data=teengamb )  
@@ -169,8 +166,7 @@ y_{47}
 $$
 where the new fourth column is the what I would get if I multiplied the $\boldsymbol{x}$ column element-wise with the dummy-variable column. To fit this model in R we have
 ```{r}
-library(ggplot2)
-library(faraway)
+data('teengamb', package='faraway')
 
 # Forces R to recognize that 0, 1 are categorical, also
 # relabels the levels to something I understand.
@@ -288,9 +284,8 @@ The F-test concludes that there is sufficient decrease in the SSE to justify add
 1. The in the `faraway` package, there is a dataset named `phbirths` that gives babies birth weights along with their gestational time in utero along with the mother's smoking status. 
     a. Load and inspect the dataset using
         ```{r, eval=FALSE}
-        library(faraway)    # load the package
-        data(phbirths)      # load the data within the package
-        ?phbirths
+        data('phbirths', package='faraway')   # load the data within the package
+        ?faraway::phbirths                    # Look at the help file
         ```
     b. Create a plot of the birth weight vs the gestational age. Color code the points based on the mother's smoking status. Does it appear that smoking matters?
     c. Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data.  Which model is preferred?
