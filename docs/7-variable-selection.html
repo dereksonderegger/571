@@ -262,6 +262,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="variable-selection" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Variable Selection</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)    <span class="co"># dplyr, tidyr, ggplot2, etc</span></code></pre></div>
 <p>Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>Occam’s Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.</p></li>
@@ -289,8 +290,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="example---u.s.-life-expectancy" class="section level3">
 <h3><span class="header-section-number">7.2.1</span> Example - U.S. Life Expectancy</h3>
 <p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of <code>vnew</code> to the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(faraway)
-<span class="kw">library</span>(dplyr)   <span class="co"># for the %&gt;% operator!</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;state&#39;</span>)  <span class="co"># loads a matrix state.x77 and a vector of stat abbreviations</span>
 
 <span class="co"># Convert from a matrix to a data frame with state abbreviations</span>
 state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)
@@ -305,98 +305,96 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Frost     : num  20 152 15 65 20 166 139 103 11 60 ...
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">pairs</span>(Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
-<p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. We’ll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span>
+<span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</code></pre></div>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
+<p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. Also, we see that <code>Population</code> and <code>Area</code> seem to have some high skew to their distributions, so a log transformation might help. We’ll modify the data and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,
-          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>)
+          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,
+          <span class="dt">Log.Population =</span> <span class="kw">log</span>(Population),
+          <span class="dt">Log.Area =</span> <span class="kw">log</span>(Area)) <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span>Population, <span class="op">-</span>Area )   <span class="co"># remove the original Population and Area covariates</span>
 
 <span class="co"># explicitly define my starting model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
-<span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>, <span class="dt">data=</span>state.data)
+m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
+<span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span> <span class="op">+</span><span class="st">  </span>Log.Area, <span class="dt">data=</span>state.data)
 <span class="co">#</span>
 <span class="co"># Define the same model, but using shorthand</span>
 <span class="co"># The &#39;.&#39; means everything else in the data frame</span>
 m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)
 <span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   63.413      7.449   8.513    0.000
-## Population     0.000      0.000   1.310    0.198
-## Income         0.004      0.003   1.605    0.116
-## Illiteracy     0.255      0.388   0.656    0.515
-## Murder        -0.300      0.049  -6.088    0.000
-## HS.Grad       -0.053      0.214  -0.248    0.806
-## Frost         -0.004      0.003  -1.374    0.177
-## Area           0.000      0.000   0.656    0.516
-## HS.Grad.2      0.001      0.002   0.460    0.648
-## Income.2       0.000      0.000  -1.618    0.114</code></pre>
-<p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. We will first remove the term with the highest p-value, which is the state’s <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
+<pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)      61.174      6.984   8.759    0.000
+## Income            0.004      0.003   1.517    0.137
+## Illiteracy        0.367      0.388   0.946    0.350
+## Murder           -0.304      0.049  -6.214    0.000
+## HS.Grad          -0.031      0.208  -0.151    0.881
+## Frost            -0.004      0.003  -1.068    0.292
+## HS.Grad.2         0.001      0.002   0.394    0.696
+## Income.2          0.000      0.000  -1.518    0.137
+## Log.Population    0.191      0.150   1.273    0.211
+## Log.Area          0.100      0.113   0.885    0.382</code></pre>
+<p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. The largest p-value is <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Graduation Rate from the model from the model</span>
 m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad.<span class="dv">2</span>)
 <span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   62.497      6.395   9.772    0.000
-## Population     0.000      0.000   0.838    0.407
-## Income         0.005      0.003   1.804    0.078
-## Illiteracy    -0.076      0.358  -0.212    0.833
-## Murder        -0.308      0.047  -6.573    0.000
-## Frost         -0.006      0.003  -1.948    0.058
-## Area           0.000      0.000   1.688    0.099
-## Income.2       0.000      0.000  -1.750    0.087</code></pre>
+<pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)      60.894      6.100   9.983    0.000
+## Income            0.004      0.002   1.711    0.094
+## Illiteracy        0.087      0.373   0.233    0.817
+## Murder           -0.318      0.048  -6.686    0.000
+## Frost            -0.006      0.003  -1.807    0.078
+## Income.2          0.000      0.000  -1.581    0.121
+## Log.Population    0.041      0.132   0.309    0.759
+## Log.Area          0.206      0.103   1.995    0.053</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next remove Illiteracy</span>
 m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)
 <span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   61.779      5.367  11.510    0.000
-## Population     0.000      0.000   0.860    0.394
-## Income         0.005      0.002   2.165    0.036
-## Murder        -0.312      0.043  -7.304    0.000
-## Frost         -0.006      0.003  -2.261    0.029
-## Area           0.000      0.000   1.736    0.090
-## Income.2       0.000      0.000  -2.069    0.045</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># And Population...</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Population)
+<pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)      61.779      4.717  13.098    0.000
+## Income            0.004      0.002   1.872    0.068
+## Murder           -0.314      0.042  -7.423    0.000
+## Frost            -0.006      0.003  -2.345    0.024
+## Income.2          0.000      0.000  -1.699    0.097
+## Log.Population    0.041      0.130   0.314    0.755
+## Log.Area          0.198      0.097   2.048    0.047</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># And Log.Population...</span>
+m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Log.Population)
 <span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   59.985      4.931  12.166    0.000
-## Income         0.006      0.002   2.702    0.010
-## Murder        -0.297      0.039  -7.633    0.000
-## Frost         -0.006      0.003  -2.471    0.017
-## Area           0.000      0.000   1.746    0.088
-## Income.2       0.000      0.000  -2.533    0.015</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Area from the model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Area)
-<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
-<pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)   63.685      4.552  13.990    0.000
-## Income         0.004      0.002   2.078    0.043
-## Murder        -0.285      0.039  -7.278    0.000
-## Frost         -0.006      0.003  -2.235    0.030
-## Income.2       0.000      0.000  -1.864    0.069</code></pre>
+## (Intercept)   61.413      4.523  13.577    0.000
+## Income         0.004      0.002   2.257    0.029
+## Murder        -0.309      0.039  -7.828    0.000
+## Frost         -0.006      0.002  -2.612    0.012
+## Income.2       0.000      0.000  -2.044    0.047
+## Log.Area       0.200      0.096   2.091    0.042</code></pre>
 <p>The removal of <code>Income.2</code> is a tough decision because the p-value is very close to <span class="math inline">\(\alpha=0.05\)</span> and might be left in if it makes model interpretation easier or if the researcher feels a quadratic effect in income is appropriate (perhaps rich people are too stressed?).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)</code></pre></div>
 <pre><code>## 
 ## Call:
-## lm(formula = Life.Exp ~ Income + Murder + Frost + Income.2, data = state.data)
+## lm(formula = Life.Exp ~ Income + Murder + Frost + Income.2 + 
+##     Log.Area, data = state.data)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -1.44396 -0.53231 -0.04994  0.50160  1.51754 
+## -1.28858 -0.50631 -0.07242  0.49738  1.75839 
 ## 
 ## Coefficients:
 ##               Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  6.369e+01  4.552e+00  13.990  &lt; 2e-16 ***
-## Income       4.017e-03  1.933e-03   2.078   0.0434 *  
-## Murder      -2.852e-01  3.918e-02  -7.278 3.95e-09 ***
-## Frost       -5.686e-03  2.544e-03  -2.235   0.0304 *  
-## Income.2    -3.955e-07  2.121e-07  -1.864   0.0688 .  
+## (Intercept)  6.141e+01  4.523e+00  13.577  &lt; 2e-16 ***
+## Income       4.212e-03  1.867e-03   2.257   0.0290 *  
+## Murder      -3.092e-01  3.950e-02  -7.828 7.14e-10 ***
+## Frost       -6.487e-03  2.483e-03  -2.612   0.0123 *  
+## Income.2    -4.188e-07  2.049e-07  -2.044   0.0470 *  
+## Log.Area     2.002e-01  9.576e-02   2.091   0.0424 *  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.7619 on 45 degrees of freedom
-## Multiple R-squared:  0.7042, Adjusted R-squared:  0.6779 
-## F-statistic: 26.78 on 4 and 45 DF,  p-value: 2.112e-11</code></pre>
+## Residual standard error: 0.7349 on 44 degrees of freedom
+## Multiple R-squared:  0.7309, Adjusted R-squared:  0.7003 
+## F-statistic:  23.9 on 5 and 44 DF,  p-value: 1.549e-11</code></pre>
 <p>We are left with a model that adequately explains <code>Life.Exp</code> but we should be careful to note that just because a covariate was removed from the model does not imply that it isn’t related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is <code>Income</code> and thus replacing <code>Illiteracy</code> shows that illiteracy is associated with lower life expectancy, but it is not as predictive as <code>Income</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)
 <span class="kw">summary</span>(m2)</code></pre></div>
@@ -420,7 +418,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 ## Residual standard error: 0.7911 on 46 degrees of freedom
 ## Multiple R-squared:  0.6739, Adjusted R-squared:  0.6527 
 ## F-statistic: 31.69 on 3 and 46 DF,  p-value: 2.915e-11</code></pre>
-<p>Notice that the <span class="math inline">\(R^{2}\)</span> values for both models are quite similar <span class="math inline">\(0.7042\)</span> vs <span class="math inline">\(0.6739\)</span> but the first model with the higher <span class="math inline">\(R^{2}\)</span> has one more predictor variable? Which model should I prefer? I can’t do an F-test because these models are not nested.</p>
+<p>Notice that the <span class="math inline">\(R^{2}\)</span> values for both models are quite similar <span class="math inline">\(0.7309\)</span> vs <span class="math inline">\(0.6739\)</span> but the first model with the higher <span class="math inline">\(R^{2}\)</span> has one more predictor variable? Which model should I prefer? I can’t do an F-test because these models are not nested.</p>
 </div>
 </div>
 <div id="criterion-based-procedures" class="section level2">
@@ -447,7 +445,7 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 <p>and this criterion punishes large models more than AIC does (because <span class="math inline">\(\log n&gt;2\)</span> for <span class="math inline">\(n\ge8\)</span>)</p>
 <p>The AIC value of a linear model can be found using the AIC() on a <code>lm()</code>() object.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1)</code></pre></div>
-<pre><code>## [1] 121.4293</code></pre>
+<pre><code>## [1] 118.6942</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m2)</code></pre></div>
 <pre><code>## [1] 124.2947</code></pre>
 <p>Because the AIC value for the first model is lower, we would prefer the first model that includes both <code>Income</code> and <code>Income.2</code> compared to model 2, which was <code>Life.Exp ~ Illiteracy+Murder+Frost</code>.</p>
@@ -460,8 +458,8 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 <h3><span class="header-section-number">7.3.3</span> Example</h3>
 <p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function <code>add1()</code> which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define the biggest model I wish to consider</span>
-biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>
-<span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
+biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>
+<span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
 
 <span class="co"># Define the model I wish to start with</span>
 m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)
@@ -471,17 +469,17 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class=
 ## 
 ## Model:
 ## Life.Exp ~ 1
-##            Df Sum of Sq    RSS     AIC
-## &lt;none&gt;                  88.299  30.435
-## Population  1     0.409 87.890  32.203
-## Income      1    10.223 78.076  26.283
-## Illiteracy  1    30.578 57.721  11.179
-## Murder      1    53.838 34.461 -14.609
-## HS.Grad     1    29.931 58.368  11.737
-## Frost       1     6.064 82.235  28.878
-## Area        1     1.017 87.282  31.856
-## HS.Grad.2   1    27.414 60.885  13.848
-## Income.2    1     7.464 80.835  28.020</code></pre>
+##                Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                      88.299  30.435
+## Log.Population  1     1.054 87.245  31.835
+## Income          1    10.223 78.076  26.283
+## Illiteracy      1    30.578 57.721  11.179
+## Murder          1    53.838 34.461 -14.609
+## HS.Grad         1    29.931 58.368  11.737
+## Frost           1     6.064 82.235  28.878
+## Log.Area        1     1.042 87.257  31.842
+## HS.Grad.2       1    27.414 60.885  13.848
+## Income.2        1     7.464 80.835  28.020</code></pre>
 <p>Clearly the addition of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
 <span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></code></pre></div>
@@ -489,120 +487,122 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class=
 ## 
 ## Model:
 ## Life.Exp ~ Murder
-##            Df Sum of Sq    RSS     AIC
-## &lt;none&gt;                  34.461 -14.609
-## Population  1    4.0161 30.445 -18.805
-## Income      1    2.4047 32.057 -16.226
-## Illiteracy  1    0.2732 34.188 -13.007
-## HS.Grad     1    4.6910 29.770 -19.925
-## Frost       1    3.1346 31.327 -17.378
-## Area        1    0.4697 33.992 -13.295
-## HS.Grad.2   1    4.4396 30.022 -19.505
-## Income.2    1    1.8972 32.564 -15.441</code></pre>
+##                Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                      34.461 -14.609
+## Log.Population  1    2.9854 31.476 -17.140
+## Income          1    2.4047 32.057 -16.226
+## Illiteracy      1    0.2732 34.188 -13.007
+## HS.Grad         1    4.6910 29.770 -19.925
+## Frost           1    3.1346 31.327 -17.378
+## Log.Area        1    1.4583 33.003 -14.771
+## HS.Grad.2       1    4.4396 30.022 -19.505
+## Income.2        1    1.8972 32.564 -15.441</code></pre>
 <p>There is a companion function to <code>add1()</code> that finds the best term to drop. It is conveniently named <code>drop1()</code> but here the <code>scope</code> parameter defines the smallest model to be considered.</p>
 <p>It would be nice if all of this work was automated. Again, R makes our life easy and the function <code>step()</code> does exactly this. The set of models searched is determined by the scope argument which can be a <em>list</em> of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If <code>scope</code> is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>
-biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
-<span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
+biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
+<span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
 m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)
 stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</code></pre></div>
 <pre><code>## Start:  AIC=26.28
 ## Life.Exp ~ Income
 ## 
-##              Df Sum of Sq    RSS     AIC
-## + Murder      1    46.020 32.057 -16.226
-## + Illiteracy  1    21.109 56.968  12.523
-## + HS.Grad     1    19.770 58.306  13.684
-## + Income.2    1    19.062 59.015  14.288
-## + HS.Grad.2   1    17.193 60.884  15.847
-## + Area        1     5.426 72.650  24.682
-## + Frost       1     3.188 74.889  26.199
-## &lt;none&gt;                    78.076  26.283
-## + Population  1     1.781 76.295  27.130
-## - Income      1    10.223 88.299  30.435
+##                  Df Sum of Sq    RSS     AIC
+## + Murder          1    46.020 32.057 -16.226
+## + Illiteracy      1    21.109 56.968  12.523
+## + HS.Grad         1    19.770 58.306  13.684
+## + Income.2        1    19.062 59.015  14.288
+## + HS.Grad.2       1    17.193 60.884  15.847
+## + Frost           1     3.188 74.889  26.199
+## &lt;none&gt;                        78.076  26.283
+## + Log.Population  1     1.298 76.779  27.445
+## + Log.Area        1     0.994 77.082  27.642
+## - Income          1    10.223 88.299  30.435
 ## 
 ## Step:  AIC=-16.23
 ## Life.Exp ~ Income + Murder
 ## 
-##              Df Sum of Sq    RSS     AIC
-## + Frost       1     3.918 28.138 -20.745
-## + Income.2    1     3.036 29.021 -19.200
-## + Population  1     2.552 29.504 -18.374
-## + HS.Grad     1     2.388 29.668 -18.097
-## + HS.Grad.2   1     2.199 29.857 -17.780
-## &lt;none&gt;                    32.057 -16.226
-## - Income      1     2.405 34.461 -14.609
-## + Illiteracy  1     0.011 32.046 -14.242
-## + Area        1     0.000 32.057 -14.226
-## - Murder      1    46.020 78.076  26.283
+##                  Df Sum of Sq    RSS     AIC
+## + Frost           1     3.918 28.138 -20.745
+## + Income.2        1     3.036 29.021 -19.200
+## + HS.Grad         1     2.388 29.668 -18.097
+## + Log.Population  1     2.371 29.686 -18.068
+## + HS.Grad.2       1     2.199 29.857 -17.780
+## &lt;none&gt;                        32.057 -16.226
+## + Log.Area        1     1.229 30.827 -16.181
+## - Income          1     2.405 34.461 -14.609
+## + Illiteracy      1     0.011 32.046 -14.242
+## - Murder          1    46.020 78.076  26.283
 ## 
 ## Step:  AIC=-20.74
 ## Life.Exp ~ Income + Murder + Frost
 ## 
-##              Df Sum of Sq    RSS     AIC
-## + HS.Grad     1     2.949 25.189 -24.280
-## + HS.Grad.2   1     2.764 25.375 -23.914
-## + Income.2    1     2.017 26.121 -22.465
-## + Population  1     1.341 26.797 -21.187
-## &lt;none&gt;                    28.138 -20.745
-## + Illiteracy  1     0.950 27.189 -20.461
-## + Area        1     0.147 27.991 -19.007
-## - Income      1     3.188 31.327 -17.378
-## - Frost       1     3.918 32.057 -16.226
-## - Murder      1    46.750 74.889  26.199
+##                  Df Sum of Sq    RSS     AIC
+## + HS.Grad         1     2.949 25.189 -24.280
+## + HS.Grad.2       1     2.764 25.375 -23.914
+## + Log.Area        1     2.122 26.017 -22.664
+## + Income.2        1     2.017 26.121 -22.465
+## &lt;none&gt;                        28.138 -20.745
+## + Illiteracy      1     0.950 27.189 -20.461
+## + Log.Population  1     0.792 27.347 -20.172
+## - Income          1     3.188 31.327 -17.378
+## - Frost           1     3.918 32.057 -16.226
+## - Murder          1    46.750 74.889  26.199
 ## 
 ## Step:  AIC=-24.28
 ## Life.Exp ~ Income + Murder + Frost + HS.Grad
 ## 
-##              Df Sum of Sq    RSS     AIC
-## + Population  1     1.887 23.302 -26.174
-## + Income.2    1     1.864 23.326 -26.124
-## - Income      1     0.182 25.372 -25.920
-## &lt;none&gt;                    25.189 -24.280
-## + HS.Grad.2   1     0.218 24.972 -22.714
-## + Illiteracy  1     0.131 25.058 -22.541
-## + Area        1     0.058 25.131 -22.395
-## - HS.Grad     1     2.949 28.138 -20.745
-## - Frost       1     4.479 29.668 -18.097
-## - Murder      1    32.877 58.067  15.478
+##                  Df Sum of Sq    RSS     AIC
+## + Log.Population  1     2.279 22.911 -27.021
+## + Income.2        1     1.864 23.326 -26.124
+## - Income          1     0.182 25.372 -25.920
+## &lt;none&gt;                        25.189 -24.280
+## + Log.Area        1     0.570 24.619 -23.425
+## + HS.Grad.2       1     0.218 24.972 -22.714
+## + Illiteracy      1     0.131 25.058 -22.541
+## - HS.Grad         1     2.949 28.138 -20.745
+## - Frost           1     4.479 29.668 -18.097
+## - Murder          1    32.877 58.067  15.478
 ## 
-## Step:  AIC=-26.17
-## Life.Exp ~ Income + Murder + Frost + HS.Grad + Population
+## Step:  AIC=-27.02
+## Life.Exp ~ Income + Murder + Frost + HS.Grad + Log.Population
 ## 
-##              Df Sum of Sq    RSS     AIC
-## - Income      1     0.006 23.308 -28.161
-## &lt;none&gt;                    23.302 -26.174
-## + Income.2    1     0.790 22.512 -25.899
-## - Population  1     1.887 25.189 -24.280
-## + HS.Grad.2   1     0.006 23.296 -24.187
-## + Illiteracy  1     0.004 23.298 -24.182
-## + Area        1     0.000 23.302 -24.174
-## - Frost       1     3.037 26.339 -22.048
-## - HS.Grad     1     3.495 26.797 -21.187
-## - Murder      1    34.739 58.041  17.456
+##                  Df Sum of Sq    RSS     AIC
+## - Income          1     0.011 22.921 -28.998
+## &lt;none&gt;                        22.911 -27.021
+## + Income.2        1     0.579 22.331 -26.302
+## + Log.Area        1     0.207 22.704 -25.475
+## + Illiteracy      1     0.052 22.859 -25.134
+## + HS.Grad.2       1     0.009 22.901 -25.042
+## - Frost           1     2.107 25.017 -24.623
+## - Log.Population  1     2.279 25.189 -24.280
+## - HS.Grad         1     4.436 27.347 -20.172
+## - Murder          1    33.706 56.616  16.214
 ## 
-## Step:  AIC=-28.16
-## Life.Exp ~ Murder + Frost + HS.Grad + Population
+## Step:  AIC=-29
+## Life.Exp ~ Murder + Frost + HS.Grad + Log.Population
 ## 
-##              Df Sum of Sq    RSS     AIC
-## &lt;none&gt;                    23.308 -28.161
-## + Income.2    1     0.031 23.277 -26.229
-## + HS.Grad.2   1     0.007 23.301 -26.177
-## + Income      1     0.006 23.302 -26.174
-## + Illiteracy  1     0.004 23.304 -26.170
-## + Area        1     0.001 23.307 -26.163
-## - Population  1     2.064 25.372 -25.920
-## - Frost       1     3.122 26.430 -23.877
-## - HS.Grad     1     5.112 28.420 -20.246
-## - Murder      1    34.816 58.124  15.528</code></pre>
+##                  Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                        22.921 -28.998
+## + Log.Area        1     0.216 22.705 -27.471
+## + Illiteracy      1     0.052 22.870 -27.111
+## + Income.2        1     0.034 22.887 -27.073
+## + HS.Grad.2       1     0.012 22.909 -27.024
+## + Income          1     0.011 22.911 -27.021
+## - Frost           1     2.214 25.135 -26.387
+## - Log.Population  1     2.450 25.372 -25.920
+## - HS.Grad         1     6.959 29.881 -17.741
+## - Murder          1    34.109 57.031  14.578</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = Life.Exp ~ Murder + Frost + HS.Grad + Population, 
+## lm(formula = Life.Exp ~ Murder + Frost + HS.Grad + Log.Population, 
 ##     data = state.data)
 ## 
 ## Coefficients:
-## (Intercept)       Murder        Frost      HS.Grad   Population  
-##   7.103e+01   -3.001e-01   -5.943e-03    4.658e-02    5.014e-05</code></pre>
+##    (Intercept)          Murder           Frost         HS.Grad  
+##      68.720810       -0.290016       -0.005174        0.054550  
+## Log.Population  
+##       0.246836</code></pre>
 <p>Notice that our model selected by <code>step()</code> is not the same model we obtained when we started with the biggest model and removed things based on p-values.</p>
 <p>The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># m1 was</span>
@@ -610,41 +610,41 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class
 <span class="kw">AIC</span>(m1)</code></pre></div>
 <pre><code>## [1] 121.4293</code></pre>
 <p>and the model selected by the stepwise algorithm was</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Population, <span class="dt">data =</span> state.data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Log.Population, <span class="dt">data =</span> state.data)
 <span class="kw">AIC</span>(m3)</code></pre></div>
-<pre><code>## [1] 115.7326</code></pre>
+<pre><code>## [1] 114.8959</code></pre>
 <p>Because <code>step()</code> and <code>AIC()</code> are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.</p>
 <p>First we calculate the difference using the AIC() function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</code></pre></div>
-<pre><code>## [1] 5.696681</code></pre>
+<pre><code>## [1] 6.533434</code></pre>
 <p>and next we use <code>add1()</code> on both models to see what the AIC values for each.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
 ## Life.Exp ~ Income + Murder + Frost + Income.2
-##            Df Sum of Sq    RSS     AIC
-## &lt;none&gt;                  26.121 -22.465
-## Population  1   0.42412 25.697 -21.283
-## Illiteracy  1   0.10097 26.020 -20.658
-## HS.Grad     1   2.79527 23.326 -26.124
-## Area        1   1.69309 24.428 -23.815
-## HS.Grad.2   1   2.79698 23.324 -26.127</code></pre>
+##                Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                      26.121 -22.465
+## Log.Population  1   0.10296 26.018 -20.662
+## Illiteracy      1   0.10097 26.020 -20.658
+## HS.Grad         1   2.79527 23.326 -26.124
+## Log.Area        1   2.36019 23.761 -25.200
+## HS.Grad.2       1   2.79698 23.324 -26.127</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
-## Life.Exp ~ Murder + Frost + HS.Grad + Population
+## Life.Exp ~ Murder + Frost + HS.Grad + Log.Population
 ##            Df Sum of Sq    RSS     AIC
-## &lt;none&gt;                  23.308 -28.161
-## Income      1 0.0060582 23.302 -26.174
-## Illiteracy  1 0.0039221 23.304 -26.170
-## Area        1 0.0007900 23.307 -26.163
-## HS.Grad.2   1 0.0073439 23.301 -26.177
-## Income.2    1 0.0314248 23.277 -26.229</code></pre>
+## &lt;none&gt;                  22.921 -28.998
+## Income      1  0.010673 22.911 -27.021
+## Illiteracy  1  0.051595 22.870 -27.111
+## Log.Area    1  0.215741 22.706 -27.471
+## HS.Grad.2   1  0.011894 22.909 -27.024
+## Income.2    1  0.034356 22.887 -27.073</code></pre>
 <p>Using these results, we can calculate the difference in AIC values to be the same as we calculated before <span class="math display">\[\begin{aligned}
--22.465--28.161 &amp;=  -22.465+28.161 \\
-    &amp;=  5.696
+-22.465--28.998 &amp;=  -22.465 + 28.998 \\
+    &amp;=  6.533
     \end{aligned}\]</span></p>
 </div>
 </div>

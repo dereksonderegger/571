@@ -19,6 +19,13 @@ if( length(pkgs > 0)){
 # Set my default chunk options 
 knitr::opts_chunk$set( fig.height=3 )
 ```
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)   # for dplyr, tidyr, ggplot2
+library(ggfortify)   # for autoplot for lm objects
+library(emmeans)     # emmeans for pairwise constrasts.
+```
+
 We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:
 
   1. Unusual observations that contribute too much influence to the analysis. These few observations might drastically change the outcome of the model.
@@ -35,9 +42,6 @@ Throughout this chapter I will use data created by Francis Anscombe that show ho
 The data are available in R as a data frame `anscombe` and is loaded by default. The data consists of four datasets, each having the same linear regression $\hat{y}=3+0.5\,x$ but the data are drastically different.
 
 ```{r, message=FALSE, warning=FALSE}
-library(ggplot2)
-library(dplyr)
-
 # The anscombe dataset has 8 columns - x1,x2,x3,x4,y1,y2,y3,y4
 # and I want it to have 3 columns - Set, X, Y
 Anscombe <- rbind( 

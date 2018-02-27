@@ -16,10 +16,8 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 ```{r, warning=FALSE, message=FALSE}
 # Load the libraries I'll use
-library(faraway)
-library(ggplot2)
-library(dplyr)
-library(emmeans)
+library(tidyverse)   # dplyr, tidyr, ggplot2
+library(emmeans)     # all the pairwise contrasts stuff
 library(ggfortify)   # for the autoplot function on lm() objects
 ```
 
@@ -35,7 +33,7 @@ where $\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$, $\mu$ is th
 We will be interested in testing the null and alternative hypotheses
 $$\begin{aligned}
 H_{0}:\;\;y_{ij}	&=	\mu+\epsilon_{ij}              \\
-H_{a}:\;\;y_{ij}	=	\mu+\alpha_{i}+\epsilon_{ij}
+H_{a}:\;\;y_{ij}	&=	\mu+\alpha_{i}+\epsilon_{ij}
 \end{aligned}$$
  
 
@@ -44,7 +42,7 @@ H_{a}:\;\;y_{ij}	=	\mu+\alpha_{i}+\epsilon_{ij}
 We look at a dataset that comes from the study of blood coagulation times: 24 animals were randomly assigned to four different diets and the samples were taken in a random order. The diets are denoted as $A$,$B$,$C$,and $D$ and the response of interest is the amount of time it takes for the blood to coagulate. 
 
 ```{r, warning=FALSE, message=FALSE, fig.height=3}
-data(coagulation)
+data('coagulation', package='faraway')
 ggplot(coagulation, aes(x=diet, y=coag)) + 
 	geom_boxplot() +
 	labs( x='Diet', y='Coagulation Time' )

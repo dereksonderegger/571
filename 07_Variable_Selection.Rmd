@@ -16,6 +16,11 @@ if( length(pkgs > 0)){
 knitr::opts_chunk$set( fig.height=3 )
 ```
 
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)    # dplyr, tidyr, ggplot2, etc
+```
+
 Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:
 
 1. Occam's Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.
@@ -57,8 +62,7 @@ Stepwise, forward, and backward selection are commonly used but there are some i
 Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a `lm()` object and adds or removes things from the formula. The notation `. ~ .` means to leave the response and all the predictors alone, while `. ~ . + vnew` will add the main effect of `vnew` to the model.
 
 ```{r, message=FALSE, warning=FALSE}
-library(faraway)
-library(dplyr)   # for the %>% operator!
+data('state')  # loads a matrix state.x77 and a vector of stat abbreviations
 
 # Convert from a matrix to a data frame with state abbreviations
 state.data <- data.frame(state.x77, row.names=state.abb)
@@ -68,20 +72,25 @@ str(state.data)
 
 We should first look at the 
 ```{r, fig.height=5}
-pairs(Life.Exp ~ ., data=state.data)
+state.data %>% 
+  dplyr::select( Life.Exp, Population:Area ) %>%
+  GGally::ggpairs( upper=list(continuous='points'), lower=list(continuous='cor') )
 ```
 
 
-I want to add a quadratic effect for `HS.Grad` rate and for `Income`. We'll add it to the data frame and then perform the backward elimination method starting with the model with all predictors as main effects.
+I want to add a quadratic effect for `HS.Grad` rate and for `Income`. Also, we see that `Population` and `Area` seem to have some high skew to their distributions, so a log transformation might help. We'll modify the data and then perform the backward elimination method starting with the model with all predictors as main effects.
 
 ```{r}
 state.data <- state.data %>%
   mutate( HS.Grad.2 = HS.Grad ^ 2,
-          Income.2  = Income  ^ 2)
+          Income.2  = Income  ^ 2,
+          Log.Population = log(Population),
+          Log.Area = log(Area)) %>%
+  dplyr::select( -Population, -Area )   # remove the original Population and Area covariates
 
 # explicitly define my starting model
-m1 <- lm(Life.Exp ~ Population + Income + Illiteracy + 
-                	Murder + HS.Grad + Frost + HS.Grad.2 + Income.2, data=state.data)
+m1 <- lm(Life.Exp ~ Log.Population + Income + Illiteracy + 
+                	Murder + HS.Grad + Frost + HS.Grad.2 + Income.2 +  Log.Area, data=state.data)
 #
 # Define the same model, but using shorthand
 # The '.' means everything else in the data frame
@@ -90,7 +99,7 @@ summary(m1)$coefficients %>% round(digits=3)
 ```
 
 
-The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like `Income` are not significant, which is surprising. We will first remove the term with the highest p-value, which is the state's `HS.Grad`. However, I don't want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that `HS.Grad` is correlated with `Income` and `Illiteracy`.
+The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like `Income` are not significant, which is surprising. The largest p-value is `HS.Grad`. However, I don't want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that `HS.Grad` is correlated with `Income` and `Illiteracy`.
 
 ```{r}
 # Remove Graduation Rate from the model from the model
@@ -105,14 +114,8 @@ summary(m1)$coefficients %>% round(digits=3)
 ```
 
 ```{r}
-# And Population...
-m1 <- update(m1, .~. - Population)
-summary(m1)$coefficients %>% round(digits=3)
-```
-
-```{r}
-# Remove Area from the model
-m1 <- update(m1, .~. - Area)
+# And Log.Population...
+m1 <- update(m1, .~. - Log.Population)
 summary(m1)$coefficients %>% round(digits=3)
 ```
 
@@ -129,7 +132,7 @@ m2 <- lm(Life.Exp ~ Illiteracy+Murder+Frost, data=state.data)
 summary(m2)
 ```
 
-Notice that the $R^{2}$ values for both models are quite similar $0.7042$ vs $0.6739$ but the first model with the higher $R^{2}$ has one more predictor variable? Which model should I prefer? I can't do an F-test because these models are not nested.
+Notice that the $R^{2}$ values for both models are quite similar $0.7309$ vs $0.6739$ but the first model with the higher $R^{2}$ has one more predictor variable? Which model should I prefer? I can't do an F-test because these models are not nested.
 
 ## Criterion Based Procedures
 
@@ -198,8 +201,8 @@ Returning to the life expectancy data, we could start with a simple model add co
 
 ```{r}
 # Define the biggest model I wish to consider
-biggest <- Life.Exp ~ Population + Income + Illiteracy + Murder + 
-                      HS.Grad + Frost + Area + HS.Grad.2 + Income.2
+biggest <- Life.Exp ~ Log.Population + Income + Illiteracy + Murder + 
+                      HS.Grad + Frost + Log.Area + HS.Grad.2 + Income.2
 
 # Define the model I wish to start with
 m <- lm(Life.Exp ~ 1, data=state.data)
@@ -220,8 +223,8 @@ It would be nice if all of this work was automated. Again, R makes our life easy
 
 ```{r}
 smallest <- Life.Exp ~ 1
-biggest <- Life.Exp ~ Population + Income + Illiteracy + 
-                      Murder + HS.Grad + Frost + Area + HS.Grad.2 + Income.2
+biggest <- Life.Exp ~ Log.Population + Income + Illiteracy + 
+                      Murder + HS.Grad + Frost + Log.Area + HS.Grad.2 + Income.2
 m <- lm(Life.Exp ~ Income, data=state.data)
 stats::step(m, scope=list(lower=smallest, upper=biggest))
 ```
@@ -239,7 +242,7 @@ AIC(m1)
 and the model selected by the stepwise algorithm was
 
 ```{r}
-m3 <- lm(Life.Exp ~ Murder + Frost + HS.Grad + Population, data = state.data)
+m3 <- lm(Life.Exp ~ Murder + Frost + HS.Grad + Log.Population, data = state.data)
 AIC(m3)
 ```
 
@@ -260,8 +263,8 @@ add1(m3, scope=biggest)
 
 
 Using these results, we can calculate the difference in AIC values to be the same as we calculated before $$\begin{aligned}
--22.465--28.161	&=	-22.465+28.161 \\
-	&=	5.696
+-22.465--28.998	&=	-22.465 + 28.998 \\
+	&=	6.533
 	\end{aligned}$$
  
 ## Exercises

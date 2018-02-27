@@ -16,11 +16,9 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 ```{r, warning=FALSE, message=FALSE}
 # Load my usual packages
-library(faraway)
-library(ggplot2)
-library(dplyr)
-library(ggfortify)
-library(emmeans)
+library(tidyverse)   # ggplot2, dplyr, tidyr
+library(ggfortify)   # autoplot() for lm objects
+library(emmeans)     # pairwise contrasts stuff
 ```
 
 
@@ -309,8 +307,6 @@ This data set looks at the number of breaks that occur in two different types of
 As always, the first thing we do is look at the data. In this case, it looks like the number of breaks decreases with increasing tension and perhaps wool B has fewer breaks than wool A.
 
 ```{r}
-library(ggplot2)
-library(faraway)
 data(warpbreaks)
 ggplot(warpbreaks, aes(x=tension, y=breaks, color=wool, shape=wool), size=2) + 
   geom_boxplot() +
@@ -330,19 +326,18 @@ The residuals vs fitted values plot is a little worrisome and appears to be an i
 MASS::boxcox(model)
 ```
 
-
-This suggests we should make a log transformation, though because the confidence interval is quite wide we might consider if the increased difficulty in interpretation makes sufficient progress towards making the data meet the model assumptions.. The diagnostic plots of the resulting model look better for the constant variance assumption, but the normality is now a worse off. Because the Central Limit Theorem helps deal with the normality question, I'd rather stabilize the variance at the cost of the normality.
+This suggests we should make a log transformation, though because the confidence interval is quite wide we might consider if the increased difficulty in interpretation makes sufficient progress towards making the data meet the model assumptions. The diagnostic plots of the resulting model look better for the constant variance assumption, but the normality is now a worse off. Because the Central Limit Theorem helps deal with the normality question, I'd rather stabilize the variance at the cost of the normality.
 
 ```{r, fig.height=3}
 model.1 <- lm(log(breaks) ~ tension + wool, data=warpbreaks)
-autoplot(model.1, which=c(1,2))
+autoplot(model.1, which=c(1,2)) + geom_point( aes(color=tension:wool))
 ```
 
 Next we'll fit the interaction model and check the diagnostic plots. The diagnostic plots look good and this appears to be a legitimate model.
 
 ```{r}
 model.2 <- lm(log(breaks) ~ tension * wool, data=warpbreaks)
-autoplot(model.2, which=c(1,2))
+autoplot(model.2, which=c(1,2)) + geom_point( aes(color=tension:wool))
 ```
 
 Then we'll do an F-test to see if it is a better model than the main effects model. The p-value is marginally significant, so we'll keep the interaction in the model, but recognize that it is a weak interaction. 
@@ -356,10 +351,11 @@ anova(model.2)           # table of sequentially added terms in model 2
 Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. This plot shows the raw data and connects lines to the cell mean of each factor combination.
 
 ```{r, fig.height=3}
-warpbreaks$logy.hat <- predict(model.2)
+warpbreaks <- warpbreaks %>%
+  mutate( logy.hat = predict(model.2) )
 ggplot(warpbreaks, aes(x=tension, y=log(breaks), color=wool, shape=wool)) +
   geom_point() +
-  geom_line(aes(y=logy.hat, x=as.integer(tension)))
+  geom_line(aes(y=logy.hat, x=as.integer(tension)))  # make tensition continuous to draw the lines
 ```
 
 
@@ -382,13 +378,24 @@ This test reduces to testing if $\alpha_{2}-\alpha_{3}+\left(\alpha\beta\right)_
 In the main effects model, we were able to read off the necessary test using `emmeans`. Fortunately, we can do the same thing here. In this case, we'll look at the interactions piece of the `emmeans` command. In this case, we find the test H:B - M:B in the last row of the interactions.
 
 ```{r}
-emmeans(model.2, specs= pairwise~tension )
-emmeans(model.2, specs= pairwise~wool )
 emmeans(model.2, specs= pairwise~tension*wool)
 ```
 
 
-The last call to `emmeans` gives us all the pairwise tests comparing the cell means, but what are those main effects testing? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.
+The last call to `emmeans` gives us all the pairwise tests comparing the cell means. If we don't want to wade through all the other pairwise contrasts we could do the following:
+
+```{r}
+# If I want to not wade through all those contrasts and just grab the 
+# contrasts for wool type 'B' and tensions 'M' and 'H'
+emmeans(model.2, pairwise~tension*wool, at=list(wool='B', tension=c('M','H')))
+```
+
+What would happen if we just looked at the main effects? In the case where our experiment is balanced with equal numbers of observations in each treatment cell, we can interpret these differences as follows. Knowing that each cell in our table has a different estimated mean, we could consider the average of all the type A cells as the typical wool A. Likewise we could average all the cell means for the wool B cells. Then we could look at the difference between those two averages. In the balanced design, this is equivalent to removing the tension term from the model and just looking at the difference between the average log number of breaks.
+
+```{r}
+emmeans(model.2, specs= pairwise~tension )
+emmeans(model.2, specs= pairwise~wool )
+```
 
 Using `emmeans`, we can see the wool effect difference between types B and A is $-0.1522$. We can calculate the mean number of log breaks for each wool type and take the difference by the following:
 
