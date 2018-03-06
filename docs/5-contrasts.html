@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-02-27">
+<meta name="date" content="2018-03-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -414,16 +414,16 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.644
+## Quantile = 2.6455
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7359 90.7641
-## Mean of Group 2 == 0 75.5714  71.2802 79.8627
-## Mean of Group 3 == 0 71.0000  67.2155 74.7845
-## Diff G2-G3 == 0       4.5714  -1.1502 10.2931</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7337 90.7663
+## Mean of Group 2 == 0 75.5714  71.2778 79.8650
+## Mean of Group 3 == 0 71.0000  67.2134 74.7866
+## Diff G2-G3 == 0       4.5714  -1.1534 10.2962</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -435,15 +435,15 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">
 
 <span class="co"># predict() gives me the yhat values and optional CI</span>
 <span class="co"># these are just the &quot;contrasts&quot; defined by X matrix! </span>
-ToothGrowth<span class="op">$</span>len.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">1</span>]
-ToothGrowth<span class="op">$</span>len.lwr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">2</span>]
-ToothGrowth<span class="op">$</span>len.upr &lt;-<span class="st"> </span><span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)[,<span class="dv">3</span>]
+ToothGrowth &lt;-<span class="st"> </span>ToothGrowth <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span>
+<span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>))
 
 <span class="co"># Plot the results using ggplot2</span>
 <span class="kw">ggplot</span>( ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">col=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len.hat)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>len.lwr, <span class="dt">ymax=</span>len.upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
+<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m)<span class="op">$</span>coefficient</code></pre></div>
@@ -468,10 +468,10 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 ## 
 ## Linear Hypotheses:
 ##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
-## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
-## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
-## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## Intercept OJ == 0  20.6633     0.6791  30.425  &lt; 1e-10 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712 3.18e-10 ***
+## Intercept VC == 0  16.9633     0.6791  24.977  &lt; 1e-10 ***
+## Slope     VC == 0  13.0997     1.2000  10.916  &lt; 1e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
@@ -568,7 +568,9 @@ test &lt;-<span class="st"> </span><span class="kw">glht</span>(m, <span class="
 <p>There is a dataset built into R named <code>trees</code> which describes a set of <span class="math inline">\(n=31\)</span> cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(trees)
 model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span>Girth, <span class="dt">data=</span>trees )
-trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span>
+<span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
 <span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
@@ -628,7 +630,10 @@ trees &lt;-<span class="st"> </span><span class="kw">cbind</span>( trees, <span 
 ## Confidence level used: 0.95</code></pre>
 <p>This output is a bit mysterious because because of the <code>13.248</code> component. What has happened is that <code>emtrends</code> is telling us the slope of the line at a particular point on the x-axis (the mean of all the girth values). While this doesn’t matter in this example, because the slope is the same for all values of girth, if we had fit a quadratic model, it would not.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth, <span class="dv">2</span>), <span class="dt">data=</span>trees )      <span class="co"># Girth + Girth^2</span>
-trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(Volume, Girth) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cbind</span>(<span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Volume, Girth) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">cbind</span>(<span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+
 <span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
@@ -679,7 +684,9 @@ trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span><span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)
 ToothGrowth<span class="op">$</span>logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth<span class="op">$</span>dose )
 m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">~</span><span class="st"> </span>logDose <span class="op">*</span><span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)
-ToothGrowth &lt;-<span class="st"> </span><span class="kw">cbind</span>(ToothGrowth, <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+ToothGrowth &lt;-<span class="st"> </span>ToothGrowth <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span>
+<span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )
 <span class="kw">ggplot</span>(ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">color=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) <span class="op">+</span>

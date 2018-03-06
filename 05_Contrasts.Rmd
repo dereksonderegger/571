@@ -177,15 +177,15 @@ m <- lm(len ~ logDose * supp, data=ToothGrowth)
 
 # predict() gives me the yhat values and optional CI
 # these are just the "contrasts" defined by X matrix! 
-ToothGrowth$len.hat <- predict(m, interval='confidence')[,1]
-ToothGrowth$len.lwr <- predict(m, interval='confidence')[,2]
-ToothGrowth$len.upr <- predict(m, interval='confidence')[,3]
+ToothGrowth <- ToothGrowth %>%
+  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  cbind( predict(m, interval='confidence'))
 
 # Plot the results using ggplot2
 ggplot( ToothGrowth, aes(x=logDose, col=supp, fill=supp)) +
     geom_point(aes(y=len)) +
-    geom_line(aes(y=len.hat)) +
-    geom_ribbon(aes(ymin=len.lwr, ymax=len.upr), alpha=.2)
+    geom_line(aes(y=fit)) +
+    geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=.2)
 ```
 
 
@@ -292,7 +292,9 @@ There is a dataset built into R named `trees` which describes a set of $n=31$ ch
 ```{r}
 data(trees)
 model <- lm( Volume ~ Girth, data=trees )
-trees <- cbind( trees, predict(model, interval='conf'))
+trees <- trees %>%
+  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  cbind( predict(model, interval='conf'))
 ggplot(trees, aes(x=Girth, y=Volume)) +
   geom_point() +
   geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
@@ -338,7 +340,10 @@ This output is a bit mysterious because because of the `13.248` component. What 
 
 ```{r}
 model <- lm( Volume ~ poly(Girth, 2), data=trees )      # Girth + Girth^2
-trees <- trees %>% dplyr::select(Volume, Girth) %>% cbind(predict(model, interval='conf'))
+trees <- trees %>% 
+  dplyr::select(Volume, Girth) %>% 
+  cbind(predict(model, interval='conf'))
+
 ggplot(trees, aes(x=Girth, y=Volume)) +
   geom_point() +
   geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
@@ -379,7 +384,9 @@ We will return to the `ToothGrowth` dataset and calculate all the interesting co
 data('ToothGrowth')
 ToothGrowth$logDose <- log( ToothGrowth$dose )
 m <- lm(len ~ logDose * supp, data=ToothGrowth)
-ToothGrowth <- cbind(ToothGrowth, predict(m, interval='conf'))
+ToothGrowth <- ToothGrowth %>%
+  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  cbind( predict(m, interval='conf') )
 ggplot(ToothGrowth, aes(x=logDose, color=supp, fill=supp)) +
   geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
   geom_line( aes(y=fit) ) +

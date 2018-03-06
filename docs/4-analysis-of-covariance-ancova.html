@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-02-27">
+<meta name="date" content="2018-03-06">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -393,7 +393,10 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class=
 
 <span class="co"># save the fit, lwr, upr values for each observation</span>
 <span class="co"># these are the yhat and CI </span>
-teengamb &lt;-<span class="st"> </span><span class="kw">cbind</span>(teengamb, <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))
+<span class="co"># If columns for fit, upr, lwr are already present, remove them</span>
+teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span>
+<span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )
 
 <span class="co"># Make a nice plot that includes the regreesion line.</span>
 <span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span>

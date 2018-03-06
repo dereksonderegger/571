@@ -252,7 +252,9 @@ Now our residual plot versus fitted values does not show any trend, suggesting t
 
 ```{r}
 # add the fitted and CI lwr/upr columns to my dataset 
-Eggs <- Eggs %>% cbind( predict(model, interval='confidence') )
+Eggs <- Eggs %>% 
+  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  cbind( predict(model, interval='confidence') )
 
 ggplot(Eggs, aes(x=carapace)) +
   geom_ribbon( aes(ymin=lwr, ymax=upr), fill='red', alpha=.3) +
@@ -573,7 +575,8 @@ To help us understand what the log transformations are doing, we can produce a p
 ```{r}
 library(ggplot2)
 pred.data <- data.frame(Area=1:50)
-pred.data <- pred.data %>% cbind( predict(m.s, newdata=pred.data, interval='conf'))
+pred.data <- pred.data %>% 
+  cbind( predict(m.s, newdata=pred.data, interval='conf'))
 ggplot(pred.data, aes(x=Area)) +
   geom_line(aes(y=exp(fit))) +
   geom_ribbon(aes(ymin=exp(lwr), ymax=exp(upr)), alpha=.2) +
@@ -773,10 +776,10 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
 
 ## Exercises
 
-1. The dataset `infmort` in package faraway has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using `help(infmort)`. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
+1. The dataset `infmort`  in the `faraway` package has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using `?faraway::infmort`. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
     a. Plot the relationship between income and mortality. This can be done using the command
         ```{r, eval=FALSE}
-        library(faraway)
+        data('infmort', package='faraway')
         pairs(mortality ~., data=infmort)
         ```
         What do you notice about the relationship between mortality and income?
@@ -787,7 +790,7 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     f. Examine models that have all three main effects and either the `region:log(income)` or `oil:log(income)` interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?
     g. Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. *Hint: graph the data and the predicted values.*
 
-2. Using the `pressure` data available in the `faraway` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial. 
+2. Using the `pressure` data in the  `datasets` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial. 
     a. Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on. 
     b. Comment on the interpretability of your (possibly ridiculously complicated) model.
 

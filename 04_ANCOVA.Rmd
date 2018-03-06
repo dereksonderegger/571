@@ -181,7 +181,10 @@ m1 <- lm( gamble ~ sex * income, data=teengamb )
 
 # save the fit, lwr, upr values for each observation
 # these are the yhat and CI 
-teengamb <- cbind(teengamb, predict(m1, interval='conf'))
+# If columns for fit, upr, lwr are already present, remove them
+teengamb <- teengamb %>%
+  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  cbind( predict(m1, interval='conf') )
 
 # Make a nice plot that includes the regreesion line.
 ggplot(teengamb, aes(x=income, col=sex, fill=sex)) + 
