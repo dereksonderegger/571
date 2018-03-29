@@ -285,6 +285,10 @@ This arrangement of the ANOVA table is referred to as “Type I” sum of square
 We next consider whether or not to include the interaction term to the fruit tree model. We fit the model with the interaction and then graph the results.
 
 ```{r, fig.height=3}
+# Create the Interaction Plot using emmeans
+emmip( m4, Var ~ Pest )  # color is LHS of the formula
+
+# Create the intercation plot by hand
 m4 <- lm(Yield ~ Var * Pest, data=fruit)
 fruit$y.hat <- predict(m4)
 ggplot(fruit, aes(x=Pest, color=Var, shape=Var, y=Yield)) + 

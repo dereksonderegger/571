@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
 
   <meta property="og:title" content="Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-03-06">
+<meta name="date" content="2018-03-27">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -319,15 +319,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## 5 0.97002630         1
 ## 6 1.08037011         1</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
 <p>If I just fit a regular linear model to this data, we fit the following:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )
 Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))
 <span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-261-1.png" width="672" /></p>
-<p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-262-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-262-1.png" width="672" /></p>
+<p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following: <img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
 <p>We need a way to convert our covariate data <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X\beta}\)</span> from something that can take values from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span> to something that is constrained between 0 and 1 so that we can fit the model <span class="math display">\[w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)\]</span> There are several options for the link function <span class="math inline">\(g^{-1}\left(\cdot\right)\)</span> that are commonly used. We use the notation <span class="math inline">\(y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}\)</span> is unconstrained and can be in <span class="math inline">\(\left(-\infty, +\infty\right)\)</span> while <span class="math inline">\(p_{i}=g^{-1}\left(y_{i}\right)\)</span> is constrained to <span class="math inline">\(\left[0,1\right]\)</span>. When convenient, we will drop the <span class="math inline">\(i\)</span> subscript while keeping the domain restrictions.</p>
 <ol style="list-style-type: decimal">
 <li><p>Logit (log odds) transformation. The link function is <span class="math display">\[g\left(p\right)=\log\left[\underset{\textrm{odds}}{\underbrace{\frac{p}{1-p}}}\right]=y\]</span> with inverse <span class="math display">\[g^{-1}\left(y\right)=\frac{1}{1+e^{-y}}\]</span> and we think of <span class="math inline">\(g\left(p\right)\)</span> as the log odds function.</p></li>
@@ -398,7 +398,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-266-1.png" width="672" /></p>
 <p>Suppose that we were to give a predicted Presence/Absence class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span>
@@ -683,7 +683,7 @@ probs &lt;-<span class="st"> </span><span class="kw">cbind</span>(probs, yhat)
 <span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-283-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
 <p>Alternatively, we might want to do this calculation via <code>lsmeans</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lsmeans<span class="op">::</span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </code></pre></div>
 <pre><code>##  conc       prob         SE df  asymp.LCL asymp.UCL
@@ -748,7 +748,7 @@ true.var &lt;-<span class="st"> </span>p<span class="op">*</span>(<span class="d
 <span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span>
 <span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-287-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-288-1.png" width="672" /></p>
 <p>We see that the sample variances fall neatly about the true variance of <span class="math inline">\(2.4\)</span> in the case where the data is distributed with a constant value for <span class="math inline">\(p\)</span>. However adding a small amount of random noise about the parameter <span class="math inline">\(p\)</span>, and we’d have more variance in the samples.</p>
 <p>The extra uncertainty of the probability of success results in extra variability in the responses.</p>
 <p>We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed <span class="math display">\[D\left(\boldsymbol{y},\boldsymbol{\theta}\right)\stackrel{\cdot}{\sim}\chi_{df}^{2}\]</span> where <span class="math inline">\(df\)</span> is the residual degrees of freedom in the model. Because the <span class="math inline">\(\chi_{k}^{2}\)</span> is the sum of <span class="math inline">\(k\)</span> independent, squared standard normal random variables, it has an expectation <span class="math inline">\(k\)</span> and variance <span class="math inline">\(2k\)</span>. For binomial data with group sizes (say larger than 5), this approximation isn’t too bad and we can detect overdispersion. For binary responses, the approximation is quite poor and we cannot detect overdispersion.</p>
@@ -787,7 +787,7 @@ troutegg <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span>
 <span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-289-1.png" width="672" /></p>
+<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-290-1.png" width="672" /></p>
 <p>We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">+</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)
 <span class="kw">summary</span>(m)</code></pre></div>
@@ -893,41 +893,34 @@ sigma2</code></pre></div>
 <p>While each of the time periods is different than the first, it looks like periods 7,8, and 11 aren’t different from each other. As usual, we need to turn to the <code>emmeans</code> package for looking at the pairwise differences between the periods.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(m2, pairwise<span class="op">~</span>period) </code></pre></div>
 <pre><code>## $emmeans
-##  period    emmean        SE df asymp.LCL asymp.UCL
-##  4      3.1911096 0.4665571 NA 2.2766744  4.105545
-##  7      1.0209263 0.2913814 NA 0.4498292  1.592023
-##  8      0.8654901 0.2964696 NA 0.2844203  1.446560
-##  11     0.7411550 0.2510149 NA 0.2491748  1.233135
+##  period    emmean        SE  df asymp.LCL asymp.UCL
+##  4      3.1911096 0.4665571 Inf 2.2766744  4.105545
+##  7      1.0209263 0.2913814 Inf 0.4498292  1.592023
+##  8      0.8654901 0.2964696 Inf 0.2844203  1.446560
+##  11     0.7411550 0.2510149 Inf 0.2491748  1.233135
 ## 
 ## Results are averaged over the levels of: location 
 ## Results are given on the logit (not the response) scale. 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast  estimate        SE df z.ratio p.value
-##  4 - 7    2.1701833 0.5504058 NA   3.943  0.0005
-##  4 - 8    2.3256195 0.5609036 NA   4.146  0.0002
-##  4 - 11   2.4499547 0.5404726 NA   4.533  &lt;.0001
-##  7 - 8    0.1554362 0.4062991 NA   0.383  0.9810
-##  7 - 11   0.2797714 0.3785944 NA   0.739  0.8814
-##  8 - 11   0.1243352 0.3805362 NA   0.327  0.9880
+##  contrast  estimate        SE  df z.ratio p.value
+##  4 - 7    2.1701833 0.5504058 Inf   3.943  0.0005
+##  4 - 8    2.3256195 0.5609036 Inf   4.146  0.0002
+##  4 - 11   2.4499547 0.5404726 Inf   4.533  &lt;.0001
+##  7 - 8    0.1554362 0.4062991 Inf   0.383  0.9810
+##  7 - 11   0.2797714 0.3785944 Inf   0.739  0.8814
+##  8 - 11   0.1243352 0.3805362 Inf   0.327  0.9880
 ## 
 ## Results are averaged over the levels of: location 
 ## Results are given on the log odds ratio (not the response) scale. 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">emmeans</span>(m2, <span class="op">~</span>period) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</code></pre></div>
-<pre><code>##  period    emmean        SE df asymp.LCL asymp.UCL .group
-##  11     0.7411550 0.2510149 NA 0.2491748  1.233135  a    
-##  8      0.8654901 0.2964696 NA 0.2844203  1.446560  a    
-##  7      1.0209263 0.2913814 NA 0.4498292  1.592023  a    
-##  4      3.1911096 0.4665571 NA 2.2766744  4.105545   b   
-## 
-## Results are averaged over the levels of: location 
-## Results are given on the logit (not the response) scale. 
-## Confidence level used: 0.95 
-## Results are given on the log odds ratio (not the response) scale. 
-## P value adjustment: tukey method for comparing a family of 4 estimates 
-## significance level used: alpha = 0.05</code></pre>
+<pre><code>##   period    emmean        SE  df asymp.LCL asymp.UCL .group
+## 4     11 0.7411550 0.2510149 Inf 0.2491748  1.233135     a 
+## 3      8 0.8654901 0.2964696 Inf 0.2844203  1.446560     a 
+## 2      7 1.0209263 0.2913814 Inf 0.4498292  1.592023     a 
+## 1      4 3.1911096 0.4665571 Inf 2.2766744  4.105545      b</code></pre>
 <p>Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately <code>lme4</code> supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.</p>
 </div>
 <div id="exercises-11" class="section level2">
@@ -997,6 +990,7 @@ gitbook.start({
 "facebook": false,
 "twitter": false,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
@@ -1026,9 +1020,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

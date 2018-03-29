@@ -116,7 +116,18 @@ AgData <- AgData %>%
           col=as.integer(subplot) %% 2 + 1,
           vis.plot = as.integer(plot)) %>%
   group_by(plot) %>%
-  mutate(Fertilizer = sample(Fertilizer)) 
+  mutate(Fertilizer = sample(Fertilizer)) %>%
+  group_by()
+
+# Shuffle the plot labels so the Irrigation levels
+#  look randomly assigned.
+AgData.plots <- AgData %>% 
+  dplyr::select(plot) %>% distinct() %>%
+  mutate(plot2=sample(plot, replace = FALSE))
+AgData <- left_join(AgData, AgData.plots, by='plot') %>%
+  dplyr::select(-plot) %>%
+  rename(plot = plot2)
+
 ggplot(AgData ) +
    geom_tile(aes(x=col, y=row, fill=Fertilizer),  color='black', size=1) +
    facet_wrap(  ~ plot, labeller=label_both, ncol=4) +
@@ -131,8 +142,8 @@ I like to think of this set up as having some lurking variables that act at the 
 We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.
 
 ```{r}
-# AgData came from my data package, dsData, however I did some summarization
-# first.
+# AgData came from my data package, dsData, (however I did some summarization
+# first.)
 
 # To analyze Irrigation, average over the subplots first...
 Irrigation.data <-   AgData %>% 
@@ -180,7 +191,7 @@ anova(bad.model)
 In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different.  Notice that the sums-of-squares in this **wrong** analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. 
 $$\begin{aligned}
   RSS_{total} &= RSS_{Fertilizer} + RSS_{Irrigation} \\
-        476.7 &= 294.2 + 182.5
+        456.12 &= 273.64 + 182.5
   \end{aligned}$$
 
 When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool. 

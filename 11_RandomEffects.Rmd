@@ -63,7 +63,7 @@ Mixed effects models are models that have both fixed and random effects. We will
 
 Recall that the likelihood function is the function links the model parameters to the data and is found by taking the probability density function and interpreting it as a function of the parameters instead of the a function of the data. Loosely, the probability function tells us what outcomes are most probable, with the height of the function telling us which values (or regions of values) are most probable given a set of parameter values. The higher the probability function, the higher the probability of seeing that value (or data in that region). The likelihood function turns that relationship around and tells us what parameter values are most likely to have generated the data we have, again with the parameter values with a higher likelihood value being more “likely”.
 
-The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( 0, \sigma \right)$ can be written as a function of our parameters $\mu$ and $\sigma^{2}$ then we have defined our likelihood function
+The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( \mu, \sigma \right)$ can be written as a function of our parameters $\mu$ and $\sigma^{2}$ then we have defined our likelihood function
 $$L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]$$
 
 where the variance/covariance matrix is $\boldsymbol{\Omega}=\sigma I_n$.
@@ -89,7 +89,7 @@ We could think of $L\left(\hat{\boldsymbol{\theta}}_{0}\right)$ as the maximizat
 
 Because we often regard a confidence interval as the set of values that would not be rejected by a hypothesis test, we could consider a sequence of possible values for a parameter and figure out which would not be rejected by the LRT. In this fashion we can construct confidence intervals for parameter values.
 
-Unfortunately all of this hinges on the asymptotic distribution of $D$ and often this turns out to be a poor approximation. In simple cases more exact tests can be derived (for example the F-tests we have used prior) but sometimes nothing better is currently known. Another alternative is to use permutation methods.
+Unfortunately all of this hinges on the asymptotic distribution of $D$ and often this turns out to be a poor approximation. In simple cases more exact tests can be derived (for example the F-tests we have used prior) but sometimes nothing better is currently known. Another alternative is to use resampling methods for the creation of confidence intervals or p-values.
 
 ## 1-way ANOVA with a random effect
 
@@ -155,9 +155,12 @@ and perform our maximization on this transformed set of data. Once we have our u
  
 Our first example comes from an experiment to test the paper brightness as affected by the shift operator. The data has 20 observations with 4 different operators. Each operator had 5 different observations made.  The data set is `pulp` in the package `faraway`. We will first analyze this using a fixed-effects one-way ANOVA, but we will use a different model representation. Instead of using the first operator as the reference level, we will use the sum-to-zero constraint (to make it easier to compare with the output of the random effects model).
 
+```{r, fig.height=3}
+data('pulp', package='faraway')
+ggplot(pulp, aes(x=operator, y=bright)) + geom_point()
+```
+
 ```{r}
-library(faraway)
-data(pulp)
 # set the contrasts to sum-to-zero constraint
 op <- options(contrasts=c('contr.sum', 'contr.poly'))
 m <- aov(bright ~ operator, data=pulp)
