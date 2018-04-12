@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-03-27">
+<meta name="date" content="2018-04-12">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -235,13 +235,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
-<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2</b> Deviance</a></li>
-<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.3</b> Goodness of Fit</a></li>
-<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.4</b> Confidence Intervals</a></li>
-<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.5</b> Interpreting model coefficients</a></li>
-<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.6</b> Prediction and Effective Dose Levels</a></li>
-<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.7</b> Overdispersion</a></li>
-<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>12.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2.1</b> Deviance</a></li>
+<li class="chapter" data-level="12.2.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.2.2</b> Goodness of Fit</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.4</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.5</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.6</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.7</b> Exercises</a></li>
 </ul></li>
 </ul>
 
@@ -337,19 +339,28 @@ Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><s
 <p>All of these functions will give a sigmoid shape with higher probability as <span class="math inline">\(y\)</span> increases and lower probability as it decreases. The logit and probit transformations have the nice property that if <span class="math inline">\(y=0\)</span> then <span class="math inline">\(g^{-1}\left(0\right)=\frac{1}{2}\)</span>.</p>
 <p>Usually the difference in inferences made using these different curves is relatively small and we will usually use the logit transformation because its form lends itself to a nice interpretation of my <span class="math inline">\(\boldsymbol{\beta}\)</span> values. In these cases, a slope parameter in our model will be interpreted as “the change in log odds for every one unit change in the predictor.”</p>
 <p>Because we will be using the logit transformation so often, it is useful to make the following definitions: <span class="math display">\[\textrm{logit}\left(p\right)  =   \log\left[\frac{p}{1-p}\right]\]</span> <span class="math display">\[\textrm{ilogit}\left(y\right) =   \frac{1}{1+e^{-y}}\]</span> where <span class="math inline">\(p\in\left[0,1\right]\)</span> and <span class="math inline">\(y\in\left(-\infty,+\infty\right)\)</span>.</p>
-<p>As in the mixed model case, there are no closed form solution for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and instead we must rely on numerical solutions to find the maximum likelihood estimators for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. To do this, we must derive the log-likelihood function.</p>
+<p>As in the mixed model case, there are no closed form solution for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and instead we must rely on numerical solutions to find the maximum likelihood estimators for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. To do this, we must derive the likelihood function.</p>
 <p><span class="math display">\[\begin{aligned}
- \log\left[L\left(\boldsymbol{\beta}|\boldsymbol{w}\right)\right]   &amp;=  \log\left[\prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i}\right)\right] \\
-    &amp;=  \sum_{i=1}^{n}\log L\left(\boldsymbol{\beta}|w_{i}\right) \\
-    &amp;=  \sum_{i=1}^{n}\log P\left(w_{i}|\boldsymbol{\beta}\right) \\
-    &amp;=  \sum_{i=1}^{n}\log\left[p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}}\right]
-    \end{aligned}\]</span> and we recognize that <span class="math display">\[p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbol{X\beta}}\right)\]</span> and we substitute that into the equation and simplify. Fortunately we don’t have to worry about the details of maximizing the log-likelihood function as R will do it for us.</p>
+ L\left(\boldsymbol{\beta}|\boldsymbol{w} \right)   &amp;=
+  \prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i} \right) \\
+    &amp;=  \prod_{i=1}^{n} p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}} \\
+    &amp;= \prod_{i=1}^n \left(\textrm{ilogit}(X_i \beta) \right)^{w_i} \left( 1-\textrm{ilogit}(X_i \beta)\right)^{1-w_i}  
+    \end{aligned}\]</span> and we recognize that <span class="math display">\[p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbol{X\beta}}\right)\]</span> and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is <em>really</em> small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.</p>
 <p>Often we have more than one response at a particular level of <span class="math inline">\(\boldsymbol{X}\)</span>. Let <span class="math inline">\(n_{i}\)</span> be the number of observations observed at the particular value of <span class="math inline">\(\boldsymbol{X}\)</span>, and <span class="math inline">\(y_{i}\)</span> be the proportion of successes at that value of <span class="math inline">\(\boldsymbol{X}\)</span>. In that case, <span class="math inline">\(w_{i}\)</span> is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with <span class="math inline">\(n_{i}=1\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(Mayflies)</code></pre></div>
+<pre><code>##          CCU Occupancy      yhat
+## 1 0.05261076         1 0.8846278
+## 2 0.25935617         1 0.8343395
+## 3 0.64322010         1 0.7409692
+## 4 0.90168941         1 0.6780997
+## 5 0.97002630         1 0.6614776
+## 6 1.08037011         1 0.6346378</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># The following are equivalent and a &quot;success&quot; is if the site is </span>
 <span class="co"># occupied. If you were to switch it so a success is that the site</span>
 <span class="co"># is not occupied, the signs on all the beta coefficients would switch.</span>
-m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(Occupancy, <span class="dv">1</span><span class="op">-</span>Occupancy) <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )
-m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( (Occupancy <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)              <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</code></pre></div>
+<span class="co"># m1 &lt;- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!</span>
+m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(Occupancy, <span class="dv">1</span><span class="op">-</span>Occupancy) <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial ) <span class="co">#ok!</span>
+m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</code></pre></div>
 <p>For binomial response data, we need to know the number of successes and the number of failures at each level of our covariate. In this case it is quite simple because there is only one observation at each CCU level, so the number of successes is Occupancy and the number of failures is just 1-Occupancy. For binomial data, <code>glm</code> expect the response to be a two-column matrix where the first column is the number successes and and the second column is the number of failures. The default choice of link function for binomial data is the logit link, but the probit can be easily chosen as well using <code>family=binomial(link=probit)</code> in the call to <code>glm()</code>. If you only give a single response vector, it is assumed that the second column is to be calculated as 1-first.column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)</code></pre></div>
 <pre><code>## 
@@ -385,13 +396,13 @@ faraway<span class="op">::</span><span class="kw">ilogit</span>( <span class="kw
 <pre><code>##        1 
 ## 0.886042</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># But the predict() function won&#39;t give you a confidence interval.</span>
-<span class="co"># Lets get this value through lsmeans() instead.</span>
-lsmeans<span class="op">::</span><span class="kw">lsmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</code></pre></div>
-<pre><code>##  CCU response        SE df asymp.LCL asymp.UCL
-##    1 0.886042 0.1285373 NA 0.6341134   1.13797
+<span class="co"># Lets get this value through emmeans() instead.</span>
+<span class="kw">emmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</code></pre></div>
+<pre><code>##  CCU     prob        SE  df asymp.LCL asymp.UCL
+##    1 0.886042 0.1285373 Inf 0.3907622 0.9895016
 ## 
-## Unknown transformation &quot;(.==&quot;: no transformation done 
-## Confidence level used: 0.95</code></pre>
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Finally a nice graph</span>
 new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )
 yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) ) 
@@ -411,18 +422,20 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 ##     1  2  6</code></pre>
 <p>This scheme has mis-classified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.</p>
 </div>
-<div id="deviance" class="section level2">
-<h2><span class="header-section-number">12.2</span> Deviance</h2>
+<div id="measures-of-fit-quality" class="section level2">
+<h2><span class="header-section-number">12.2</span> Measures of Fit Quality</h2>
+<div id="deviance" class="section level3">
+<h3><span class="header-section-number">12.2.1</span> Deviance</h3>
 <p>In the normal linear models case, we were very interested in the Sum of Squared Error (SSE) <span class="math display">\[SSE=\sum_{i=1}^{n}\left(w_{i}-\hat{w}_{i}\right)^{2}\]</span> because it provided a mechanism for comparing the fit of two different models. If a model had a very small SSE, then it fit the observed data well. We used this as a basis for forming our F-test to compare nested models (some rescaling by the appropriate degrees of freedom was necessary, though).</p>
 <p>We want an equivalent measure of goodness-of-fit for models that are non-normal, but in the normal case, I would like it to be related to my SSE statistic.</p>
 <p>The deviance of a model with respect to some data <span class="math inline">\(\boldsymbol{y}\)</span> is defined by <span class="math display">\[D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{0}\right) = -2\left[\log L\left(\hat{\boldsymbol{\theta}}_{0}|\boldsymbol{w}\right)-\log L\left(\hat{\boldsymbol{\theta}}_{S}|\boldsymbol{w}\right)\right]\]</span> where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the fitted parameters of the model of interest, and <span class="math inline">\(\hat{\boldsymbol{\theta}}_{S}\)</span> are the fitted parameters under a “saturated” model that has as many parameters as it has observations and can therefore fit the data perfectly. Thus the deviance is a measure of deviation from a perfect model and is flexible enough to handle non-normal distributions appropriately.</p>
 <p>Notice that this definition is very similar to what is calculated during the Likelihood Ratio Test. For any two models under consideration, the LRT can be formed by looking at the difference of the deviances of the two nested models <span class="math display">\[LRT=D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{simple}\right)-D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{complex}\right)\stackrel{\cdot}{\sim}\chi_{df_{complex}-df_{simple}}^{2}\]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m0 &lt;-<span class="st"> </span><span class="kw">glm</span>( (Occupancy<span class="op">==</span><span class="dv">1</span>) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m0 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )
 <span class="kw">anova</span>(m0, m1)</code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
-## Model 1: (Occupancy == 1) ~ 1
-## Model 2: (Occupancy == 1) ~ CCU
+## Model 1: Occupancy ~ 1
+## Model 2: Occupancy ~ CCU
 ##   Resid. Df Resid. Dev Df Deviance
 ## 1        29     34.795            
 ## 2        28     12.649  1   22.146</code></pre>
@@ -450,8 +463,8 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 ## m0  1 36.79491
 ## m1  2 16.64873</code></pre>
 </div>
-<div id="goodness-of-fit" class="section level2">
-<h2><span class="header-section-number">12.3</span> Goodness of Fit</h2>
+<div id="goodness-of-fit" class="section level3">
+<h3><span class="header-section-number">12.2.2</span> Goodness of Fit</h3>
 <p>The deviance is a good way to measure if a model fits the data, but it is not the only method. Pearson’s <span class="math inline">\(X^{2}\)</span> statistic is also applicable. This statistic takes the general form <span class="math inline">\(X^{2}=\sum_{i=1}^{n}\frac{\left(O_{i}-E_{i}\right)^{2}}{E_{i}}\)</span> where <span class="math inline">\(O_{i}\)</span> is the number of observations observed in category <span class="math inline">\(i\)</span> and <span class="math inline">\(E_{i}\)</span> is the number expected in category <span class="math inline">\(i\)</span>. In our case we need to figure out the categories we have. Since we have both the number of success and failures, we’ll have two categories per observation <span class="math inline">\(i\)</span>. <span class="math display">\[X^{2} =   \sum_{i=1}^{n}\left[\frac{\left(w_{i}-n_{i}\hat{p}_{i}\right)^{2}}{n_{i}\hat{p}_{i}}+\frac{\left(\left(n_{i}-w_{i}\right)-n_{i}\left(1-\hat{p}_{i}\right)\right)^{2}}{n_{i}\left(1-\hat{p}_{i}\right)}\right]
     =   \sum_{i=1}^{n}\frac{\left(w_{i}-n_{i}\hat{p}_{i}\right)^{2}}{n_{i}\hat{p}_{i}\left(1-\hat{p}_{i}\right)}\]</span> and the Pearson residual can be defined as <span class="math display">\[r_{i}=\frac{w_{i}-n_{i}\hat{p}_{i}}{\sqrt{n_{i}\hat{p}_{i}\left(1-\hat{p}_{i}\right)}}\]</span></p>
 <p>These can be found in R via the following commands</p>
@@ -461,8 +474,9 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">deviance</span>(m1)</code></pre></div>
 <pre><code>## [1] 12.64873</code></pre>
 </div>
+</div>
 <div id="confidence-intervals" class="section level2">
-<h2><span class="header-section-number">12.4</span> Confidence Intervals</h2>
+<h2><span class="header-section-number">12.3</span> Confidence Intervals</h2>
 <p>Confidence intervals for the regression could be constructed using normal approximations for the parameter estimates. An approximate <span class="math inline">\(100\left(1-\alpha\right)\%\)</span> confidence interval for <span class="math inline">\(\beta_{i}\)</span> would be <span class="math display">\[\hat{\beta}_{i}\pm z^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{i}\right)\]</span> but we know that this is not a good approximation because the the normal approximation will not be good for small sample sizes and it isn’t clear what is “big enough”. Instead we will use an inverted LRT to develop confidence intervals for the <span class="math inline">\(\beta_{i}\)</span> parameters.</p>
 <p>We first consider the simplest case, where we have only an intercept and slope parameter. Below is a contour plot of the likelihood surface and the shaded region is the region of the parameter space where the parameters <span class="math inline">\(\left(\beta_{0},\beta_{1}\right)\)</span> would not be rejected by the LRT. This region is found by finding the maximum likelihood estimators <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span>, and then finding set of <span class="math inline">\(\beta_{0},\beta_{1}\)</span> pairs such that <span class="math display">\[\begin{aligned}
 -2\left[\log L\left(\beta_{0},\beta_{1}\right)-\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)\right]    &amp; \le \chi_{df=2,0.95}^{2} \\
@@ -482,7 +496,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 ## -6.446863 -1.304244</code></pre>
 </div>
 <div id="interpreting-model-coefficients" class="section level2">
-<h2><span class="header-section-number">12.5</span> Interpreting model coefficients</h2>
+<h2><span class="header-section-number">12.4</span> Interpreting model coefficients</h2>
 <p>We first consider why we are dealing with odds <span class="math inline">\(\frac{p}{1-p}\)</span> instead of just <span class="math inline">\(p\)</span>. They contain the same information, so the choice is somewhat arbitrary, however we’ve been using probabilities for so long that it feels unnatural to switch to odds. There are two good reasons for this, however.</p>
 <p>The first is that the odds <span class="math inline">\(\frac{p}{1-p}\)</span> can take on any value from <span class="math inline">\(0\)</span> to <span class="math inline">\(\infty\)</span> and so part of our translation of <span class="math inline">\(p\)</span> to an unrestricted domain is already done.</p>
 <p>The second is that it is easier to compare odds than to compare probabilities. For example, (as of this writing) I have a three month old baby who is prone to spitting up her milk.</p>
@@ -655,7 +669,7 @@ yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span
 <p>We should be careful in drawing conclusions here because this study was a retrospective study and the decision to breast feed a baby vs feeding with formula is inextricably tied to socio-economic status and we should investigate if the effect measured is due to feeding method or some other lurking variable tied to socio-economic status.</p>
 </div>
 <div id="prediction-and-effective-dose-levels" class="section level2">
-<h2><span class="header-section-number">12.6</span> Prediction and Effective Dose Levels</h2>
+<h2><span class="header-section-number">12.5</span> Prediction and Effective Dose Levels</h2>
 <p>To demonstrate the ideas in this section, we’ll use a toxicology study that examined insect mortality as a function of increasing concentrations of an insecticide.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;bliss&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</code></pre></div>
 <p>We first fit the logistic regression model and plot the results</p>
@@ -726,7 +740,7 @@ CI</code></pre></div>
 ## 3 0.75 1.054465 0.2315932 0.6005508 1.508379</code></pre>
 </div>
 <div id="overdispersion" class="section level2">
-<h2><span class="header-section-number">12.7</span> Overdispersion</h2>
+<h2><span class="header-section-number">12.6</span> Overdispersion</h2>
 <p>In the binomial distribution, the variance is a function of the probability of success and is <span class="math display">\[Var\left(W\right)=np\left(1-p\right)\]</span> but there are many cases where we might be interested in adding an additional variance parameter <span class="math inline">\(\phi\)</span> to the model. A common reason for overdispersion to appear is that we might not have captured all the covariates that influence <span class="math inline">\(p\)</span>.</p>
 <p>We can do a quick simulation to demonstrate that additional variability in <span class="math inline">\(p\)</span> leads to addition variability overall.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">N &lt;-<span class="st"> </span><span class="dv">1000</span> 
@@ -924,7 +938,7 @@ sigma2</code></pre></div>
 <p>Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately <code>lme4</code> supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.</p>
 </div>
 <div id="exercises-11" class="section level2">
-<h2><span class="header-section-number">12.8</span> Exercises</h2>
+<h2><span class="header-section-number">12.7</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (i.e. cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.
 <ol style="list-style-type: lower-alpha">

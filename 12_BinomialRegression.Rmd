@@ -80,7 +80,7 @@ which is horrible. First, we want the regression line to be related to the proba
 ```{r, echo=FALSE}
 m <- glm( Occupancy ~ CCU, data=Mayflies, family=binomial ) 
 predicted <- data.frame(CCU = seq(0,5, by=.01)) 
-predicted$prob <- ilogit(predict(m, newdata=data.frame(CCU=seq(0,5,by=.01)))) 
+predicted$prob <- faraway::ilogit(predict(m, newdata=data.frame(CCU=seq(0,5,by=.01)))) 
 ggplot(Mayflies, aes(x=CCU, y=Occupancy)) +    
   geom_point() +   
   geom_line(data=predicted, aes(y=prob), color='red')
@@ -108,26 +108,28 @@ $$\textrm{logit}\left(p\right)	=	\log\left[\frac{p}{1-p}\right]$$
 $$\textrm{ilogit}\left(y\right)	=	\frac{1}{1+e^{-y}}$$
 where $p\in\left[0,1\right]$ and $y\in\left(-\infty,+\infty\right)$.
 
-As in the mixed model case, there are no closed form solution for $\hat{\boldsymbol{\beta}}$ and instead we must rely on numerical solutions to find the maximum likelihood estimators for $\hat{\boldsymbol{\beta}}$. To do this, we must derive the log-likelihood function.
+As in the mixed model case, there are no closed form solution for $\hat{\boldsymbol{\beta}}$ and instead we must rely on numerical solutions to find the maximum likelihood estimators for $\hat{\boldsymbol{\beta}}$. To do this, we must derive the likelihood function.
 
 $$\begin{aligned}
- \log\left[L\left(\boldsymbol{\beta}|\boldsymbol{w}\right)\right]	&=	\log\left[\prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i}\right)\right] \\
-	&=	\sum_{i=1}^{n}\log L\left(\boldsymbol{\beta}|w_{i}\right) \\
-	&=	\sum_{i=1}^{n}\log P\left(w_{i}|\boldsymbol{\beta}\right) \\
-	&=	\sum_{i=1}^{n}\log\left[p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}}\right]
+ L\left(\boldsymbol{\beta}|\boldsymbol{w} \right)	&=
+  \prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i} \right) \\
+	&=	\prod_{i=1}^{n} p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}} \\
+	&= \prod_{i=1}^n \left(\textrm{ilogit}(X_i \beta) \right)^{w_i} \left( 1-\textrm{ilogit}(X_i \beta)\right)^{1-w_i}  
 	\end{aligned}$$
 and we recognize that 
 $$p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbol{X\beta}}\right)$$
-and we substitute that into the equation and simplify. Fortunately we don't have to worry about the details of maximizing the log-likelihood function as R will do it for us. 
+and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is _really_ small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.
 
 Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $y_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
 
 ```{r}
+head(Mayflies)
 # The following are equivalent and a "success" is if the site is 
 # occupied. If you were to switch it so a success is that the site
 # is not occupied, the signs on all the beta coefficients would switch.
-m1 <- glm( cbind(Occupancy, 1-Occupancy) ~ CCU, data=Mayflies, family=binomial )
-m1 <- glm( (Occupancy == 1)              ~ CCU, data=Mayflies, family=binomial )
+# m1 <- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!
+m1 <- glm( cbind(Occupancy, 1-Occupancy) ~ CCU, data=Mayflies, family=binomial ) #ok!
+m1 <- glm( Occupancy ~ CCU, data=Mayflies, family=binomial )
 ```
 
 
@@ -148,8 +150,8 @@ faraway::ilogit( predict(m1, newdata=new.df) )
 predict(m1, newdata=new.df, type='response')   
 
 # But the predict() function won't give you a confidence interval.
-# Lets get this value through lsmeans() instead.
-lsmeans::lsmeans(m1, ~CCU, type='response', at=list(CCU=1))
+# Lets get this value through emmeans() instead.
+emmeans(m1, ~CCU, type='response', at=list(CCU=1))
 
 # Finally a nice graph
 new.df <- data.frame( CCU=seq(0,5, by=.01) )
@@ -172,7 +174,9 @@ table(Truth = Mayflies$Occupancy, Prediction = Mayflies$chat)
 
 This scheme has mis-classified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.
 
-## Deviance
+## Measures of Fit Quality
+
+### Deviance
 
 In the normal linear models case, we were very interested in the Sum of Squared Error (SSE)
 $$SSE=\sum_{i=1}^{n}\left(w_{i}-\hat{w}_{i}\right)^{2}$$
@@ -189,7 +193,7 @@ $$LRT=D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{simple}\right)-D\left(\bo
  
 
 ```{r}
-m0 <- glm( (Occupancy==1) ~ 1, data=Mayflies, family=binomial )
+m0 <- glm( Occupancy ~ 1, data=Mayflies, family=binomial )
 anova(m0, m1)
 1 - pchisq( 22.146, df=1 )
 ```
@@ -206,7 +210,7 @@ AIC(m0, m1)
 ```
 
 
-## Goodness of Fit
+### Goodness of Fit
 
 The deviance is a good way to measure if a model fits the data, but it is not the only method. Pearson's $X^{2}$ statistic is also applicable. This statistic takes the general form $X^{2}=\sum_{i=1}^{n}\frac{\left(O_{i}-E_{i}\right)^{2}}{E_{i}}$ where $O_{i}$ is the number of observations observed in category $i$ and $E_{i}$ is the number expected in category $i$. In our case we need to figure out the categories we have. Since we have both the number of success and failures, we'll have two categories per observation $i$. 
 $$X^{2}	=	\sum_{i=1}^{n}\left[\frac{\left(w_{i}-n_{i}\hat{p}_{i}\right)^{2}}{n_{i}\hat{p}_{i}}+\frac{\left(\left(n_{i}-w_{i}\right)-n_{i}\left(1-\hat{p}_{i}\right)\right)^{2}}{n_{i}\left(1-\hat{p}_{i}\right)}\right]
@@ -367,6 +371,18 @@ exp( confint(m1) )
 
 We should be careful in drawing conclusions here because this study was a retrospective study and the decision to breast feed a baby vs feeding with formula is inextricably tied to socio-economic status and we should investigate if the effect measured is due to feeding method or some other lurking variable tied to socio-economic status.
 
+As usual, we don't want to calculate all these quantities by hand and would prefer if `emmeans` would do all the back-transformations for us.
+
+```{r}
+emmeans(m1, ~ sex+food, type='response')  # probabilities for each sex/treatment
+emmeans(m1, pairwise~ sex, type='response') # compare Boy / Girl
+emmeans(m1, revpairwise~ sex, type='response') # compare Girl / Boy
+
+emmeans(m1, pairwise ~ food, type='response') # compare Foods
+emmeans(m1, revpairwise ~ food, type='response') # compare Foods
+```
+
+
 ## Prediction and Effective Dose Levels
 
 To demonstrate the ideas in this section, we'll use a toxicology study that examined insect mortality as a function of increasing concentrations of an insecticide. 
@@ -395,9 +411,9 @@ head(probs)
 ```
 ```{r}
 probs <- probs %>% mutate(
-  phat  = ilogit(fit),
-  lwr   = ilogit( fit - 1.96 * se.fit ),
-  upr   = ilogit( fit + 1.96 * se.fit ))
+  phat  = faraway::ilogit(fit),
+  lwr   = faraway::ilogit( fit - 1.96 * se.fit ),
+  upr   = faraway::ilogit( fit + 1.96 * se.fit ))
 ggplot(bliss, aes(x=conc)) +
   geom_point(aes(y=alive/(alive+dead))) + 
   geom_line(data=probs, aes(y=phat), color='red') +
@@ -406,10 +422,10 @@ ggplot(bliss, aes(x=conc)) +
   xlab('Concentration') + ylab('Proportion Alive')
 ```
 
-Alternatively, we might want to do this calculation via `lsmeans`.
+Alternatively, we might want to do this calculation via `emmeans`.
 
 ```{r}
-lsmeans::lsmeans(m1, ~conc, at=list(conc=c(0:4)), type='response') 
+emmeans::emmeans(m1, ~conc, at=list(conc=c(0:4)), type='response') 
 ```
 
 
