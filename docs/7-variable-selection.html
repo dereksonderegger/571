@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-04-17">
+<meta name="date" content="2018-09-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,41 +50,67 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -231,7 +257,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
 <li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>11.7</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>11.7.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="11.7.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>11.7.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
@@ -239,7 +269,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.2.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="12.2.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.6</b> Overdispersion</a></li>
@@ -265,7 +295,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="variable-selection" class="section level1">
 <h1><span class="header-section-number">Chapter 7</span> Variable Selection</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)    <span class="co"># dplyr, tidyr, ggplot2, etc</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb232-1" data-line-number="1"><span class="kw">library</span>(tidyverse)    <span class="co"># dplyr, tidyr, ggplot2, etc</span></a></code></pre></div>
 <p>Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>Occam’s Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.</p></li>
@@ -276,7 +306,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="nested-models" class="section level2">
 <h2><span class="header-section-number">7.1</span> Nested Models</h2>
 <p>Often one model is just a simplification of another and can be obtained by setting some subset of <span class="math inline">\(\beta_{i}\)</span> values equal to zero. Those models can be adequately compared by the F-test, which we have already made great use of.</p>
-<p>We should be careful to note that we typically do not want to remove the main covariate from the model if the model uses the covariate in a more complicated fashion. For example, if my model is <span class="math display">\[y=\beta_{0}+\beta_{1}x+\beta_{2}x^{2}+\epsilon\]</span> where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</span>, then considering the simplification <span class="math inline">\(\beta_{1}=0\)</span> and removing the effect of <span class="math inline">\(x\)</span> is not desirable because that forces the parabola to be symmetric about <span class="math inline">\(x=0\)</span>. Similarly, if the model contains an interaction effect, then the removal of the main effect drastically alters the interpretation of the interaction coefficients and should be avoided. Often times removing a lower complexity term while keeping a higher complexity term results in unintended consequences and is typically not recommended.</p>
+<p>We should be careful to note that we typically do not want to remove the main covariate from the model if the model uses the covariate in a more complicated fashion. For example, if my model is <span class="math display">\[y=\beta_{0}+\beta_{1}x+\beta_{2}x^{2}+\epsilon\]</span>
+where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</span>, then considering the simplification <span class="math inline">\(\beta_{1}=0\)</span> and removing the effect of <span class="math inline">\(x\)</span> is not desirable because that forces the parabola to be symmetric about <span class="math inline">\(x=0\)</span>. Similarly, if the model contains an interaction effect, then the removal of the main effect drastically alters the interpretation of the interaction coefficients and should be avoided. Often times removing a lower complexity term while keeping a higher complexity term results in unintended consequences and is typically not recommended.</p>
 </div>
 <div id="testing-based-model-selection" class="section level2">
 <h2><span class="header-section-number">7.2</span> Testing-Based Model Selection</h2>
@@ -293,11 +324,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="example---u.s.-life-expectancy" class="section level3">
 <h3><span class="header-section-number">7.2.1</span> Example - U.S. Life Expectancy</h3>
 <p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of <code>vnew</code> to the model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;state&#39;</span>)  <span class="co"># loads a matrix state.x77 and a vector of stat abbreviations</span>
-
-<span class="co"># Convert from a matrix to a data frame with state abbreviations</span>
-state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)
-<span class="kw">str</span>(state.data)</code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb233-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;state&#39;</span>)  <span class="co"># loads a matrix state.x77 and a vector of stat abbreviations</span></a>
+<a class="sourceLine" id="cb233-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb233-3" data-line-number="3"><span class="co"># Convert from a matrix to a data frame with state abbreviations</span></a>
+<a class="sourceLine" id="cb233-4" data-line-number="4">state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)</a>
+<a class="sourceLine" id="cb233-5" data-line-number="5"><span class="kw">str</span>(state.data)</a></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    50 obs. of  8 variables:
 ##  $ Population: num  3615 365 2212 2110 21198 ...
 ##  $ Income    : num  3624 6315 4530 3378 5114 ...
@@ -308,26 +339,26 @@ state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(stat
 ##  $ Frost     : num  20 152 15 65 20 166 139 103 11 60 ...
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span>
-<span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb235-1" data-line-number="1">state.data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb235-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb235-3" data-line-number="3"><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</a></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. Also, we see that <code>Population</code> and <code>Area</code> seem to have some high skew to their distributions, so a log transformation might help. We’ll modify the data and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,
-          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,
-          <span class="dt">Log.Population =</span> <span class="kw">log</span>(Population),
-          <span class="dt">Log.Area =</span> <span class="kw">log</span>(Area)) <span class="op">%&gt;%</span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span>Population, <span class="op">-</span>Area )   <span class="co"># remove the original Population and Area covariates</span>
-
-<span class="co"># explicitly define my starting model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
-<span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span> <span class="op">+</span><span class="st">  </span>Log.Area, <span class="dt">data=</span>state.data)
-<span class="co">#</span>
-<span class="co"># Define the same model, but using shorthand</span>
-<span class="co"># The &#39;.&#39; means everything else in the data frame</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)
-<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb236-1" data-line-number="1">state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb236-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb236-3" data-line-number="3">          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb236-4" data-line-number="4">          <span class="dt">Log.Population =</span> <span class="kw">log</span>(Population),</a>
+<a class="sourceLine" id="cb236-5" data-line-number="5">          <span class="dt">Log.Area =</span> <span class="kw">log</span>(Area)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb236-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span>Population, <span class="op">-</span>Area )   <span class="co"># remove the original Population and Area covariates</span></a>
+<a class="sourceLine" id="cb236-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb236-8" data-line-number="8"><span class="co"># explicitly define my starting model</span></a>
+<a class="sourceLine" id="cb236-9" data-line-number="9">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb236-10" data-line-number="10"><span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span> <span class="op">+</span><span class="st">  </span>Log.Area, <span class="dt">data=</span>state.data)</a>
+<a class="sourceLine" id="cb236-11" data-line-number="11"><span class="co">#</span></a>
+<a class="sourceLine" id="cb236-12" data-line-number="12"><span class="co"># Define the same model, but using shorthand</span></a>
+<a class="sourceLine" id="cb236-13" data-line-number="13"><span class="co"># The &#39;.&#39; means everything else in the data frame</span></a>
+<a class="sourceLine" id="cb236-14" data-line-number="14">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)</a>
+<a class="sourceLine" id="cb236-15" data-line-number="15"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</a></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      61.174      6.984   8.759    0.000
 ## Income            0.004      0.003   1.517    0.137
@@ -340,9 +371,9 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span clas
 ## Log.Population    0.191      0.150   1.273    0.211
 ## Log.Area          0.100      0.113   0.885    0.382</code></pre>
 <p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. The largest p-value is <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Remove Graduation Rate from the model from the model</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad.<span class="dv">2</span>)
-<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb238-1" data-line-number="1"><span class="co"># Remove Graduation Rate from the model from the model</span></a>
+<a class="sourceLine" id="cb238-2" data-line-number="2">m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad<span class="fl">.2</span>)</a>
+<a class="sourceLine" id="cb238-3" data-line-number="3"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</a></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      60.894      6.100   9.983    0.000
 ## Income            0.004      0.002   1.711    0.094
@@ -352,9 +383,9 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 ## Income.2          0.000      0.000  -1.581    0.121
 ## Log.Population    0.041      0.132   0.309    0.759
 ## Log.Area          0.206      0.103   1.995    0.053</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Next remove Illiteracy</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)
-<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb240-1" data-line-number="1"><span class="co"># Next remove Illiteracy</span></a>
+<a class="sourceLine" id="cb240-2" data-line-number="2">m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)</a>
+<a class="sourceLine" id="cb240-3" data-line-number="3"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</a></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      61.779      4.717  13.098    0.000
 ## Income            0.004      0.002   1.872    0.068
@@ -363,9 +394,9 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 ## Income.2          0.000      0.000  -1.699    0.097
 ## Log.Population    0.041      0.130   0.314    0.755
 ## Log.Area          0.198      0.097   2.048    0.047</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># And Log.Population...</span>
-m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Log.Population)
-<span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb242-1" data-line-number="1"><span class="co"># And Log.Population...</span></a>
+<a class="sourceLine" id="cb242-2" data-line-number="2">m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Log.Population)</a>
+<a class="sourceLine" id="cb242-3" data-line-number="3"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</a></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   61.413      4.523  13.577    0.000
 ## Income         0.004      0.002   2.257    0.029
@@ -374,7 +405,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 ## Income.2       0.000      0.000  -2.044    0.047
 ## Log.Area       0.200      0.096   2.091    0.042</code></pre>
 <p>The removal of <code>Income.2</code> is a tough decision because the p-value is very close to <span class="math inline">\(\alpha=0.05\)</span> and might be left in if it makes model interpretation easier or if the researcher feels a quadratic effect in income is appropriate (perhaps rich people are too stressed?).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(m1)</code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb244-1" data-line-number="1"><span class="kw">summary</span>(m1)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Life.Exp ~ Income + Murder + Frost + Income.2 + 
@@ -399,8 +430,8 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 ## Multiple R-squared:  0.7309, Adjusted R-squared:  0.7003 
 ## F-statistic:  23.9 on 5 and 44 DF,  p-value: 1.549e-11</code></pre>
 <p>We are left with a model that adequately explains <code>Life.Exp</code> but we should be careful to note that just because a covariate was removed from the model does not imply that it isn’t related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is <code>Income</code> and thus replacing <code>Illiteracy</code> shows that illiteracy is associated with lower life expectancy, but it is not as predictive as <code>Income</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)
-<span class="kw">summary</span>(m2)</code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb246-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)</a>
+<a class="sourceLine" id="cb246-2" data-line-number="2"><span class="kw">summary</span>(m2)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Life.Exp ~ Illiteracy + Murder + Frost, data = state.data)
@@ -428,13 +459,24 @@ m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class
 <h2><span class="header-section-number">7.3</span> Criterion Based Procedures</h2>
 <div id="information-criterions" class="section level3">
 <h3><span class="header-section-number">7.3.1</span> Information Criterions</h3>
-<p>It is often necessary to compare models that are not nested. For example, I might want to compare <span class="math display">\[y=\beta_{0}+\beta_{1}x+\epsilon\]</span> vs <span class="math display">\[y=\beta_{0}+\beta_{2}w+\epsilon\]</span></p>
+<p>It is often necessary to compare models that are not nested. For example, I might want to compare
+<span class="math display">\[y=\beta_{0}+\beta_{1}x+\epsilon\]</span>
+vs
+<span class="math display">\[y=\beta_{0}+\beta_{2}w+\epsilon\]</span></p>
 <p>This comparison comes about naturally when doing forward model selection and we are looking for the “best” covariate to add to the model first.</p>
-<p>Akaike introduced his criterion (which he called “An Information Criterion”) as <span class="math display">\[AIC=\underset{\textrm{decreases if RSS decreases}}{\underbrace{-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)}}+\underset{\textrm{increases as p increases}}{\underbrace{2p}}\]</span> where <span class="math inline">\(L\left(\hat{\boldsymbol{\beta}}|\,\textrm{data}\,\right)\)</span> is the likelihood function and <span class="math inline">\(p\)</span> is the number of elements in the <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> vector and we regard a lower AIC value as better. Notice the <span class="math inline">\(2p\)</span> term is essentially a penalty on adding addition covariates so to lower the AIC value, a new predictor must lower the negative log likelihood more than it increases the penalty.</p>
-<p>To convince ourselves that the first summand decreases with decreasing RSS in the standard linear model, we examine the likelihood function <span class="math display">\[\begin{aligned}
+<p>Akaike introduced his criterion (which he called “An Information Criterion”) as
+<span class="math display">\[AIC=\underset{\textrm{decreases if RSS decreases}}{\underbrace{-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)}}+\underset{\textrm{increases as p increases}}{\underbrace{2p}}\]</span>
+where
+<span class="math inline">\(L\left(\hat{\boldsymbol{\beta}}|\,\textrm{data}\,\right)\)</span> is the likelihood function and <span class="math inline">\(p\)</span> is the number of elements in the <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>
+vector and we regard a lower AIC value as better. Notice the <span class="math inline">\(2p\)</span>
+term is essentially a penalty on adding addition covariates so to lower the AIC value, a new predictor must lower the negative log likelihood more than it increases the penalty.</p>
+<p>To convince ourselves that the first summand decreases with decreasing RSS in the standard linear model, we examine the likelihood function
+<span class="math display">\[\begin{aligned}
 f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp;=  \frac{1}{\left(2\pi\sigma^{2}\right)^{n/2}}\exp\left[-\frac{1}{2\sigma^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\boldsymbol{\beta}\right)\right] \\
     &amp;=  L\left(\boldsymbol{\beta},\sigma\,|\,\boldsymbol{y},\boldsymbol{X}\right)
-\end{aligned}\]</span> and we could re-write this as <span class="math display">\[\begin{aligned}
+\end{aligned}\]</span>
+and we could re-write this as
+<span class="math display">\[\begin{aligned}
 \log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}\,|\,\textrm{data}\right)  &amp;=  -\log\left(\left(2\pi\hat{\sigma}^{2}\right)^{n/2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
     &amp;=  -\frac{n}{2}\log\left(2\pi\hat{\sigma}^{2}\right)-\frac{1}{2\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right) \\
     &amp;=  -\frac{1}{2}\left[n\log\left(2\pi\hat{\sigma}^{2}\right)+\frac{1}{\hat{\sigma}^{2}}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)^{T}\left(\boldsymbol{y}-\boldsymbol{X}\hat{\boldsymbol{\beta}}\right)\right] \\
@@ -447,27 +489,31 @@ f\left(\boldsymbol{y}\,|\,\boldsymbol{\beta},\sigma,\boldsymbol{X}\right)   &amp
 <p><span class="math display">\[BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)+p\log n\]</span></p>
 <p>and this criterion punishes large models more than AIC does (because <span class="math inline">\(\log n&gt;2\)</span> for <span class="math inline">\(n\ge8\)</span>)</p>
 <p>The AIC value of a linear model can be found using the AIC() on a <code>lm()</code>() object.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1)</code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb248-1" data-line-number="1"><span class="kw">AIC</span>(m1)</a></code></pre></div>
 <pre><code>## [1] 118.6942</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m2)</code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb250-1" data-line-number="1"><span class="kw">AIC</span>(m2)</a></code></pre></div>
 <pre><code>## [1] 124.2947</code></pre>
 <p>Because the AIC value for the first model is lower, we would prefer the first model that includes both <code>Income</code> and <code>Income.2</code> compared to model 2, which was <code>Life.Exp ~ Illiteracy+Murder+Frost</code>.</p>
 </div>
 <div id="adjusted-r-sq" class="section level3">
 <h3><span class="header-section-number">7.3.2</span> Adjusted <code>R-sq</code></h3>
-<p>One of the problems with <span class="math inline">\(R^{2}\)</span> is that it makes no adjustment for how many parameters in the model. Recall that <span class="math inline">\(R^{2}\)</span> was defined as <span class="math display">\[R^{2}=\frac{RSS_{S}-RSS_{C}}{RSS_{S}}=1-\frac{RSS_{C}}{RSS_{S}}\]</span> where the simple model was the intercept only model. We can create an <span class="math inline">\(R_{adj}^{2}\)</span> statistic that attempts to add a penalty for having too many parameters by defining <span class="math display">\[R_{adj}^{2}=1-\frac{RSS_{C}/\left(n-p\right)}{RSS_{S}/\left(n-1\right)}\]</span> With this adjusted definition, adding a variable to the model that has no predictive power will decrease <span class="math inline">\(R_{adj}^{2}\)</span>.</p>
+<p>One of the problems with <span class="math inline">\(R^{2}\)</span> is that it makes no adjustment for how many parameters in the model. Recall that <span class="math inline">\(R^{2}\)</span> was defined as
+<span class="math display">\[R^{2}=\frac{RSS_{S}-RSS_{C}}{RSS_{S}}=1-\frac{RSS_{C}}{RSS_{S}}\]</span>
+where the simple model was the intercept only model. We can create an <span class="math inline">\(R_{adj}^{2}\)</span> statistic that attempts to add a penalty for having too many parameters by defining
+<span class="math display">\[R_{adj}^{2}=1-\frac{RSS_{C}/\left(n-p\right)}{RSS_{S}/\left(n-1\right)}\]</span>
+With this adjusted definition, adding a variable to the model that has no predictive power will decrease <span class="math inline">\(R_{adj}^{2}\)</span>.</p>
 </div>
 <div id="example" class="section level3">
 <h3><span class="header-section-number">7.3.3</span> Example</h3>
 <p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function <code>add1()</code> which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Define the biggest model I wish to consider</span>
-biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>
-<span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
-
-<span class="co"># Define the model I wish to start with</span>
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)
-
-<span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb252-1" data-line-number="1"><span class="co"># Define the biggest model I wish to consider</span></a>
+<a class="sourceLine" id="cb252-2" data-line-number="2">biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb252-3" data-line-number="3"><span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></a>
+<a class="sourceLine" id="cb252-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb252-5" data-line-number="5"><span class="co"># Define the model I wish to start with</span></a>
+<a class="sourceLine" id="cb252-6" data-line-number="6">m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)</a>
+<a class="sourceLine" id="cb252-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb252-8" data-line-number="8"><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></a></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -484,8 +530,8 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class=
 ## HS.Grad.2       1    27.414 60.885  13.848
 ## Income.2        1     7.464 80.835  28.020</code></pre>
 <p>Clearly the addition of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span>
-<span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></code></pre></div>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb254-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span></a>
+<a class="sourceLine" id="cb254-2" data-line-number="2"><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></a></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -502,11 +548,11 @@ m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class=
 ## Income.2        1    1.8972 32.564 -15.441</code></pre>
 <p>There is a companion function to <code>add1()</code> that finds the best term to drop. It is conveniently named <code>drop1()</code> but here the <code>scope</code> parameter defines the smallest model to be considered.</p>
 <p>It would be nice if all of this work was automated. Again, R makes our life easy and the function <code>step()</code> does exactly this. The set of models searched is determined by the scope argument which can be a <em>list</em> of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If <code>scope</code> is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>
-biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>
-<span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad.<span class="dv">2</span> <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>
-m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)
-stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</code></pre></div>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb256-1" data-line-number="1">smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb256-2" data-line-number="2">biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb256-3" data-line-number="3"><span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></a>
+<a class="sourceLine" id="cb256-4" data-line-number="4">m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)</a>
+<a class="sourceLine" id="cb256-5" data-line-number="5">stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</a></code></pre></div>
 <pre><code>## Start:  AIC=26.28
 ## Life.Exp ~ Income
 ## 
@@ -608,20 +654,20 @@ stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">
 ##       0.246836</code></pre>
 <p>Notice that our model selected by <code>step()</code> is not the same model we obtained when we started with the biggest model and removed things based on p-values.</p>
 <p>The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># m1 was</span>
-m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Income.<span class="dv">2</span>, <span class="dt">data =</span> state.data)
-<span class="kw">AIC</span>(m1)</code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb259-1" data-line-number="1"><span class="co"># m1 was</span></a>
+<a class="sourceLine" id="cb259-2" data-line-number="2">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data =</span> state.data)</a>
+<a class="sourceLine" id="cb259-3" data-line-number="3"><span class="kw">AIC</span>(m1)</a></code></pre></div>
 <pre><code>## [1] 121.4293</code></pre>
 <p>and the model selected by the stepwise algorithm was</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Log.Population, <span class="dt">data =</span> state.data)
-<span class="kw">AIC</span>(m3)</code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb261-1" data-line-number="1">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Log.Population, <span class="dt">data =</span> state.data)</a>
+<a class="sourceLine" id="cb261-2" data-line-number="2"><span class="kw">AIC</span>(m3)</a></code></pre></div>
 <pre><code>## [1] 114.8959</code></pre>
 <p>Because <code>step()</code> and <code>AIC()</code> are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.</p>
 <p>First we calculate the difference using the AIC() function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb263-1" data-line-number="1"><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</a></code></pre></div>
 <pre><code>## [1] 6.533434</code></pre>
 <p>and next we use <code>add1()</code> on both models to see what the AIC values for each.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb265-1" data-line-number="1"><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</a></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -633,7 +679,7 @@ m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class
 ## HS.Grad         1   2.79527 23.326 -26.124
 ## Log.Area        1   2.36019 23.761 -25.200
 ## HS.Grad.2       1   2.79698 23.324 -26.127</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb267-1" data-line-number="1"><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</a></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -722,7 +768,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

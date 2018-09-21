@@ -24,9 +24,10 @@ knitr::opts_chunk$set( fig.height=3 )
 library(tidyverse)  # dplyr, tidyr, ggplot
 library(stringr)    # string manipulation stuff
 
-#library(lme4)       # Our primary analysis routine
+library(lme4)        # Our primary analysis routine
 library(lmerTest)    # A user friendly interface to lme4 that produces p-values
 library(emmeans)     # For all of my pairwise contrasts
+library(car)         # For bootstrap Confidence/Prediction Intervals
 
 # library(devtools)
 # install_github('dereksonderegger/dsData')  # datasets I've made; only install once...
@@ -256,7 +257,7 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
 We'll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a 'blend' and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.
 
 ```{r}
-data(penicillin)
+data(penicillin, package='faraway')
 ggplot(penicillin, aes(y=yield, x=treat)) +
   geom_point() + 
   facet_wrap( ~ blend, ncol=5)
@@ -607,6 +608,79 @@ Finally we want to go back and look at the coefficients for the complex model.
 summary(m2)
 ```
 
+## Confidence and Prediction Intervals 
+As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn't a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the `lme4` package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.
+
+Typically the bootstrap is used when we don't want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data.  But, if we don't mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of $251.4$ and $10.5$. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of $24.7$ and $5.9$.  Then given a subjects regression line, observations are just normal (mean zero, standard deviation $25.6$) perterbations from the line.  All of these numbers came from the `summary(m2)` output.
+
+To create a bootstrap data simulating a new subject, we could do the following:
+```{r}
+subject.intercept = 251.4 + rnorm( 1, mean = 0, sd=24.7)
+subject.slope     = 10.5  + rnorm( 1, mean = 0, sd=10.5)
+c(subject.intercept, subject.slope)
+
+subject.obs <- data.frame(Days = 0:8) %>%
+  mutate( Reaction = subject.intercept + subject.slope*Days + rnorm(9, sd=25.6) )
+
+ggplot(subject.obs, aes(x=Days, y=Reaction)) + geom_point()
+```
+
+This approach is commonly referred to as a "parametric" bootstrap because we are making some assumptions about the parameter distributions, whereas in a "nonparametric" bootstrap we don't make any distributional assumptions. By default, the `bootMer` function will perform a parametric bootstrap to create new bootstrap datasets and then analyze them using the same model you origally created.
+
+### Confidence Intervals
+Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The `lme4::bootMer` function will create bootstrap data sets and then send those into the `lmer` function.
+
+```{r, cache=TRUE}
+ConfData <- data.frame(Days=0:8)
+myStats <- function(model){
+  out <- predict( model, newdata=ConfData, re.form=~0 )
+  return(out)
+}
+
+bootObj <- bootMer(m2, FUN=myStats, nsim = 1000)
+# hist(bootObj)  # check for normality/skewness/etc
+
+# BCa failed for me, but percentile is fine 
+ConfData <-  cbind( ConfData, car::Confint( bootObj,  level=0.95 ))  
+ConfData
+```
+
+```{r}
+# Now for a nice graph!  Unfortunately car::Confint used numbers for column names.
+# So first I need to fix that.
+colnames(ConfData) <- c('Days', 'Estimate', 'lwr', 'upr')
+ggplot(ConfData,  aes(x=Days)) +
+  geom_line(aes(y=Estimate), color='red') +
+  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2)
+```
+
+### Prediction Intervals
+For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don't need to fit a model at each bootstrap step. The `lme4::simulate` function creates the bootstrap dataset and doesn't send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the orginal dataset.
+
+```{r}
+# set up the structure of new subjects
+PredData <- data.frame(Subject='new', Days=0:8) # Simulate a NEW patient
+
+# Create a n x 1000 data frame
+Simulated <- simulate(m2, newdata=PredData, allow.new.levels=TRUE, nsim=1000)
+
+# squish the Subject/Day info together with the simulated and then grab the quantiles
+# for each day
+PredIntervals <- cbind(PredData, Simulated) %>%
+  gather('sim','Reaction', sim_1:sim_1000 ) %>%   # go from wide to long structure
+  group_by(Subject, Days) %>%
+  summarize(lwr = quantile(Reaction, probs = 0.025),
+            upr = quantile(Reaction, probs = 0.975))
+
+```
+
+```{r}
+# Plot the prediction and confidence intervals
+ggplot(ConfData,  aes(x=Days)) +
+  geom_line(aes(y=Estimate), color='red') +
+  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2) +
+  geom_ribbon(data=PredIntervals, aes(ymin=lwr, ymax=upr), fill='blue', alpha=0.2)
+```
 
 
 ## Exercises

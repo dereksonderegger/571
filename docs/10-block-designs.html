@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-04-17">
+<meta name="date" content="2018-09-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,41 +50,67 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -231,7 +257,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
 <li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>11.7</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>11.7.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="11.7.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>11.7.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
@@ -239,7 +269,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.2.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="12.2.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.6</b> Overdispersion</a></li>
@@ -265,9 +295,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="block-designs" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> Block Designs</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># packages for this chapter</span>
-<span class="kw">library</span>(tidyverse)    <span class="co"># ggplot2, dplyr, etc...</span>
-<span class="kw">library</span>(emmeans)     <span class="co"># TukeyLetters stuff</span></code></pre></div>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb334-1" data-line-number="1"><span class="co"># packages for this chapter</span></a>
+<a class="sourceLine" id="cb334-2" data-line-number="2"><span class="kw">library</span>(tidyverse)    <span class="co"># ggplot2, dplyr, etc...</span></a>
+<a class="sourceLine" id="cb334-3" data-line-number="3"><span class="kw">library</span>(emmeans)     <span class="co"># TukeyLetters stuff</span></a></code></pre></div>
 <p>Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large. For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.</p>
 <p>Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables. We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are <em>nested</em>.</p>
 <p>Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.</p>
@@ -288,22 +318,22 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </thead>
 <tbody>
 <tr class="odd">
-<td><p><strong>Plot 1</strong></p></td>
-<td><p>Variety A</p></td>
-<td><p>Variety C</p></td>
-<td><p>Variety B</p></td>
+<td><strong>Plot 1</strong></td>
+<td>Variety A</td>
+<td>Variety C</td>
+<td>Variety B</td>
 </tr>
 <tr class="even">
-<td><p><strong>Plot 2</strong></p></td>
-<td><p>Variety B</p></td>
-<td><p>Variety A</p></td>
-<td><p>Variety C</p></td>
+<td><strong>Plot 2</strong></td>
+<td>Variety B</td>
+<td>Variety A</td>
+<td>Variety C</td>
 </tr>
 <tr class="odd">
-<td><p><strong>Plot 3</strong></p></td>
-<td><p>Variety C</p></td>
-<td><p>Variety B</p></td>
-<td><p>Variety A</p></td>
+<td><strong>Plot 3</strong></td>
+<td>Variety C</td>
+<td>Variety B</td>
+<td>Variety A</td>
 </tr>
 </tbody>
 </table>
@@ -311,20 +341,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="randomized-complete-block-design-rcbd" class="section level2">
 <h2><span class="header-section-number">10.1</span> Randomized Complete Block Design (RCBD)</h2>
 <p>The dataset <code>oatvar</code> in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)
-<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span>
-<span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></code></pre></div>
+<div class="sourceCode" id="cb335"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb335-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb335-2" data-line-number="2"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb335-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb335-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></a></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
-<p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because <span class="math display">\[\begin{aligned}
+<p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because
+<span class="math display">\[\begin{aligned}
   df_\epsilon   &amp;=  n-p \\
         &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
         &amp;=  40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
         &amp;=  40-12 \\
         &amp;=  28
  \end{aligned}\]</span></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)
-<span class="kw">anova</span>(m1)</code></pre></div>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb336-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)</a>
+<a class="sourceLine" id="cb336-2" data-line-number="2"><span class="kw">anova</span>(m1)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: yield
@@ -334,24 +365,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Residuals 28  37433  1336.9                      
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></code></pre></div>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb338-1" data-line-number="1"><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></a></code></pre></div>
 <p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
 <p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
 <p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do any statistical inference at the block scale!</p>
 <p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span>
-letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)
-
-<span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </code></pre></div>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span></a>
+<a class="sourceLine" id="cb339-2" data-line-number="2">letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb339-3" data-line-number="3"><span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb339-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb339-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb339-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb339-7" data-line-number="7"><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb339-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb339-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </a></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-196-1.png" width="672" /></p>
 <p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)
-<span class="kw">summary</span>(m3)</code></pre></div>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb340-1" data-line-number="1">m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)</a>
+<a class="sourceLine" id="cb340-2" data-line-number="2"><span class="kw">summary</span>(m3)</a></code></pre></div>
 <pre><code>## 
 ## Error: block
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
@@ -370,33 +401,33 @@ letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <spa
 <p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.</p>
 <pre><code>## # A tibble: 6 x 5
 ## # Groups:   plot, subplot, Fertilizer [6]
-##     plot subplot Fertilizer Irrigation    yield
-##   &lt;fctr&gt;  &lt;fctr&gt;     &lt;fctr&gt;     &lt;fctr&gt;    &lt;dbl&gt;
-## 1      1       1        Low        Low 20.17485
-## 2      1       2       High        Low 24.43602
-## 3      1       3        Low        Low 18.03842
-## 4      1       4       High        Low 20.98167
-## 5      2       1        Low        Low 23.21987
-## 6      2       2       High        Low 26.50586</code></pre>
+##   plot  subplot Fertilizer Irrigation yield
+##   &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt;      &lt;fct&gt;      &lt;dbl&gt;
+## 1 1     1       Low        Low         20.2
+## 2 1     2       High       Low         24.4
+## 3 1     3       Low        Low         18.0
+## 4 1     4       High       Low         21.0
+## 5 2     1       Low        Low         23.2
+## 6 2     2       High       Low         26.5</code></pre>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
 <p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
 <p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
 <p>We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># AgData came from my data package, dsData, (however I did some summarization</span>
-<span class="co"># first.)</span>
-
-<span class="co"># To analyze Irrigation, average over the subplots first...</span>
-Irrigation.data &lt;-<span class="st">   </span>AgData <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">group_by</span>(plot, Irrigation) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">summarise</span>( <span class="dt">yield =</span> <span class="kw">mean</span>(yield)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">as.data.frame</span>()  <span class="co"># the aov command doesn&#39;t like tibbles.</span>
-
-<span class="co"># Now do a standard analysis. I use the aov() command instead of lm()</span>
-<span class="co"># because we will shortly do something very tricky that can only be</span>
-<span class="co"># done with aov(). For the most part, everything is </span>
-<span class="co"># identical from what you are used to.</span>
-m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation, <span class="dt">data=</span>Irrigation.data )
-<span class="kw">anova</span>(m)</code></pre></div>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb343-1" data-line-number="1"><span class="co"># AgData came from my data package, dsData, (however I did some summarization</span></a>
+<a class="sourceLine" id="cb343-2" data-line-number="2"><span class="co"># first.)</span></a>
+<a class="sourceLine" id="cb343-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb343-4" data-line-number="4"><span class="co"># To analyze Irrigation, average over the subplots first...</span></a>
+<a class="sourceLine" id="cb343-5" data-line-number="5">Irrigation.data &lt;-<span class="st">   </span>AgData <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb343-6" data-line-number="6"><span class="st">  </span><span class="kw">group_by</span>(plot, Irrigation) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb343-7" data-line-number="7"><span class="st">  </span><span class="kw">summarise</span>( <span class="dt">yield =</span> <span class="kw">mean</span>(yield)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb343-8" data-line-number="8"><span class="st">  </span><span class="kw">as.data.frame</span>()  <span class="co"># the aov command doesn&#39;t like tibbles.</span></a>
+<a class="sourceLine" id="cb343-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb343-10" data-line-number="10"><span class="co"># Now do a standard analysis. I use the aov() command instead of lm()</span></a>
+<a class="sourceLine" id="cb343-11" data-line-number="11"><span class="co"># because we will shortly do something very tricky that can only be</span></a>
+<a class="sourceLine" id="cb343-12" data-line-number="12"><span class="co"># done with aov(). For the most part, everything is </span></a>
+<a class="sourceLine" id="cb343-13" data-line-number="13"><span class="co"># identical from what you are used to.</span></a>
+<a class="sourceLine" id="cb343-14" data-line-number="14">m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation, <span class="dt">data=</span>Irrigation.data )</a>
+<a class="sourceLine" id="cb343-15" data-line-number="15"><span class="kw">anova</span>(m)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: yield
@@ -405,21 +436,21 @@ m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="
 ## Residuals   6 45.619  7.6032</code></pre>
 <p>In this case we see that we have insufficient evidence to conclude that the observed difference between the Irrigation levels could not be due to random chance.</p>
 <p>Next we can do the appropriate analysis for the fertilizer, recognizing that all the p-values for the plot effects are nonsense and should be ignored.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )
-<span class="kw">summary</span>(m)</code></pre></div>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )</a>
+<a class="sourceLine" id="cb345-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
-## plot         7 286.73   40.96   3.206 0.0161 *
-## Fertilizer   1   5.36    5.36   0.419 0.5238  
-## Residuals   23 293.91   12.78                 
+## plot         7 286.73   40.96   3.220 0.0157 *
+## Fertilizer   1   6.67    6.67   0.524 0.4762  
+## Residuals   23 292.59   12.72                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ideally I wouldn’t have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># To do this right, we have to abandon the general lm() command and use the more</span>
-<span class="co"># specialized aov() command.  The Error() part of the formula allows me to nest</span>
-<span class="co"># the error terms and allow us to do the correct analysis. The order of these is</span>
-<span class="co"># to start with the largest/highest level and then work down the nesting.</span>
-m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData )
-<span class="kw">summary</span>(m2)</code></pre></div>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb347-1" data-line-number="1"><span class="co"># To do this right, we have to abandon the general lm() command and use the more</span></a>
+<a class="sourceLine" id="cb347-2" data-line-number="2"><span class="co"># specialized aov() command.  The Error() part of the formula allows me to nest</span></a>
+<a class="sourceLine" id="cb347-3" data-line-number="3"><span class="co"># the error terms and allow us to do the correct analysis. The order of these is</span></a>
+<a class="sourceLine" id="cb347-4" data-line-number="4"><span class="co"># to start with the largest/highest level and then work down the nesting.</span></a>
+<a class="sourceLine" id="cb347-5" data-line-number="5">m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData )</a>
+<a class="sourceLine" id="cb347-6" data-line-number="6"><span class="kw">summary</span>(m2)</a></code></pre></div>
 <pre><code>## 
 ## Error: plot
 ##            Df Sum Sq Mean Sq F value Pr(&gt;F)
@@ -428,22 +459,23 @@ m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class=
 ## 
 ## Error: plot:subplot
 ##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Fertilizer  1   5.36   5.356   0.419  0.524
-## Residuals  23 293.91  12.779</code></pre>
+## Fertilizer  1   6.67   6.672   0.524  0.476
+## Residuals  23 292.59  12.721</code></pre>
 <p>In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.</p>
 <p>What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)
-<span class="kw">anova</span>(bad.model)</code></pre></div>
+<div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1">bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)</a>
+<a class="sourceLine" id="cb349-2" data-line-number="2"><span class="kw">anova</span>(bad.model)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: yield
 ##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
-## Irrigation  1 104.26 104.258  6.3467 0.01753 *
-## Fertilizer  1   5.36   5.356  0.3261 0.57239  
-## Residuals  29 476.38  16.427                  
+## Irrigation  1 104.26 104.258  6.3643 0.01738 *
+## Fertilizer  1   6.67   6.672  0.4073 0.52835  
+## Residuals  29 475.07  16.382                  
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. <span class="math display">\[\begin{aligned}
+<p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools.
+<span class="math display">\[\begin{aligned}
   RSS_{total} &amp;= RSS_{Fertilizer} + RSS_{Irrigation} \\
         456.12 &amp;= 273.64 + 182.5
   \end{aligned}\]</span></p>
@@ -456,24 +488,24 @@ m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class=
 <p>This is a lot to digest so lets unpack it. First we have 6 blocks and we’ll replicate the exact same experiment in each block. Within a block, we’ll split it into three sections, which we’ll call plots (within the block). Finally within each plot, we’ll have 4 subplots.</p>
 <p>We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of 3 plots, we’ll randomly assign the 3 varieties, and to each set of subplots, we’ll assign the fertilizers.</p>
 <p>One issue that makes this issue confusing for students is that most texts get lazy and don’t define the blocks, plots, and sub-plots when there are no replicates in a particular level. I prefer to be clear about defining those so.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&#39;oats&#39;</span>, <span class="dt">package=</span><span class="st">&#39;MASS&#39;</span>)
-oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(
-  <span class="dt">Nf =</span> <span class="kw">ordered</span>(N, <span class="dt">levels =</span> <span class="kw">sort</span>(<span class="kw">levels</span>(N))),  <span class="co"># make manure an ordered factor</span>
-  <span class="dt">plot =</span> <span class="kw">as.integer</span>(V),                       <span class="co"># plot</span>
-  <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></code></pre></div>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb351-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;oats&#39;</span>, <span class="dt">package=</span><span class="st">&#39;MASS&#39;</span>)</a>
+<a class="sourceLine" id="cb351-2" data-line-number="2">oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb351-3" data-line-number="3">  <span class="dt">Nf =</span> <span class="kw">ordered</span>(N, <span class="dt">levels =</span> <span class="kw">sort</span>(<span class="kw">levels</span>(N))),  <span class="co"># make manure an ordered factor</span></a>
+<a class="sourceLine" id="cb351-4" data-line-number="4">  <span class="dt">plot =</span> <span class="kw">as.integer</span>(V),                       <span class="co"># plot</span></a>
+<a class="sourceLine" id="cb351-5" data-line-number="5">  <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></a></code></pre></div>
 <p>As always we first create a graph to examine the data</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">B_Plot =</span> <span class="kw">interaction</span>(B, plot)) 
-<span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span>
-<span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb352-1" data-line-number="1">oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">B_Plot =</span> <span class="kw">interaction</span>(B, plot)) </a>
+<a class="sourceLine" id="cb352-2" data-line-number="2"><span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb352-3" data-line-number="3"><span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span></a>
+<a class="sourceLine" id="cb352-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb352-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</a></code></pre></div>
 <p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-205-1.png" width="672" /></p>
 <p>This graph also makes me think that variety doesn’t matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#  What makes sense to me</span>
-<span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></code></pre></div>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb353-1" data-line-number="1"><span class="co">#  What makes sense to me</span></a>
+<a class="sourceLine" id="cb353-2" data-line-number="2"><span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></a></code></pre></div>
 <p>Unfortunately the above model isn’t correct because R isn’t smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting. So we have to be smart enough to recognize that plot and subplot are actually Variety and Fertilizer.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.c &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">*</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)
-<span class="kw">summary</span>(m.c)</code></pre></div>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb354-1" data-line-number="1">m.c &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">*</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</a>
+<a class="sourceLine" id="cb354-2" data-line-number="2"><span class="kw">summary</span>(m.c)</a></code></pre></div>
 <pre><code>## 
 ## Error: B
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
@@ -492,8 +524,8 @@ oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span clas
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Sure enough the interaction term is not significant. We next consider the Variety term.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m.s &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">+</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)
-<span class="kw">summary</span>(m.s)</code></pre></div>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb356-1" data-line-number="1">m.s &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">+</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</a>
+<a class="sourceLine" id="cb356-2" data-line-number="2"><span class="kw">summary</span>(m.s)</a></code></pre></div>
 <pre><code>## 
 ## Error: B
 ##           Df Sum Sq Mean Sq F value Pr(&gt;F)
@@ -581,7 +613,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

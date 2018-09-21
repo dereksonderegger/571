@@ -434,7 +434,7 @@ P1 <- ggplot(data, aes(x=x)) +
   geom_histogram(aes(y=..density..))
 P2 <- ggplot(data, aes(x=log(x))) + 
   geom_histogram(aes(y=..density..))
-STA578::multiplot(P1, P2, layout = matrix(1:2, nrow=1))
+Rmisc::multiplot(P1, P2, layout = matrix(1:2, nrow=1))
 ```
 
 

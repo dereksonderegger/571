@@ -25,7 +25,7 @@
 <meta name="author" content="Derek L. Sonderegger">
 
 
-<meta name="date" content="2018-04-17">
+<meta name="date" content="2018-09-20">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -50,41 +50,67 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -231,7 +257,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.4</b> Nested Effects</a></li>
 <li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.5</b> Crossed Effects</a></li>
 <li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.6</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.7</b> Exercises</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>11.7</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="11.7.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>11.7.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="11.7.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>11.7.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="11.8" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#exercises-10"><i class="fa fa-check"></i><b>11.8</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a><ul>
 <li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
@@ -239,7 +269,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.2.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="12.2.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.6</b> Overdispersion</a></li>
@@ -265,19 +295,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="matrix-theory" class="section level1">
 <h1><span class="header-section-number">Chapter 1</span> Matrix Theory</h1>
-<p>Almost all of the calculations done in classical statistics require formulas with large number of subscripts and many different sums. In this chapter we will develop the mathematical machinery to write these formulas in a simple compact formula using <em>matrices</em>.</p>
+<p>Almost all of the calculations done in classical statistics require
+formulas with large number of subscripts and many different sums.
+In this chapter we will develop the mathematical machinery to write
+these formulas in a simple compact formula using <em>matrices</em>.</p>
 <div id="types-of-matrices" class="section level2">
 <h2><span class="header-section-number">1.1</span> Types of Matrices</h2>
-<p>We will first introduce the idea behind a matrix and give several special types of matrices that we will encounter.</p>
+<p>We will first introduce the idea behind a matrix and give several
+special types of matrices that we will encounter.</p>
 <div id="scalars" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Scalars</h3>
-<p>To begin, we first define a <em>scalar</em>. A scalar is just a single number, either real or complex. The key is that a scalar is just a single number. For example, <span class="math inline">\(6\)</span> is a scalar, as is <span class="math inline">\(-3\)</span>. By convention, variable names for scalars will be lower case and not in bold typeface.</p>
+<p>To begin, we first define a <em>scalar</em>. A scalar is just a single
+number, either real or complex. The key is that a scalar is just a
+single number. For example, <span class="math inline">\(6\)</span> is a scalar, as is <span class="math inline">\(-3\)</span>. By convention,
+variable names for scalars will be lower case and not in bold typeface.</p>
 <p>Examples could be <span class="math inline">\(a=5\)</span>, <span class="math inline">\(b=\sqrt{3}\)</span>, or <span class="math inline">\(\sigma=2\)</span>.</p>
 </div>
 <div id="vectors" class="section level3">
 <h3><span class="header-section-number">1.1.2</span> Vectors</h3>
-<p>A vector is collection of scalars, arranged as a row or column. Our convention will be that a vector will be a lower cased letter but written in a bold type. In other branches of mathematics is common to put a bar over the variable name to denote that it is a vector, but in statistics, we have already used a bar to denote a mean.</p>
-<p>Examples of column vectors could be <span class="math display">\[\boldsymbol{a} = \left[\begin{array}{c} 2\\ -3\\ 4\end{array}\right]
+<p>A vector is collection of scalars, arranged as a row or column. Our
+convention will be that a vector will be a lower cased letter but
+written in a bold type. In other branches of mathematics is common
+to put a bar over the variable name to denote that it is a vector,
+but in statistics, we have already used a bar to denote a mean.</p>
+<p>Examples of column vectors could be
+<span class="math display">\[\boldsymbol{a} = \left[\begin{array}{c} 2\\ -3\\ 4\end{array}\right]
 \;\;\;\;\;
 \boldsymbol{b}=\left[\begin{array}{c} 2\\ 8\\ 3\\ 4\\ 1 \end{array}\right]\]</span></p>
 <p>and examples of row vectors are</p>
@@ -289,24 +331,45 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \boldsymbol{d}=\left[\begin{array}{ccc}
 -1 &amp; 5 &amp; 2\end{array}\right]
 \]</span></p>
-<p>To denote a specific entry in the vector, we will use a subscript. For example, the second element of <span class="math inline">\(\boldsymbol{d}\)</span> is <span class="math inline">\(d_{2}=5\)</span>. Notice, that we do not bold this symbol because the second element of the vector is the scalar value <span class="math inline">\(5\)</span>.</p>
+<p>To denote a specific entry in the vector, we will use a subscript.
+For example, the second element of <span class="math inline">\(\boldsymbol{d}\)</span> is <span class="math inline">\(d_{2}=5\)</span>.
+Notice, that we do not bold this symbol because the second element
+of the vector is the scalar value <span class="math inline">\(5\)</span>.</p>
 </div>
 <div id="matrix" class="section level3">
 <h3><span class="header-section-number">1.1.3</span> Matrix</h3>
-<p>Just as a vector is a collection of scalars, a matrix can be viewed as a collection of vectors (all of the same length). We will denote matrices with bold capitalized letters. In general, I try to use letters at the end of the alphabet for matrices. Likewise, I try to use symmetric letters to denote symmetric matrices.</p>
-<p>For example, the following is a matrix with two rows and three columns <span class="math display">\[
+<p>Just as a vector is a collection of scalars, a matrix can be viewed
+as a collection of vectors (all of the same length). We will denote
+matrices with bold capitalized letters. In general, I try to use letters
+at the end of the alphabet for matrices. Likewise, I try to use symmetric
+letters to denote symmetric matrices.</p>
+<p>For example, the following is a matrix with two rows and three columns
+<span class="math display">\[
 \boldsymbol{W}=\left[\begin{array}{ccc}
 1 &amp; 2 &amp; 3\\
 4 &amp; 5 &amp; 6
 \end{array}\right]
-\]</span> and there is no requirement that the number of rows be equal, less than, or greater than the number of columns. In denoting the size of the matrix, we first refer to the number of rows and then the number of columns. Thus <span class="math inline">\(\boldsymbol{W}\)</span> is a <span class="math inline">\(2\times3\)</span> matrix and it sometimes is helpful to remind ourselves of this by writing <span class="math inline">\(\boldsymbol{W}_{2\times3}\)</span>.</p>
-<p>To pick out a particular element of a matrix, I will again use a subscripting notation, always with the row number first and then column. Notice the notational shift to lowercase, non-bold font. <span class="math display">\[
+\]</span>
+and there is no requirement that the number of rows be equal, less
+than, or greater than the number of columns. In denoting the size
+of the matrix, we first refer to the number of rows and then the number
+of columns. Thus <span class="math inline">\(\boldsymbol{W}\)</span> is a <span class="math inline">\(2\times3\)</span> matrix and it
+sometimes is helpful to remind ourselves of this by writing <span class="math inline">\(\boldsymbol{W}_{2\times3}\)</span>.</p>
+<p>To pick out a particular element of a matrix, I will again use a subscripting
+notation, always with the row number first and then column. Notice
+the notational shift to lowercase, non-bold font.
+<span class="math display">\[
 w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 \]</span></p>
-<p>There are times I will wish to refer to a particular row or column of a matrix and we will use the following notation <span class="math display">\[
+<p>There are times I will wish to refer to a particular row or column
+of a matrix and we will use the following notation
+<span class="math display">\[
 \boldsymbol{w}_{1,\cdot}=\left[\begin{array}{ccc}
 1 &amp; 2 &amp; 3\end{array}\right]
-\]</span> is the first row of the matrix <span class="math inline">\(\boldsymbol{W}\)</span>. The second column of matrix <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math display">\[
+\]</span>
+is the first row of the matrix <span class="math inline">\(\boldsymbol{W}\)</span>. The second column
+of matrix <span class="math inline">\(\boldsymbol{W}\)</span> is
+<span class="math display">\[
 \boldsymbol{w}_{\cdot,2}=\left[\begin{array}{c}
 2\\
 5
@@ -315,7 +378,9 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="square-matrices" class="section level3">
 <h3><span class="header-section-number">1.1.4</span> Square Matrices</h3>
-<p>A square matrix is a matrix with the same number of rows as columns. The following are square <span class="math display">\[
+<p>A square matrix is a matrix with the same number of rows as columns.
+The following are square
+<span class="math display">\[
 \boldsymbol{Z}=\left[\begin{array}{cc}
 3 &amp; 6\\
 8 &amp; 10
@@ -328,14 +393,27 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="symmetric-matrices" class="section level3">
 <h3><span class="header-section-number">1.1.5</span> Symmetric Matrices</h3>
-<p>In statistics we are often interested in square matrices where the <span class="math inline">\(i,j\)</span> element is the same as the <span class="math inline">\(j,i\)</span> element. For example, <span class="math inline">\(x_{1,2}=x_{2,1}\)</span> in the above matrix <span class="math inline">\(\boldsymbol{X}.\)</span></p>
-<p>Consider a matrix <span class="math inline">\(\boldsymbol{D}\)</span> that contains the distance from four towns to each of the other four towns. Let <span class="math inline">\(d_{i,j}\)</span> be the distance from town <span class="math inline">\(i\)</span> to town <span class="math inline">\(j\)</span>. It only makes sense that the distance doesn’t matter which direction you are traveling, and we should therefore require that <span class="math inline">\(d_{i,j}=d_{j,i}\)</span>.</p>
-<p>In this example, it is the values <span class="math inline">\(d_{i,i}\)</span> represent the distance from a town to itself, which should be zero. It turns out that we are often interested in the terms <span class="math inline">\(d_{i,i}\)</span> and I will refer to those terms as the <em>main diagonal</em> of matrix <span class="math inline">\(\boldsymbol{D}\)</span>.</p>
-<p>Symmetric matrices play a large role in statistics because matrices that represent the covariances between random variables must be symmetric because <span class="math inline">\(Cov\left(Y,Z\right)=Cov\left(Z,Y\right)\)</span>.</p>
+<p>In statistics we are often interested in square matrices where the
+<span class="math inline">\(i,j\)</span> element is the same as the <span class="math inline">\(j,i\)</span> element. For example, <span class="math inline">\(x_{1,2}=x_{2,1}\)</span>
+in the above matrix <span class="math inline">\(\boldsymbol{X}.\)</span></p>
+<p>Consider a matrix <span class="math inline">\(\boldsymbol{D}\)</span> that contains the distance
+from four towns to each of the other four towns. Let <span class="math inline">\(d_{i,j}\)</span> be
+the distance from town <span class="math inline">\(i\)</span> to town <span class="math inline">\(j\)</span>. It only makes sense that
+the distance doesn’t matter which direction you are traveling, and
+we should therefore require that <span class="math inline">\(d_{i,j}=d_{j,i}\)</span>.</p>
+<p>In this example, it is the values <span class="math inline">\(d_{i,i}\)</span> represent the distance
+from a town to itself, which should be zero. It turns out that we
+are often interested in the terms <span class="math inline">\(d_{i,i}\)</span> and I will refer to those
+terms as the <em>main diagonal</em> of matrix <span class="math inline">\(\boldsymbol{D}\)</span>.</p>
+<p>Symmetric matrices play a large role in statistics because matrices
+that represent the covariances between random variables must be symmetric
+because <span class="math inline">\(Cov\left(Y,Z\right)=Cov\left(Z,Y\right)\)</span>.</p>
 </div>
 <div id="diagonal-matrices" class="section level3">
 <h3><span class="header-section-number">1.1.6</span> Diagonal Matrices</h3>
-<p>A square matrix that has zero entries in every location except the main diagonal is called a diagonal matrix. Here are two examples: <span class="math display">\[
+<p>A square matrix that has zero entries in every location except the
+main diagonal is called a diagonal matrix. Here are two examples:
+<span class="math display">\[
 \boldsymbol{Q}=\left[\begin{array}{ccc}
 4 &amp; 0 &amp; 0\\
 0 &amp; 5 &amp; 0\\
@@ -346,7 +424,10 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 0 &amp; 0 &amp; 2 &amp; 0\\
 0 &amp; 0 &amp; 0 &amp; 3
 \end{array}\right]
-\]</span> Sometimes to make matrix more clear, I will replace the <span class="math inline">\(0\)</span> with a dot to emphasize the non-zero components. <span class="math display">\[
+\]</span>
+Sometimes to make matrix more clear, I will replace the <span class="math inline">\(0\)</span> with
+a dot to emphasize the non-zero components.
+<span class="math display">\[
 \boldsymbol{R}=\left[\begin{array}{cccc}
 1 &amp; \cdot &amp; \cdot &amp; \cdot\\
 \cdot &amp; 2 &amp; \cdot &amp; \cdot\\
@@ -357,7 +438,9 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="identity-matrices" class="section level3">
 <h3><span class="header-section-number">1.1.7</span> Identity Matrices</h3>
-<p>A diagonal matrix with main diagonal values exactly <span class="math inline">\(1\)</span> is called the identity matrix. The <span class="math inline">\(3\times3\)</span> identity matrix is denoted <span class="math inline">\(I_{3}\)</span>. <span class="math display">\[
+<p>A diagonal matrix with main diagonal values exactly <span class="math inline">\(1\)</span> is called
+the identity matrix. The <span class="math inline">\(3\times3\)</span> identity matrix is denoted <span class="math inline">\(I_{3}\)</span>.
+<span class="math display">\[
 \boldsymbol{I}_{3}=\left[\begin{array}{ccc}
 1 &amp; \cdot &amp; \cdot\\
 \cdot &amp; 1 &amp; \cdot\\
@@ -370,7 +453,9 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 <h2><span class="header-section-number">1.2</span> Operations on Matrices</h2>
 <div id="transpose" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Transpose</h3>
-<p>The simplest operation on a square matrix matrix is called <em>transpose</em>. It is defined as <span class="math inline">\(\boldsymbol{M}=\boldsymbol{W}^{T}\)</span> if and only if <span class="math inline">\(m_{i,j}=w_{j,i}.\)</span></p>
+<p>The simplest operation on a square matrix matrix is called <em>transpose</em>.
+It is defined as <span class="math inline">\(\boldsymbol{M}=\boldsymbol{W}^{T}\)</span> if and only
+if <span class="math inline">\(m_{i,j}=w_{j,i}.\)</span></p>
 <p><span class="math display">\[
 \boldsymbol{Z}=\left[\begin{array}{cc}
 1 &amp; 6\\
@@ -379,7 +464,8 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 1 &amp; 8\\
 6 &amp; 3
 \end{array}\right]
-\]</span> <span class="math display">\[
+\]</span>
+<span class="math display">\[
 \boldsymbol{M}=\left[\begin{array}{ccc}
 3 &amp; 1 &amp; 2\\
 9 &amp; 4 &amp; 5\\
@@ -389,7 +475,8 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 1 &amp; 4 &amp; 7\\
 2 &amp; 5 &amp; 6
 \end{array}\right]
-\]</span> We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.</p>
+\]</span>
+We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.</p>
 <p><span class="math display">\[
 \boldsymbol{W}=\left[\begin{array}{ccc}
 1 &amp; 2 &amp; 3\\
@@ -406,7 +493,10 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="addition-and-subtraction" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Addition and Subtraction</h3>
-<p>Addition and subtraction are performed <em>element-wise</em>. This means that two matrices or vectors can only be added or subtracted if their dimensions match. <span class="math display">\[
+<p>Addition and subtraction are performed <em>element-wise</em>. This means
+that two matrices or vectors can only be added or subtracted if their
+dimensions match.
+<span class="math display">\[
 \left[\begin{array}{c}
 1\\
 2\\
@@ -423,7 +513,8 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 10\\
 12
 \end{array}\right]
-\]</span> <span class="math display">\[
+\]</span>
+<span class="math display">\[
 \left[\begin{array}{cc}
 5 &amp; 8\\
 2 &amp; 4\\
@@ -441,11 +532,19 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="multiplication" class="section level3">
 <h3><span class="header-section-number">1.2.3</span> Multiplication</h3>
-<p>Multiplication is the operation that is vastly different for matrices and vectors than it is for scalars. There is a great deal of mathematical theory that suggests a useful way to define multiplication. What is presented below is referred to as the <em>dot-product</em> of vectors in calculus, and is referred to as the standard <em>inner-product</em> in linear algebra.</p>
+<p>Multiplication is the operation that is vastly different for matrices
+and vectors than it is for scalars. There is a great deal of mathematical
+theory that suggests a useful way to define multiplication. What is
+presented below is referred to as the <em>dot-product</em> of vectors
+in calculus, and is referred to as the standard <em>inner-product</em>
+in linear algebra.</p>
 </div>
 <div id="vector-multiplication" class="section level3">
 <h3><span class="header-section-number">1.2.4</span> Vector Multiplication</h3>
-<p>We first define multiplication for a row and column vector. For this multiplication to be defined, both vectors must be the same length. The product is the sum of the element-wise multiplications. <span class="math display">\[
+<p>We first define multiplication for a row and column vector. For this
+multiplication to be defined, both vectors must be the same length.
+The product is the sum of the element-wise multiplications.
+<span class="math display">\[
 \left[\begin{array}{cccc}
 1 &amp; 2 &amp; 3 &amp; 4\end{array}\right]\left[\begin{array}{c}
 5\\
@@ -457,7 +556,14 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 </div>
 <div id="matrix-multiplication" class="section level3">
 <h3><span class="header-section-number">1.2.5</span> Matrix Multiplication</h3>
-<p>Matrix multiplication is just a sequence of vector multiplications. If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a <span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}\)</span> where <span class="math inline">\(\boldsymbol{x}_{i,\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot, j}\)</span> is the <span class="math inline">\(j\)</span>th column of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let <span class="math display">\[
+<p>Matrix multiplication is just a sequence of vector multiplications.
+If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span>
+is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a
+<span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}\)</span>
+where <span class="math inline">\(\boldsymbol{x}_{i,\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of
+<span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot, j}\)</span> is the <span class="math inline">\(j\)</span>th column
+of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let
+<span class="math display">\[
 \boldsymbol{X}=\left[\begin{array}{cccc}
 1 &amp; 2 &amp; 3 &amp; 4\\
 5 &amp; 6 &amp; 7 &amp; 8\\
@@ -468,7 +574,13 @@ w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
 17 &amp; 18\\
 19 &amp; 20
 \end{array}\right]
-\]</span> so <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(3\times4\)</span> (which we remind ourselves by adding a <span class="math inline">\(3\times4\)</span> subscript to <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_{3\times4}\)</span>) and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(\boldsymbol{W}{}_{4\times2}\)</span>. Because the <em>inner</em> dimensions match for this multiplication, then <span class="math inline">\(\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span> is defined where <span class="math display">\[\begin{aligned}
+\]</span>
+so <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(3\times4\)</span> (which we remind ourselves by
+adding a <span class="math inline">\(3\times4\)</span> subscript to <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_{3\times4}\)</span>)
+and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(\boldsymbol{W}{}_{4\times2}\)</span>. Because the
+<em>inner</em> dimensions match for this multiplication, then <span class="math inline">\(\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span>
+is defined where
+<span class="math display">\[\begin{aligned}
 z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
  &amp;=  \left(1\cdot13\right)+\left(2\cdot15\right)+\left(3\cdot17\right)+\left(4\cdot19\right)=170
 \end{aligned}\]</span></p>
@@ -484,7 +596,8 @@ z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
 426 &amp; 452\\
 682 &amp; 724
 \end{array}\right]\]</span></p>
-<p>For another example, we note that <span class="math display">\[\left[\begin{array}{ccc}
+<p>For another example, we note that
+<span class="math display">\[\left[\begin{array}{ccc}
 1 &amp; 2 &amp; 3\\
 2 &amp; 3 &amp; 4
 \end{array}\right]\left[\begin{array}{cc}
@@ -499,11 +612,20 @@ z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
 8 &amp; 12\\
 12 &amp; 18
 \end{array}\right] \]</span></p>
-<p>Notice that this definition of multiplication means that the order matters. Above, we calculated <span class="math inline">\(\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span> but we cannot reverse the order because the inner dimensions do not match up.</p>
+<p>Notice that this definition of multiplication means that the order
+matters. Above, we calculated <span class="math inline">\(\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span>
+but we cannot reverse the order because the inner dimensions do not
+match up.</p>
 </div>
 <div id="scalar-times-a-matrix" class="section level3">
 <h3><span class="header-section-number">1.2.6</span> Scalar times a Matrix</h3>
-<p>Strictly speaking, we are not allowed to multiply a matrix by a scalar because the dimensions do not match. However, it is often notationally convenient. So we define <span class="math inline">\(a\boldsymbol{X}\)</span> to be the <em>element-wise</em> multiplication of each element of <span class="math inline">\(\boldsymbol{X}\)</span> by the scalar <span class="math inline">\(a\)</span>. Because this is just a notational convenience, the mathematical theory about inner-products does not apply to this operation. <span class="math display">\[5\left[\begin{array}{cc}
+<p>Strictly speaking, we are not allowed to multiply a matrix by a scalar
+because the dimensions do not match. However, it is often notationally
+convenient. So we define <span class="math inline">\(a\boldsymbol{X}\)</span> to be the <em>element-wise</em>
+multiplication of each element of <span class="math inline">\(\boldsymbol{X}\)</span> by the scalar
+<span class="math inline">\(a\)</span>. Because this is just a notational convenience, the mathematical
+theory about inner-products does not apply to this operation.
+<span class="math display">\[5\left[\begin{array}{cc}
 4 &amp; 5\\
 7 &amp; 6\\
 9 &amp; 10
@@ -512,12 +634,21 @@ z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
 35 &amp; 30\\
 45 &amp; 50
 \end{array}\right]\]</span></p>
-<p>Because of this definition, it is clear that <span class="math inline">\(a\boldsymbol{X}=\boldsymbol{X}a\)</span> and the order does not matter. Thus when mixing scalar multiplication with matrices, it is acceptable to reorder scalars, but not matrices.</p>
+<p>Because of this definition, it is clear that <span class="math inline">\(a\boldsymbol{X}=\boldsymbol{X}a\)</span>
+and the order does not matter. Thus when mixing scalar multiplication
+with matrices, it is acceptable to reorder scalars, but not matrices.</p>
 </div>
 <div id="determinant" class="section level3">
 <h3><span class="header-section-number">1.2.7</span> Determinant</h3>
-<p>The determinant is defined only for square matrices and can be thought of as the matrix equivalent of the absolute value or magnitude (i.e. <span class="math inline">\(|-6|=6\)</span>). The determinant gives a measure of the multi-dimensional size of a matrix (say the matrix <span class="math inline">\(\boldsymbol{A}\)</span>) and as such is denoted <span class="math inline">\(\det\left(\boldsymbol{A}\right)\)</span> or <span class="math inline">\(\left|\boldsymbol{A}\right|\)</span>. Generally this is a very tedious thing to calculate by hand and for completeness sake, we will give a definition and small examples.</p>
-<p>For a <span class="math inline">\(2\times2\)</span> matrix <span class="math display">\[\left|\begin{array}{cc}
+<p>The determinant is defined only for square matrices and can be thought
+of as the matrix equivalent of the absolute value or magnitude (i.e.
+<span class="math inline">\(|-6|=6\)</span>). The determinant gives a measure of the multi-dimensional
+size of a matrix (say the matrix <span class="math inline">\(\boldsymbol{A}\)</span>) and as such is
+denoted <span class="math inline">\(\det\left(\boldsymbol{A}\right)\)</span> or <span class="math inline">\(\left|\boldsymbol{A}\right|\)</span>.
+Generally this is a very tedious thing to calculate by hand and for
+completeness sake, we will give a definition and small examples.</p>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix
+<span class="math display">\[\left|\begin{array}{cc}
 a &amp; c\\
 b &amp; d
 \end{array}\right|=ad-cb\]</span></p>
@@ -526,33 +657,48 @@ b &amp; d
 5 &amp; 2\\
 3 &amp; 10
 \end{array}\right|=50-6=44\]</span></p>
-<p>The determinant can be thought of as the area of the parallelogram created by the row or column vectors of the matrix.</p>
-<p><img src="External_Images/determinant.png" width="250" style="display: block; margin: auto;" /></p>
+<p>The determinant can be thought of as the area of the parallelogram
+created by the row or column vectors of the matrix.</p>
+<p><img src="External_Images/determinant.png" style="display: block; margin: auto;" /></p>
 </div>
 <div id="inverse" class="section level3">
 <h3><span class="header-section-number">1.2.8</span> Inverse</h3>
-<p>In regular algebra, we are often interested in solving equations such as <span class="math display">\[ 5x=15 \]</span> for <span class="math inline">\(x\)</span>. To do so, we multiply each side of the equation by the inverse of 5, which is <span class="math inline">\(1/5\)</span>.</p>
+<p>In regular algebra, we are often interested in solving equations such
+as
+<span class="math display">\[ 5x=15 \]</span>
+for <span class="math inline">\(x\)</span>. To do so, we multiply each side of the equation by the inverse
+of 5, which is <span class="math inline">\(1/5\)</span>.</p>
 <p><span class="math display">\[\begin{aligned}
 5x &amp; =  15\\
 \frac{1}{5}\cdot5\cdot x &amp;=  \frac{1}{5}\cdot15\\
 1\cdot x &amp;=  3\\
 x &amp;=  3
 \end{aligned}\]</span></p>
-<p>For scalars, we know that the inverse of scalar <span class="math inline">\(a\)</span> is the value that when multiplied by <span class="math inline">\(a\)</span> is 1. That is we see to find <span class="math inline">\(a^{-1}\)</span> such that <span class="math inline">\(aa^{-1}=1\)</span>.</p>
-<p>In the matrix case, I am interested in finding <span class="math inline">\(\boldsymbol{A}^{-1}\)</span> such that <span class="math inline">\(\boldsymbol{A}^{-1}\boldsymbol{A}=\boldsymbol{I}\)</span> and <span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^{-1}=\boldsymbol{I}\)</span>. For both of these multiplications to be defined, <span class="math inline">\(\boldsymbol{A}\)</span> must be a square matrix and so the inverse is only defined for square matrices.</p>
-<p>For a <span class="math inline">\(2\times2\)</span> matrix <span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
+<p>For scalars, we know that the inverse of scalar <span class="math inline">\(a\)</span> is the value
+that when multiplied by <span class="math inline">\(a\)</span> is 1. That is we see to find <span class="math inline">\(a^{-1}\)</span>
+such that <span class="math inline">\(aa^{-1}=1\)</span>.</p>
+<p>In the matrix case, I am interested in finding <span class="math inline">\(\boldsymbol{A}^{-1}\)</span>
+such that <span class="math inline">\(\boldsymbol{A}^{-1}\boldsymbol{A}=\boldsymbol{I}\)</span> and
+<span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^{-1}=\boldsymbol{I}\)</span>. For both of these
+multiplications to be defined, <span class="math inline">\(\boldsymbol{A}\)</span> must be a square
+matrix and so the inverse is only defined for square matrices.</p>
+<p>For a <span class="math inline">\(2\times2\)</span> matrix
+<span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
 a &amp; b\\
 c &amp; d
-\end{array}\right]\]</span> the inverse is given by:</p>
+\end{array}\right]\]</span>
+the inverse is given by:</p>
 <p><span class="math display">\[\boldsymbol{W}^{-1}=\frac{1}{\det\boldsymbol{W}}\;\left[\begin{array}{cc}
 d &amp; -b\\
 -c &amp; a
 \end{array}\right]\]</span></p>
-<p>For example, suppose <span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
+<p>For example, suppose
+<span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
 1 &amp; 2\\
 5 &amp; 3
 \end{array}\right]\]</span></p>
-<p>then <span class="math inline">\(\det W=3-10=-7\)</span> and <span class="math display">\[\begin{aligned}
+<p>then <span class="math inline">\(\det W=3-10=-7\)</span> and
+<span class="math display">\[\begin{aligned}
 \boldsymbol{W}^{-1} &amp;=  \frac{1}{-7}\;\left[\begin{array}{cc}
 3 &amp; -2\\
 -5 &amp; 1
@@ -562,7 +708,8 @@ d &amp; -b\\
 \frac{5}{7} &amp; -\frac{1}{7}
 \end{array}\right]
 \end{aligned}\]</span></p>
-<p>and thus <span class="math display">\[\begin{aligned}
+<p>and thus
+<span class="math display">\[\begin{aligned}
 \boldsymbol{W}\boldsymbol{W}^{-1} &amp;=  \left[\begin{array}{cc}
 1 &amp; 2\\
 5 &amp; 3
@@ -582,12 +729,17 @@ d &amp; -b\\
 0 &amp; 1
 \end{array}\right]=\boldsymbol{I}_{2}
 \end{aligned}\]</span></p>
-<p>Not every square matrix has an inverse. If the determinant of the matrix (which we think of as some measure of the magnitude or <em>size</em> of the matrix) is zero, then the formula would require us to divide by zero. Just as we cannot find the inverse of zero (i.e. solve <span class="math inline">\(0x=1\)</span> for <span class="math inline">\(x\)</span>), a matrix with zero determinate is said to have no inverse.</p>
+<p>Not every square matrix has an inverse. If the determinant of the
+matrix (which we think of as some measure of the magnitude or <em>size</em>
+of the matrix) is zero, then the formula would require us to divide
+by zero. Just as we cannot find the inverse of zero (i.e. solve <span class="math inline">\(0x=1\)</span>
+for <span class="math inline">\(x\)</span>), a matrix with zero determinate is said to have no inverse.</p>
 </div>
 </div>
 <div id="exercises" class="section level2">
 <h2><span class="header-section-number">1.3</span> Exercises</h2>
-<p>Consider the following matrices: <span class="math display">\[\mathbf{A}=\left[\begin{array}{ccc}
+<p>Consider the following matrices:
+<span class="math display">\[\mathbf{A}=\left[\begin{array}{ccc}
 1 &amp; 2 &amp; 3\\
 6 &amp; 5 &amp; 4
 \end{array}\right]\;\;\;\;\;\;\;\mathbf{B}=\left[\begin{array}{ccc}
@@ -611,8 +763,9 @@ d &amp; -b\\
 <li>Find <span class="math inline">\(\mathbf{c}^{T}\mathbf{d}\)</span></li>
 <li>Find <span class="math inline">\(\mathbf{cd}^{T}\)</span></li>
 <li>Confirm that <span class="math display">\[\mathbf{E}^{-1}=\left[\begin{array}{cc}
-  3 &amp; -1\\
-  -1 &amp; 1/2 \end{array}\right]\]</span> is the inverse of <span class="math inline">\(\mathbf{E}\)</span> by calculating <span class="math inline">\(\mathbf{E}\mathbf{E}^{-1}=\mathbf{I}\)</span>.</li>
+   3 &amp; -1\\
+   -1 &amp; 1/2 \end{array}\right]\]</span>
+is the inverse of <span class="math inline">\(\mathbf{E}\)</span> by calculating <span class="math inline">\(\mathbf{E}\mathbf{E}^{-1}=\mathbf{I}\)</span>.</li>
 </ol>
 
 </div>
@@ -671,7 +824,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');

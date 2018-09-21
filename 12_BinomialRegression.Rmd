@@ -20,6 +20,7 @@ knitr::opts_chunk$set( fig.height=3 )
 library(tidyverse)   # dplyr, tidyr, ggplot2, etc...
 library(emmeans)
 library(pROC)
+library(lmerTest)
 ```
 
 
@@ -122,6 +123,27 @@ $$p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbo
 and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is _really_ small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.
 
 Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $y_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
+
+```{r}
+# beta are the parameters 
+# y is the response in terms of 0,1 for this mayfly example
+# X is the design matrix that we use for our covariates.
+logL <- function(beta, y, X){
+  out <- dbinom( y, size=1, prob= faraway::ilogit(X%*%beta), log=TRUE ) %>% sum()
+  return(out)  
+}
+NeglogL <- function(beta, y, X){ return( -logL(beta, y, X)) }
+```
+
+```{r}
+optim( par=c(0,0),     # intial bad guesses
+       fn = NeglogL,   # we want to minimize the -logL function, maximize logL
+       y=Mayflies$Occupancy,  # parameters to pass to the logL function
+       X = model.matrix( ~ 1 + CCU, data=Mayflies ) )  # ditto
+```
+
+
+In general, we don't want to have to specify the likelihood function by hand. Instead we will specify the model using the `glm` function which accepts a model formula as well as the distribution family that the data comes from.
 
 ```{r}
 head(Mayflies)
@@ -239,32 +261,45 @@ but we know that this is not a good approximation because the the normal approxi
 
 We first consider the simplest case, where we have only an intercept and slope parameter. Below is a contour plot of the likelihood surface and the shaded region is the region of the parameter space where the parameters $\left(\beta_{0},\beta_{1}\right)$ would not be rejected by the LRT. This region is found by finding the maximum likelihood estimators $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$, and then finding set of $\beta_{0},\beta_{1}$ pairs such that
 $$\begin{aligned}
--2\left[\log L\left(\beta_{0},\beta_{1}\right)-\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)\right]	& \le \chi_{df=2,0.95}^{2} \\
-\log L\left(\beta_{0},\beta_{1}\right)	&\ge	-2\chi_{2,0.95}^{2}+\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)
+-2\left[\log L\left(\beta_{0},\beta_{1}\right)-\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)\right]	& \le \chi_{df=1,0.95}^{2} \\
+\log L\left(\beta_{0},\beta_{1}\right)	&\ge	\left(\frac{-1}{2}\right)\chi_{1,0.95}^{2}+\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)
 \end{aligned}$$
   
-```{r, Profile_CI, echo=FALSE, cache=TRUE}
-library(ggplot2)
-library(mvtnorm)
+
+```{r, Profile_CI2, echo=FALSE, cache=TRUE}
+# beta are the parameters 
+# y is the response in terms of 0,1 for this mayfly example
+# X is the design matrix that we use for our covariates.
+logL <- function(beta, y, X){
+  out <- dbinom( y, size=1, prob= faraway::ilogit(X%*%beta), log=TRUE ) %>% sum()
+  return(out)  
+}
+
+y=Mayflies$Occupancy  # parameters to pass to the logL function
+X = model.matrix( ~ 1 + CCU, data=Mayflies )   # ditto
+
+cutoff <- -(1/2) * qchisq(.95, df=1) + logL( m1$coef, y, X )
+
 n <- 201 
-b0 <- seq(0,4, length=n) 
-b1 <- seq(0,4, length=n) 
-data <- expand.grid(b0=b0, b1=b1) 
-data$z <- apply(data, 1, FUN=dmvnorm, mean=c(2,2), sigma=2*matrix(c(1,-.9,-.9,2),nrow=2))
-good.data <- data[ which(abs(data$z)>.06), ] 
+b0 <- seq(0,13, length=n) 
+b1 <- seq(-7,0, length=n) 
+data <- expand.grid(b0=b0, b1=b1) %>% group_by(b0, b1) %>%
+  mutate( z = logL(c(b0, b1), y, X) ) %>%
+  mutate( Type = ifelse( z > cutoff, 'Good', 'Bad') )
+
 ggplot(data, aes(x=b0, y=b1)) + 
-    geom_tile(data=good.data, fill='red') + 
-    stat_contour(bins=20, aes(z=z)) + 
+    stat_contour(bins=20, aes(z=log(-z)) ) + 
     geom_text(x=2, y=2, label='Confidence Region') + 
-    ggtitle('Likelihood Surface') + 
+    ggtitle('Log-Likelihood Surface') + 
     xlab(expression(beta[0])) + ylab(expression(beta[1])) +
-    geom_line(data=data.frame(b0=c(1.15,1.15), b1=c(0,2.8), z=c(0,0)), col='red', size=2) +
-    geom_line(data=data.frame(b0=c(2.85,2.85), b1=c(0,1.2), z=c(0,0)), col='red', size=2) 
+    geom_tile( data=data %>% filter(Type=='Good'), fill='red' ) +
+    geom_vline( xintercept=c(1.63, 11.78), color='red') +
+    geom_hline( yintercept=c(-6.45, -1.30), color='red' )
+ 
 ```
 
 
-
-Looking at just the $\beta_{0}$ axis, this translates into a confidence interval of $(1.15,\, 2.85)$. This method is commonly referred to as the “profile likelihood” interval because the interval is created by viewing the contour plot from the one axis. The physical analogy is to viewing a mountain range from afar and asking, "What parts of the mountain are higher than 8000 feet?"
+Looking at just the $\beta_{0}$ axis, this translates into a confidence interval of $(1.63,\, 11.78)$. This method is commonly referred to as the “profile likelihood” interval because the interval is created by viewing the contour plot from the one axis. The physical analogy is to viewing a mountain range from afar and asking, "What parts of the mountain are higher than 8000 feet?"
 
 This type of confidence interval is more robust than the normal approximation and should be used whenever practical. In R, the profile likelihood confidence interval for `glm` objects is available in the `MASS` library. 
 
@@ -327,7 +362,7 @@ head(babyfood)
 m2 <- glm( cbind(disease,nondisease) ~ sex * food, family=binomial, data=babyfood )
 summary(m2)
 ```
-
+Notice that the residual deviance is effectively zero with zero degrees of freedom indicating we just fit the saturated model.
 
 It is nice to look at the single term deletions to see if the interaction term could be dropped from the model.
 ```{r}
@@ -359,7 +394,7 @@ and the associated odds are
 $$\frac{p_{F,f}}{1-p_{F,f}}=\frac{0.1273}{1-0.1273}=0.1458=e^{-1.6127-0.3126}$$
 so we can interpret $e^{-0.3126}=0.7315$ as the percent change in odds from male to female infants. That is to say, it is the *odds ratio* of the female infants to the males is $$e^{-0.3126}=\frac{\left(\frac{p_{F,f}}{1-p_{F,f}}\right)}{\left(\frac{p_{M,f}}{1-p_{M,f}}\right)}=\frac{0.1458}{0.1993}=0.7315$$
 
-The interpretation here is that odds of respiratory infection for females is 73.1\% than that of a similarly feed male child and I might say that being female reduces the odds of respiratory illness by $27\%$ compared to male babies.. Similarly we can calculate the change in odds ratio for the feeding types: 
+The interpretation here is that odds of respiratory infection for females is 73.1\% than that of a similarly feed male child and I might say that being female reduces the odds of respiratory illness by $27\%$ compared to male babies. Similarly we can calculate the change in odds ratio for the feeding types: 
 
 ```{r}
 exp( coef(m1) )
@@ -526,7 +561,7 @@ ggplot(troutegg, aes(x=period, y=survive/total, color=location)) +
 We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):
 
 ```{r}
-m <- glm(cbind(survive,perish) ~ location + period, family=binomial, data=troutegg)
+m <- glm(cbind(survive,perish) ~ location * period, family=binomial, data=troutegg)
 summary(m)
 ```
 
@@ -563,11 +598,43 @@ drop1(m2, test='F')
 While each of the time periods is different than the first, it looks like periods 7,8, and 11 aren't different from each other. As usual, we need to turn to the `emmeans` package for looking at the pairwise differences between the periods. 
 
 ```{r}
-emmeans(m2, pairwise~period) 
-emmeans(m2, ~period) %>% cld(Letters=letters)
+emmeans(m2, pairwise~period, type='response') 
+emmeans(m2, ~period, type='response') %>% cld(Letters=letters)
 ```
 
-Looking at this experiment, we might consider that location really ought to be a random effect. Fortunately `lme4` supports the family option, although it will not accept quasi families, so hand calculation of the scale parameter is necessary and as are many of the test statistics. Linear mixed models are tricky and even more so in the generalized case.
+Looking at this experiment, it looks like there is an interaction between location and period. If we fit a model with the interaction, it is the saturated model (20 covariates for 20 observations)
+```{r}
+m3 <- glm( cbind(survive, perish) ~ period * location, family=binomial, data=troutegg)
+summary(m3)
+```
+Notice that we've fit the saturated model and we've resolved the overdispersion problem because of that.
+
+As usual, we can now look at the effect of `period` at each of the locations.
+```{r}
+emmeans(m3, ~ period | location, type='response') %>% cld()
+```
+
+Notice that there isn't a huge difference in period for locations 1-4, but in location 5 things are very different.
+
+We might consider that location really ought to be a random effect. Fortunately `lme4` supports the family option, although it will not accept quasi families, you either fit a random effect or fit a quasibinomial. In either case, fitting the full interaction model with `period*location` doesn't work because we have a saturated model 
+
+```{r}
+# addititive model
+m3 <- glmer(cbind(survive,perish) ~ period + (1|location), 
+          family=binomial, data=troutegg)
+summary(m3)
+emmeans(m3, ~period, type='response') %>% cld(Letters=letters)
+```
+
+```{r}
+# Interaction  model
+m4 <- glmer(cbind(survive,perish) ~ period + (1 + period|location), 
+          family=binomial, data=troutegg)
+#summary(m4)
+#emmeans(m4, ~period, type='response') %>% cld(Letters=letters)
+```
+
+Unfortunately, we aren't able to fit the saturated model using random effects because the numerical optimization function for finding MLE estimates failed to converge.
 
 
 ## ROC Curves
@@ -630,16 +697,16 @@ In this medical scenario where we have to decide how to classify if a tumor is m
 
 Given that reasoning, perhaps we shouldn't use the rule: If $\hat{p} >= 0.5$ classify as malignant.  Instead perhaps we should use $\hat{p} >= 0.3$ or $\hat{p} >= 0.05$.
 
-Whatever decision rule we make, we should consider how many of each type of error we make. Consider the following confusion maatrix:
+Whatever decision rule we make, we should consider how many of each type of error we make. Consider the following confusion matrix:
 
 ---------------------------------------------------------------------
-    &nbsp;        Predict Positive       Predict Negative    Total
+    &nbsp;        Predict Negative       Predict Positive    Total
 --------------- --------------------- --------------------- ---------
-  **Positive**    True Pos (TP)           False Neg (FN)       $P$
+ **Negative**     True Neg (TN)           False Pos (FP)        $N$
 
- **Negative**     False Pos (FP)           True Neg (TN)       $N$
+ **Positive**     False Neg (FN)          True Pos (TP)         $P$
  
- **Total**        $P^*$                     $N^*$
+ **Total**          $N^*$                  $P^*$ 
 ---------------------------------------------------------------------
 
 where $P$ is the number of positive cases, $N$ is the number of negative cases, $P^*$ is the number of observations predicted to be positive, and $N^*$ is the number predicted to be negative.
