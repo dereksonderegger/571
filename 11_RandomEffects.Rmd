@@ -1,8 +1,4 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
+
 # Mixed Effects Models
 ```{r, echo=FALSE}
 # Unattach any packages that happen to already be loaded. In general this is unecessary
@@ -237,7 +233,7 @@ Next we turn to the fixed effects.  These will be the offsets from the reference
 We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `emmeans`, which automates much of this (and uses `lmerTest` produced p-values for the tests).
 
 ```{r, warning=FALSE, message=FALSE}
-LetterResults <- emmeans( model.1, ~ variety) %>% cld(Letters=letters)
+LetterResults <- emmeans( model.1, ~ variety) %>% multcomp::cld(Letters=letters)
 LetterResults
 ```
 
@@ -501,7 +497,7 @@ anova(m)
 The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
 ```{r}
 emmeans(m, specs= pairwise~material) 
-emmeans(m, specs= ~material) %>% cld(Letters=letters) 
+emmeans(m, specs= ~material) %>% multcomp::cld(Letters=letters) 
 ```
 So material D is in between materials B and C for abrasion resistance.
 
@@ -637,49 +633,52 @@ myStats <- function(model){
   return(out)
 }
 
-bootObj <- bootMer(m2, FUN=myStats, nsim = 1000)
+bootObj <- bootMer(m2, FUN=myStats, nsim = 1000 )
+
+# for some reason the car package is having problems.  I need to figure out how to make this work.
+# 
 # hist(bootObj)  # check for normality/skewness/etc
 
 # BCa failed for me, but percentile is fine 
-ConfData <-  cbind( ConfData, car::Confint( bootObj,  level=0.95 ))  
-ConfData
+# ConfData <-  cbind( ConfData, car::Confint( bootObj,  level=0.95 ))  
+# ConfData
 ```
 
 ```{r}
 # Now for a nice graph!  Unfortunately car::Confint used numbers for column names.
 # So first I need to fix that.
-colnames(ConfData) <- c('Days', 'Estimate', 'lwr', 'upr')
-ggplot(ConfData,  aes(x=Days)) +
-  geom_line(aes(y=Estimate), color='red') +
-  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2)
+# colnames(ConfData) <- c('Days', 'Estimate', 'lwr', 'upr')
+# ggplot(ConfData,  aes(x=Days)) +
+#   geom_line(aes(y=Estimate), color='red') +
+#   geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2)
 ```
 
 ### Prediction Intervals
 For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don't need to fit a model at each bootstrap step. The `lme4::simulate` function creates the bootstrap dataset and doesn't send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the orginal dataset.
 
 ```{r}
-# set up the structure of new subjects
-PredData <- data.frame(Subject='new', Days=0:8) # Simulate a NEW patient
-
-# Create a n x 1000 data frame
-Simulated <- simulate(m2, newdata=PredData, allow.new.levels=TRUE, nsim=1000)
-
-# squish the Subject/Day info together with the simulated and then grab the quantiles
-# for each day
-PredIntervals <- cbind(PredData, Simulated) %>%
-  gather('sim','Reaction', sim_1:sim_1000 ) %>%   # go from wide to long structure
-  group_by(Subject, Days) %>%
-  summarize(lwr = quantile(Reaction, probs = 0.025),
-            upr = quantile(Reaction, probs = 0.975))
+# # set up the structure of new subjects
+# PredData <- data.frame(Subject='new', Days=0:8) # Simulate a NEW patient
+# 
+# # Create a n x 1000 data frame
+# Simulated <- simulate(m2, newdata=PredData, allow.new.levels=TRUE, nsim=1000)
+# 
+# # squish the Subject/Day info together with the simulated and then grab the quantiles
+# # for each day
+# PredIntervals <- cbind(PredData, Simulated) %>%
+#   gather('sim','Reaction', sim_1:sim_1000 ) %>%   # go from wide to long structure
+#   group_by(Subject, Days) %>%
+#   summarize(lwr = quantile(Reaction, probs = 0.025),
+#             upr = quantile(Reaction, probs = 0.975))
 
 ```
 
 ```{r}
 # Plot the prediction and confidence intervals
-ggplot(ConfData,  aes(x=Days)) +
-  geom_line(aes(y=Estimate), color='red') +
-  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2) +
-  geom_ribbon(data=PredIntervals, aes(ymin=lwr, ymax=upr), fill='blue', alpha=0.2)
+# ggplot(ConfData,  aes(x=Days)) +
+#   geom_line(aes(y=Estimate), color='red') +
+#   geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2) +
+#   geom_ribbon(data=PredIntervals, aes(ymin=lwr, ymax=upr), fill='blue', alpha=0.2)
 ```
 
 

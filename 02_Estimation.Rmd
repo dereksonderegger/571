@@ -78,7 +78,7 @@ y_{n} & =  \beta_{0}+\beta_{1}x_{n}+\epsilon_{n}
 
 where, as usual, $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
 These equations can be written using matrices as
-RR
+
 $$
 \underset{\boldsymbol{y}}{\underbrace{\left[\begin{array}{c}
 y_{1}\\
@@ -116,6 +116,8 @@ where $\boldsymbol{X}$ is referred to as the *design matrix*
 and $\boldsymbol{\beta}$ is the vector of *location parameters* we are interested
 in estimating. 
 
+Our error terms can be collectively described as have a normal distribution with mean $\boldsymbol{\mu}=0$. To be very general, a vector of random variables needs to describe how each of them varies in relation to each other, so we need to specify the variance *matrix*. However because $\epsilon_i$ is independent of $\epsilon_j$, the variance matrix can be written as $\sigma^2\,\boldsymbol{I}$ because all of the covariances are zero. Therefore we finish the matrix formulation of the model by 
+$$\boldsymbol{\epsilon} \sim N( \boldsymbol{\mu}, \sigma^2 \, \boldsymbol{I} )$$
 
 ### Estimation of Location Paramters 
 

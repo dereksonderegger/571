@@ -111,7 +111,14 @@ Complex        | $n-p$ | $RSS_c$  | $MSE_c = RSS_c / (n-p)$   |               | 
 Simple         | $n-1$ | $RSS_s$  |                           |               |                      |
 
 
-This table can be obtained from R by using the `anova()` function on the two models of interest. As usual with R, it does not show the simple row, but rather concentrates on the difference row.
+This type of table is often shown in textbooks, but base functions in R don't produce exactly this table. Instead the `anova(simple, complex)` command produces the following:
+
+Models     |  df    |  RSS     |    Diff in RSS      |  F            |   p-value            |
+-----------|--------|----------|---------------------|---------------|----------------------|
+ Simple    | $n-1$  | $RSS_s$  |                     |               |                      |
+ Complex   | $n-p$  | $RSS_c$  |   $RSS_d$           | $MSE_d/MSE_c$ | $P(F > F_{p-1,n-p})$ |
+
+can be obtained from R by using the `anova()` function on the two models of interest. This representation skips showing the Mean Squared calculations.
 
 ```{r}
 anova(M.s, M.c)

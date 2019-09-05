@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html >
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
 
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Statistical Methods II</title>
-  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc.">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Contrasts | Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Statistical Methods II" />
+  <meta property="og:title" content="Chapter 5 Contrasts | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -17,25 +16,26 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 5 Contrasts | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
 
-<meta name="author" content="Derek L. Sonderegger">
+<meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2018-12-06">
+<meta name="date" content="2019-09-05" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
 <link rel="prev" href="4-analysis-of-covariance-ancova.html">
 <link rel="next" href="6-diagnostics-and-transformations.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -55,7 +55,6 @@ a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
 a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
@@ -461,16 +460,16 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)   =   \sqrt{\hat{\
 ## 
 ## Fit: lm(formula = y ~ groups)
 ## 
-## Quantile = 2.6457
+## Quantile = 2.646
 ## 95% family-wise confidence level
 ##  
 ## 
 ## Linear Hypotheses:
 ##                      Estimate lwr     upr    
-## Mean of Group 1 == 0 86.7500  82.7334 90.7666
-## Mean of Group 2 == 0 75.5714  71.2775 79.8654
-## Mean of Group 3 == 0 71.0000  67.2131 74.7869
-## Diff G2-G3 == 0       4.5714  -1.1538 10.2967</code></pre>
+## Mean of Group 1 == 0 86.7500  82.7328 90.7672
+## Mean of Group 2 == 0 75.5714  71.2769 79.8659
+## Mean of Group 3 == 0 71.0000  67.2126 74.7874
+## Diff G2-G3 == 0       4.5714  -1.1546 10.2975</code></pre>
 </div>
 <div id="ancova-example" class="section level3">
 <h3><span class="header-section-number">5.2.2</span> ANCOVA example</h3>
@@ -491,7 +490,7 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)   =   \sqrt{\hat{\
 <a class="sourceLine" id="cb122-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb122-14" data-line-number="14"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb122-15" data-line-number="15"><span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</a></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="kw">summary</span>(m)<span class="op">$</span>coefficient</a></code></pre></div>
 <pre><code>##                 Estimate Std. Error   t value     Pr(&gt;|t|)
@@ -624,7 +623,7 @@ dose level. So to do this, we want to calculate the difference between these two
 <a class="sourceLine" id="cb133-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb133-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb133-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</a></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
 <p>Using the <code>summary()</code> function, we can test hypotheses about if
 the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.</p>
 <div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1"><span class="co"># We could find the regression line heights and CI using </span></a>
@@ -634,9 +633,9 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 ## 1 13.71511 11.44781 15.98240
 ## 2 23.84682 22.16204 25.53159</code></pre>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1"><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> <span class="op">~</span>Girth, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) )  </a></code></pre></div>
-<pre><code>##  Girth   emmean        SE df lower.CL upper.CL
-##     10 13.71511 1.1085761 29 11.44781 15.98240
-##     12 23.84682 0.8237582 29 22.16204 25.53159
+<pre><code>##  Girth emmean    SE df lower.CL upper.CL
+##     10   13.7 1.109 29     11.4     16.0
+##     12   23.8 0.824 29     22.2     25.5
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>The <code>emmeans()</code> function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out. In the simple regression case, the <code>specs</code> argument is just the single covariate.</p>
@@ -647,37 +646,37 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,</a>
 <a class="sourceLine" id="cb138-2" data-line-number="2">        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) ) </a></code></pre></div>
 <pre><code>## $emmeans
-##  Girth   emmean        SE df lower.CL upper.CL
-##     10 13.71511 1.1085761 29 11.44781 15.98240
-##     12 23.84682 0.8237582 29 22.16204 25.53159
+##  Girth emmean    SE df lower.CL upper.CL
+##     10   13.7 1.109 29     11.4     16.0
+##     12   23.8 0.824 29     22.2     25.5
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast  estimate        SE df t.ratio p.value
-##  10 - 12  -10.13171 0.4947539 29 -20.478  &lt;.0001</code></pre>
+##  contrast estimate    SE df t.ratio p.value
+##  10 - 12     -10.1 0.495 29 -20.478 &lt;.0001</code></pre>
 <p>Notice that if I was interested in 3 points, we would get all of the differences.</p>
 <div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb140-1" data-line-number="1"><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,</a>
 <a class="sourceLine" id="cb140-2" data-line-number="2">        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) ) </a></code></pre></div>
 <pre><code>## $emmeans
-##  Girth   emmean        SE df lower.CL upper.CL
-##     10 13.71511 1.1085761 29 11.44781 15.98240
-##     11 18.78096 0.9447560 29 16.84872 20.71320
-##     12 23.84682 0.8237582 29 22.16204 25.53159
+##  Girth emmean    SE df lower.CL upper.CL
+##     10   13.7 1.109 29     11.4     16.0
+##     11   18.8 0.945 29     16.8     20.7
+##     12   23.8 0.824 29     22.2     25.5
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast   estimate        SE df t.ratio p.value
-##  10 - 11   -5.065856 0.2473770 29 -20.478  &lt;.0001
-##  10 - 12  -10.131713 0.4947539 29 -20.478  &lt;.0001
-##  11 - 12   -5.065856 0.2473770 29 -20.478  &lt;.0001
+##  contrast estimate    SE df t.ratio p.value
+##  10 - 11     -5.07 0.247 29 -20.478 &lt;.0001 
+##  10 - 12    -10.13 0.495 29 -20.478 &lt;.0001 
+##  11 - 12     -5.07 0.247 29 -20.478 &lt;.0001 
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>In this very simple case, the slope parameter is easily available as a parameter value, but we could use the <code>emtrends()</code> function to obtain the slope.</p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="kw">emtrends</span>( model, <span class="op">~</span>Girth, <span class="st">&#39;Girth&#39;</span> )</a></code></pre></div>
-<pre><code>##     Girth Girth.trend       SE df lower.CL upper.CL
-##  13.24839    5.065856 0.247377 29 4.559914 5.571799
+<pre><code>##  Girth Girth.trend    SE df lower.CL upper.CL
+##   13.2        5.07 0.247 29     4.56     5.57
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>This output is a bit mysterious because because of the <code>13.248</code> component. What has happened is that <code>emtrends</code> is telling us the slope of the line at a particular point on the x-axis (the mean of all the girth values). While this doesn’t matter in this example, because the slope is the same for all values of girth, if we had fit a quadratic model, it would not.</p>
@@ -690,13 +689,13 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <a class="sourceLine" id="cb144-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb144-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb144-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</a></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
 <div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="kw">emtrends</span>( model, <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth,<span class="dv">2</span>), <span class="st">&#39;Girth&#39;</span>,</a>
 <a class="sourceLine" id="cb145-2" data-line-number="2">          <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) )</a></code></pre></div>
-<pre><code>##  Girth Girth.trend        SE df lower.CL upper.CL
-##     10    3.029920 0.5041192 28 1.997278 4.062561
-##     11    3.538995 0.3992560 28 2.721156 4.356834
-##     12    4.048070 0.3028961 28 3.427616 4.668525
+<pre><code>##  Girth Girth.trend    SE df lower.CL upper.CL
+##     10        3.03 0.504 28     2.00     4.06
+##     11        3.54 0.399 28     2.72     4.36
+##     12        4.05 0.303 28     3.43     4.67
 ## 
 ## Confidence level used: 0.95</code></pre>
 </div>
@@ -710,23 +709,23 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <a class="sourceLine" id="cb147-5" data-line-number="5">  <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</a></code></pre></div>
 <div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" data-line-number="1"><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span></a>
 <a class="sourceLine" id="cb148-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_boxplot</span>()</a></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
 <p>To use the <code>emmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )</a>
 <a class="sourceLine" id="cb149-2" data-line-number="2"><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span>Method)</a></code></pre></div>
 <pre><code>## $emmeans
-##  Method   emmean       SE df lower.CL upper.CL
-##  M1     86.75000 1.518172 21 83.59279 89.90721
-##  M2     75.57143 1.622994 21 72.19623 78.94663
-##  M3     71.00000 1.431347 21 68.02335 73.97665
+##  Method emmean   SE df lower.CL upper.CL
+##  M1       86.8 1.52 21     83.6     89.9
+##  M2       75.6 1.62 21     72.2     78.9
+##  M3       71.0 1.43 21     68.0     74.0
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast  estimate       SE df t.ratio p.value
-##  M1 - M2  11.178571 2.222377 21   5.030  0.0002
-##  M1 - M3  15.750000 2.086528 21   7.548  &lt;.0001
-##  M2 - M3   4.571429 2.163993 21   2.112  0.1114
+##  contrast estimate   SE df t.ratio p.value
+##  M1 - M2     11.18 2.22 21 5.030   0.0002 
+##  M1 - M3     15.75 2.09 21 7.548   &lt;.0001 
+##  M2 - M3      4.57 2.16 21 2.112   0.1114 
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
@@ -743,99 +742,97 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <a class="sourceLine" id="cb151-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb151-9" data-line-number="9"><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb151-10" data-line-number="10"><span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">y=</span>len) )</a></code></pre></div>
-<p><img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
 <p>First, lets get the y-intercept for each group. In the following code, the formula with the <code>| supp</code> part says that we want to do all the calculations for each level of the supplement types. The call to <code>emmeans()</code> calculates the response at logDose level 0. By passing the result of the <code>emmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose <span class="op">|</span><span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb152-2" data-line-number="2"><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</a></code></pre></div>
 <pre><code>## supp = OJ:
-##  logDose   emmean        SE df lower.CL upper.CL t.ratio p.value
-##        0 20.66333 0.6791481 56 19.30284 22.02383  30.425  &lt;.0001
+##  logDose emmean    SE df lower.CL upper.CL t.ratio p.value
+##        0   20.7 0.679 56     19.3     22.0 30.425  &lt;.0001 
 ## 
 ## supp = VC:
-##  logDose   emmean        SE df lower.CL upper.CL t.ratio p.value
-##        0 16.96333 0.6791481 56 15.60284 18.32383  24.977  &lt;.0001
+##  logDose emmean    SE df lower.CL upper.CL t.ratio p.value
+##        0   17.0 0.679 56     15.6     18.3 24.977  &lt;.0001 
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC supplements. We also wanted to calculate the contrast between the two supplement predictions.</p>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" data-line-number="1"><span class="kw">emmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb154-2" data-line-number="2"><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</a></code></pre></div>
 <pre><code>## $emmeans
-##  logDose supp   emmean       SE df lower.CL upper.CL t.ratio p.value
-##    -0.69 OJ   14.27746 1.070905 56 12.13218 16.42274  13.332  &lt;.0001
-##    -0.69 VC    7.92456 1.070905 56  5.77928 10.06984   7.400  &lt;.0001
+##  logDose supp emmean   SE df lower.CL upper.CL t.ratio p.value
+##    -0.69 OJ    14.28 1.07 56    12.13     16.4 13.332  &lt;.0001 
+##    -0.69 VC     7.92 1.07 56     5.78     10.1  7.400  &lt;.0001 
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast            estimate       SE df lower.CL upper.CL t.ratio
-##  -0.69,OJ - -0.69,VC   6.3529 1.514488 56 3.319016 9.386784   4.195
-##  p.value
-##   0.0001
+##  contrast            estimate   SE df lower.CL upper.CL t.ratio p.value
+##  -0.69,OJ - -0.69,VC     6.35 1.51 56     3.32     9.39 4.195   0.0001 
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>We next make the same comparison for logdose = 0.69 (i.e. dose=2).</p>
 <div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1"><span class="kw">emmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb156-2" data-line-number="2"><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</a></code></pre></div>
 <pre><code>## $emmeans
-##  logDose supp   emmean       SE df lower.CL upper.CL t.ratio p.value
-##     0.69 OJ   27.04921 1.070905 56 24.90393 29.19449  25.258  &lt;.0001
-##     0.69 VC   26.00211 1.070905 56 23.85683 28.14739  24.281  &lt;.0001
+##  logDose supp emmean   SE df lower.CL upper.CL t.ratio p.value
+##     0.69 OJ       27 1.07 56     24.9     29.2 25.258  &lt;.0001 
+##     0.69 VC       26 1.07 56     23.9     28.1 24.281  &lt;.0001 
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast          estimate       SE df  lower.CL upper.CL t.ratio p.value
-##  0.69,OJ - 0.69,VC   1.0471 1.514488 56 -1.986784 4.080984   0.691  0.4922
+##  contrast          estimate   SE df lower.CL upper.CL t.ratio p.value
+##  0.69,OJ - 0.69,VC     1.05 1.51 56    -1.99     4.08 0.691   0.4922 
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>While <code>emmeans()</code> makes it very easy to calculate the <span class="math inline">\(\hat{y}\)</span> value for some covariate combination or some difference of <span class="math inline">\(\hat{y}\)</span> values, it doesn’t handle slope parameters particularly well. The companion function <code>emtrends()</code> is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.</p>
 <div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" data-line-number="1"><span class="kw">emtrends</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</a></code></pre></div>
-<pre><code>##  logDose supp logDose.trend       SE df  lower.CL upper.CL
-##        0 OJ        9.254889 1.200009 56  6.850981 11.65880
-##        0 VC       13.099671 1.200009 56 10.695763 15.50358
+<pre><code>##  logDose supp logDose.trend  SE df lower.CL upper.CL
+##        0 OJ            9.25 1.2 56     6.85     11.7
+##        0 VC           13.10 1.2 56    10.70     15.5
 ## 
 ## Confidence level used: 0.95</code></pre>
 <div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb160-1" data-line-number="1"><span class="kw">emtrends</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</a></code></pre></div>
 <pre><code>## $emtrends
-##  logDose supp logDose.trend       SE df  lower.CL upper.CL
-##        0 OJ        9.254889 1.200009 56  6.850981 11.65880
-##        0 VC       13.099671 1.200009 56 10.695763 15.50358
+##  logDose supp logDose.trend  SE df lower.CL upper.CL
+##        0 OJ            9.25 1.2 56     6.85     11.7
+##        0 VC           13.10 1.2 56    10.70     15.5
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast     estimate      SE df t.ratio p.value
-##  0,OJ - 0,VC -3.844782 1.69707 56  -2.266  0.0274</code></pre>
+##  contrast    estimate  SE df t.ratio p.value
+##  0,OJ - 0,VC    -3.84 1.7 56 -2.266  0.0274</code></pre>
 <div id="common-emmeans-mistake" class="section level4">
 <h4><span class="header-section-number">5.3.3.1</span> Common <code>emmeans()</code> mistake</h4>
 <p>It is very common to make a mistake using <code>emmeans()</code> or <code>emtrends()</code> if you don’t understand what the specification formula means. In particular what happens if you were to use <code>~logDose</code> instead of the correct <code>~logDose*supp</code>.</p>
 <p>Consider the case where we are interested in making predictions for each supplement type at <span class="math inline">\(1/2\)</span> dose (logDose=-0.69).</p>
 <div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb162-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</a></code></pre></div>
-<pre><code>##  logDose supp   emmean       SE df lower.CL upper.CL
-##    -0.69 OJ   14.27746 1.070905 56 12.13218 16.42274
-##    -0.69 VC    7.92456 1.070905 56  5.77928 10.06984
+<pre><code>##  logDose supp emmean   SE df lower.CL upper.CL
+##    -0.69 OJ    14.28 1.07 56    12.13     16.4
+##    -0.69 VC     7.92 1.07 56     5.78     10.1
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>If I were to accidentally forget the <code>supp</code> part of this, then <code>emmeans()</code> would figure that I wanted to <em>average</em> over the two levels and give me the average of <span class="math inline">\(14.28\)</span> and <span class="math inline">\(7.92\)</span>, which is <span class="math inline">\(11.1\)</span>. With the interaction term in the model, it is unlikely that I would want to do this, but <code>emmeans()</code> complains a little but lets me do it.</p>
 <div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb164-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</a></code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
-<pre><code>##  logDose   emmean       SE df lower.CL upper.CL
-##    -0.69 11.10101 0.757244 56 9.584068 12.61795
+<pre><code>##  logDose emmean    SE df lower.CL upper.CL
+##    -0.69   11.1 0.757 56     9.58     12.6
 ## 
 ## Results are averaged over the levels of: supp 
 ## Confidence level used: 0.95</code></pre>
 <p>What would happen if we only use <code>supp</code> in the formula specification? In this case we are lucky because the <code>logDose=-0.69</code> specified what dose level to look at. If we had forgotten to specify this, then we would have done this calculation at the mean <code>logDose</code> value, which happens to be zero.</p>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb167-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="op">~</span>supp<span class="op">*</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>))</a></code></pre></div>
-<pre><code>##  supp logDose   emmean        SE df lower.CL upper.CL
-##  OJ         0 20.66333 0.6791481 56 19.30284 22.02383
-##  VC         0 16.96333 0.6791481 56 15.60284 18.32383
+<pre><code>##  supp logDose emmean    SE df lower.CL upper.CL
+##  OJ         0   20.7 0.679 56     19.3     22.0
+##  VC         0   17.0 0.679 56     15.6     18.3
 ## 
 ## Confidence level used: 0.95</code></pre>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb169-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="op">~</span>supp)</a></code></pre></div>
 <pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
-<pre><code>##  supp   emmean        SE df lower.CL upper.CL
-##  OJ   20.66333 0.6791481 56 19.30284 22.02383
-##  VC   16.96333 0.6791481 56 15.60284 18.32383
+<pre><code>##  supp emmean    SE df lower.CL upper.CL
+##  OJ     20.7 0.679 56     19.3     22.0
+##  VC     17.0 0.679 56     15.6     18.3
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>Because the averaging over factor levels isn’t what I typically want to do, I start the analysis making sure the model formula I used in the <code>lm()</code> command is the same as the one I pass into <code>emmeans()</code>.</p>
@@ -855,7 +852,7 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <a class="sourceLine" id="cb172-7" data-line-number="7"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Weight (tons)&#39;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb172-8" data-line-number="8"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Miles per Gallon&#39;</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb172-9" data-line-number="9"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">color=</span><span class="st">&#39;Cylinders&#39;</span>, <span class="dt">shape=</span><span class="st">&#39;Cylinders&#39;</span>)</a></code></pre></div>
-<img src="Statistical_Methods_II_files/figure-html/unnamed-chunk-92-1.png" width="672" />
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-92-1.png" width="672" />
 <ol style="list-style-type: lower-alpha">
 <li><p>Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:</p>
 <div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb173-1" data-line-number="1">mtcars <span class="op">%&gt;%</span><span class="st">      </span></a>
@@ -934,9 +931,10 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+"instapper": false
 },
 "fontsettings": {
 "theme": "white",
@@ -946,6 +944,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/dereksonderegger/571/raw/master/05_Contrasts.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
 "toc": {
@@ -963,7 +965,7 @@ gitbook.start({
     var script = document.createElement("script");
     script.type = "text/javascript";
     var src = "true";
-    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:" && /^https?:/.test(src))
       src = src.replace(/^https?:/, '');
     script.src = src;
