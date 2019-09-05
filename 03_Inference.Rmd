@@ -15,7 +15,7 @@ if( length(pkgs > 0)){
 knitr::opts_chunk$set( fig.height=3 )
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(tidyverse)  # ggplot2, dplyr, tidyr
 library(tidymodels) # Grab model results as data frames
 ```
