@@ -17,6 +17,7 @@ knitr::opts_chunk$set( fig.height=3 )
 
 ```{r}
 library(tidyverse)  # ggplot2, dplyr, tidyr
+library(tidymodels) # Grab model results as data frames
 ```
 
 ## F-tests
@@ -155,10 +156,9 @@ sqrt(F.stat)
 To calculate it using the estimated coefficient and its standard error, we must grab those values from the summary table
 
 ```{r}
-temp <- summary(M.c)
-temp$coefficients
-beta.area <- temp$coefficients[2,1]
-SE.beta.area <- temp$coefficients[2,2]
+broom::tidy(M.c)  # get the coefficient table 
+beta.area    <- broom::tidy(M.c)[2,2] %>% pull()   # pull turns it into a scalar
+SE.beta.area <- broom::tidy(M.c)[2,3] %>% pull()
 t <- beta.area / SE.beta.area
 t
 2 * pt(t, 24)
@@ -237,7 +237,7 @@ We can double check that this is what R calculates in the summary table
 
 ```{r}
 model <- lm(Species ~ Elevation + Adjacent, data=gala)
-summary(model)
+broom::tidy(model)
 ```
 
 It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is
@@ -256,10 +256,11 @@ upper <- beta.hat + qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
 cbind(lower, upper)
 ```
 
-That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the `confint()`() command.
+That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the `confint()`() command or the `broom::tidy()` command.
 
 ```{r}
-confint(model)
+# confint(model)
+broom::tidy(model, conf.int=TRUE, conf.level=.95)
 ```
 
 

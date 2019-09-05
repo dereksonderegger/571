@@ -294,7 +294,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="analysis-of-covariance-ancova" class="section level1">
 <h1><span class="header-section-number">Chapter 4</span> Analysis of Covariance (ANCOVA)</h1>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></a></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></a></code></pre></div>
 <p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. This model is commonly called ANCOVA which stands for <em>Analysis of Covariance</em>.</p>
 <p>The dataset <code>teengamb</code> in the package <code>faraway</code> has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?</p>
 <p>There are two possible ways that gender could enter the model. Either:</p>
@@ -417,35 +417,35 @@ y_{47}
 \end{array}\right]
 \]</span>
 where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb87-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></a>
-<a class="sourceLine" id="cb87-4" data-line-number="4"><span class="co"># relabels the levels to something I understand.</span></a>
-<a class="sourceLine" id="cb87-5" data-line-number="5">teengamb<span class="op">$</span>sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb<span class="op">$</span>sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) </a>
-<a class="sourceLine" id="cb87-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="co"># Fit a linear model with the interaction of sex and income</span></a>
-<a class="sourceLine" id="cb87-8" data-line-number="8"><span class="co"># Interactions can be specified useing a colon :</span></a>
-<a class="sourceLine" id="cb87-9" data-line-number="9">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </a>
-<a class="sourceLine" id="cb87-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb87-11" data-line-number="11"><span class="co"># R allows a shortcut for the prior definition</span></a>
-<a class="sourceLine" id="cb87-12" data-line-number="12">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</a>
-<a class="sourceLine" id="cb87-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb87-14" data-line-number="14"><span class="co"># save the fit, lwr, upr values for each observation</span></a>
-<a class="sourceLine" id="cb87-15" data-line-number="15"><span class="co"># these are the yhat and CI </span></a>
-<a class="sourceLine" id="cb87-16" data-line-number="16"><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></a>
-<a class="sourceLine" id="cb87-17" data-line-number="17">teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb87-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span></a>
-<a class="sourceLine" id="cb87-19" data-line-number="19"><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</a>
-<a class="sourceLine" id="cb87-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb87-21" data-line-number="21"><span class="co"># Make a nice plot that includes the regreesion line.</span></a>
-<a class="sourceLine" id="cb87-22" data-line-number="22"><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb87-23" data-line-number="23"><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</a>
-<a class="sourceLine" id="cb87-24" data-line-number="24">                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></a>
-<a class="sourceLine" id="cb87-25" data-line-number="25"><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb87-26" data-line-number="26"><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></a>
+<a class="sourceLine" id="cb90-4" data-line-number="4"><span class="co"># relabels the levels to something I understand.</span></a>
+<a class="sourceLine" id="cb90-5" data-line-number="5">teengamb<span class="op">$</span>sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb<span class="op">$</span>sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) </a>
+<a class="sourceLine" id="cb90-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb90-7" data-line-number="7"><span class="co"># Fit a linear model with the interaction of sex and income</span></a>
+<a class="sourceLine" id="cb90-8" data-line-number="8"><span class="co"># Interactions can be specified useing a colon :</span></a>
+<a class="sourceLine" id="cb90-9" data-line-number="9">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </a>
+<a class="sourceLine" id="cb90-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb90-11" data-line-number="11"><span class="co"># R allows a shortcut for the prior definition</span></a>
+<a class="sourceLine" id="cb90-12" data-line-number="12">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</a>
+<a class="sourceLine" id="cb90-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb90-14" data-line-number="14"><span class="co"># save the fit, lwr, upr values for each observation</span></a>
+<a class="sourceLine" id="cb90-15" data-line-number="15"><span class="co"># these are the yhat and CI </span></a>
+<a class="sourceLine" id="cb90-16" data-line-number="16"><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></a>
+<a class="sourceLine" id="cb90-17" data-line-number="17">teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb90-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb90-19" data-line-number="19"><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</a>
+<a class="sourceLine" id="cb90-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb90-21" data-line-number="21"><span class="co"># Make a nice plot that includes the regreesion line.</span></a>
+<a class="sourceLine" id="cb90-22" data-line-number="22"><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb90-23" data-line-number="23"><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</a>
+<a class="sourceLine" id="cb90-24" data-line-number="24">                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></a>
+<a class="sourceLine" id="cb90-25" data-line-number="25"><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb90-26" data-line-number="26"><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="co"># print the model summary</span></a>
-<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="kw">summary</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co"># print the model summary</span></a>
+<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">summary</span>(m1)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = gamble ~ sex * income, data = teengamb)
@@ -470,31 +470,31 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <div id="iris-example" class="section level2">
 <h2><span class="header-section-number">4.3</span> Iris Example</h2>
 <p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></a>
-<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></a></code></pre></div>
 <pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
 <p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
 <p>We consider the sequence of building successively more complex models:</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="co"># make virginica the reference group </span></a>
-<a class="sourceLine" id="cb93-2" data-line-number="2">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris<span class="op">$</span>Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)</a>
-<a class="sourceLine" id="cb93-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb93-4" data-line-number="4">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></a>
-<a class="sourceLine" id="cb93-5" data-line-number="5">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></a>
-<a class="sourceLine" id="cb93-6" data-line-number="6">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="co"># make virginica the reference group </span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris<span class="op">$</span>Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)</a>
+<a class="sourceLine" id="cb96-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb96-4" data-line-number="4">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></a>
+<a class="sourceLine" id="cb96-5" data-line-number="5">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></a>
+<a class="sourceLine" id="cb96-6" data-line-number="6">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></a></code></pre></div>
 <p>The three models we consider are the following:</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
 <pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)     3.419      0.254  13.484    0.000
 ## Sepal.Length   -0.062      0.043  -1.440    0.152</code></pre>
 <p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
 <p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">summary</span>(m2)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1"><span class="kw">summary</span>(m2)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
 <pre><code>##                   Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)          0.669      0.308   2.174    0.031
 ## Sepal.Length         0.350      0.046   7.557    0.000
@@ -502,7 +502,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 ## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
 <p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
 <p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw">summary</span>(m3)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw">summary</span>(m3)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
 <pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)                       1.446      0.405   3.572    0.000
 ## Sepal.Length                      0.232      0.061   3.790    0.000
@@ -546,7 +546,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 </tbody>
 </table>
 <p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">anova</span>(m2, m3)</a></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb103-1" data-line-number="1"><span class="kw">anova</span>(m2, m3)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: Sepal.Width ~ Sepal.Length + Species
@@ -564,8 +564,8 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <li>The in the <code>faraway</code> package, there is a dataset named <code>phbirths</code> that gives babies birth weights along with their gestational time in utero along with the mother’s smoking status.
 <ol style="list-style-type: lower-alpha">
 <li><p>Load and inspect the dataset using</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></a>
-<a class="sourceLine" id="cb102-2" data-line-number="2">?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></a></code></pre></div></li>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></a>
+<a class="sourceLine" id="cb105-2" data-line-number="2">?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></a></code></pre></div></li>
 <li>Create a plot of the birth weight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</li>
 <li>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</li>
 <li>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</li>

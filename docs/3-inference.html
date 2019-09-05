@@ -294,7 +294,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="inference" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Inference</h1>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">library</span>(tidymodels) <span class="co"># Grab model results as data frames</span></a></code></pre></div>
+<pre><code>## ── Attaching packages ─────────────────────────────────── tidymodels 0.0.2 ──</code></pre>
+<pre><code>## ✔ broom     0.5.2       ✔ recipes   0.1.6  
+## ✔ dials     0.0.2       ✔ rsample   0.0.5  
+## ✔ infer     0.4.0.1     ✔ yardstick 0.0.4  
+## ✔ parsnip   0.0.3.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────── tidymodels_conflicts() ──
+## ✖ scales::discard() masks purrr::discard()
+## ✖ dplyr::filter()   masks stats::filter()
+## ✖ recipes::fixed()  masks stringr::fixed()
+## ✖ dplyr::lag()      masks stats::lag()
+## ✖ car::recode()     masks dplyr::recode()
+## ✖ MASS::select()    masks dplyr::select()
+## ✖ car::some()       masks purrr::some()
+## ✖ yardstick::spec() masks readr::spec()
+## ✖ recipes::step()   masks lmerTest::step(), stats::step()</code></pre>
 <div id="f-tests" class="section level2">
 <h2><span class="header-section-number">3.1</span> F-tests</h2>
 <p>We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.</p>
@@ -345,8 +361,8 @@ and we claimed that if the null hypothesis was true (i.e. the complex model is 
 </tbody>
 </table>
 <p>We will first read in the data set from the package <code>faraway</code>.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)     <span class="co"># import the data set</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="kw">head</span>(gala)                          <span class="co"># show the first couple of rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)     <span class="co"># import the data set</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">head</span>(gala)                          <span class="co"># show the first couple of rows</span></a></code></pre></div>
 <pre><code>##              Species Endemics  Area Elevation Nearest Scruz Adjacent
 ## Baltra            58       23 25.09       346     0.6   0.6     1.84
 ## Bartolome         31       21  1.24       109     0.6  26.3   572.33
@@ -357,8 +373,8 @@ and we claimed that if the null hypothesis was true (i.e. the complex model is 
 <p>First we will create the full model that predicts the number of species as a function of elevation, area, nearest, scruz and adjacent. Notice that this model has <span class="math inline">\(p=6\)</span> <span class="math inline">\(\beta_{i}\)</span> values (one for each coefficient plus the intercept).</p>
 <p><span class="math display">\[ y_i = \beta_0 + \beta_1 Area_i + \beta_2 Elevation_i + \beta_3 Nearest_i + \beta_4 Scruz_i + \beta_5 Adjacent_i + \epsilon_i\]</span></p>
 <p>We can happily fit this model just by adding terms on the left hand side of the model formula. Notice that R creates the design matrix <span class="math inline">\(X\)</span> for us.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw">model.matrix</span>(M.c)  <span class="co"># this is the design matrix X.</span></a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">model.matrix</span>(M.c)  <span class="co"># this is the design matrix X.</span></a></code></pre></div>
 <pre><code>##              (Intercept)    Area Elevation Nearest Scruz Adjacent
 ## Baltra                 1   25.09       346     0.6   0.6     1.84
 ## Bartolome              1    1.24       109     0.6  26.3   572.33
@@ -393,7 +409,7 @@ and we claimed that if the null hypothesis was true (i.e. the complex model is 
 ## attr(,&quot;assign&quot;)
 ## [1] 0 1 2 3 4 5</code></pre>
 <p>All the usual calculations from chapter two can be calculated and we can see the summary table for this regression as follows:</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">summary</span>(M.c)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw">summary</span>(M.c)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Species ~ Area + Elevation + Nearest + Scruz + Adjacent, 
@@ -423,19 +439,19 @@ and we claimed that if the null hypothesis was true (i.e. the complex model is 
 <p>The first test we might want to do is to test if any of the covariates are significant. That is to say that we want to test the full model versus the simple null hypothesis model
 <span class="math display">\[y_{i}=\beta_{0}+\epsilon_{i}\]</span>
 that has no covariates and only a y-intercept. So we will create a simple model</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>gala)</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>gala)</a></code></pre></div>
 <p>and calculate the appropriate Residual Sums of Squares (RSS) for each model, along with the difference in degrees of freedom between the two models.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1">RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">df.diff &lt;-<span class="st"> </span><span class="dv">5</span>               <span class="co"># complex model has 5 additional parameters</span></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">df.c &lt;-<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="dv">6</span>             <span class="co"># complex model has 24 degrees of freedom left</span></a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3">df.diff &lt;-<span class="st"> </span><span class="dv">5</span>               <span class="co"># complex model has 5 additional parameters</span></a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">df.c &lt;-<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="dv">6</span>             <span class="co"># complex model has 24 degrees of freedom left</span></a></code></pre></div>
 <p>The F-statistic for this test is therefore</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">F.stat &lt;-<span class="st">  </span>( (RSS.s <span class="op">-</span><span class="st"> </span>RSS.c) <span class="op">/</span><span class="st"> </span>df.diff ) <span class="op">/</span><span class="st"> </span>( RSS.c <span class="op">/</span><span class="st"> </span>df.c )</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">F.stat</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">F.stat &lt;-<span class="st">  </span>( (RSS.s <span class="op">-</span><span class="st"> </span>RSS.c) <span class="op">/</span><span class="st"> </span>df.diff ) <span class="op">/</span><span class="st"> </span>( RSS.c <span class="op">/</span><span class="st"> </span>df.c )</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">F.stat</a></code></pre></div>
 <pre><code>## [1] 15.69941</code></pre>
 <p>and should be compared against the F-distribution with <span class="math inline">\(5\)</span> and <span class="math inline">\(24\)</span> degrees of freedom. Because a large difference between RSS.s and RSS.c would be evidence for the alternative, larger model, the p-value for this test is <span class="math display">\[p-value=P\left(F_{5,24}\ge\mathtt{F.stat}\right)\]</span></p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">p.value &lt;-<span class="st">  </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(<span class="fl">15.699</span>, <span class="dv">5</span>, <span class="dv">24</span>)</a>
-<a class="sourceLine" id="cb32-2" data-line-number="2">p.value</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">p.value &lt;-<span class="st">  </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(<span class="fl">15.699</span>, <span class="dv">5</span>, <span class="dv">24</span>)</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">p.value</a></code></pre></div>
 <pre><code>## [1] 6.839486e-07</code></pre>
 <p>Both the F.stat and its p-value are given at the bottom of the summary table. However, I might be interested in creating an ANOVA table for this situation.</p>
 <table>
@@ -508,7 +524,7 @@ that has no covariates and only a y-intercept. So we will create a simple model<
 </tbody>
 </table>
 <p>can be obtained from R by using the <code>anova()</code> function on the two models of interest. This representation skips showing the Mean Squared calculations.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: Species ~ 1
@@ -530,38 +546,39 @@ F   &amp;=  \frac{\left[RSS_{s}-RSS_{c}\right]/1}{RSS_{c}/\left(n-p\right)}\\
 \end{aligned}\]</span>
 where <span class="math inline">\(t\)</span> has a t-distribution with <span class="math inline">\(n-p\)</span> degrees of freedom under the null hypothesis that the simple model is sufficient.</p>
 <p>We consider the case of removing the covariate <code>Area</code> from the model and will calculate our test statistic using both methods.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span> )</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4">RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span> )</a>
-<a class="sourceLine" id="cb36-5" data-line-number="5">df.d &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb36-6" data-line-number="6">df.c &lt;-<span class="st"> </span><span class="dv">30-6</span></a>
-<a class="sourceLine" id="cb36-7" data-line-number="7">F.stat &lt;-<span class="st"> </span>((RSS.s <span class="op">-</span><span class="st"> </span>RSS.c)<span class="op">/</span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>(RSS.c <span class="op">/</span><span class="st"> </span>df.c)</a>
-<a class="sourceLine" id="cb36-8" data-line-number="8">F.stat</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span> )</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span> )</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5">df.d &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb39-6" data-line-number="6">df.c &lt;-<span class="st"> </span><span class="dv">30-6</span></a>
+<a class="sourceLine" id="cb39-7" data-line-number="7">F.stat &lt;-<span class="st"> </span>((RSS.s <span class="op">-</span><span class="st"> </span>RSS.c)<span class="op">/</span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>(RSS.c <span class="op">/</span><span class="st"> </span>df.c)</a>
+<a class="sourceLine" id="cb39-8" data-line-number="8">F.stat</a></code></pre></div>
 <pre><code>## [1] 1.139792</code></pre>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(F.stat, <span class="dv">1</span>, <span class="dv">24</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(F.stat, <span class="dv">1</span>, <span class="dv">24</span>)</a></code></pre></div>
 <pre><code>## [1] 0.296318</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">sqrt</span>(F.stat)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw">sqrt</span>(F.stat)</a></code></pre></div>
 <pre><code>## [1] 1.067611</code></pre>
 <p>To calculate it using the estimated coefficient and its standard error, we must grab those values from the summary table</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">temp &lt;-<span class="st"> </span><span class="kw">summary</span>(M.c)</a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">temp<span class="op">$</span>coefficients</a></code></pre></div>
-<pre><code>##                 Estimate  Std. Error      t value     Pr(&gt;|t|)
-## (Intercept)  7.068220709 19.15419782  0.369016796 7.153508e-01
-## Area        -0.023938338  0.02242235 -1.067610554 2.963180e-01
-## Elevation    0.319464761  0.05366280  5.953187968 3.823409e-06
-## Nearest      0.009143961  1.05413595  0.008674366 9.931506e-01
-## Scruz       -0.240524230  0.21540225 -1.116628222 2.752082e-01
-## Adjacent    -0.074804832  0.01770019 -4.226216850 2.970655e-04</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">beta.area &lt;-<span class="st"> </span>temp<span class="op">$</span>coefficients[<span class="dv">2</span>,<span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">SE.beta.area &lt;-<span class="st"> </span>temp<span class="op">$</span>coefficients[<span class="dv">2</span>,<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">t &lt;-<span class="st"> </span>beta.area <span class="op">/</span><span class="st"> </span>SE.beta.area</a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">t</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">broom<span class="op">::</span><span class="kw">tidy</span>(M.c)  <span class="co"># get the coefficient table </span></a></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   term        estimate std.error statistic    p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 (Intercept)  7.07      19.2      0.369   0.715     
+## 2 Area        -0.0239     0.0224  -1.07    0.296     
+## 3 Elevation    0.319      0.0537   5.95    0.00000382
+## 4 Nearest      0.00914    1.05     0.00867 0.993     
+## 5 Scruz       -0.241      0.215   -1.12    0.275     
+## 6 Adjacent    -0.0748     0.0177  -4.23    0.000297</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">beta.area    &lt;-<span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>(M.c)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>()   <span class="co"># pull turns it into a scalar</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">SE.beta.area &lt;-<span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>(M.c)[<span class="dv">2</span>,<span class="dv">3</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>()</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">t &lt;-<span class="st"> </span>beta.area <span class="op">/</span><span class="st"> </span>SE.beta.area</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">t</a></code></pre></div>
 <pre><code>## [1] -1.067611</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(t, <span class="dv">24</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(t, <span class="dv">24</span>)</a></code></pre></div>
 <pre><code>## [1] 0.296318</code></pre>
 <p>All that hand calculation is tedious, so we can again use the <code>anova()</code>() command to compare the two models.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: Species ~ Elevation + Nearest + Scruz + Adjacent
@@ -574,9 +591,9 @@ where <span class="math inline">\(t\)</span> has a t-distribution with <span cla
 <h3><span class="header-section-number">3.1.4</span> Testing a Subset of Covariates</h3>
 <p>Often a researcher will want to remove a subset of covariates from the model. In the Galapagos example, Area, Nearest, and Scruz all have non-significant p-values and would be removed when comparing the full model to the model without that one covariate. While each of them might be non-significant, is the sum of all three significant?</p>
 <p>Because the individual <span class="math inline">\(\hat{\beta}_{j}\)</span> values are not independent, then we cannot claim that the subset is not statistically significant just because each variable in turn was insignificant. Instead we again create simple and complex models in the same fashion as we have previously done.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb50-2" data-line-number="2">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st">                   </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2">M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st">                   </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="kw">anova</span>(M.s, M.c)</a></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: Species ~ Elevation + Adjacent
@@ -595,56 +612,43 @@ and it is easy to calculate the estimate of <span class="math inline">\(\sigma^{
 where <span class="math inline">\(RSS\)</span> is the residual sum of squares and <span class="math inline">\(df\)</span> is the degrees of freedom <span class="math inline">\(n-p\)</span> where <span class="math inline">\(p\)</span> is the number of <span class="math inline">\(\beta_{j}\)</span> parameters. Therefore the standard error of the <span class="math inline">\(\hat{\beta}_{j}\)</span> values is
 <span class="math display">\[SE\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}\]</span></p>
 <p>We can see this calculation in the summary regression table. We again consider the Galapagos Island data set. First we must create the design matrix</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1">y &lt;-<span class="st"> </span>gala<span class="op">$</span>Species</a>
-<a class="sourceLine" id="cb52-2" data-line-number="2">X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">30</span>), gala<span class="op">$</span>Elevation, gala<span class="op">$</span>Adjacent )</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">y &lt;-<span class="st"> </span>gala<span class="op">$</span>Species</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">30</span>), gala<span class="op">$</span>Elevation, gala<span class="op">$</span>Adjacent )</a></code></pre></div>
 <p>And then create <span class="math inline">\(\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\)</span></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(  <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</a>
-<a class="sourceLine" id="cb53-2" data-line-number="2">XtXinv</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(  <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2">XtXinv</a></code></pre></div>
 <pre><code>##               [,1]          [,2]          [,3]
 ## [1,]  6.094829e-02 -8.164025e-05  9.312123e-06
 ## [2,] -8.164025e-05  2.723835e-07 -7.126027e-08
 ## [3,]  9.312123e-06 -7.126027e-08  6.478031e-08</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1"><span class="kw">diag</span>(XtXinv)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1"><span class="kw">diag</span>(XtXinv)</a></code></pre></div>
 <pre><code>## [1] 6.094829e-02 2.723835e-07 6.478031e-08</code></pre>
 <p>Eventually we will need <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span></p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1">beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2">beta.hat</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y</a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">beta.hat</a></code></pre></div>
 <pre><code>##            [,1]
 ## [1,]  1.4328722
 ## [2,]  0.2765683
 ## [3,] -0.0688855</code></pre>
 <p>And now find the estimate <span class="math inline">\(\hat{\sigma}\)</span></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">H &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
-<a class="sourceLine" id="cb59-2" data-line-number="2">y.hat &lt;-<span class="st"> </span>H <span class="op">%*%</span><span class="st"> </span>y</a>
-<a class="sourceLine" id="cb59-3" data-line-number="3">RSS &lt;-<span class="st"> </span><span class="kw">sum</span>( (y<span class="op">-</span>y.hat)<span class="op">^</span><span class="dv">2</span> )</a>
-<a class="sourceLine" id="cb59-4" data-line-number="4">sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  RSS<span class="op">/</span>(<span class="dv">30-3</span>) )</a>
-<a class="sourceLine" id="cb59-5" data-line-number="5">sigma.hat</a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1">H &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</a>
+<a class="sourceLine" id="cb62-2" data-line-number="2">y.hat &lt;-<span class="st"> </span>H <span class="op">%*%</span><span class="st"> </span>y</a>
+<a class="sourceLine" id="cb62-3" data-line-number="3">RSS &lt;-<span class="st"> </span><span class="kw">sum</span>( (y<span class="op">-</span>y.hat)<span class="op">^</span><span class="dv">2</span> )</a>
+<a class="sourceLine" id="cb62-4" data-line-number="4">sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  RSS<span class="op">/</span>(<span class="dv">30-3</span>) )</a>
+<a class="sourceLine" id="cb62-5" data-line-number="5">sigma.hat</a></code></pre></div>
 <pre><code>## [1] 60.85898</code></pre>
 <p>The standard errors of <span class="math inline">\(\hat{\beta}\)</span> is thus</p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="kw">sqrt</span>( sigma.hat<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(XtXinv) )</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">sqrt</span>( sigma.hat<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(XtXinv) )</a></code></pre></div>
 <pre><code>## [1] 15.02468680  0.03176253  0.01548981</code></pre>
 <p>We can double check that this is what R calculates in the summary table</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = Species ~ Elevation + Adjacent, data = gala)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -103.41  -34.33  -11.43   22.57  203.65 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  1.43287   15.02469   0.095 0.924727    
-## Elevation    0.27657    0.03176   8.707 2.53e-09 ***
-## Adjacent    -0.06889    0.01549  -4.447 0.000134 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 60.86 on 27 degrees of freedom
-## Multiple R-squared:  0.7376, Adjusted R-squared:  0.7181 
-## F-statistic: 37.94 on 2 and 27 DF,  p-value: 1.434e-08</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</a>
+<a class="sourceLine" id="cb66-2" data-line-number="2">broom<span class="op">::</span><span class="kw">tidy</span>(model)</a></code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   term        estimate std.error statistic       p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+## 1 (Intercept)   1.43     15.0       0.0954 0.925        
+## 2 Elevation     0.277     0.0318    8.71   0.00000000253
+## 3 Adjacent     -0.0689    0.0155   -4.45   0.000134</code></pre>
 <p>It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is
 <span class="math display">\[Estimate\;\pm Critical\,Value\;\cdot\;StandardError\left(Estimate\right)\]</span>
 For any specific <span class="math inline">\(\beta_{j}\)</span> we will have
@@ -652,19 +656,22 @@ For any specific <span class="math inline">\(\beta_{j}\)</span> we will have
 where <span class="math inline">\(\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}\)</span> is the <span class="math inline">\([j,j]\)</span> element of the variance/covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
 <p>To demonstrate this, we return to the Galapagos Island data set.</p>
 <p>Finally we can calculate confidence intervals for our three <span class="math inline">\(\beta_{j}\)</span> values</p>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">lower &lt;-<span class="st"> </span>beta.hat <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</a>
-<a class="sourceLine" id="cb65-2" data-line-number="2">upper &lt;-<span class="st"> </span>beta.hat <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</a>
-<a class="sourceLine" id="cb65-3" data-line-number="3"><span class="kw">cbind</span>(lower, upper)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">lower &lt;-<span class="st"> </span>beta.hat <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">upper &lt;-<span class="st"> </span>beta.hat <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="kw">cbind</span>(lower, upper)</a></code></pre></div>
 <pre><code>##            [,1]        [,2]
 ## [1,] -29.395239 32.26098305
 ## [2,]   0.211397  0.34173962
 ## [3,]  -0.100668 -0.03710303</code></pre>
-<p>That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the <code>confint()</code>() command.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1"><span class="kw">confint</span>(model)</a></code></pre></div>
-<pre><code>##                  2.5 %      97.5 %
-## (Intercept) -29.395239 32.26098305
-## Elevation     0.211397  0.34173962
-## Adjacent     -0.100668 -0.03710303</code></pre>
+<p>That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the <code>confint()</code>() command or the <code>broom::tidy()</code> command.</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1"><span class="co"># confint(model)</span></a>
+<a class="sourceLine" id="cb70-2" data-line-number="2">broom<span class="op">::</span><span class="kw">tidy</span>(model, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">conf.level=</span>.<span class="dv">95</span>)</a></code></pre></div>
+<pre><code>## # A tibble: 3 x 7
+##   term        estimate std.error statistic       p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   1.43     15.0       0.0954 0.925          -29.4     32.3   
+## 2 Elevation     0.277     0.0318    8.71   0.00000000253    0.211    0.342 
+## 3 Adjacent     -0.0689    0.0155   -4.45   0.000134        -0.101   -0.0371</code></pre>
 </div>
 <div id="prediction-and-confidence-intervals-for-a-response" class="section level2">
 <h2><span class="header-section-number">3.3</span> Prediction and Confidence Intervals for a response</h2>
@@ -687,27 +694,27 @@ and a confidence interval for the mean response for the given <span class="math 
 <span class="math display">\[\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}\]</span></p>
 <p>Again using the Galapagos Island data set as an example, we might be interested in predicting the number of tortoise species of an island with highest point <span class="math inline">\(400\)</span> meters and nearest adjacent island with area <span class="math inline">\(200 km^{2}\)</span>. We then have <span class="math display">\[\boldsymbol{x}_{0}^{T} = \left[\begin{array}{ccc}1  &amp;  400  &amp;  200\end{array}\right]\]</span>
 and we can calculate</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">400</span>, <span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2">y0 &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span>beta.hat</a>
-<a class="sourceLine" id="cb69-3" data-line-number="3">y0</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">400</span>, <span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">y0 &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span>beta.hat</a>
+<a class="sourceLine" id="cb72-3" data-line-number="3">y0</a></code></pre></div>
 <pre><code>##          [,1]
 ## [1,] 98.28309</code></pre>
 <p>and then calculate <span class="math inline">\(\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\)</span></p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">xt.XtXinv.x &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X ) <span class="op">%*%</span><span class="st"> </span>x0</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">xt.XtXinv.x &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X ) <span class="op">%*%</span><span class="st"> </span>x0</a></code></pre></div>
 <p>Thus the prediction interval will be</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x),</a>
-<a class="sourceLine" id="cb72-2" data-line-number="2">  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x))</a></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x),</a>
+<a class="sourceLine" id="cb75-2" data-line-number="2">  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x))</a></code></pre></div>
 <pre><code>## [1] -28.70241 225.26858</code></pre>
 <p>while a confidence interval for the expectation is</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x),</a>
-<a class="sourceLine" id="cb74-2" data-line-number="2">  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x))</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1"><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x),</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2">  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x))</a></code></pre></div>
 <pre><code>## [1]  75.21317 121.35301</code></pre>
 <p>These prediction and confidence intervals can be calculated in R using the predict() function</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Elevation=</span><span class="dv">400</span>, <span class="dt">Adjacent=</span><span class="dv">200</span>)</a>
-<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;prediction&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Elevation=</span><span class="dv">400</span>, <span class="dt">Adjacent=</span><span class="dv">200</span>)</a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;prediction&#39;</span>)</a></code></pre></div>
 <pre><code>##        fit       lwr      upr
 ## 1 98.28309 -28.70241 225.2686</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</a></code></pre></div>
 <pre><code>##        fit      lwr     upr
 ## 1 98.28309 75.21317 121.353</code></pre>
 </div>
@@ -760,23 +767,23 @@ and we can calculate</p>
 </tbody>
 </table>
 <p>We first look at the data and observe the expected relationship between length and weight.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></a>
-<a class="sourceLine" id="cb80-2" data-line-number="2">file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></a>
-<a class="sourceLine" id="cb80-3" data-line-number="3">fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</a>
-<a class="sourceLine" id="cb80-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb80-5" data-line-number="5"><span class="co">### generate a pairs plot in a couple of different ways...</span></a>
-<a class="sourceLine" id="cb80-6" data-line-number="6"><span class="co"># pairs(fish)</span></a>
-<a class="sourceLine" id="cb80-7" data-line-number="7"><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></a>
-<a class="sourceLine" id="cb80-8" data-line-number="8"><span class="co"># pairs( Weight ~ ., data=fish )</span></a>
-<a class="sourceLine" id="cb80-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb80-10" data-line-number="10">fish <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb80-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb80-12" data-line-number="12"><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</a>
-<a class="sourceLine" id="cb80-13" data-line-number="13">                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></a>
+<a class="sourceLine" id="cb83-2" data-line-number="2">file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></a>
+<a class="sourceLine" id="cb83-3" data-line-number="3">fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</a>
+<a class="sourceLine" id="cb83-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb83-5" data-line-number="5"><span class="co">### generate a pairs plot in a couple of different ways...</span></a>
+<a class="sourceLine" id="cb83-6" data-line-number="6"><span class="co"># pairs(fish)</span></a>
+<a class="sourceLine" id="cb83-7" data-line-number="7"><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></a>
+<a class="sourceLine" id="cb83-8" data-line-number="8"><span class="co"># pairs( Weight ~ ., data=fish )</span></a>
+<a class="sourceLine" id="cb83-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb83-10" data-line-number="10">fish <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb83-11" data-line-number="11"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb83-12" data-line-number="12"><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</a>
+<a class="sourceLine" id="cb83-13" data-line-number="13">                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</a>
-<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</a>
+<a class="sourceLine" id="cb84-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Height + 
@@ -803,8 +810,8 @@ and we can calculate</p>
 ## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
 <p>If we remove the highly correlated covariates then we see a much better behaved model</p>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</a>
-<a class="sourceLine" id="cb83-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
@@ -834,8 +841,8 @@ and we can calculate</p>
 <h2><span class="header-section-number">3.5</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li><p>The dataset prostate in package <code>faraway</code> has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1"><span class="kw">data</span>(prostate, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="kw">head</span>(prostate)</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">data</span>(prostate, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="kw">head</span>(prostate)</a></code></pre></div>
 <p>It is possible to get information about the data set using the command <code>help(prostate)</code>. Fit a model with <code>lpsa</code> as the response and all the other variables as predictors.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Compute <span class="math inline">\(90\%\)</span> and <span class="math inline">\(95\%\)</span> confidence intervals for the parameter associated with <code>age</code>. Using just these intervals, what could we deduced about the p-value for age in the regression summary. <em>Hint: look at the help for the function <code>confint()</code>. You’ll find the <code>level</code> option to be helpful.</em></p></li>
