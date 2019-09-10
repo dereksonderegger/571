@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-09-05" />
+<meta name="date" content="2019-09-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -275,6 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>12.7</b> ROC Curves</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a></li>
 </ul>
 
       </nav>
@@ -849,6 +850,24 @@ and we can calculate</p>
 <li><p>Fit the model with <code>salary</code> and <code>ratio</code> (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?</p></li>
 <li><p>Now add <code>takers</code> to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that <span class="math inline">\(\beta_{takers}=0\)</span> using the summary table.</p></li>
 <li><p>Discuss why <code>ratio</code> was not significant in the model in part (e) but was significant in part (f). <em>Hint: Look at the Residual Standard Error <span class="math inline">\(\hat{\sigma}\)</span> in each model and argue that each t-statistic is some variant of a “signal-to-noise” ratio and that the “noise” part is reduced in the second model.</em></p></li>
+</ol></li>
+<li>In this exercise, we will show that adding a covariate to the model that is just random noise will decrease the model Sum of Squared Error (SSE).
+<ol style="list-style-type: lower-alpha">
+<li>Fit a linear model to the <code>trees</code> dataset that is always preloaded in R. Recall that this dataset has observations from 31 cherry trees with variables tree height, girth and volume of lumber produced. Fit Volume ~ Height.</li>
+<li>From this simple regression model, obtain the SSE. <em>Hint: you can calculate this yourself, pull it from the broom::glance() output where it is entitled <code>deviance</code> or extract it from the output of the <code>anova()</code> command.</em></li>
+<li><p>Add a new covariate to the model named <code>Noise</code> that is generated at random from a uniform distribution using the following code:</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Noise =</span> <span class="kw">runif</span>( <span class="kw">n</span>() ) )</a></code></pre></div></li>
+<li>Fit a linear model that includes this new <code>Noise</code> variable in addition to the <code>Height</code>. Calculate the SSE error in the same manner as before. Does it decrease or increase. Quantify how much it has changed.</li>
+<li><p>Repeat parts (c) and (d) several times. Comment on the trend in change in SSE. <em>Hint: This isn’t strictly necessary but is how I would go about answering this question. Wrap parts (c) and (d) in a <code>for</code> loop and generate a data.frame of a couple hundred runs. Then make a density plot of the SSE values for the complex models and add a vertical line on the graph of the simple model SSE.</em></p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb87-2" data-line-number="2"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2000</span> ){</a>
+<a class="sourceLine" id="cb87-3" data-line-number="3">  <span class="co"># Do stuff</span></a>
+<a class="sourceLine" id="cb87-4" data-line-number="4">  results &lt;-<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>( <span class="kw">glance</span>(model) ) </a>
+<a class="sourceLine" id="cb87-5" data-line-number="5">}</a>
+<a class="sourceLine" id="cb87-6" data-line-number="6"><span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x=</span>deviance)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_vline</span>( <span class="dt">xintercept =</span> simple.SSE )</a></code></pre></div></li>
 </ol></li>
 </ol>
 

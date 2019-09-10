@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-09-05" />
+<meta name="date" content="2019-09-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -275,6 +275,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>12.7</b> ROC Curves</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a></li>
 </ul>
 
       </nav>
@@ -294,10 +295,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="one-way-anova" class="section level1">
 <h1><span class="header-section-number">Chapter 8</span> One way ANOVA</h1>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb269-1" data-line-number="1"><span class="co"># Load the libraries I&#39;ll use</span></a>
-<a class="sourceLine" id="cb269-2" data-line-number="2"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2</span></a>
-<a class="sourceLine" id="cb269-3" data-line-number="3"><span class="kw">library</span>(emmeans)     <span class="co"># all the pairwise contrasts stuff</span></a>
-<a class="sourceLine" id="cb269-4" data-line-number="4"><span class="kw">library</span>(ggfortify)   <span class="co"># for the autoplot function on lm() objects</span></a></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1"><span class="co"># Load the libraries I&#39;ll use</span></a>
+<a class="sourceLine" id="cb271-2" data-line-number="2"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2</span></a>
+<a class="sourceLine" id="cb271-3" data-line-number="3"><span class="kw">library</span>(emmeans)     <span class="co"># all the pairwise contrasts stuff</span></a>
+<a class="sourceLine" id="cb271-4" data-line-number="4"><span class="kw">library</span>(ggfortify)   <span class="co"># for the autoplot function on lm() objects</span></a></code></pre></div>
 <p>Given a categorical covariate (which I will call a factor) with <span class="math inline">\(I\)</span> levels, we are interested in fitting the model
 <span class="math display">\[y_{ij}=\mu+\tau_{i}+\epsilon_{ij}\]</span>
 where <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)\)</span>, <span class="math inline">\(\mu\)</span> is the overall mean, and <span class="math inline">\(\tau_{i}\)</span> are the offset of factor level <span class="math inline">\(i\)</span> from <span class="math inline">\(\mu\)</span>. Unfortunately this model is not identifiable because I could add a constant (say <span class="math inline">\(5\)</span>) to <span class="math inline">\(\mu\)</span> and subtract that same constant from each of the <span class="math inline">\(\tau_{i}\)</span> values and the group mean <span class="math inline">\(\mu+\tau_{i}\)</span> would not change. There are two easy restrictions we could make to make the model identifiable:</p>
@@ -313,14 +314,14 @@ H_{a}:\;\;y_{ij}    &amp;=  \mu+\alpha_{i}+\epsilon_{ij}
 <div id="an-example" class="section level2">
 <h2><span class="header-section-number">8.1</span> An Example</h2>
 <p>We look at a dataset that comes from the study of blood coagulation times: 24 animals were randomly assigned to four different diets and the samples were taken in a random order. The diets are denoted as <span class="math inline">\(A\)</span>,<span class="math inline">\(B\)</span>,<span class="math inline">\(C\)</span>,and <span class="math inline">\(D\)</span> and the response of interest is the amount of time it takes for the blood to coagulate.</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb270-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;coagulation&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb270-2" data-line-number="2"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb270-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb270-4" data-line-number="4"><span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> )</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb272-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;coagulation&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb272-2" data-line-number="2"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb272-3" data-line-number="3"><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb272-4" data-line-number="4"><span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> )</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
 <p>Just by looking at the graph, we expect to see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar while <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are different from <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> and possibly from each other, too. We first fit the offset model.</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb271-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)</a>
-<a class="sourceLine" id="cb271-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)</a>
+<a class="sourceLine" id="cb273-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = coag ~ diet, data = coagulation)
@@ -356,20 +357,20 @@ where there really are only <span class="math inline">\(4\)</span> parameters th
 <div id="diagnostics" class="section level2">
 <h2><span class="header-section-number">8.3</span> Diagnostics</h2>
 <p>It is still important to check the diagnostics plots, but certain diagnostic plots will be useless. In particular, we need to be concerned about constant variance among the groups and normality of the residuals.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb273-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)</a>
-<a class="sourceLine" id="cb273-2" data-line-number="2"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">2</span>)  <span class="co">#  QQ plot</span></a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
-<p>The residual plots however, might need a little bit of extra work, because there are only four possible predicted values (actually <span class="math inline">\(3\)</span> because group <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> have the same predicted values). Note that we actually have <span class="math inline">\(n=24\)</span> observations, but I can only see 16 of them.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb274-1" data-line-number="1"><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co">#  Residals vs fitted</span></a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-162-1.png" width="672" /></p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>diet))</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-162-2.png" width="672" /></p>
-<p>To remedy this, we will plot the residuals vs fitted by hand, and add a little bit of random noise to the fitted value, just so that we don’t have points stack up on top of each other. Lets also add a different shape for each diet.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1">coagulation<span class="op">$</span>fitted &lt;-<span class="st"> </span><span class="kw">predict</span>(m)</a>
-<a class="sourceLine" id="cb276-2" data-line-number="2">coagulation<span class="op">$</span>resid &lt;-<span class="st"> </span><span class="kw">resid</span>(m)</a>
-<a class="sourceLine" id="cb276-3" data-line-number="3"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>fitted, <span class="dt">y=</span>resid, <span class="dt">shape=</span>diet, <span class="dt">color=</span>diet)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb276-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_jitter</span>(<span class="dt">w=</span><span class="fl">0.3</span>, <span class="dt">h=</span><span class="dv">0</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb275-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)</a>
+<a class="sourceLine" id="cb275-2" data-line-number="2"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">2</span>)  <span class="co">#  QQ plot</span></a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-163-1.png" width="672" /></p>
+<p>The residual plots however, might need a little bit of extra work, because there are only four possible predicted values (actually <span class="math inline">\(3\)</span> because group <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> have the same predicted values). Note that we actually have <span class="math inline">\(n=24\)</span> observations, but I can only see 16 of them.</p>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb276-1" data-line-number="1"><span class="kw">plot</span>(m, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co">#  Residals vs fitted</span></a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-164-1.png" width="672" /></p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1"><span class="kw">autoplot</span>(m, <span class="dt">which=</span><span class="dv">1</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>diet))</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-164-2.png" width="672" /></p>
+<p>To remedy this, we will plot the residuals vs fitted by hand, and add a little bit of random noise to the fitted value, just so that we don’t have points stack up on top of each other. Lets also add a different shape for each diet.</p>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb278-1" data-line-number="1">coagulation<span class="op">$</span>fitted &lt;-<span class="st"> </span><span class="kw">predict</span>(m)</a>
+<a class="sourceLine" id="cb278-2" data-line-number="2">coagulation<span class="op">$</span>resid &lt;-<span class="st"> </span><span class="kw">resid</span>(m)</a>
+<a class="sourceLine" id="cb278-3" data-line-number="3"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>fitted, <span class="dt">y=</span>resid, <span class="dt">shape=</span>diet, <span class="dt">color=</span>diet)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb278-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">position=</span><span class="kw">position_jitter</span>(<span class="dt">w=</span><span class="fl">0.3</span>, <span class="dt">h=</span><span class="dv">0</span>))</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-165-1.png" width="672" /></p>
 </div>
 <div id="pairwise-comparisons" class="section level2">
 <h2><span class="header-section-number">8.4</span> Pairwise Comparisons</h2>
@@ -378,9 +379,9 @@ where there really are only <span class="math inline">\(4\)</span> parameters th
 <p>Unfortunately this interval does not take into account the multiple comparisons issue (i.e. we are making <span class="math inline">\(I(I-1)/2\)</span> contrasts if our factor has <span class="math inline">\(I\)</span> levels). To account for this, we will not use a quantile from a t-distribution, but from Tukey’s studentized range distribution <span class="math inline">\(q_{n,n-I}\)</span> divided by <span class="math inline">\(\sqrt{2}\)</span>. The intervals we will use are:
 <span class="math display">\[\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm\frac{q_{n,n-I}^{1-\alpha/2}}{\sqrt{2}}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}\]</span></p>
 <p>There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the <code>emmeans</code> package. This package computes the above intervals which are commonly known as Tukey’s Honestly Significant Differences.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb277-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)   <span class="co"># use the lm() function as usual</span></a>
-<a class="sourceLine" id="cb277-2" data-line-number="2"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>diet) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb277-3" data-line-number="3"><span class="st">  </span><span class="kw">summary</span>(<span class="dt">level=</span><span class="fl">0.90</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)   <span class="co"># use the lm() function as usual</span></a>
+<a class="sourceLine" id="cb279-2" data-line-number="2"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>diet) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb279-3" data-line-number="3"><span class="st">  </span><span class="kw">summary</span>(<span class="dt">level=</span><span class="fl">0.90</span>)</a></code></pre></div>
 <pre><code>## $emmeans
 ##  diet emmean    SE df lower.CL upper.CL
 ##  A        61 1.183 20     59.0     63.0
@@ -402,21 +403,21 @@ where there really are only <span class="math inline">\(4\)</span> parameters th
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <p>Here we see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar to each other, but different than <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and that <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not statistically different from each other at the <span class="math inline">\(0.10\)</span> level.</p>
 <p>Often I want to produce the “Compact Letter Display” which identifies which groups are significantly different.</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" data-line-number="1">LetterData &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span><span class="st"> </span>diet) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># cld() will freak out if you have pairwise here...</span></a>
-<a class="sourceLine" id="cb279-2" data-line-number="2"><span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb279-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y =</span> <span class="dv">73</span> )   <span class="co"># height to place the letters at. </span></a>
-<a class="sourceLine" id="cb279-4" data-line-number="4">LetterData</a></code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1">LetterData &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span><span class="st"> </span>diet) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># cld() will freak out if you have pairwise here...</span></a>
+<a class="sourceLine" id="cb281-2" data-line-number="2"><span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb281-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y =</span> <span class="dv">73</span> )   <span class="co"># height to place the letters at. </span></a>
+<a class="sourceLine" id="cb281-4" data-line-number="4">LetterData</a></code></pre></div>
 <pre><code>##   diet emmean        SE df lower.CL upper.CL .group  y
 ## 1    A     61 1.1832160 20 58.53185 63.46815     a  73
 ## 2    D     61 0.8366600 20 59.25476 62.74524     a  73
 ## 3    B     66 0.9660918 20 63.98477 68.01523      b 73
 ## 4    C     68 0.9660918 20 65.98477 70.01523      b 73</code></pre>
 <p>I can easily add these to my boxplot with the following:</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb281-1" data-line-number="1"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb281-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb281-3" data-line-number="3"><span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb281-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>LetterData, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>y, <span class="dt">label=</span>.group), <span class="dt">size=</span><span class="dv">10</span> ) </a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-166-1.png" width="672" /></p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb283-1" data-line-number="1"><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb283-2" data-line-number="2"><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb283-3" data-line-number="3"><span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb283-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>LetterData, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>y, <span class="dt">label=</span>.group), <span class="dt">size=</span><span class="dv">10</span> ) </a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-168-1.png" width="672" /></p>
 </div>
 <div id="exercises-7" class="section level2">
 <h2><span class="header-section-number">8.5</span> Exercises</h2>

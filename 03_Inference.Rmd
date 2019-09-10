@@ -425,3 +425,24 @@ In general, you should be very careful with the interpretation of the regression
     
     g) Discuss why `ratio` was not significant in the model in part (e) but was significant in part (f). *Hint: Look at the Residual Standard Error $\hat{\sigma}$ in each model and argue that each t-statistic is some variant of a "signal-to-noise" ratio and that the "noise" part is reduced in the second model.* 
     
+4. In this exercise, we will show that adding a covariate to the model that is just random noise will decrease the model Sum of Squared Error (SSE). 
+    a) Fit a linear model to the `trees` dataset that is always preloaded in R. Recall that this dataset has observations from 31 cherry trees with variables tree height, girth and volume of lumber produced. Fit Volume ~ Height.
+    b) From this simple regression model, obtain the SSE. *Hint: you can calculate this yourself, pull it from the broom::glance() output where it is entitled `deviance` or extract it from the output of the `anova()` command.*
+    c) Add a new covariate to the model named `Noise` that is generated at random from a uniform distribution using the following code:
+        ```{r, eval=FALSE}
+        trees <- trees %>%
+          mutate( Noise = runif( n() ) )
+        ```
+    d) Fit a linear model that includes this new `Noise` variable in addition to the `Height`. Calculate the SSE error in the same manner as before. Does it decrease or increase. Quantify how much it has changed.
+    e) Repeat parts (c) and (d) several times. Comment on the trend in change in SSE. *Hint: This isn't strictly necessary but is how I would go about answering this question. Wrap parts (c) and (d) in a `for` loop and generate a data.frame of a couple hundred runs. Then make a density plot of the SSE values for the complex models and add a vertical line on the graph of the simple model SSE.*
+        ```{r, eval=FALSE}
+        results <- NULL
+        for( i in 1:2000 ){
+          # Do stuff
+          results <- results %>% rbind( glance(model) ) 
+        }
+        ggplot(results, aes(x=deviance)) +
+          geom_density() +
+          geom_vline( xintercept = simple.SSE )
+        ```    
+        
