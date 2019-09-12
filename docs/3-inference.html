@@ -275,7 +275,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>12.7</b> ROC Curves</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
+<li class="chapter" data-level="12.9" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>12.9</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="12.9.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>12.9.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -295,8 +299,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="inference" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Inference</h1>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">library</span>(tidymodels) <span class="co"># Grab model results as data frames</span></a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(tidymodels) <span class="co"># Grab model results as data frames</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></a></code></pre></div>
 <div id="f-tests" class="section level2">
 <h2><span class="header-section-number">3.1</span> F-tests</h2>
 <p>We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.</p>
@@ -831,7 +835,7 @@ and we can calculate</p>
 <a class="sourceLine" id="cb85-2" data-line-number="2"><span class="kw">head</span>(prostate)</a></code></pre></div>
 <p>It is possible to get information about the data set using the command <code>help(prostate)</code>. Fit a model with <code>lpsa</code> as the response and all the other variables as predictors.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Compute <span class="math inline">\(90\%\)</span> and <span class="math inline">\(95\%\)</span> confidence intervals for the parameter associated with <code>age</code>. Using just these intervals, what could we deduced about the p-value for age in the regression summary. <em>Hint: look at the help for the function <code>confint()</code>. You’ll find the <code>level</code> option to be helpful.</em></p></li>
+<li><p>Compute <span class="math inline">\(90\%\)</span> and <span class="math inline">\(95\%\)</span> confidence intervals for the parameter associated with <code>age</code>. Using just these intervals, what could we deduced about the p-value for age in the regression summary. <em>Hint: look at the help for the function <code>confint()</code>. You’ll find the <code>level</code> option to be helpful. Alternatively use the <code>broom::tidy()</code> function with the <code>conf.int=TRUE</code> option and also use the <code>level=</code> option as well.</em></p></li>
 <li><p>Remove all the predictors that are not significant at the <span class="math inline">\(5\%\)</span> level. Test this model against the original model. Which is preferred?</p></li>
 </ol></li>
 <li><p>Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the <code>cheddar</code> dataset from the <code>faraway</code> package (import it the same way you did in problem one, but now use <code>cheddar</code>) to answer the following:</p>

@@ -16,9 +16,10 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-library(tidyverse)  # ggplot2, dplyr, tidyr
+library(tidyverse)   # ggplot2, dplyr, tidyr
+library(tidymodels)  # for broom functions
 library(emmeans)    # for emmeans()
-library(multcomp)   # for glht() 
+# library(multcomp)   # for glht()  - multcomp fights with dplyr, :(
 ```
 
 
@@ -37,7 +38,7 @@ A contrast is a linear combinations of elements of $\boldsymbol{\hat{\beta}}$, w
 
 In the ANOVA case with $k=3$ where we have the offset representation, I might be interested in the mean of group 2, which could be written as 
 $$
-\mu+\tau_{2}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{ccc}
+\hat{\mu}_2 = \hat{\mu}+\hat{\tau}_{2}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{ccc}
 1 & 1 & 0\end{array}\right]}}\cdot\underset{\hat{\boldsymbol{\beta}}}{\underbrace{\left[\begin{array}{c}
 \hat{\mu}\\
 \hat{\tau_{2}}\\
@@ -47,7 +48,7 @@ $$
 
 Similarly in the simple regression case, I will be interested in the height of the regression line at $x_0$. This height can be written as  
 $$
-\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{cc}
+\hat{y}_0 =\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{cc}
 1 & x_{0}\end{array}\right]}}\cdot\underset{\hat{\boldsymbol{\beta}}}{\underbrace{\left[\begin{array}{c}
 \hat{\beta}_{0}\\
 \hat{\beta}_{1}
@@ -80,28 +81,32 @@ $$
 
 Recall the hostility example which was an ANOVA with three groups with the data
 
- Method  |	Test Scores
----------|-------------------------
-  1	     | 96	79	91	85	83	91	82	87	
-  2	     | 77	76	74	73	78	71	80		
-  3	     | 66	73	69	66	77	73	71	70	74
+| Method   |	Test Scores                       |
+|:---------|:-----------------------------------|
+|  1	     | 96	79	91	85	83	91	82	87	    | 
+|  2	     | 77	76	74	73	78	71	80		      |
+|  3	     | 66	73	69	66	77	73	71	70	74  |
 
 We have analyzed this data using both the cell means model and the offset and we will demonstrate how to calculate the group means from the offset representation. Thus we are interested in estimating $\mu+\tau_{2}$ and $\mu+\tau_{3}$.  I am also interested in estimating the difference between treatment 2 and 3 and will therefore be interested in estimating $\tau_{2} - \tau_{3}$.
 
 ```{r}
-y <- c(96,79,91,85,83,91,82,87,
-       77,76,74,73,78,71,80,
-       66,73,69,66,77,73,71,70,74)
-groups <- factor(c( rep('Group1',8), rep('Group2',7),rep('Group3',9) ))
+data <- data.frame(
+  y =  c(96,79,91,85,83,91,82,87,
+         77,76,74,73,78,71,80,
+         66,73,69,66,77,73,71,70,74),
+  group = factor(c( rep('Group1',8), rep('Group2',7),rep('Group3',9) ))
+)
+
+ggplot(data, aes(x=group, y=y)) + geom_boxplot()
 ```
 
 We can fit the offset model and obtain the design matrix and estimate of $\hat{\sigma}$ via the following code. 
 ```{r}
-m <- lm(y ~ groups)            # Fit the ANOVA model (offset representation)
-coef(m)                        # Show me beta.hat
-X <- model.matrix(m)           # obtains the design matrix
-sigma.hat <- summary(m)$sigma  # create the summary table and grab sigma.hat 
-beta.hat <- coef(m)
+m <- lm(y ~ group, data=data)          # Fit the ANOVA model (offset representation)
+tidy(m)                                # Show me beta.hat
+X <- model.matrix(m)                   # obtains the design matrix
+sigma.hat <- glance(m) %>% pull(sigma) # grab sigma.hat 
+beta.hat <- tidy(m) %>% pull(estimate) 
 XtX.inv <- solve( t(X) %*% X )
 ```
 
@@ -110,15 +115,15 @@ Now we calculate
 contr <- c(1,1,0)  # define my contrast
 ctb <- t(contr) %*% beta.hat
 std.err <- sigma.hat * sqrt( t(contr) %*% XtX.inv %*% contr )
-ctb
-std.err
+
+data.frame(Estimate=ctb, StdErr=std.err)
 ```
 
 
 and notice this is the exact same estimate and standard error we got for group two when we fit the cell means model.
 ```{r}
-CellMeansModel <- lm(y ~ groups - 1)
-summary(CellMeansModel)$coefficients
+CellMeansModel <- lm(y ~ group - 1, data=data)
+CellMeansModel %>% tidy()
 ```
 
 
@@ -131,22 +136,16 @@ Instead of us doing all the matrix calculations ourselves, all we really need is
 We will again use the Hostility data set and demonstrate how to calculate the point estimates, standard errors and confidence intervals for the group means given a model fit using the offset representation. 
 
 ```{r}
-y <- c(96,79,91,85,83,91,82,87,
-       77,76,74,73,78,71,80,
-       66,73,69,66,77,73,71,70,74)
-groups <- factor(c( rep('Group1',8), rep('Group2',7),rep('Group3',9) ))
-m <- lm(y ~ groups)
-summary(m)$coefficients
+m <- lm(y ~ group, data=data)
+m %>% tidy()
 ```
 
 We will now define a row vector (and it needs to be a matrix or else `glht()` will throw an error. First we note that the simple contrast $\boldsymbol{c}^{T}=\left[1\;0\;0\right]$ just grabs the first coefficient and gives us the same estimate and standard error as the summary did.
 ```{r, message=FALSE, warning=FALSE}
-library(multcomp)
-contr <- rbind("Intercept"=c(1,0,0)) # 1x3 matrix with row named "Intercept"
-test <- glht(m, linfct=contr)        # the linear function to be tested is contr
+contr <- rbind("Intercept"=c(1,0,0))      # 1x3 matrix with row named "Intercept"
+test <- multcomp::glht(m, linfct=contr)   # the linear function to be tested is contr
 summary(test)
 ```
-
 
 Next we calculate the estimate of all the group means $\mu$, $\mu+\tau_{2}$ and $\mu+\tau_{3}$ and the difference between group 2 and 3. Notice I can specify more than one contrast at a time.
 ```{r}
@@ -154,7 +153,7 @@ contr <- rbind("Mean of Group 1"=c(1,0,0),
                "Mean of Group 2"=c(1,1,0),
                "Mean of Group 3"=c(1,0,1),
                "Diff G2-G3"     =c(0,1,-1)) 
-test <- glht(m, linfct=contr)
+test <- multcomp::glht(m, linfct=contr)
 summary(test)
 ```
 
@@ -178,7 +177,7 @@ m <- lm(len ~ logDose * supp, data=ToothGrowth)
 # predict() gives me the yhat values and optional CI
 # these are just the "contrasts" defined by X matrix! 
 ToothGrowth <- ToothGrowth %>%
-  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(m, interval='confidence'))
 
 # Plot the results using ggplot2
@@ -188,11 +187,10 @@ ggplot( ToothGrowth, aes(x=logDose, col=supp, fill=supp)) +
     geom_ribbon(aes(ymin=lwr, ymax=upr), alpha=.2)
 ```
 
-
 R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.
 
 ```{r}
-summary(m)$coefficient
+m %>% tidy()
 ```
 
 For a warm-up, we will calculate the y-intercepts of both groups and the slopes of both. For the OJ group, this is just the 1st and 2nd coefficients, while for the VC group it is $\beta_{0}+\beta_{2}$ and $\beta_{1}+\beta_{3}$. 
@@ -204,7 +202,7 @@ contr <- rbind("Intercept OJ" = c(1,     0,     0,          0          ),
                "Slope     OJ" = c(0,     1,     0,          0          ),
                "Intercept VC" = c(1,     0,     1,          0          ),
                "Slope     VC" = c(0,     1,     0,          1          ) ) 
-test <- glht(m, linfct=contr)
+test <- multcomp::glht(m, linfct=contr)
 summary(test)
 ```
 
@@ -249,7 +247,7 @@ $$\begin{aligned}
 #                                Int  logDose  suppVC   logDose:suppVC
 contr <- rbind("OJ; 1/2 dose" = c(1,   -0.69,    0,          0         ),
                "VC; 1/2 dose" = c(1,   -0.69,    1,        -0.69       ))
-test <- glht(m, linfct=contr)
+test <- multcomp::glht(m, linfct=contr)
 summary(test)
 ``` 
 
@@ -269,7 +267,7 @@ $$\begin{aligned}
 and we can calculate
 ```{r}
 contr <- rbind("OJ - VC; 1/2 dose" = c(0, 0, -1, 0.69))
-test <- glht(m, linfct=contr)
+test <- multcomp::glht(m, linfct=contr)
 summary(test)
 ```
 
@@ -277,7 +275,7 @@ summary(test)
 When we do the same test, but at dose level 2 (logDose =$\log2=0.69$) we see that the difference is not statistically significant.
 ```{r}
 contr <- rbind("OJ - VC; dose 2" = c(0, 0, -1, -0.69))
-test <- glht(m, linfct=contr)
+test <- multcomp::glht(m, linfct=contr)
 summary(test)
 ```
 
@@ -293,7 +291,7 @@ There is a dataset built into R named `trees` which describes a set of $n=31$ ch
 data(trees)
 model <- lm( Volume ~ Girth, data=trees )
 trees <- trees %>%
-  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(model, interval='conf'))
 ggplot(trees, aes(x=Girth, y=Volume)) +
   geom_point() +
@@ -385,7 +383,7 @@ data('ToothGrowth')
 ToothGrowth$logDose <- log( ToothGrowth$dose )
 m <- lm(len ~ logDose * supp, data=ToothGrowth)
 ToothGrowth <- ToothGrowth %>%
-  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(m, interval='conf') )
 ggplot(ToothGrowth, aes(x=logDose, color=supp, fill=supp)) +
   geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
@@ -470,13 +468,13 @@ Because the averaging over factor levels isn't what I typically want to do, I st
         ```
         _Hint: the purpose of this step is to make sure everyone knows the column order of the design matrix so that you interprete the $\beta$ terms in the correct order._
         
-    b. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{0}$ to $\hat{\beta}_{5}$ (in the order given by R). Write your interaction model out using subscript notation and should be in the form
+    b. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{0}$ to $\hat{\beta}_{5}$ (in the order given by R). Write your interaction model using subscript notation and should be in the form
         $$y_{i}=\begin{cases}
         ??????? & \;\;\textrm{if 4 cylinder}\\
         ??????? & \;\;\textrm{if 6 cylinder}\\
         ??????? & \;\;\textrm{if 8 cylinder}
         \end{cases}$$ 
-        and give an interpretation for each $\beta_{j}$ value.
+        and give an interpretation for each $\hat{\beta}_{j}$ value.
         i. $\hat{\beta}_0$ = ???
         ii. $\hat{\beta}_1$ = ???
         iii. $\hat{\beta}_2$ = ???
@@ -492,7 +490,7 @@ Because the averaging over factor levels isn't what I typically want to do, I st
     
     d. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? What is the estimated mpg of a 8-cylinder vehicle weight 3.5 tons? Give the associated 95% confidence intervals. Calculate these using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
     
-    e. Recalculate your answer to part (d) using the `glht()` function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?
+    e. Recalculate your answer to part (d) using the `multcomp::glht()` function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?
     
     f. Recalculate your answer to part (e) using the `emmeans()` function.
     

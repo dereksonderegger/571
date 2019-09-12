@@ -275,7 +275,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>12.7</b> ROC Curves</a></li>
 <li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="appendix.html"><a href="appendix.html"><i class="fa fa-check"></i>Appendix</a></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
+<li class="chapter" data-level="12.9" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>12.9</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="12.9.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>12.9.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -422,7 +426,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <a class="sourceLine" id="cb89-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb89-3" data-line-number="3"><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></a>
 <a class="sourceLine" id="cb89-4" data-line-number="4"><span class="co"># relabels the levels to something I understand.</span></a>
-<a class="sourceLine" id="cb89-5" data-line-number="5">teengamb<span class="op">$</span>sex &lt;-<span class="st"> </span><span class="kw">factor</span>(teengamb<span class="op">$</span>sex, <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)) </a>
+<a class="sourceLine" id="cb89-5" data-line-number="5">teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">sex =</span> <span class="kw">ifelse</span>( sex<span class="op">==</span><span class="dv">1</span>, <span class="st">&#39;Female&#39;</span>, <span class="st">&#39;Male&#39;</span>) )</a>
 <a class="sourceLine" id="cb89-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb89-7" data-line-number="7"><span class="co"># Fit a linear model with the interaction of sex and income</span></a>
 <a class="sourceLine" id="cb89-8" data-line-number="8"><span class="co"># Interactions can be specified useing a colon :</span></a>
@@ -435,7 +439,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <a class="sourceLine" id="cb89-15" data-line-number="15"><span class="co"># these are the yhat and CI </span></a>
 <a class="sourceLine" id="cb89-16" data-line-number="16"><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></a>
 <a class="sourceLine" id="cb89-17" data-line-number="17">teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span></a>
+<a class="sourceLine" id="cb89-18" data-line-number="18"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb89-19" data-line-number="19"><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</a>
 <a class="sourceLine" id="cb89-20" data-line-number="20"></a>
 <a class="sourceLine" id="cb89-21" data-line-number="21"><span class="co"># Make a nice plot that includes the regreesion line.</span></a>
@@ -456,11 +460,11 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 ## -56.522  -4.860  -1.790   6.273  93.478 
 ## 
 ## Coefficients:
-##                  Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       -2.6596     6.3164  -0.421  0.67580    
-## sexFemale          5.7996    11.2003   0.518  0.60724    
-## income             6.5181     0.9881   6.597 4.95e-08 ***
-## sexFemale:income  -6.3432     2.1446  -2.958  0.00502 ** 
+##                Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)      3.1400     9.2492   0.339  0.73590   
+## sexMale         -5.7996    11.2003  -0.518  0.60724   
+## income           0.1749     1.9034   0.092  0.92721   
+## sexMale:income   6.3432     2.1446   2.958  0.00502 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -481,36 +485,43 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
 <p>We consider the sequence of building successively more complex models:</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="co"># make virginica the reference group </span></a>
-<a class="sourceLine" id="cb95-2" data-line-number="2">iris<span class="op">$</span>Species &lt;-<span class="st"> </span><span class="kw">relevel</span>(iris<span class="op">$</span>Species, <span class="dt">ref=</span><span class="st">&#39;virginica&#39;</span>)</a>
-<a class="sourceLine" id="cb95-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb95-4" data-line-number="4">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></a>
-<a class="sourceLine" id="cb95-5" data-line-number="5">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></a>
-<a class="sourceLine" id="cb95-6" data-line-number="6">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></a></code></pre></div>
+<a class="sourceLine" id="cb95-2" data-line-number="2">iris &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Species =</span> forcats<span class="op">::</span><span class="kw">fct_relevel</span>(Species, <span class="st">&#39;virginica&#39;</span>) )</a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5">m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></a>
+<a class="sourceLine" id="cb95-6" data-line-number="6">m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></a>
+<a class="sourceLine" id="cb95-7" data-line-number="7">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></a></code></pre></div>
 <p>The three models we consider are the following:</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
-<pre><code>##              Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)     3.419      0.254  13.484    0.000
-## Sepal.Length   -0.062      0.043  -1.440    0.152</code></pre>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</a></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   term         estimate std.error statistic p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)     3.42      0.254     13.5    0    
+## 2 Sepal.Length   -0.062     0.043     -1.44   0.152</code></pre>
 <p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
 <p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw">summary</span>(m2)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
-<pre><code>##                   Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)          0.669      0.308   2.174    0.031
-## Sepal.Length         0.350      0.046   7.557    0.000
-## Speciessetosa        1.008      0.093  10.798    0.000
-## Speciesversicolor    0.024      0.065   0.370    0.712</code></pre>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1">m2 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</a></code></pre></div>
+<pre><code>## # A tibble: 4 x 5
+##   term              estimate std.error statistic p.value
+##   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)          0.669     0.308      2.17   0.031
+## 2 Sepal.Length         0.35      0.046      7.56   0    
+## 3 Speciessetosa        1.01      0.093     10.8    0    
+## 4 Speciesversicolor    0.024     0.065      0.37   0.712</code></pre>
 <p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
 <p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1"><span class="kw">summary</span>(m3)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)  </a></code></pre></div>
-<pre><code>##                                Estimate Std. Error t value Pr(&gt;|t|)
-## (Intercept)                       1.446      0.405   3.572    0.000
-## Sepal.Length                      0.232      0.061   3.790    0.000
-## Speciessetosa                    -2.016      0.686  -2.938    0.004
-## Speciesversicolor                -0.574      0.605  -0.950    0.344
-## Sepal.Length:Speciessetosa        0.567      0.126   4.490    0.000
-## Sepal.Length:Speciesversicolor    0.088      0.097   0.905    0.367</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb100-1" data-line-number="1">m3 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</a></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   term                           estimate std.error statistic p.value
+##   &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)                       1.45      0.405     3.57    0    
+## 2 Sepal.Length                      0.232     0.061     3.79    0    
+## 3 Speciessetosa                    -2.02      0.686    -2.94    0.004
+## 4 Speciesversicolor                -0.574     0.605    -0.95    0.344
+## 5 Sepal.Length:Speciessetosa        0.567     0.126     4.49    0    
+## 6 Sepal.Length:Speciesversicolor    0.088     0.097     0.905   0.367</code></pre>
 <p>These parameters are:</p>
 <table>
 <thead>

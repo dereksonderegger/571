@@ -1,5 +1,28 @@
 
-# Appendix {-}
+# Project Appendix {-}
 
-This is where the project info goes.
+STA 571 Course Project Timeline
+This document presents a rough outline to the projects conducted in STA 571: Statistical Methods II. The outline gives when certain topics should be discussed, when decisions should be made on moving forward with projects, and what students need to be focused on. Proposal and final project rubrics will be provided in additional PDFs. As always, there is flexibility based on the way you run your course.
+
+## Weeks 1 – 4 (Project Feasibility)
+Leading up to Exam 1, decisions will be made if the projects can be conducted effectively within the course. This requires students to determine what data set they want to analyze and what methods they think they would be interested in using. 
+    1. For students with thesis/dissertation work, the idea is to allow them to use their own data (likely data they have collected) to advance the project.
+    2. Students that don't have thesis/dissertation work, or for students who don't yet have data from their own research should be engaged in looking into a source of data and determining what type of analysis can be completed. One very good source of datasets and problems is [kaggle](www.kaggle.com).
+
+### WIBGIs
+
+Project ideas can be motivated through "Wouldn’t it be great if ..." statements, or WIBGIs.
+
+Write out 3 - 5 ideas for a project to be done this semester. Think about what data you may have available or what data you may be interested in analyzing. If possible try to write a statement of this form:
+
+Wouldn’t it be great if what you want to analyze could be used to solve a problem using statistics/data science.
+    
+Example: Wouldn’t it be great if plasma thermogram data could be used to classify lupus using logistic regression.
+
+
+The first four weeks should include students trying to create as many WIBGIs as possible. At the end of each homework assignment, I added an additional optional section entitle “Project Development” where I reminded the students they need to produce at minimum 3 WIBGI statements. 
+
+The main concept here is to encourage exploration and broad thinking. It is okay if students write statements that are not feasible. It is also okay if they write statements that don’t conform to the example statement. The goal here is creativity. The idea is to begin generating ideas and determining sources of data; we are trying to encourage data exploration and thinking outside the box from their core studies. 
+
+
 

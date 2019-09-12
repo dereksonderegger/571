@@ -16,8 +16,8 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 
 ```{r, warning=FALSE, message=FALSE}
-library(tidyverse)  # ggplot2, dplyr, tidyr
 library(tidymodels) # Grab model results as data frames
+library(tidyverse)  # ggplot2, dplyr, tidyr
 ```
 
 ## F-tests
@@ -395,7 +395,7 @@ In general, you should be very careful with the interpretation of the regression
     ```
     It is possible to get information about the data set using the command `help(prostate)`. Fit a model with `lpsa` as the response and all the other variables as predictors.
     
-    a) Compute $90\%$ and $95\%$ confidence intervals for the parameter associated with `age`. Using just these intervals, what could we deduced about the p-value for age in the regression summary. *Hint: look at the help for the function `confint()`. You'll find the `level` option to be helpful.*
+    a) Compute $90\%$ and $95\%$ confidence intervals for the parameter associated with `age`. Using just these intervals, what could we deduced about the p-value for age in the regression summary. *Hint: look at the help for the function `confint()`. You'll find the `level` option to be helpful. Alternatively use the `broom::tidy()` function with the `conf.int=TRUE` option and also use the `level=` option as well.*
     
     b) Remove all the predictors that are not significant at the $5\%$ level. Test this model against the original model. Which is preferred?
 

@@ -170,7 +170,7 @@ data('teengamb', package='faraway')
 
 # Forces R to recognize that 0, 1 are categorical, also
 # relabels the levels to something I understand.
-teengamb$sex <- factor(teengamb$sex, labels=c('Male','Female')) 
+teengamb <- teengamb %>% mutate( sex = ifelse( sex==1, 'Female', 'Male') )
 
 # Fit a linear model with the interaction of sex and income
 # Interactions can be specified useing a colon :
@@ -183,7 +183,7 @@ m1 <- lm( gamble ~ sex * income, data=teengamb )
 # these are the yhat and CI 
 # If columns for fit, upr, lwr are already present, remove them
 teengamb <- teengamb %>%
-  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(m1, interval='conf') )
 
 # Make a nice plot that includes the regreesion line.
@@ -220,7 +220,8 @@ We consider the sequence of building successively more complex models:
 
 ```{r}
 # make virginica the reference group 
-iris$Species <- relevel(iris$Species, ref='virginica')
+iris <- iris %>%
+  mutate( Species = forcats::fct_relevel(Species, 'virginica') )
 
 m1 <- lm( Sepal.Width ~ Sepal.Length, data=iris )            # One line
 m2 <- lm( Sepal.Width ~ Sepal.Length + Species, data=iris )  # Parallel Lines
@@ -246,21 +247,21 @@ ggplot(temp, aes(x=Sepal.Length, col=Species)) +
 Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model. 
 
 ```{r}
-summary(m1)$coefficients %>% round(digits=3)  
+m1 %>% broom::tidy() %>% mutate_if( is.numeric, round, digits=3 )
 ```
 
 For the simplest model, there is so much unexplained noise that the slope variable isn't significant.
 
 Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have
 ```{r}
-summary(m2)$coefficients %>% round(digits=3)  
+m2 %>% broom::tidy() %>% mutate_if( is.numeric, round, digits=3 )
 ```
 
 The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to *Setosa* and *Versicolor*, respectively. We have that the slope associated with increasing Sepal Length is significant and that *Setosa* has a statistically different y-intercept than the reference group *Virginica* and that *Versicolor* does not have a statistically different y-intercept than the reference group.
 
 Finally we consider the most complicated model that includes two more slope parameters
 ```{r}
-summary(m3)$coefficients %>% round(digits=3)  
+m3 %>% broom::tidy() %>% mutate_if( is.numeric, round, digits=3 )
 ```
 
 These parameters are:
