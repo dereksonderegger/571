@@ -468,7 +468,9 @@ g <- lm(Species ~ Area + Elevation + Nearest + Scruz + Adjacent, data=gala)
 # I don't like loading the MASS package because it includes a select() function
 # that fights with dplyr::select(), so whenever I use a function in the MASS
 # package, I just call it using the package::function() naming.
-MASS::boxcox(g)  
+# 
+# #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...
+MASS::boxcox( g )   # With default lambda range.
 ```
 
 
@@ -531,8 +533,6 @@ gala %>%
          SqrtScruz=sqrt(Scruz), LogAdjacent=log(Adjacent)) %>%
   dplyr::select(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) %>%
   GGally::ggpairs(upper=list(continuous='points'), lower=list(continuous='cor'))
-pairs( log(Species) ~ log(Elevation) + log(Area) + 
-                       log(Nearest) + sqrt(Scruz) + log(Adjacent), data=gala)
 ```
 
 Looking at these graphs, it is clear that `log(Elevation)` and `log(Area)` are highly correlated and we should probably have one or the other, but not both in the model.
@@ -628,13 +628,16 @@ To investigate the effects of a log transformation, we'll examine a dataset that
 file <- 'https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv'  # on the web
 file <- 'data-raw/lgtrans.csv'                                                # on my laptop
 scores <- read.csv(file=file)
-scores <- scores %>% mutate(gender = female)
-pairs(write~read+math+gender, data=scores)
+scores <- scores %>% rename(gender = female)
+
+scores %>% select(write, read, math, gender) %>%
+  GGally::ggpairs( aes(color=gender),
+    upper=list(continuous='points'), lower=list(continuous='cor'))
 ```
 
-These data look pretty dencent, and I'm not certain that I would do *any* transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a student's writing score.
+These data look pretty decent, and I'm not certain that I would do *any* transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a students' writing score.
 
-#### Log-transformed response, untransformed covariates
+#### Log-transformed response, un-transformed covariates
 
 We consider the model where we have transformed the response variable and just an intercept term.
 $$\log y=\beta_{0}+\epsilon$$
@@ -691,8 +694,8 @@ $$
 \frac{\hat{y}_2}{\hat{y}_1} 
   = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
   = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
-  = e^{\hat{\beta}_{2}}$$
-
+  = e^{\hat{\beta}_{2}}
+$$
 
 For our writing scores example we have that $e^{\hat{\beta}_{2}}=e^{0.011}=1.01$
 meaning there is an estimated $1\%$ increase in `write` score for every 1-point increase in `read` score. 
@@ -714,7 +717,7 @@ Some students get confused by what is meant by a $\%$ increase or decrease in $y
   * A $50\%$ decrease in $y$ has a resulting value of $\left(1-0.5\right)y=\left(0.5\right) x$ and is a halving of $y$.
 
 
-#### Untransformed response, log-transformed covariate
+#### Un-transformed response, log-transformed covariate
 
 We consider the model
 $$y=\beta_{0}+\beta_{2}\log x+\epsilon$$
