@@ -1,3 +1,5 @@
 book_filename: "Statistical Methods II"
 chapter_name: "Chapter "
 output_dir: "docs"
+
+delete_merged_file: TRUE

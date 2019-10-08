@@ -1,11 +1,6 @@
----
-output:
-  pdf_document: default
-  html_document: default
----
 # Diagnostics and Transformations
 ```{r, echo=FALSE}
-# Unattach any packages that happen to already be loaded. In general this is unecessary
+# Unnattach any packages that happen to already be loaded. In general this is unecessary
 # but is important for the creation of the book to not have package namespaces
 # fighting unexpectedly.
 pkgs = names(sessionInfo()$otherPkgs)
@@ -21,9 +16,9 @@ knitr::opts_chunk$set( fig.height=3 )
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-library(tidyverse)   # for dplyr, tidyr, ggplot2
 library(ggfortify)   # for autoplot for lm objects
 library(emmeans)     # emmeans for pairwise constrasts.
+library(tidyverse)   # for dplyr, tidyr, ggplot2
 ```
 
 We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:
@@ -630,7 +625,8 @@ file <- 'data-raw/lgtrans.csv'                                                # 
 scores <- read.csv(file=file)
 scores <- scores %>% rename(gender = female)
 
-scores %>% select(write, read, math, gender) %>%
+scores %>% 
+  dplyr::select(write, read, math, gender) %>%
   GGally::ggpairs( aes(color=gender),
     upper=list(continuous='points'), lower=list(continuous='cor'))
 ```
@@ -666,7 +662,7 @@ The intercept is now the mean of the log-transformed `write` responses for the f
 $$\begin{aligned}
 \log\hat{y}_m	&=	\hat{\beta}_{0}+\hat{\beta}_{1} \\
     \hat{y}_m	&=	e^{\hat{\beta}_{0}+\hat{\beta}_{1}} \\
-	          &=	\underset{\hat{y}_{f}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{percent change for males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}} 
+	          &=	\underset{\hat{y}_{f}}{\underbrace{e^{\hat{\beta}_{0}}}}\;\;\;\;\;\underset{\textrm{multiplier for males}}{*\;\;\underbrace{e^{\hat{\beta}_{1}}}} 
 \end{aligned}$$
 
 and therefore we see that males tend to have writing scores $e^{-0.103}=0.90=90\%$ of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.
@@ -689,7 +685,7 @@ $$\begin{aligned}
 \log\hat{y}_f	&=	\hat{\beta}_{0}+\hat{\beta}_{2}x \\
 \hat{y}_f	    &=	e^{\hat{\beta}_{0}+\hat{\beta}_{2}x}
 \end{aligned}$$
-therefore we consider $e^{\hat{\beta}_{2}}$ as the *percent* increase in write score for a 1-unit increase in $x$ because of the following. Consider $x_1$ and $x_2 = x_1 +1$. Then we consider the ratio of predicted values:
+therefore we consider $e^{\hat{\beta}_{2}}$ as the multiplicative increase in write score for a 1-unit increase in $x$ because of the following. Consider $x_1$ and $x_2 = x_1 +1$. Then we consider the ratio of predicted values:
 $$
 \frac{\hat{y}_2}{\hat{y}_1} 
   = \frac{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,\left(x+1\right)}}{e^{\hat{\beta}_{0}+\hat{\beta}_{2}\,x}} 
@@ -708,8 +704,7 @@ $$\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\be
  
 and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22$$ or a 22% increase in writing score for a 20-point increase in reading score.
 
-In short, we can interpret $e^{\hat{\beta}_{i}}$ as the percent increase/decrease in the non-transformed response variable.
-Some students get confused by what is meant by a $\%$ increase or decrease in $y$.
+In short, we can interpret $e^{\hat{\beta}_{i}}$ as the multiplicative increase/decrease in the non-transformed response variable. Some students get confused by what is meant by a $\%$ increase or decrease in $y$.
 
   * A $75\%$ decrease in $y$ has a resulting value of $\left(1-0.75\right)y=\left(0.25\right) y$
   * A $75\%$ increase in $y$ has a resulting value of $\left(1+0.75\right)y=\left(1.75\right) y$
@@ -797,7 +792,7 @@ and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$)
     a. Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on. 
     b. Comment on the interpretability of your (possibly ridiculously complicated) model.
 
-3. Use transformations to find a good model for `volume` in terms of `girth` and `height` using the `trees` dataset in the `faraway` package.
+3. Use transformations to find a good model for `volume` in terms of `girth` and `height` using the `trees` dataset in the `datasets` package.
     a. Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.
     b. Create a prediction interval for the volume of a tree with `girth=16` and `height=70`. Notice that if you have transformed your response variable in you model, you'll have to back-transform to the original y-scale.
 
