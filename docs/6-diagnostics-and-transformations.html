@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-10-08" />
+<meta name="date" content="2019-10-10" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -908,6 +908,55 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 ## (Intercept)    2.904      0.157  18.484        0
 ## log(Area)      0.389      0.042   9.342        0</code></pre>
 <p>and therefore doubling of Area (i.e. the ratio of the <span class="math inline">\(Area_{2} / Area_{1} = 2\)</span>) results in a <span class="math inline">\(2^{0.389}=1.31\)</span> multiplier of the <code>Species</code> value. That is to say doubling the island area increases the number of species by <span class="math inline">\(31\%\)</span>.</p>
+<p>In the table below <span class="math inline">\(\beta\)</span> represents the group offset value, or the slope value associated with <span class="math inline">\(x\)</span>. If we are in a model with multiple slopes such as an ANCOVA model, then the beta term represents the slope of whatever group you are interested.</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="28%" />
+<col width="15%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Response</th>
+<th align="center">Explanatory</th>
+<th align="center">Term</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\log(y)\)</span></td>
+<td align="center">Categorical</td>
+<td align="center"><span class="math inline">\(e^\beta\)</span></td>
+<td align="left">Switching from the reference group results in this <em>multiplicative</em> change on <span class="math inline">\(y\)</span>.</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(\log(y)\)</span></td>
+<td align="center">Continuous <span class="math inline">\(x\)</span></td>
+<td align="center"><span class="math inline">\(e^\beta\)</span></td>
+<td align="left">A 1-unit change in <span class="math inline">\(x\)</span> results in this <em>multiplicative</em> change on <span class="math inline">\(y\)</span>.</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\log(y)\)</span></td>
+<td align="center">Continuous <span class="math inline">\(x\)</span></td>
+<td align="center"><span class="math inline">\(\left(e^\beta\right)^\delta\)</span></td>
+<td align="left">A <span class="math inline">\(\delta\)</span>-unit change in <span class="math inline">\(x\)</span> results in this <em>multiplicative</em> change on <span class="math inline">\(y\)</span>.</td>
+</tr>
+<tr class="even">
+<td align="center"><span class="math inline">\(y\)</span></td>
+<td align="center">Continuous <span class="math inline">\(\log(x)\)</span></td>
+<td align="center"><span class="math inline">\(\beta \, \log\left(\frac{x_2}{x_1}\right)\)</span></td>
+<td align="left">The proportional change in <span class="math inline">\(x\)</span> results in an <em>additive</em> change on <span class="math inline">\(y\)</span>.</td>
+</tr>
+<tr class="odd">
+<td align="center"><span class="math inline">\(\log(y)\)</span></td>
+<td align="center">Continuous <span class="math inline">\(\log(x)\)</span></td>
+<td align="center"><span class="math inline">\(\left(\frac{x_2}{x_1}\right)^\beta\)</span></td>
+<td align="left">The proportional change in <span class="math inline">\(x\)</span> results in the <em>multiplicative</em> change on <span class="math inline">\(y\)</span>.</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

@@ -772,6 +772,16 @@ summary(m.s)$coefficients %>% round(digits=3)
 
 and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$) results in a $2^{0.389}=1.31$ multiplier of the `Species` value. That is to say doubling the island area increases the number of species by $31\%$.
 
+In the table below $\beta$ represents the group offset value, or the slope value associated with $x$. If we are in a model with multiple slopes such as an ANCOVA model, then the beta term represents the slope of whatever group you are interested. 
+
+|  Response     |    Explanatory        |    Term     |   Interpretation              |
+|:-------------:|:---------------------:|:-----------:|:------------------------------|
+| $\log(y)$     |   Categorical         |   $e^\beta$   | Switching from the reference group results in this *multiplicative* change on $y$. |
+| $\log(y)$     |   Continuous $x$      |   $e^\beta$   | A 1-unit change in $x$ results in this *multiplicative* change on $y$. |
+| $\log(y)$     |   Continuous $x$      |   $\left(e^\beta\right)^\delta$   | A $\delta$-unit change in $x$ results in this *multiplicative* change on $y$. |
+|   $y$         |  Continuous $\log(x)$ |   $\beta \, \log\left(\frac{x_2}{x_1}\right)$ | The proportional change in $x$ results in an *additive* change on $y$. |
+| $\log(y)$     |  Continuous $\log(x)$ |   $\left(\frac{x_2}{x_1}\right)^\beta$  | The proportional change in $x$ results in the *multiplicative* change on $y$. |
+
 ## Exercises
 
 1. The dataset `infmort`  in the `faraway` package has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using `?faraway::infmort`. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
