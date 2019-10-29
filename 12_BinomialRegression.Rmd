@@ -599,7 +599,7 @@ While each of the time periods is different than the first, it looks like period
 
 ```{r}
 emmeans(m2, pairwise~period, type='response') 
-emmeans(m2, ~period, type='response') %>% cld(Letters=letters)
+emmeans(m2, ~period, type='response') %>% multcomp::cld(Letters=letters)
 ```
 
 Looking at this experiment, it looks like there is an interaction between location and period. If we fit a model with the interaction, it is the saturated model (20 covariates for 20 observations)
@@ -611,7 +611,7 @@ Notice that we've fit the saturated model and we've resolved the overdispersion 
 
 As usual, we can now look at the effect of `period` at each of the locations.
 ```{r}
-emmeans(m3, ~ period | location, type='response') %>% cld()
+emmeans(m3, ~ period | location, type='response') %>% multcomp::cld()
 ```
 
 Notice that there isn't a huge difference in period for locations 1-4, but in location 5 things are very different.
@@ -623,7 +623,7 @@ We might consider that location really ought to be a random effect. Fortunately 
 m3 <- glmer(cbind(survive,perish) ~ period + (1|location), 
           family=binomial, data=troutegg)
 summary(m3)
-emmeans(m3, ~period, type='response') %>% cld(Letters=letters)
+emmeans(m3, ~period, type='response') %>% multcomp::cld(Letters=letters)
 ```
 
 ```{r}
@@ -631,7 +631,7 @@ emmeans(m3, ~period, type='response') %>% cld(Letters=letters)
 m4 <- glmer(cbind(survive,perish) ~ period + (1 + period|location), 
           family=binomial, data=troutegg)
 #summary(m4)
-#emmeans(m4, ~period, type='response') %>% cld(Letters=letters)
+#emmeans(m4, ~period, type='response') %>% multcomp::cld(Letters=letters)
 ```
 
 Unfortunately, we aren't able to fit the saturated model using random effects because the numerical optimization function for finding MLE estimates failed to converge.

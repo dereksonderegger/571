@@ -78,7 +78,7 @@ Fortunately in this case, we don't care about the blocking variable and includin
 ```{r}
 # Ignore any p-values regarding block, but I'm happy with the analysis for variety
 letter_df <- emmeans(m1, ~variety) %>% 
-  cld(Letters=letters) %>% 
+  multcomp::cld(Letters=letters) %>% 
   dplyr::select(variety, .group) %>%
   mutate(yield = 500)
 

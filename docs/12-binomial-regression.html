@@ -1146,7 +1146,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## Results are averaged over the levels of: location 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## Tests are performed on the log odds ratio scale</code></pre>
-<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" data-line-number="1"><span class="kw">emmeans</span>(m2, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" data-line-number="1"><span class="kw">emmeans</span>(m2, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
 ##  11     0.677 0.0549 Inf     0.562     0.774  a    
 ##  8      0.704 0.0618 Inf     0.571     0.809  a    
@@ -1204,7 +1204,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## Number of Fisher Scoring iterations: 22</code></pre>
 <p>Notice that we’ve fit the saturated model and we’ve resolved the overdispersion problem because of that.</p>
 <p>As usual, we can now look at the effect of <code>period</code> at each of the locations.</p>
-<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb547-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span><span class="st"> </span>period <span class="op">|</span><span class="st"> </span>location, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb547-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span><span class="st"> </span>period <span class="op">|</span><span class="st"> </span>location, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>()</a></code></pre></div>
 <pre><code>## location = 1:
 ##  period      prob         SE  df asymp.LCL asymp.UCL .group
 ##  8      0.8953488 0.03300798 Inf 0.8109406 0.9446443  1    
@@ -1283,7 +1283,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## period7  -0.224              
 ## period8  -0.225  0.732       
 ## period11 -0.234  0.758  0.761</code></pre>
-<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
 ##  11     0.679 0.1615 Inf     0.331     0.900  a    
 ##  8      0.705 0.1546 Inf     0.358     0.911  a    
@@ -1302,7 +1302,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## control$checkConv, : Model failed to converge with max|grad| = 0.0184817
 ## (tol = 0.001, component 1)</code></pre>
 <div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb555-1" data-line-number="1"><span class="co">#summary(m4)</span></a>
-<a class="sourceLine" id="cb555-2" data-line-number="2"><span class="co">#emmeans(m4, ~period, type=&#39;response&#39;) %&gt;% cld(Letters=letters)</span></a></code></pre></div>
+<a class="sourceLine" id="cb555-2" data-line-number="2"><span class="co">#emmeans(m4, ~period, type=&#39;response&#39;) %&gt;% multcomp::cld(Letters=letters)</span></a></code></pre></div>
 <p>Unfortunately, we aren’t able to fit the saturated model using random effects because the numerical optimization function for finding MLE estimates failed to converge.</p>
 </div>
 <div id="roc-curves" class="section level2">
@@ -1468,18 +1468,18 @@ With the addition of the overdispersion parameter to the model, the differences 
 <div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb570-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;sp&#39;</span>, <span class="dt">sensitivities=</span>.<span class="dv">99</span>)</a></code></pre></div>
 <pre><code>## 95% CI (2000 stratified bootstrap replicates):
 ##    se sp.low sp.median sp.high
-##  0.99 0.9214    0.9571  0.9797</code></pre>
+##  0.99 0.9173    0.9571  0.9774</code></pre>
 <div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb572-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;se&#39;</span>, <span class="dt">specificities=</span>.<span class="dv">975</span>)</a></code></pre></div>
 <pre><code>## 95% CI (2000 stratified bootstrap replicates):
 ##     sp se.low se.median se.high
-##  0.975 0.8804     0.937  0.9958</code></pre>
+##  0.975 0.8827     0.937  0.9958</code></pre>
 <p>One measure of how far we are from the perfect predictor is the area under the curve. The perfect model would have an area under the curve of 1. For this model the area under the curve is:</p>
 <div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb574-1" data-line-number="1"><span class="kw">auc</span>(myROC) </a></code></pre></div>
 <pre><code>## Area under the curve: 0.9929</code></pre>
 <div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb576-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>)</a></code></pre></div>
 <pre><code>## 95% CI: 0.9878-0.9981 (DeLong)</code></pre>
 <div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb578-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>, <span class="dt">method=</span><span class="st">&#39;bootstrap&#39;</span>)</a></code></pre></div>
-<pre><code>## 95% CI: 0.9875-0.9974 (2000 stratified bootstrap replicates)</code></pre>
+<pre><code>## 95% CI: 0.9873-0.9973 (2000 stratified bootstrap replicates)</code></pre>
 <p>which seems pretty good and Area Under the Curve (AUC) is often used as a way of comparing the quality of binary classifiers.</p>
 </div>
 <div id="exercises-11" class="section level2">

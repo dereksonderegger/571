@@ -882,6 +882,7 @@ and we notice that the position and run effects are not nested within anything e
 ##  B - D       -10.5 5.53  6 -1.897  0.3206 
 ##  C - D        11.2 5.53  6  2.033  0.2743 
 ## 
+## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <div class="sourceCode" id="cb414"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb414-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </a></code></pre></div>
 <pre><code>##  material emmean   SE   df lower.CL upper.CL .group
@@ -1101,7 +1102,7 @@ and we notice that the position and run effects are not nested within anything e
 <div class="sourceCode" id="cb436"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb436-1" data-line-number="1">subject.intercept =<span class="st"> </span><span class="fl">251.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">24.7</span>)</a>
 <a class="sourceLine" id="cb436-2" data-line-number="2">subject.slope     =<span class="st"> </span><span class="fl">10.5</span>  <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">10.5</span>)</a>
 <a class="sourceLine" id="cb436-3" data-line-number="3"><span class="kw">c</span>(subject.intercept, subject.slope)</a></code></pre></div>
-<pre><code>## [1] 258.67684  14.71306</code></pre>
+<pre><code>## [1] 220.594981   6.818307</code></pre>
 <div class="sourceCode" id="cb438"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb438-1" data-line-number="1">subject.obs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb438-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Reaction =</span> subject.intercept <span class="op">+</span><span class="st"> </span>subject.slope<span class="op">*</span>Days <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">9</span>, <span class="dt">sd=</span><span class="fl">25.6</span>) )</a>
 <a class="sourceLine" id="cb438-3" data-line-number="3"></a>

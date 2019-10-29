@@ -583,8 +583,8 @@ in R using the following code:</p>
 <a class="sourceLine" id="cb4-2" data-line-number="2">beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">beta.hat</a></code></pre></div>
 <pre><code>##        [,1]
-##   -2.286582
-## x  1.913124</code></pre>
+##   -3.209061
+## x  2.054706</code></pre>
 <p>Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span>
 and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span></p>
 <p><span class="math display">\[\begin{aligned}
@@ -606,13 +606,13 @@ and the standard errors of <span class="math inline">\(\hat{\beta}_{j}\)</span><
 output given by the <code>lm()</code> function in R.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">beta.hat</a></code></pre></div>
 <pre><code>##        [,1]
-##   -2.286582
-## x  1.913124</code></pre>
+##   -3.209061
+## x  2.054706</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">sigma.hat</a></code></pre></div>
 <pre><code>##          [,1]
-## [1,] 1.912655</code></pre>
+## [1,] 1.903466</code></pre>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">std.errs</a></code></pre></div>
-<pre><code>## [1] 0.8242505 0.1409222</code></pre>
+<pre><code>## [1] 0.8202908 0.1402452</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">model &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x)</a>
 <a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw">summary</span>(model)</a></code></pre></div>
 <pre><code>## 
@@ -621,18 +621,18 @@ output given by the <code>lm()</code> function in R.</p>
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -3.5436 -1.5871 -0.0039  0.9699  3.2912 
+## -3.4330 -1.3064 -0.2719  1.6237  2.9114 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  -2.2866     0.8243  -2.774   0.0125 *  
-## x             1.9131     0.1409  13.576 6.76e-11 ***
+## (Intercept)  -3.2091     0.8203  -3.912  0.00102 ** 
+## x             2.0547     0.1402  14.651 1.91e-11 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.913 on 18 degrees of freedom
-## Multiple R-squared:  0.911,  Adjusted R-squared:  0.9061 
-## F-statistic: 184.3 on 1 and 18 DF,  p-value: 6.759e-11</code></pre>
+## Residual standard error: 1.903 on 18 degrees of freedom
+## Multiple R-squared:  0.9226, Adjusted R-squared:  0.9183 
+## F-statistic: 214.6 on 1 and 18 DF,  p-value: 1.91e-11</code></pre>
 <p>We calculate <span class="math inline">\(95\%\)</span> confidence intervals via:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">lwr &lt;-<span class="st"> </span>beta.hat <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) <span class="op">*</span><span class="st"> </span>std.errs</a>
 <a class="sourceLine" id="cb17-2" data-line-number="2">upr &lt;-<span class="st"> </span>beta.hat <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, n<span class="dv">-2</span>) <span class="op">*</span><span class="st"> </span>std.errs</a>
@@ -640,15 +640,15 @@ output given by the <code>lm()</code> function in R.</p>
 <a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lower&#39;</span>,<span class="st">&#39;upper&#39;</span>)</a>
 <a class="sourceLine" id="cb17-5" data-line-number="5"><span class="kw">rownames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;Intercept&#39;</span>, <span class="st">&#39;x&#39;</span>)</a>
 <a class="sourceLine" id="cb17-6" data-line-number="6">CI</a></code></pre></div>
-<pre><code>##               lower      upper
-## Intercept -4.018268 -0.5548965
-## x          1.617058  2.2091905</code></pre>
+<pre><code>##               lower     upper
+## Intercept -4.932428 -1.485694
+## x          1.760062  2.349351</code></pre>
 <p>These intervals are the same as what we get when we use the <code>confint()</code>
 function.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">confint</span>(model)</a></code></pre></div>
-<pre><code>##                 2.5 %     97.5 %
-## (Intercept) -4.018268 -0.5548965
-## x            1.617058  2.2091905</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) -4.932428 -1.485694
+## x            1.760062  2.349351</code></pre>
 </div>
 </div>
 <div id="anova-model" class="section level2">

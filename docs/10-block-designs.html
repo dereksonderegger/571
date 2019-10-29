@@ -379,7 +379,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
 <div class="sourceCode" id="cb339"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb339-1" data-line-number="1"><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span></a>
 <a class="sourceLine" id="cb339-2" data-line-number="2">letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb339-3" data-line-number="3"><span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb339-3" data-line-number="3"><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb339-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb339-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)</a>
 <a class="sourceLine" id="cb339-6" data-line-number="6"></a>
@@ -446,9 +446,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb345"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb345-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )</a>
 <a class="sourceLine" id="cb345-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
 <pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
-## plot         7 286.73   40.96   3.220 0.0157 *
-## Fertilizer   1   6.67    6.67   0.524 0.4762  
-## Residuals   23 292.59   12.72                 
+## plot         7 286.73   40.96   3.281 0.0144 *
+## Fertilizer   1  12.16   12.16   0.974 0.3339  
+## Residuals   23 287.10   12.48                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Ideally I wouldn’t have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.</p>
@@ -466,8 +466,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Error: plot:subplot
 ##            Df Sum Sq Mean Sq F value Pr(&gt;F)
-## Fertilizer  1   6.67   6.672   0.524  0.476
-## Residuals  23 292.59  12.721</code></pre>
+## Fertilizer  1  12.16   12.16   0.974  0.334
+## Residuals  23 287.10   12.48</code></pre>
 <p>In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.</p>
 <p>What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?</p>
 <div class="sourceCode" id="cb349"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb349-1" data-line-number="1">bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)</a>
@@ -475,10 +475,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Analysis of Variance Table
 ## 
 ## Response: yield
-##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
-## Irrigation  1 104.26 104.258  6.3643 0.01738 *
-## Fertilizer  1   6.67   6.672  0.4073 0.52835  
-## Residuals  29 475.07  16.382                  
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## Irrigation  1 104.26 104.258  6.4387 0.0168 *
+## Fertilizer  1  12.16  12.162  0.7511 0.3932  
+## Residuals  29 469.58  16.192                 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools.
