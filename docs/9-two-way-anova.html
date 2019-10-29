@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 9 Two-way ANOVA | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 9 Two-way ANOVA | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,15 +24,15 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-10-10" />
+<meta name="date" content="2019-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="8-one-way-anova.html">
-<link rel="next" href="10-block-designs.html">
+<link rel="prev" href="8-one-way-anova.html"/>
+<link rel="next" href="10-block-designs.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -682,7 +685,7 @@ adds <span class="math inline">\((I-1)+(J-1)\)</span> parameters to the model be
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
 <p>These outputs are nice and they show the main effects of variety and pesticide. Similar to the 1-way ANOVA, we also want to be able to calculate the compact letter display.</p>
 <div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb302-1" data-line-number="1">m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)</a>
-<a class="sourceLine" id="cb302-2" data-line-number="2"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Var) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<a class="sourceLine" id="cb302-2" data-line-number="2"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Var)  <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  Var emmean   SE df lower.CL upper.CL .group
 ##  1     46.9 2.59 18     41.4     52.3  a    
 ##  2     59.2 2.59 18     53.8     64.7   b   
@@ -692,7 +695,7 @@ adds <span class="math inline">\((I-1)+(J-1)\)</span> parameters to the model be
 ## Confidence level used: 0.95 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## significance level used: alpha = 0.05</code></pre>
-<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb304-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Pest) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb304-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="dt">spec=</span> <span class="op">~</span>Pest) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  Pest emmean   SE df lower.CL upper.CL .group
 ##  C      51.2 2.99 18     44.9     57.4  a    
 ##  A      53.0 2.99 18     46.7     59.3  a    
@@ -829,9 +832,10 @@ I(J-1)-(J-1)    &amp;=  df_{AB} \\
 <h3><span class="header-section-number">9.3.2</span> Example - Fruit Trees (continued)</h3>
 <p>We next consider whether or not to include the interaction term to the fruit tree model. We fit the model with the interaction and then graph the results.</p>
 <div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb306-1" data-line-number="1"><span class="co"># Create the Interaction Plot using emmeans</span></a>
-<a class="sourceLine" id="cb306-2" data-line-number="2"><span class="kw">emmip</span>( m4, Var <span class="op">~</span><span class="st"> </span>Pest )  <span class="co"># color is LHS of the formula</span></a></code></pre></div>
+<a class="sourceLine" id="cb306-2" data-line-number="2">m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">*</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)</a>
+<a class="sourceLine" id="cb306-3" data-line-number="3"><span class="kw">emmip</span>( m4, Var <span class="op">~</span><span class="st"> </span>Pest )  <span class="co"># color is LHS of the formula</span></a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
-<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" data-line-number="1"><span class="co"># Create the intercation plot by hand</span></a>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb307-1" data-line-number="1"><span class="co"># Create the interaction plot by hand</span></a>
 <a class="sourceLine" id="cb307-2" data-line-number="2">m4 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">*</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)</a>
 <a class="sourceLine" id="cb307-3" data-line-number="3">fruit<span class="op">$</span>y.hat &lt;-<span class="st"> </span><span class="kw">predict</span>(m4)</a>
 <a class="sourceLine" id="cb307-4" data-line-number="4"><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">shape=</span>Var, <span class="dt">y=</span>Yield)) <span class="op">+</span><span class="st"> </span></a>
@@ -898,12 +902,16 @@ I(J-1)-(J-1)    &amp;=  df_{AB} \\
 ## Residuals    48 6.7138 0.13987                    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. This plot shows the raw data and connects lines to the cell mean of each factor combination.</p>
-<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1">warpbreaks &lt;-<span class="st"> </span>warpbreaks <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb319-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">logy.hat =</span> <span class="kw">predict</span>(model<span class="fl">.2</span>) )</a>
-<a class="sourceLine" id="cb319-3" data-line-number="3"><span class="kw">ggplot</span>(warpbreaks, <span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span><span class="kw">log</span>(breaks), <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb319-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb319-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>logy.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(tension)))  <span class="co"># make tensition continuous to draw the lines</span></a></code></pre></div>
+<p>Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. The <code>emmeans::emmip()</code> just shows the mean of each treatment combination, while the plot I made by hand shows the mean of each treatment combination along with the raw data.</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb319-1" data-line-number="1">A &lt;-<span class="st"> </span><span class="kw">emmip</span>(model<span class="fl">.2</span>, wool <span class="op">~</span><span class="st"> </span>tension)  <span class="co"># LHS is color, RHS is the x-axis variable</span></a>
+<a class="sourceLine" id="cb319-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb319-3" data-line-number="3">B &lt;-<span class="st"> </span>warpbreaks <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb319-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">logy.hat =</span> <span class="kw">predict</span>(model<span class="fl">.2</span>) ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb319-5" data-line-number="5"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>tension, <span class="dt">y=</span><span class="kw">log</span>(breaks), <span class="dt">color=</span>wool, <span class="dt">shape=</span>wool)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb319-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb319-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>logy.hat, <span class="dt">x=</span><span class="kw">as.integer</span>(tension)))  <span class="co"># make tension continuous to draw the lines</span></a>
+<a class="sourceLine" id="cb319-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb319-9" data-line-number="9">cowplot<span class="op">::</span><span class="kw">plot_grid</span>(A,B) <span class="co"># Plot these version of the interaction plot side-by-side.</span></a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
 <p>We can see that it appears that wool A has a decrease in breaks between low and medium tension, while wool B has a decrease in breaks between medium and high. It is actually quite difficult to see this interaction when we examine the model coefficients.</p>
 <div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb320-1" data-line-number="1"><span class="kw">summary</span>(model<span class="fl">.2</span>)</a></code></pre></div>
@@ -1076,11 +1084,13 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1126,8 +1136,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

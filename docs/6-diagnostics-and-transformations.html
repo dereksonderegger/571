@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Diagnostics and Transformations | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Diagnostics and Transformations | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,15 +24,15 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-10-10" />
+<meta name="date" content="2019-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="5-contrasts.html">
-<link rel="next" href="7-variable-selection.html">
+<link rel="prev" href="5-contrasts.html"/>
+<link rel="next" href="7-variable-selection.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -974,7 +977,7 @@ What do you notice about the relationship between mortality and income?</li>
 <li>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</li>
 <li>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</li>
 <li>Examine models that have all three main effects and either the <code>region:log(income)</code> or <code>oil:log(income)</code> interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?</li>
-<li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. <em>Hint: graph the data and the predicted values.</em></p></li>
+<li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. For the non-oil producing countries, quantify the effect of doubling the countries income on infant mortality. <em>Hint: graph the data and the predicted values before doing anything else.</em></p></li>
 </ol></li>
 <li>Using the <code>pressure</code> data in the <code>datasets</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial.
 <ol style="list-style-type: lower-alpha">
@@ -1019,11 +1022,13 @@ Comment on the relationships and possible transformations to be made.</li>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1069,8 +1074,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

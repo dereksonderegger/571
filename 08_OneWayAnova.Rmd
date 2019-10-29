@@ -118,7 +118,7 @@ Often I want to produce the "Compact Letter Display" which identifies which grou
 
 ```{r}
 LetterData <- emmeans(m, specs= ~ diet) %>%  # cld() will freak out if you have pairwise here...
-  cld(Letters=letters, level=0.95) %>%
+  multcomp::cld(Letters=letters, level=0.95) %>%
   mutate( y = 73 )   # height to place the letters at. 
 LetterData
 ```

@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 8 One way ANOVA | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.14 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 8 One way ANOVA | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,15 +24,15 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-10-10" />
+<meta name="date" content="2019-10-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="7-variable-selection.html">
-<link rel="next" href="9-two-way-anova.html">
+<link rel="prev" href="7-variable-selection.html"/>
+<link rel="next" href="9-two-way-anova.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -40,6 +40,9 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
 
 
 
@@ -408,7 +411,7 @@ where there really are only <span class="math inline">\(4\)</span> parameters th
 <p>Here we see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar to each other, but different than <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and that <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are not statistically different from each other at the <span class="math inline">\(0.10\)</span> level.</p>
 <p>Often I want to produce the “Compact Letter Display” which identifies which groups are significantly different.</p>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb279-1" data-line-number="1">LetterData &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span><span class="st"> </span>diet) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># cld() will freak out if you have pairwise here...</span></a>
-<a class="sourceLine" id="cb279-2" data-line-number="2"><span class="st">  </span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb279-2" data-line-number="2"><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters, <span class="dt">level=</span><span class="fl">0.95</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb279-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y =</span> <span class="dv">73</span> )   <span class="co"># height to place the letters at. </span></a>
 <a class="sourceLine" id="cb279-4" data-line-number="4">LetterData</a></code></pre></div>
 <pre><code>##   diet emmean        SE df lower.CL upper.CL .group  y
@@ -442,11 +445,13 @@ where there really are only <span class="math inline">\(4\)</span> parameters th
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -492,8 +497,9 @@ gitbook.start({
     script.type = "text/javascript";
     var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(src))
-      src = src.replace(/^https?:/, '');
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
     script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();

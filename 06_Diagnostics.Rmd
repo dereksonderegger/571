@@ -796,7 +796,7 @@ In the table below $\beta$ represents the group offset value, or the slope value
     d. Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.
     e. Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, `income` or `log(income)`? 
     f. Examine models that have all three main effects and either the `region:log(income)` or `oil:log(income)` interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?
-    g. Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. *Hint: graph the data and the predicted values.*
+    g. Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. For the non-oil producing countries, quantify the effect of doubling the countries income on infant mortality. *Hint: graph the data and the predicted values before doing anything else.*
 
 2. Using the `pressure` data in the  `datasets` package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial. 
     a. Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on. 

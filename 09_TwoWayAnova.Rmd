@@ -218,8 +218,8 @@ These outputs are nice and they show the main effects of variety and pesticide. 
 
 ```{r}
 m3 <- lm(Yield ~ Var + Pest, data=fruit)
-emmeans(m3, spec= ~Var) %>% cld(Letters=letters)
-emmeans(m3, spec= ~Pest) %>% cld(Letters=letters)
+emmeans(m3, spec= ~Var)  %>% multcomp::cld(Letters=letters)
+emmeans(m3, spec= ~Pest) %>% multcomp::cld(Letters=letters)
 ```
 
 
@@ -286,9 +286,10 @@ We next consider whether or not to include the interaction term to the fruit tre
 
 ```{r, fig.height=3}
 # Create the Interaction Plot using emmeans
+m4 <- lm(Yield ~ Var * Pest, data=fruit)
 emmip( m4, Var ~ Pest )  # color is LHS of the formula
 
-# Create the intercation plot by hand
+# Create the interaction plot by hand
 m4 <- lm(Yield ~ Var * Pest, data=fruit)
 fruit$y.hat <- predict(m4)
 ggplot(fruit, aes(x=Pest, color=Var, shape=Var, y=Yield)) + 
@@ -352,14 +353,18 @@ anova(model.2)           # table of sequentially added terms in model 2
 ```
 
 
-Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. This plot shows the raw data and connects lines to the cell mean of each factor combination.
+Next we look at the effect of the interaction and the easiest way to do this is to look at the interaction plot. The `emmeans::emmip()` just shows the mean of each treatment combination, while the plot I made by hand shows the mean of each treatment combination along with the raw data. 
 
 ```{r, fig.height=3}
-warpbreaks <- warpbreaks %>%
-  mutate( logy.hat = predict(model.2) )
-ggplot(warpbreaks, aes(x=tension, y=log(breaks), color=wool, shape=wool)) +
+A <- emmip(model.2, wool ~ tension)  # LHS is color, RHS is the x-axis variable
+
+B <- warpbreaks %>%
+  mutate( logy.hat = predict(model.2) ) %>%
+  ggplot(aes(x=tension, y=log(breaks), color=wool, shape=wool)) +
   geom_point() +
-  geom_line(aes(y=logy.hat, x=as.integer(tension)))  # make tensition continuous to draw the lines
+  geom_line(aes(y=logy.hat, x=as.integer(tension)))  # make tension continuous to draw the lines
+
+cowplot::plot_grid(A,B) # Plot these version of the interaction plot side-by-side.
 ```
 
 
