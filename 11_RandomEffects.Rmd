@@ -648,7 +648,7 @@ This approach is commonly referred to as a "parametric" bootstrap because we are
 ### Confidence Intervals
 Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The `lme4::bootMer` function will create bootstrap data sets and then send those into the `lmer` function.
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, fig.height=6}
 ConfData <- data.frame(Days=0:8)   # What x-values I care about
 
 # Get our best guess as to the relationship between day and reaction time
