@@ -19,6 +19,7 @@ knitr::opts_chunk$set( fig.height=3 )
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)  # dplyr, tidyr, ggplot
 library(stringr)    # string manipulation stuff
+library(latex2exp)  # for LaTeX mathematical notation
 
 library(lme4)        # Our primary analysis routine
 library(lmerTest)    # A user friendly interface to lme4 that produces p-values
@@ -219,6 +220,13 @@ anova(model.1)
 
 There is quite a bit of debate among statisticians about which test should be recommended in different scenarios using random effects and this is an active area of research. In this case, instead of performing a LRT, the `lmerTest` package opted to use a Satterthwaite approximation.
 
+To consider if the random effect should be included in the model, we can again turn to the Likelihood Ratio test.
+```{r}
+ranova(model.1)
+```
+Here, both the AIC and LRT suggest that the random effect of block is appropriate to include in the model.
+
+
 Now that we have chosen our model, we can examine is model.
 ```{r}
 summary(model.1)
@@ -233,7 +241,8 @@ Next we turn to the fixed effects.  These will be the offsets from the reference
 We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package `emmeans`, which automates much of this (and uses `lmerTest` produced p-values for the tests).
 
 ```{r, warning=FALSE, message=FALSE}
-LetterResults <- emmeans( model.1, ~ variety) %>% multcomp::cld(Letters=letters)
+LetterResults <- emmeans::emmeans( model.1, ~ variety) %>%
+  multcomp::cld(Letters=letters)
 LetterResults
 ```
 
@@ -242,7 +251,9 @@ As usual we'll join this information into the original data table and then make 
 LetterResults <- LetterResults %>% 
   mutate(LetterHeight=500,  .group = str_trim(.group))
 
-ggplot(oatvar, aes(x=variety, y=yield)) +
+oatvar %>%
+  mutate(variety = fct_reorder(variety, yield)) %>%
+  ggplot( aes(x=variety, y=yield)) +
   geom_point(aes(color=block)) +
   geom_text(data=LetterResults, aes(label=.group, y=LetterHeight))
 ```
@@ -271,8 +282,13 @@ anova(model.0, model.1)  # Analysis using a LRT
 anova(model.1)  # using whatever lmerTest thinks is appropriate 
 ```
 
-
 It looks like we don't have a significant effect of the treatments. Next we'll examine the simple model to understand the variability.
+
+```{r}
+ranova(model.1)
+```
+
+Blend looks marginally significant, but it might still be interesting to compare the variability between blends to variability within blends.
 
 ```{r}
 summary(model.0)   # the lack of fixed effects caused lmerTest to revert to lme4
@@ -330,19 +346,16 @@ data("HierarchicalData", package = 'dsData')
 head(HierarchicalData)
 ```
 
-```{r, echo=FALSE}
-# Add some columns so I can plot this nicely
-HierarchicalData <- HierarchicalData %>%
-  mutate(graph.x = 1, graph.y = 1 )
-  
-ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
-  geom_tile() +
+```{r, echo=FALSE, fig.height=5}
+HierarchicalData %>%
+  ggplot(aes(x=Rep, y=y, fill=Trt)) +
   facet_wrap(~Ring, labeller = label_both) +
-  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
-  scale_x_continuous(breaks=NULL) +
-  scale_y_continuous(breaks=NULL) +
-  xlab("") + ylab("")
+  geom_tile(width=Inf, height=Inf, alpha=.1) +
+  geom_point() +
+  xlab("Replicate") + ylab("Response") +
+  labs(title='Experiment Design and Results')
 ```
+
 
 We can easily fit this model using random effects for each ring.
 ```{r}
@@ -355,22 +368,29 @@ To think about what is actually going on, it is helpful to consider the predicte
 First lets consider the predicted values if we completely ignore the Ring random effect while making predictions.
 
 ```{r}
-HierarchicalData <- HierarchicalData %>%
+HierarchicalData.Predictions <- HierarchicalData %>%
   mutate( y.hat   = predict(model, re.form= ~ 0),  # don't include any random effects 
           y.hat   = round( y.hat, digits=2),
-          my.text = paste('yhat =', y.hat),
-          text.height = 1.8)  
+          my.text = TeX(paste('$\\hat{y}$ =', y.hat), output='character')) %>%
+  group_by(Trt, Ring) %>% 
+  slice(1)  # Predictions are the same for all replicates in the ring
+
+HierarchicalData.Predictions %>%
+  head()
 ```
 
 ```{r, echo=FALSE, fig.height=5}
-ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
-  geom_tile() +
+HierarchicalData %>%
+  ggplot(aes(x=Rep, y=y, fill=Trt)) +
   facet_wrap(~Ring, labeller = label_both) +
-  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
-  scale_x_continuous(breaks=NULL) +
-  scale_y_continuous(breaks=NULL) +
-  geom_text( aes(label=my.text, y=text.height)) +
-  xlab("") + ylab("") +
+  geom_tile(width=Inf, height=Inf, alpha=.1) +
+  geom_point() +
+  xlab("Replicate") + ylab("Response") +
+
+  coord_cartesian(ylim=c(140,390)) +
+  geom_text(data=HierarchicalData.Predictions,
+            aes(label=my.text), y=375, x=3.5, parse=TRUE) +
+  geom_hline(data=HierarchicalData.Predictions, aes(yintercept=y.hat), color='red') +
   ggtitle('Treatment Only Predictions')
 ```
 
@@ -383,22 +403,24 @@ sum(ranef(model)$Ring)
 Also notice that the sum of the random effects *within a treatment* is zero! (Recall Ring 1:3 was treatment A, 4:6 was treatment B, and 7:9 was treatment C).
 
 ```{r}
-HierarchicalData <- HierarchicalData %>%
+HierarchicalData.Predictions <- HierarchicalData %>%
   mutate( y.hat   = predict(model, re.form= ~ (1|Ring)),  # Include Ring Random effect
           y.hat   = round( y.hat, digits=2),
-          my.text = paste('yhat =', y.hat),
-          text.height = 1.8)  
+          my.text = TeX(paste('$\\hat{y}$ =', y.hat), output='character'))  
 ```
 
 ```{r, echo=FALSE, fig.height=5}
-ggplot(HierarchicalData, aes(x=graph.x, y=graph.y, fill=Trt)) +
-  geom_tile() +
+HierarchicalData %>%
+  ggplot(aes(x=Rep, y=y, fill=Trt)) +
   facet_wrap(~Ring, labeller = label_both) +
-  geom_point(aes(x=jitter(graph.x, amount=.3), y=jitter(graph.y, amount=.3))) +
-  scale_x_continuous(breaks=NULL) +
-  scale_y_continuous(breaks=NULL) +
-  geom_text( aes(label=my.text, y=text.height)) +
-  xlab("") + ylab("") +
+  geom_tile(width=Inf, height=Inf, alpha=.1) +
+  geom_point() +
+  xlab("Replicate") + ylab("Response") +
+
+  coord_cartesian(ylim=c(140,390)) +
+  geom_text(data=HierarchicalData.Predictions,
+            aes(label=my.text), y=375, x=3.5, parse=TRUE) +
+  geom_hline(data=HierarchicalData.Predictions, aes(yintercept=y.hat), color='red') +
   ggtitle('Treatment and Ring Predictions')
 ```
 
@@ -462,7 +484,7 @@ ggplot(eggs, aes(x=Sample, y=Fat)) +
   ggtitle('Average With Lab + Technician + Sample Offset')
 ```
 
-No that we have an idea of how things vary, we can look at the summary table.
+Now that we have an idea of how things vary, we can look at the summary table.
 ```{r}
 summary(model)
 ```
@@ -607,7 +629,7 @@ summary(m2)
 ## Confidence and Prediction Intervals 
 As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn't a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the `lme4` package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.
 
-Typically the bootstrap is used when we don't want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data.  But, if we don't mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of $251.4$ and $10.5$. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of $24.7$ and $5.9$.  Then given a subjects regression line, observations are just normal (mean zero, standard deviation $25.6$) perterbations from the line.  All of these numbers came from the `summary(m2)` output.
+Typically the bootstrap is used when we don't want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data.  But, if we don't mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of $251.4$ and $10.5$. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of $24.7$ and $5.9$.  Then given a subjects regression line, observations are just normal (mean zero, standard deviation $25.6$) perturbations from the line.  All of these numbers came from the `summary(m2)` output.
 
 To create a bootstrap data simulating a new subject, we could do the following:
 ```{r}
@@ -627,58 +649,68 @@ This approach is commonly referred to as a "parametric" bootstrap because we are
 Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The `lme4::bootMer` function will create bootstrap data sets and then send those into the `lmer` function.
 
 ```{r, cache=TRUE}
-ConfData <- data.frame(Days=0:8)
+ConfData <- data.frame(Days=0:8)   # What x-values I care about
+
+# Get our best guess as to the relationship between day and reaction time
+ConfData <- ConfData %>%
+  mutate( Estimate = predict( m2, newdata = ConfData, re.form=~0) )
+
+# A function to generate yhat from a model
 myStats <- function(model){
   out <- predict( model, newdata=ConfData, re.form=~0 )
   return(out)
 }
 
-bootObj <- bootMer(m2, FUN=myStats, nsim = 1000 )
+# bootMer generates new data sets, calls lmer on the data to produce a model,
+# and then produces calls whatever function I pass in. It repeats this `nsim`
+# number of times.
+bootObj <- lme4::bootMer(m2, FUN=myStats, nsim = 1000 )
 
-# for some reason the car package is having problems.  I need to figure out how to make this work.
-# 
-# hist(bootObj)  # check for normality/skewness/etc
+# using car::hist.boot, but because hist() is overloaded, I'm not able 
+# to call it directly. Unfortunately, it doesn't allow me to select the 
+# bias-corrected and accelerated method, but the percentile method is ok
+# for visualizaton.
+hist(bootObj, ci='perc')
 
-# BCa failed for me, but percentile is fine 
-# ConfData <-  cbind( ConfData, car::Confint( bootObj,  level=0.95 ))  
-# ConfData
+# Add the confidence interval values onto estimates data frame
+CI <- confint( bootObj,  level=0.95, ci='bca') 
+colnames(CI) <- c('lwr','upr') 
+ConfData <- cbind(ConfData, CI)
 ```
 
 ```{r}
-# Now for a nice graph!  Unfortunately car::Confint used numbers for column names.
-# So first I need to fix that.
-# colnames(ConfData) <- c('Days', 'Estimate', 'lwr', 'upr')
-# ggplot(ConfData,  aes(x=Days)) +
-#   geom_line(aes(y=Estimate), color='red') +
-#   geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2)
+# Now for a nice graph!  
+ConfData %>%
+  ggplot(aes(x=Days)) +
+  geom_line(aes(y=Estimate), color='red') +
+  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2)
 ```
 
 ### Prediction Intervals
-For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don't need to fit a model at each bootstrap step. The `lme4::simulate` function creates the bootstrap dataset and doesn't send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the orginal dataset.
+For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don't need to fit a model at each bootstrap step. The `lme4::simulate` function creates the bootstrap dataset and doesn't send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the original dataset.
 
 ```{r}
 # # set up the structure of new subjects
-# PredData <- data.frame(Subject='new', Days=0:8) # Simulate a NEW patient
-# 
-# # Create a n x 1000 data frame
-# Simulated <- simulate(m2, newdata=PredData, allow.new.levels=TRUE, nsim=1000)
-# 
-# # squish the Subject/Day info together with the simulated and then grab the quantiles
-# # for each day
-# PredIntervals <- cbind(PredData, Simulated) %>%
-#   gather('sim','Reaction', sim_1:sim_1000 ) %>%   # go from wide to long structure
-#   group_by(Subject, Days) %>%
-#   summarize(lwr = quantile(Reaction, probs = 0.025),
-#             upr = quantile(Reaction, probs = 0.975))
+PredData <- data.frame(Subject='new', Days=0:8) # Simulate a NEW patient
 
+# Create a n x 1000 data frame
+Simulated <- simulate(m2, newdata=PredData, allow.new.levels=TRUE, nsim=1000)
+ 
+# squish the Subject/Day info together with the simulated and then grab the quantiles
+# for each day
+PredIntervals <- cbind(PredData, Simulated) %>%
+  gather('sim','Reaction', sim_1:sim_1000 ) %>%   # go from wide to long structure
+  group_by(Subject, Days) %>%
+  summarize(lwr = quantile(Reaction, probs = 0.025),
+            upr = quantile(Reaction, probs = 0.975))
 ```
 
 ```{r}
 # Plot the prediction and confidence intervals
-# ggplot(ConfData,  aes(x=Days)) +
-#   geom_line(aes(y=Estimate), color='red') +
-#   geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2) +
-#   geom_ribbon(data=PredIntervals, aes(ymin=lwr, ymax=upr), fill='blue', alpha=0.2)
+ggplot(ConfData,  aes(x=Days)) +
+  geom_line(aes(y=Estimate), color='red') +
+  geom_ribbon(aes(ymin=lwr, ymax= upr), fill='salmon', alpha=0.2) +
+  geom_ribbon(data=PredIntervals, aes(ymin=lwr, ymax=upr), fill='blue', alpha=0.2)
 ```
 
 

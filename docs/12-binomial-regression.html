@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-10-29" />
+<meta name="date" content="2019-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -302,10 +302,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="binomial-regression" class="section level1">
 <h1><span class="header-section-number">Chapter 12</span> Binomial Regression</h1>
-<div class="sourceCode" id="cb444"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb444-1" data-line-number="1"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2, etc...</span></a>
-<a class="sourceLine" id="cb444-2" data-line-number="2"><span class="kw">library</span>(emmeans)</a>
-<a class="sourceLine" id="cb444-3" data-line-number="3"><span class="kw">library</span>(pROC)</a>
-<a class="sourceLine" id="cb444-4" data-line-number="4"><span class="kw">library</span>(lmerTest)</a></code></pre></div>
+<div class="sourceCode" id="cb446"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb446-1" data-line-number="1"><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2, etc...</span></a>
+<a class="sourceLine" id="cb446-2" data-line-number="2"><span class="kw">library</span>(emmeans)</a>
+<a class="sourceLine" id="cb446-3" data-line-number="3"><span class="kw">library</span>(pROC)</a>
+<a class="sourceLine" id="cb446-4" data-line-number="4"><span class="kw">library</span>(lmerTest)</a></code></pre></div>
 <p>The general linear model assumes that the observed data is distributed
 <span class="math display">\[\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0,\sigma^2)\]</span>
 which can be re-written as
@@ -360,8 +360,8 @@ where we assume that <span class="math inline">\(\boldsymbol{\Omega}\)</span> ha
 which I can rewrite more formally letting <span class="math inline">\(w_{i}\)</span> be the observed value as <span class="math display">\[P\left(W_{i}=w_{i}\right)=p_{i}^{w_{i}}\left(1-p_{i}\right)^{1-w_{i}}\]</span> and the parameter that I wish to estimate and understand is the probability of a success <span class="math inline">\(p_{i}\)</span> and usually I wish to know how my covariate data <span class="math inline">\(\boldsymbol{X\beta}\)</span> informs these probabilities.</p>
 <p>In the normal distribution case, we estimated the expected value of my response vector (<span class="math inline">\(\boldsymbol{\mu}\)</span>) simply using <span class="math inline">\(\hat{\boldsymbol{\mu}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span> but this will not work for an estimate of <span class="math inline">\(\hat{\boldsymbol{p}}\)</span> because there is no constraint on <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, there is nothing to prevent it from being negative or greater than 1. Because we require the probability of success to be a number between 0 and 1, I have a problem.</p>
 <p>Example: Suppose we are interested in the abundance of mayflies in a stream. Because mayflies are sensitive to metal pollution, I might be interested in looking at the presence/absence of mayflies in a stream relative to a pollution gradient. Here the pollution gradient is measured in Cumulative Criterion Units (CCU: CCU is defined as the ratio of the measured metal concentration to the hardness adjusted chronic criterion concentration, and then summed across each metal) where larger values imply more metal pollution.</p>
-<div class="sourceCode" id="cb445"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb445-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;Mayflies&#39;</span>, <span class="dt">package=</span><span class="st">&#39;dsData&#39;</span>)</a>
-<a class="sourceLine" id="cb445-2" data-line-number="2"><span class="kw">head</span>(Mayflies)</a></code></pre></div>
+<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;Mayflies&#39;</span>, <span class="dt">package=</span><span class="st">&#39;dsData&#39;</span>)</a>
+<a class="sourceLine" id="cb447-2" data-line-number="2"><span class="kw">head</span>(Mayflies)</a></code></pre></div>
 <pre><code>##          CCU Occupancy
 ## 1 0.05261076         1
 ## 2 0.25935617         1
@@ -369,17 +369,17 @@ which I can rewrite more formally letting <span class="math inline">\(w_{i}\)</s
 ## 4 0.90168941         1
 ## 5 0.97002630         1
 ## 6 1.08037011         1</code></pre>
-<div class="sourceCode" id="cb447"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb447-1" data-line-number="1"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-268-1.png" width="672" /></p>
-<p>If I just fit a regular linear model to this data, we fit the following:</p>
-<div class="sourceCode" id="cb448"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb448-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )</a>
-<a class="sourceLine" id="cb448-2" data-line-number="2">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))</a>
-<a class="sourceLine" id="cb448-3" data-line-number="3"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb448-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb448-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-269-1.png" width="672" /></p>
+<p>If I just fit a regular linear model to this data, we fit the following:</p>
+<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb450-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )</a>
+<a class="sourceLine" id="cb450-2" data-line-number="2">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))</a>
+<a class="sourceLine" id="cb450-3" data-line-number="3"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb450-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb450-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
 <p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following:
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-271-1.png" width="672" /></p>
 <p>We need a way to convert our covariate data <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X\beta}\)</span> from something that can take values from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span> to something that is constrained between 0 and 1 so that we can fit the model
 <span class="math display">\[w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)\]</span>
 There are several options for the link function <span class="math inline">\(g^{-1}\left(\cdot\right)\)</span> that are commonly used. We use the notation <span class="math inline">\(y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}\)</span> is unconstrained and can be in <span class="math inline">\(\left(-\infty, +\infty\right)\)</span> while <span class="math inline">\(p_{i}=g^{-1}\left(y_{i}\right)\)</span> is constrained to <span class="math inline">\(\left[0,1\right]\)</span>. When convenient, we will drop the <span class="math inline">\(i\)</span>
@@ -407,18 +407,18 @@ and we recognize that
 <span class="math display">\[p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbol{X\beta}}\right)\]</span>
 and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is <em>really</em> small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.</p>
 <p>Often we have more than one response at a particular level of <span class="math inline">\(\boldsymbol{X}\)</span>. Let <span class="math inline">\(n_{i}\)</span> be the number of observations observed at the particular value of <span class="math inline">\(\boldsymbol{X}\)</span>, and <span class="math inline">\(y_{i}\)</span> be the proportion of successes at that value of <span class="math inline">\(\boldsymbol{X}\)</span>. In that case, <span class="math inline">\(w_{i}\)</span> is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with <span class="math inline">\(n_{i}=1\)</span>.</p>
-<div class="sourceCode" id="cb449"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb449-1" data-line-number="1"><span class="co"># beta are the parameters </span></a>
-<a class="sourceLine" id="cb449-2" data-line-number="2"><span class="co"># y is the response in terms of 0,1 for this mayfly example</span></a>
-<a class="sourceLine" id="cb449-3" data-line-number="3"><span class="co"># X is the design matrix that we use for our covariates.</span></a>
-<a class="sourceLine" id="cb449-4" data-line-number="4">logL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, y, X){</a>
-<a class="sourceLine" id="cb449-5" data-line-number="5">  out &lt;-<span class="st"> </span><span class="kw">dbinom</span>( y, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(X<span class="op">%*%</span>beta), <span class="dt">log=</span><span class="ot">TRUE</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>()</a>
-<a class="sourceLine" id="cb449-6" data-line-number="6">  <span class="kw">return</span>(out)  </a>
-<a class="sourceLine" id="cb449-7" data-line-number="7">}</a>
-<a class="sourceLine" id="cb449-8" data-line-number="8">NeglogL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, y, X){ <span class="kw">return</span>( <span class="op">-</span><span class="kw">logL</span>(beta, y, X)) }</a></code></pre></div>
-<div class="sourceCode" id="cb450"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb450-1" data-line-number="1"><span class="kw">optim</span>( <span class="dt">par=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),     <span class="co"># intial bad guesses</span></a>
-<a class="sourceLine" id="cb450-2" data-line-number="2">       <span class="dt">fn =</span> NeglogL,   <span class="co"># we want to minimize the -logL function, maximize logL</span></a>
-<a class="sourceLine" id="cb450-3" data-line-number="3">       <span class="dt">y=</span>Mayflies<span class="op">$</span>Occupancy,  <span class="co"># parameters to pass to the logL function</span></a>
-<a class="sourceLine" id="cb450-4" data-line-number="4">       <span class="dt">X =</span> <span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies ) )  <span class="co"># ditto</span></a></code></pre></div>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" data-line-number="1"><span class="co"># beta are the parameters </span></a>
+<a class="sourceLine" id="cb451-2" data-line-number="2"><span class="co"># y is the response in terms of 0,1 for this mayfly example</span></a>
+<a class="sourceLine" id="cb451-3" data-line-number="3"><span class="co"># X is the design matrix that we use for our covariates.</span></a>
+<a class="sourceLine" id="cb451-4" data-line-number="4">logL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, y, X){</a>
+<a class="sourceLine" id="cb451-5" data-line-number="5">  out &lt;-<span class="st"> </span><span class="kw">dbinom</span>( y, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(X<span class="op">%*%</span>beta), <span class="dt">log=</span><span class="ot">TRUE</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>()</a>
+<a class="sourceLine" id="cb451-6" data-line-number="6">  <span class="kw">return</span>(out)  </a>
+<a class="sourceLine" id="cb451-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb451-8" data-line-number="8">NeglogL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, y, X){ <span class="kw">return</span>( <span class="op">-</span><span class="kw">logL</span>(beta, y, X)) }</a></code></pre></div>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" data-line-number="1"><span class="kw">optim</span>( <span class="dt">par=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),     <span class="co"># intial bad guesses</span></a>
+<a class="sourceLine" id="cb452-2" data-line-number="2">       <span class="dt">fn =</span> NeglogL,   <span class="co"># we want to minimize the -logL function, maximize logL</span></a>
+<a class="sourceLine" id="cb452-3" data-line-number="3">       <span class="dt">y=</span>Mayflies<span class="op">$</span>Occupancy,  <span class="co"># parameters to pass to the logL function</span></a>
+<a class="sourceLine" id="cb452-4" data-line-number="4">       <span class="dt">X =</span> <span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies ) )  <span class="co"># ditto</span></a></code></pre></div>
 <pre><code>## $par
 ## [1]  5.100892 -3.050336
 ## 
@@ -435,7 +435,7 @@ and we substituted that into the equation. Often times it is more numerically st
 ## $message
 ## NULL</code></pre>
 <p>In general, we don’t want to have to specify the likelihood function by hand. Instead we will specify the model using the <code>glm</code> function which accepts a model formula as well as the distribution family that the data comes from.</p>
-<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" data-line-number="1"><span class="kw">head</span>(Mayflies)</a></code></pre></div>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" data-line-number="1"><span class="kw">head</span>(Mayflies)</a></code></pre></div>
 <pre><code>##          CCU Occupancy      yhat
 ## 1 0.05261076         1 0.8846278
 ## 2 0.25935617         1 0.8343395
@@ -443,14 +443,14 @@ and we substituted that into the equation. Often times it is more numerically st
 ## 4 0.90168941         1 0.6780997
 ## 5 0.97002630         1 0.6614776
 ## 6 1.08037011         1 0.6346378</code></pre>
-<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" data-line-number="1"><span class="co"># The following are equivalent and a &quot;success&quot; is if the site is </span></a>
-<a class="sourceLine" id="cb454-2" data-line-number="2"><span class="co"># occupied. If you were to switch it so a success is that the site</span></a>
-<a class="sourceLine" id="cb454-3" data-line-number="3"><span class="co"># is not occupied, the signs on all the beta coefficients would switch.</span></a>
-<a class="sourceLine" id="cb454-4" data-line-number="4"><span class="co"># m1 &lt;- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!</span></a>
-<a class="sourceLine" id="cb454-5" data-line-number="5">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(Occupancy, <span class="dv">1</span><span class="op">-</span>Occupancy) <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial ) <span class="co">#ok!</span></a>
-<a class="sourceLine" id="cb454-6" data-line-number="6">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</a></code></pre></div>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" data-line-number="1"><span class="co"># The following are equivalent and a &quot;success&quot; is if the site is </span></a>
+<a class="sourceLine" id="cb456-2" data-line-number="2"><span class="co"># occupied. If you were to switch it so a success is that the site</span></a>
+<a class="sourceLine" id="cb456-3" data-line-number="3"><span class="co"># is not occupied, the signs on all the beta coefficients would switch.</span></a>
+<a class="sourceLine" id="cb456-4" data-line-number="4"><span class="co"># m1 &lt;- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!</span></a>
+<a class="sourceLine" id="cb456-5" data-line-number="5">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(Occupancy, <span class="dv">1</span><span class="op">-</span>Occupancy) <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial ) <span class="co">#ok!</span></a>
+<a class="sourceLine" id="cb456-6" data-line-number="6">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</a></code></pre></div>
 <p>For binomial response data, we need to know the number of successes and the number of failures at each level of our covariate. In this case it is quite simple because there is only one observation at each CCU level, so the number of successes is Occupancy and the number of failures is just 1-Occupancy. For binomial data, <code>glm</code> expect the response to be a two-column matrix where the first column is the number successes and and the second column is the number of failures. The default choice of link function for binomial data is the logit link, but the probit can be easily chosen as well using <code>family=binomial(link=probit)</code> in the call to <code>glm()</code>. If you only give a single response vector, it is assumed that the second column is to be calculated as 1-first.column.</p>
-<div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb455-1" data-line-number="1"><span class="kw">summary</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" data-line-number="1"><span class="kw">summary</span>(m1)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = Occupancy ~ CCU, family = binomial, data = Mayflies)
@@ -475,36 +475,36 @@ and we substituted that into the equation. Often times it is more numerically st
 ## Number of Fisher Scoring iterations: 7</code></pre>
 <p>Notice that the summary table includes an estimate of the standard error of each <span class="math inline">\(\hat{\beta}_{j}\)</span> and a standardized value and z-test that are calculated in the usual manner <span class="math inline">\(z_{j}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}\)</span> but these only approximately follow a standard normal distribution (due to the CLT results for Maximum Likelihood Estimators). We should regard the p-values given as approximate.</p>
 <p>The sigmoid curve shown prior was the result of the logit model and we can estimate the probability of occupancy for any value of CCU. Surprisingly, R does not have a built-in function for the logit and ilogit function, but the faraway package does include them.</p>
-<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" data-line-number="1"><span class="co"># Here are two ways to calculate the phat value for CCU = 1</span></a>
-<a class="sourceLine" id="cb457-2" data-line-number="2">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">CCU=</span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb457-3" data-line-number="3">faraway<span class="op">::</span><span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) )          </a></code></pre></div>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" data-line-number="1"><span class="co"># Here are two ways to calculate the phat value for CCU = 1</span></a>
+<a class="sourceLine" id="cb459-2" data-line-number="2">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">CCU=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb459-3" data-line-number="3">faraway<span class="op">::</span><span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) )          </a></code></pre></div>
 <pre><code>##        1 
 ## 0.886042</code></pre>
-<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" data-line-number="1"><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)   </a></code></pre></div>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1"><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)   </a></code></pre></div>
 <pre><code>##        1 
 ## 0.886042</code></pre>
-<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" data-line-number="1"><span class="co"># But the predict() function won&#39;t give you a confidence interval.</span></a>
-<a class="sourceLine" id="cb461-2" data-line-number="2"><span class="co"># Lets get this value through emmeans() instead.</span></a>
-<a class="sourceLine" id="cb461-3" data-line-number="3"><span class="kw">emmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1"><span class="co"># But the predict() function won&#39;t give you a confidence interval.</span></a>
+<a class="sourceLine" id="cb463-2" data-line-number="2"><span class="co"># Lets get this value through emmeans() instead.</span></a>
+<a class="sourceLine" id="cb463-3" data-line-number="3"><span class="kw">emmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</a></code></pre></div>
 <pre><code>##  CCU  prob    SE  df asymp.LCL asymp.UCL
 ##    1 0.886 0.129 Inf     0.391      0.99
 ## 
 ## Confidence level used: 0.95 
 ## Intervals are back-transformed from the logit scale</code></pre>
-<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" data-line-number="1"><span class="co"># Finally a nice graph</span></a>
-<a class="sourceLine" id="cb463-2" data-line-number="2">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )</a>
-<a class="sourceLine" id="cb463-3" data-line-number="3">yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) ) </a>
-<a class="sourceLine" id="cb463-4" data-line-number="4"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb463-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb463-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-275-1.png" width="672" /></p>
+<div class="sourceCode" id="cb465"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb465-1" data-line-number="1"><span class="co"># Finally a nice graph</span></a>
+<a class="sourceLine" id="cb465-2" data-line-number="2">new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )</a>
+<a class="sourceLine" id="cb465-3" data-line-number="3">yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) ) </a>
+<a class="sourceLine" id="cb465-4" data-line-number="4"><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb465-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb465-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
 <p>Suppose that we were to give a predicted Presence/Absence class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
-<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" data-line-number="1">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb464-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb464-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </a>
-<a class="sourceLine" id="cb464-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb464-5" data-line-number="5"><span class="co"># This is often called the &quot;confusion matrix&quot;</span></a>
-<a class="sourceLine" id="cb464-6" data-line-number="6"><span class="kw">table</span>(<span class="dt">Truth =</span> Mayflies<span class="op">$</span>Occupancy, <span class="dt">Prediction =</span> Mayflies<span class="op">$</span>chat)</a></code></pre></div>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1">Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb466-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb466-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </a>
+<a class="sourceLine" id="cb466-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb466-5" data-line-number="5"><span class="co"># This is often called the &quot;confusion matrix&quot;</span></a>
+<a class="sourceLine" id="cb466-6" data-line-number="6"><span class="kw">table</span>(<span class="dt">Truth =</span> Mayflies<span class="op">$</span>Occupancy, <span class="dt">Prediction =</span> Mayflies<span class="op">$</span>chat)</a></code></pre></div>
 <pre><code>##      Prediction
 ## Truth  0  1
 ##     0 21  1
@@ -524,8 +524,8 @@ because it provided a mechanism for comparing the fit of two different models. I
 where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the fitted parameters of the model of interest, and <span class="math inline">\(\hat{\boldsymbol{\theta}}_{S}\)</span> are the fitted parameters under a “saturated” model that has as many parameters as it has observations and can therefore fit the data perfectly. Thus the deviance is a measure of deviation from a perfect model and is flexible enough to handle non-normal distributions appropriately.</p>
 <p>Notice that this definition is very similar to what is calculated during the Likelihood Ratio Test. For any two models under consideration, the LRT can be formed by looking at the difference of the deviances of the two nested models
 <span class="math display">\[LRT=D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{simple}\right)-D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{complex}\right)\stackrel{\cdot}{\sim}\chi_{df_{complex}-df_{simple}}^{2}\]</span></p>
-<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" data-line-number="1">m0 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</a>
-<a class="sourceLine" id="cb466-2" data-line-number="2"><span class="kw">anova</span>(m0, m1)</a></code></pre></div>
+<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb468-1" data-line-number="1">m0 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</a>
+<a class="sourceLine" id="cb468-2" data-line-number="2"><span class="kw">anova</span>(m0, m1)</a></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model 1: Occupancy ~ 1
@@ -533,10 +533,10 @@ where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the
 ##   Resid. Df Resid. Dev Df Deviance
 ## 1        29     34.795            
 ## 2        28     12.649  1   22.146</code></pre>
-<div class="sourceCode" id="cb468"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb468-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">22.146</span>, <span class="dt">df=</span><span class="dv">1</span> )</a></code></pre></div>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">22.146</span>, <span class="dt">df=</span><span class="dv">1</span> )</a></code></pre></div>
 <pre><code>## [1] 2.526819e-06</code></pre>
 <p>A convenient way to get R to calculate the LRT <span class="math inline">\(\chi^{2}\)</span> p-value for you is to specify the <code>test=LRT</code> inside the <code>anova</code> function.</p>
-<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" data-line-number="1"><span class="kw">anova</span>(m1, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1"><span class="kw">anova</span>(m1, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</a></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model: binomial, link: logit
@@ -552,7 +552,7 @@ where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The inference of this can be confirmed by looking at the AIC values of the two models as well.</p>
-<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" data-line-number="1"><span class="kw">AIC</span>(m0, m1)</a></code></pre></div>
+<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1"><span class="kw">AIC</span>(m0, m1)</a></code></pre></div>
 <pre><code>##    df      AIC
 ## m0  1 36.79491
 ## m1  2 16.64873</code></pre>
@@ -565,10 +565,10 @@ where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the
 and the Pearson residual can be defined as
 <span class="math display">\[r_{i}=\frac{w_{i}-n_{i}\hat{p}_{i}}{\sqrt{n_{i}\hat{p}_{i}\left(1-\hat{p}_{i}\right)}}\]</span></p>
 <p>These can be found in R via the following commands</p>
-<div class="sourceCode" id="cb474"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb474-1" data-line-number="1"><span class="kw">sum</span>( <span class="kw">residuals</span>(m1, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>)<span class="op">^</span><span class="dv">2</span> )</a></code></pre></div>
+<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb476-1" data-line-number="1"><span class="kw">sum</span>( <span class="kw">residuals</span>(m1, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>)<span class="op">^</span><span class="dv">2</span> )</a></code></pre></div>
 <pre><code>## [1] 14.92367</code></pre>
 <p>Pearson’s <span class="math inline">\(X^{2}\)</span> statistic is quite similar to the deviance statistic</p>
-<div class="sourceCode" id="cb476"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb476-1" data-line-number="1"><span class="kw">deviance</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" data-line-number="1"><span class="kw">deviance</span>(m1)</a></code></pre></div>
 <pre><code>## [1] 12.64873</code></pre>
 </div>
 </div>
@@ -585,12 +585,12 @@ but we know that this is not a good approximation because the the normal approxi
 <p><img src="Statistical-Methods-II_files/figure-html/Profile_CI2-1.png" width="672" /></p>
 <p>Looking at just the <span class="math inline">\(\beta_{0}\)</span> axis, this translates into a confidence interval of <span class="math inline">\((1.63,\, 11.78)\)</span>. This method is commonly referred to as the “profile likelihood” interval because the interval is created by viewing the contour plot from the one axis. The physical analogy is to viewing a mountain range from afar and asking, “What parts of the mountain are higher than 8000 feet?”</p>
 <p>This type of confidence interval is more robust than the normal approximation and should be used whenever practical. In R, the profile likelihood confidence interval for <code>glm</code> objects is available in the <code>MASS</code> library.</p>
-<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" data-line-number="1"><span class="kw">confint</span>(m1) <span class="co"># using defaults</span></a></code></pre></div>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" data-line-number="1"><span class="kw">confint</span>(m1) <span class="co"># using defaults</span></a></code></pre></div>
 <pre><code>## Waiting for profiling to be done...</code></pre>
 <pre><code>##                 2.5 %    97.5 %
 ## (Intercept)  1.629512 11.781167
 ## CCU         -6.446863 -1.304244</code></pre>
-<div class="sourceCode" id="cb481"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb481-1" data-line-number="1"><span class="kw">confint</span>(m1, <span class="dt">level=</span>.<span class="dv">95</span>, <span class="dt">parm=</span><span class="st">&#39;CCU&#39;</span>) <span class="co"># Just the slope parameter</span></a></code></pre></div>
+<div class="sourceCode" id="cb483"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb483-1" data-line-number="1"><span class="kw">confint</span>(m1, <span class="dt">level=</span>.<span class="dv">95</span>, <span class="dt">parm=</span><span class="st">&#39;CCU&#39;</span>) <span class="co"># Just the slope parameter</span></a></code></pre></div>
 <pre><code>## Waiting for profiling to be done...</code></pre>
 <pre><code>##     2.5 %    97.5 % 
 ## -6.446863 -1.304244</code></pre>
@@ -681,8 +681,8 @@ and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span cl
 </tbody>
 </table>
 <p>We can fit the saturated model (6 parameters to fit 6 different probabilities) as</p>
-<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb484-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;babyfood&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb484-2" data-line-number="2"><span class="kw">head</span>(babyfood)</a></code></pre></div>
+<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb486-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;babyfood&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb486-2" data-line-number="2"><span class="kw">head</span>(babyfood)</a></code></pre></div>
 <pre><code>##   disease nondisease  sex   food
 ## 1      77        381  Boy Bottle
 ## 2      19        128  Boy  Suppl
@@ -690,8 +690,8 @@ and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span cl
 ## 4      48        336 Girl Bottle
 ## 5      16        111 Girl  Suppl
 ## 6      31        433 Girl Breast</code></pre>
-<div class="sourceCode" id="cb486"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb486-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease,nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood )</a>
-<a class="sourceLine" id="cb486-2" data-line-number="2"><span class="kw">summary</span>(m2)</a></code></pre></div>
+<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb488-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease,nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood )</a>
+<a class="sourceLine" id="cb488-2" data-line-number="2"><span class="kw">summary</span>(m2)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cbind(disease, nondisease) ~ sex * food, family = binomial, 
@@ -720,7 +720,7 @@ and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span cl
 ## Number of Fisher Scoring iterations: 3</code></pre>
 <p>Notice that the residual deviance is effectively zero with zero degrees of freedom indicating we just fit the saturated model.</p>
 <p>It is nice to look at the single term deletions to see if the interaction term could be dropped from the model.</p>
-<div class="sourceCode" id="cb488"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb488-1" data-line-number="1"><span class="kw">anova</span>(m2, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb490-1" data-line-number="1"><span class="kw">anova</span>(m2, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</a></code></pre></div>
 <pre><code>## Analysis of Deviance Table
 ## 
 ## Model: binomial, link: logit
@@ -738,8 +738,8 @@ and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span cl
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Given this, we will look use the reduced model with out the interaction and check if we could reduce the model any more.</p>
-<div class="sourceCode" id="cb490"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb490-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease, nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood)</a>
-<a class="sourceLine" id="cb490-2" data-line-number="2"><span class="kw">drop1</span>(m1, <span class="dt">test=</span><span class="st">&#39;Chi&#39;</span>)  <span class="co"># all single term deletions, using LRT </span></a></code></pre></div>
+<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb492-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease, nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood)</a>
+<a class="sourceLine" id="cb492-2" data-line-number="2"><span class="kw">drop1</span>(m1, <span class="dt">test=</span><span class="st">&#39;Chi&#39;</span>)  <span class="co"># all single term deletions, using LRT </span></a></code></pre></div>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -751,7 +751,7 @@ and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span cl
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>From this we see that we cannot reduce the model any more and we will interpret the coefficients of this model.</p>
-<div class="sourceCode" id="cb492"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb492-1" data-line-number="1"><span class="kw">coef</span>(m1, <span class="dt">digits=</span><span class="dv">5</span>)  <span class="co"># more accuracy</span></a></code></pre></div>
+<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb494-1" data-line-number="1"><span class="kw">coef</span>(m1, <span class="dt">digits=</span><span class="dv">5</span>)  <span class="co"># more accuracy</span></a></code></pre></div>
 <pre><code>## (Intercept)     sexGirl  foodBreast   foodSuppl 
 ##  -1.6127038  -0.3125528  -0.6692946  -0.1725424</code></pre>
 <p>We interpret the intercept term as the log odds that a male child fed only formula will develop a respiratory disease in their first year. With that, we could then calculate what the probability of a male formula fed baby developing respiratory disease using following
@@ -765,11 +765,11 @@ We notice that the odds of respiratory disease disease is
 <span class="math display">\[\frac{p_{F,f}}{1-p_{F,f}}=\frac{0.1273}{1-0.1273}=0.1458=e^{-1.6127-0.3126}\]</span>
 so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as the percent change in odds from male to female infants. That is to say, it is the <em>odds ratio</em> of the female infants to the males is <span class="math display">\[e^{-0.3126}=\frac{\left(\frac{p_{F,f}}{1-p_{F,f}}\right)}{\left(\frac{p_{M,f}}{1-p_{M,f}}\right)}=\frac{0.1458}{0.1993}=0.7315\]</span></p>
 <p>The interpretation here is that odds of respiratory infection for females is 73.1% than that of a similarly feed male child and I might say that being female reduces the odds of respiratory illness by <span class="math inline">\(27\%\)</span> compared to male babies. Similarly we can calculate the change in odds ratio for the feeding types:</p>
-<div class="sourceCode" id="cb494"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb494-1" data-line-number="1"><span class="kw">exp</span>( <span class="kw">coef</span>(m1) )</a></code></pre></div>
+<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb496-1" data-line-number="1"><span class="kw">exp</span>( <span class="kw">coef</span>(m1) )</a></code></pre></div>
 <pre><code>## (Intercept)     sexGirl  foodBreast   foodSuppl 
 ##   0.1993479   0.7315770   0.5120696   0.8415226</code></pre>
 <p>First we notice that the intercept term can be interpreted as the odds of infection for the reference group. The each of the offset terms are the odds ratios compared to the reference group. We see that breast milk along with formula has only <span class="math inline">\(84\%\)</span> of the odds of respiratory disease as a formula only baby, and a breast milk fed child only has <span class="math inline">\(51\%\)</span> of the odds for respiratory disease as the formula fed baby. We can look at confidence intervals for the odds ratios by the following:</p>
-<div class="sourceCode" id="cb496"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb496-1" data-line-number="1"><span class="kw">exp</span>( <span class="kw">confint</span>(m1) )</a></code></pre></div>
+<div class="sourceCode" id="cb498"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb498-1" data-line-number="1"><span class="kw">exp</span>( <span class="kw">confint</span>(m1) )</a></code></pre></div>
 <pre><code>## Waiting for profiling to be done...</code></pre>
 <pre><code>##                 2.5 %    97.5 %
 ## (Intercept) 0.1591988 0.2474333
@@ -778,7 +778,7 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 ## foodSuppl   0.5555372 1.2464312</code></pre>
 <p>We should be careful in drawing conclusions here because this study was a retrospective study and the decision to breast feed a baby vs feeding with formula is inextricably tied to socio-economic status and we should investigate if the effect measured is due to feeding method or some other lurking variable tied to socio-economic status.</p>
 <p>As usual, we don’t want to calculate all these quantities by hand and would prefer if <code>emmeans</code> would do all the back-transformations for us.</p>
-<div class="sourceCode" id="cb499"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb499-1" data-line-number="1"><span class="kw">emmeans</span>(m1, <span class="op">~</span><span class="st"> </span>sex<span class="op">+</span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)  <span class="co"># probabilities for each sex/treatment</span></a></code></pre></div>
+<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb501-1" data-line-number="1"><span class="kw">emmeans</span>(m1, <span class="op">~</span><span class="st"> </span>sex<span class="op">+</span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)  <span class="co"># probabilities for each sex/treatment</span></a></code></pre></div>
 <pre><code>##  sex  food     prob     SE  df asymp.LCL asymp.UCL
 ##  Boy  Bottle 0.1662 0.0156 Inf    0.1379    0.1990
 ##  Girl Bottle 0.1273 0.0143 Inf    0.1018    0.1580
@@ -789,7 +789,7 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 ## 
 ## Confidence level used: 0.95 
 ## Intervals are back-transformed from the logit scale</code></pre>
-<div class="sourceCode" id="cb501"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb501-1" data-line-number="1"><span class="kw">emmeans</span>(m1, pairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Boy / Girl</span></a></code></pre></div>
+<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb503-1" data-line-number="1"><span class="kw">emmeans</span>(m1, pairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Boy / Girl</span></a></code></pre></div>
 <pre><code>## $emmeans
 ##  sex    prob     SE  df asymp.LCL asymp.UCL
 ##  Boy  0.1309 0.0111 Inf    0.1105     0.154
@@ -805,7 +805,7 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 ## 
 ## Results are averaged over the levels of: food 
 ## Tests are performed on the log odds ratio scale</code></pre>
-<div class="sourceCode" id="cb503"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb503-1" data-line-number="1"><span class="kw">emmeans</span>(m1, revpairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Girl / Boy</span></a></code></pre></div>
+<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb505-1" data-line-number="1"><span class="kw">emmeans</span>(m1, revpairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Girl / Boy</span></a></code></pre></div>
 <pre><code>## $emmeans
 ##  sex    prob     SE  df asymp.LCL asymp.UCL
 ##  Boy  0.1309 0.0111 Inf    0.1105     0.154
@@ -821,7 +821,7 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 ## 
 ## Results are averaged over the levels of: food 
 ## Tests are performed on the log odds ratio scale</code></pre>
-<div class="sourceCode" id="cb505"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb505-1" data-line-number="1"><span class="kw">emmeans</span>(m1, pairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></a></code></pre></div>
+<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb507-1" data-line-number="1"><span class="kw">emmeans</span>(m1, pairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></a></code></pre></div>
 <pre><code>## $emmeans
 ##  food     prob      SE  df asymp.LCL asymp.UCL
 ##  Bottle 0.1457 0.01220 Inf    0.1233    0.1712
@@ -841,7 +841,7 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 ## Results are averaged over the levels of: sex 
 ## P value adjustment: tukey method for comparing a family of 3 estimates 
 ## Tests are performed on the log odds ratio scale</code></pre>
-<div class="sourceCode" id="cb507"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb507-1" data-line-number="1"><span class="kw">emmeans</span>(m1, revpairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></a></code></pre></div>
+<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb509-1" data-line-number="1"><span class="kw">emmeans</span>(m1, revpairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></a></code></pre></div>
 <pre><code>## $emmeans
 ##  food     prob      SE  df asymp.LCL asymp.UCL
 ##  Bottle 0.1457 0.01220 Inf    0.1233    0.1712
@@ -865,17 +865,17 @@ so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as t
 <div id="prediction-and-effective-dose-levels" class="section level2">
 <h2><span class="header-section-number">12.5</span> Prediction and Effective Dose Levels</h2>
 <p>To demonstrate the ideas in this section, we’ll use a toxicology study that examined insect mortality as a function of increasing concentrations of an insecticide.</p>
-<div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb509-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;bliss&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb511-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;bliss&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a></code></pre></div>
 <p>We first fit the logistic regression model and plot the results</p>
-<div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb510-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(alive, dead) <span class="op">~</span><span class="st"> </span>conc, <span class="dt">family=</span>binomial, <span class="dt">data=</span>bliss)</a></code></pre></div>
+<div class="sourceCode" id="cb512"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb512-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(alive, dead) <span class="op">~</span><span class="st"> </span>conc, <span class="dt">family=</span>binomial, <span class="dt">data=</span>bliss)</a></code></pre></div>
 <p>Given this, we want to develop a confidence interval for the probabilities by first calculating using the following formula. As usual, we recall that the <span class="math inline">\(y\)</span> values live in <span class="math inline">\(\left(-\infty,\infty\right)\)</span>.
 <span class="math display">\[CI_{y}:\,\,\,\hat{y}\pm z^{1-\alpha/2}\,StdErr\left(\hat{y}\right)\]</span>
 We must then convert this to the <span class="math inline">\(\left[ 0,1 \right]\)</span> space using the <span class="math inline">\(\textrm{ilogit}()\)</span> function. <span class="math display">\[CI_{p}=\textrm{ilogit}\left(CI_{y}\right)\]</span></p>
-<div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb511-1" data-line-number="1">probs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="dt">by=</span>.<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb511-2" data-line-number="2">yhat &lt;-<span class="st"> </span><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>probs, <span class="dt">se.fit=</span><span class="ot">TRUE</span>)  <span class="co"># list with two elements fit and se.fit</span></a>
-<a class="sourceLine" id="cb511-3" data-line-number="3">yhat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">fit=</span>yhat<span class="op">$</span>fit, <span class="dt">se.fit =</span> yhat<span class="op">$</span>se.fit)</a>
-<a class="sourceLine" id="cb511-4" data-line-number="4">probs &lt;-<span class="st"> </span><span class="kw">cbind</span>(probs, yhat)</a>
-<a class="sourceLine" id="cb511-5" data-line-number="5"><span class="kw">head</span>(probs)</a></code></pre></div>
+<div class="sourceCode" id="cb513"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb513-1" data-line-number="1">probs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="dt">by=</span>.<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb513-2" data-line-number="2">yhat &lt;-<span class="st"> </span><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>probs, <span class="dt">se.fit=</span><span class="ot">TRUE</span>)  <span class="co"># list with two elements fit and se.fit</span></a>
+<a class="sourceLine" id="cb513-3" data-line-number="3">yhat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">fit=</span>yhat<span class="op">$</span>fit, <span class="dt">se.fit =</span> yhat<span class="op">$</span>se.fit)</a>
+<a class="sourceLine" id="cb513-4" data-line-number="4">probs &lt;-<span class="st"> </span><span class="kw">cbind</span>(probs, yhat)</a>
+<a class="sourceLine" id="cb513-5" data-line-number="5"><span class="kw">head</span>(probs)</a></code></pre></div>
 <pre><code>##   conc      fit    se.fit
 ## 1  0.0 2.323790 0.4178878
 ## 2  0.1 2.207600 0.4022371
@@ -883,19 +883,19 @@ We must then convert this to the <span class="math inline">\(\left[ 0,1 \right]\
 ## 4  0.3 1.975221 0.3716158
 ## 5  0.4 1.859032 0.3567036
 ## 6  0.5 1.742842 0.3421035</code></pre>
-<div class="sourceCode" id="cb513"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb513-1" data-line-number="1">probs &lt;-<span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb513-2" data-line-number="2">  <span class="dt">phat  =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(fit),</a>
-<a class="sourceLine" id="cb513-3" data-line-number="3">  <span class="dt">lwr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ),</a>
-<a class="sourceLine" id="cb513-4" data-line-number="4">  <span class="dt">upr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ))</a>
-<a class="sourceLine" id="cb513-5" data-line-number="5"><span class="kw">ggplot</span>(bliss, <span class="kw">aes</span>(<span class="dt">x=</span>conc)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb513-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>alive<span class="op">/</span>(alive<span class="op">+</span>dead))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb513-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb513-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb513-9" data-line-number="9"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb513-10" data-line-number="10"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-294-1.png" width="672" /></p>
+<div class="sourceCode" id="cb515"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb515-1" data-line-number="1">probs &lt;-<span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb515-2" data-line-number="2">  <span class="dt">phat  =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(fit),</a>
+<a class="sourceLine" id="cb515-3" data-line-number="3">  <span class="dt">lwr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ),</a>
+<a class="sourceLine" id="cb515-4" data-line-number="4">  <span class="dt">upr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ))</a>
+<a class="sourceLine" id="cb515-5" data-line-number="5"><span class="kw">ggplot</span>(bliss, <span class="kw">aes</span>(<span class="dt">x=</span>conc)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb515-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>alive<span class="op">/</span>(alive<span class="op">+</span>dead))) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb515-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb515-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb515-9" data-line-number="9"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb515-10" data-line-number="10"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-295-1.png" width="672" /></p>
 <p>Alternatively, we might want to do this calculation via <code>emmeans</code>.</p>
-<div class="sourceCode" id="cb514"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb514-1" data-line-number="1">emmeans<span class="op">::</span><span class="kw">emmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb516-1" data-line-number="1">emmeans<span class="op">::</span><span class="kw">emmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </a></code></pre></div>
 <pre><code>##  conc   prob     SE  df asymp.LCL asymp.UCL
 ##     0 0.9108 0.0339 Inf    0.8183     0.959
 ##     1 0.7617 0.0500 Inf    0.6507     0.846
@@ -910,19 +910,19 @@ We must then convert this to the <span class="math inline">\(\left[ 0,1 \right]\
 which gives us a point estimate of LD(p). To get a confidence interval we need to find the standard error of <span class="math inline">\(\hat{x}_{p}\)</span>. Since this is a non-linear function of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> which are correlated, we must be careful in the calculation. The actual calculation is done using the Delta Method Approximation:
 <span class="math display">\[Var\left(g\left(\hat{\boldsymbol{\theta}}\right)\right)=g&#39;\left(\boldsymbol{\theta}\right)^{T}Var\left(\boldsymbol{\theta}\right)g&#39;\left(\boldsymbol{\theta}\right)\]</span>
 Fortunately we don’t have to do these calculations by hand and can use the <code>dose.p()</code> function in the <code>MASS</code> package.</p>
-<div class="sourceCode" id="cb516"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb516-1" data-line-number="1">LD &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">dose.p</span>(m1, <span class="dt">p=</span><span class="kw">c</span>(.<span class="dv">25</span>, <span class="fl">.5</span>, <span class="fl">.75</span>))</a>
-<a class="sourceLine" id="cb516-2" data-line-number="2">LD</a></code></pre></div>
+<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb518-1" data-line-number="1">LD &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">dose.p</span>(m1, <span class="dt">p=</span><span class="kw">c</span>(.<span class="dv">25</span>, <span class="fl">.5</span>, <span class="fl">.75</span>))</a>
+<a class="sourceLine" id="cb518-2" data-line-number="2">LD</a></code></pre></div>
 <pre><code>##               Dose        SE
 ## p = 0.25: 2.945535 0.2315932
 ## p = 0.50: 2.000000 0.1784367
 ## p = 0.75: 1.054465 0.2315932</code></pre>
 <p>and we can use these to create approximately confidence intervals for these <span class="math inline">\(\hat{x}_{p}\)</span> values via
 <span class="math display">\[\hat{x}_{p}\pm z^{1-\alpha/2}\,StdErr\left(\hat{x}_{p}\right)\]</span></p>
-<div class="sourceCode" id="cb518"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb518-1" data-line-number="1"><span class="co"># why did the MASS authors make LD a vector of the </span></a>
-<a class="sourceLine" id="cb518-2" data-line-number="2"><span class="co"># estimated values and have an additional attribute </span></a>
-<a class="sourceLine" id="cb518-3" data-line-number="3"><span class="co"># that contains the standard errors?  Whatever, lets</span></a>
-<a class="sourceLine" id="cb518-4" data-line-number="4"><span class="co"># turn this into a convential data.frame.</span></a>
-<a class="sourceLine" id="cb518-5" data-line-number="5"><span class="kw">str</span>(LD) </a></code></pre></div>
+<div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb520-1" data-line-number="1"><span class="co"># why did the MASS authors make LD a vector of the </span></a>
+<a class="sourceLine" id="cb520-2" data-line-number="2"><span class="co"># estimated values and have an additional attribute </span></a>
+<a class="sourceLine" id="cb520-3" data-line-number="3"><span class="co"># that contains the standard errors?  Whatever, lets</span></a>
+<a class="sourceLine" id="cb520-4" data-line-number="4"><span class="co"># turn this into a convential data.frame.</span></a>
+<a class="sourceLine" id="cb520-5" data-line-number="5"><span class="kw">str</span>(LD) </a></code></pre></div>
 <pre><code>##  &#39;glm.dose&#39; Named num [1:3] 2.95 2 1.05
 ##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;p = 0.25:&quot; &quot;p = 0.50:&quot; &quot;p = 0.75:&quot;
 ##  - attr(*, &quot;SE&quot;)= num [1:3, 1] 0.232 0.178 0.232
@@ -930,12 +930,12 @@ Fortunately we don’t have to do these calculations by hand and can use the <co
 ##   .. ..$ : chr [1:3] &quot;p = 0.25:&quot; &quot;p = 0.50:&quot; &quot;p = 0.75:&quot;
 ##   .. ..$ : NULL
 ##  - attr(*, &quot;p&quot;)= num [1:3] 0.25 0.5 0.75</code></pre>
-<div class="sourceCode" id="cb520"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb520-1" data-line-number="1">CI &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">p =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;p&#39;</span>),</a>
-<a class="sourceLine" id="cb520-2" data-line-number="2">                 <span class="dt">Dose =</span> <span class="kw">as.vector</span>(LD),</a>
-<a class="sourceLine" id="cb520-3" data-line-number="3">                 <span class="dt">SE   =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;SE&#39;</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># save the output table as LD</span></a>
-<a class="sourceLine" id="cb520-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">lwr =</span> Dose <span class="op">-</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE,</a>
-<a class="sourceLine" id="cb520-5" data-line-number="5">          <span class="dt">upr =</span> Dose <span class="op">+</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE )</a>
-<a class="sourceLine" id="cb520-6" data-line-number="6">CI</a></code></pre></div>
+<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb522-1" data-line-number="1">CI &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">p =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;p&#39;</span>),</a>
+<a class="sourceLine" id="cb522-2" data-line-number="2">                 <span class="dt">Dose =</span> <span class="kw">as.vector</span>(LD),</a>
+<a class="sourceLine" id="cb522-3" data-line-number="3">                 <span class="dt">SE   =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;SE&#39;</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># save the output table as LD</span></a>
+<a class="sourceLine" id="cb522-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">lwr =</span> Dose <span class="op">-</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE,</a>
+<a class="sourceLine" id="cb522-5" data-line-number="5">          <span class="dt">upr =</span> Dose <span class="op">+</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE )</a>
+<a class="sourceLine" id="cb522-6" data-line-number="6">CI</a></code></pre></div>
 <pre><code>##      p     Dose        SE       lwr      upr
 ## 1 0.25 2.945535 0.2315932 2.4916207 3.399449
 ## 2 0.50 2.000000 0.1784367 1.6502705 2.349730
@@ -946,26 +946,26 @@ Fortunately we don’t have to do these calculations by hand and can use the <co
 <p>In the binomial distribution, the variance is a function of the probability of success and is <span class="math display">\[Var\left(W\right)=np\left(1-p\right)\]</span>
 but there are many cases where we might be interested in adding an additional variance parameter <span class="math inline">\(\phi\)</span> to the model. A common reason for overdispersion to appear is that we might not have captured all the covariates that influence <span class="math inline">\(p\)</span>.</p>
 <p>We can do a quick simulation to demonstrate that additional variability in <span class="math inline">\(p\)</span> leads to addition variability overall.</p>
-<div class="sourceCode" id="cb522"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb522-1" data-line-number="1">N &lt;-<span class="st"> </span><span class="dv">1000</span> </a>
-<a class="sourceLine" id="cb522-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">10</span>   </a>
-<a class="sourceLine" id="cb522-3" data-line-number="3">p &lt;-<span class="st"> </span><span class="fl">.6</span> </a>
-<a class="sourceLine" id="cb522-4" data-line-number="4">overdispersed_p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>.<span class="dv">05</span>)</a>
-<a class="sourceLine" id="cb522-5" data-line-number="5">sim.data &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb522-6" data-line-number="6"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N ){ </a>
-<a class="sourceLine" id="cb522-7" data-line-number="7">  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb522-8" data-line-number="8">    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>p)),</a>
-<a class="sourceLine" id="cb522-9" data-line-number="9">    <span class="dt">type =</span> <span class="st">&#39;Standard&#39;</span>))</a>
-<a class="sourceLine" id="cb522-10" data-line-number="10">  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</a>
-<a class="sourceLine" id="cb522-11" data-line-number="11">    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>overdispersed_p )),</a>
-<a class="sourceLine" id="cb522-12" data-line-number="12">    <span class="dt">type =</span> <span class="st">&#39;OverDispersed&#39;</span>))</a>
-<a class="sourceLine" id="cb522-13" data-line-number="13">} </a>
-<a class="sourceLine" id="cb522-14" data-line-number="14">true.var &lt;-<span class="st"> </span>p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">*</span>n</a>
-<a class="sourceLine" id="cb522-15" data-line-number="15"><span class="kw">ggplot</span>(sim.data, <span class="kw">aes</span>(<span class="dt">x=</span>var, <span class="dt">y=</span>..density..)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb522-16" data-line-number="16"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">30</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb522-17" data-line-number="17"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb522-18" data-line-number="18"><span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span></a>
-<a class="sourceLine" id="cb522-19" data-line-number="19"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-298-1.png" width="672" /></p>
+<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb524-1" data-line-number="1">N &lt;-<span class="st"> </span><span class="dv">1000</span> </a>
+<a class="sourceLine" id="cb524-2" data-line-number="2">n &lt;-<span class="st"> </span><span class="dv">10</span>   </a>
+<a class="sourceLine" id="cb524-3" data-line-number="3">p &lt;-<span class="st"> </span><span class="fl">.6</span> </a>
+<a class="sourceLine" id="cb524-4" data-line-number="4">overdispersed_p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>.<span class="dv">05</span>)</a>
+<a class="sourceLine" id="cb524-5" data-line-number="5">sim.data &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
+<a class="sourceLine" id="cb524-6" data-line-number="6"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N ){ </a>
+<a class="sourceLine" id="cb524-7" data-line-number="7">  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb524-8" data-line-number="8">    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>p)),</a>
+<a class="sourceLine" id="cb524-9" data-line-number="9">    <span class="dt">type =</span> <span class="st">&#39;Standard&#39;</span>))</a>
+<a class="sourceLine" id="cb524-10" data-line-number="10">  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb524-11" data-line-number="11">    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>overdispersed_p )),</a>
+<a class="sourceLine" id="cb524-12" data-line-number="12">    <span class="dt">type =</span> <span class="st">&#39;OverDispersed&#39;</span>))</a>
+<a class="sourceLine" id="cb524-13" data-line-number="13">} </a>
+<a class="sourceLine" id="cb524-14" data-line-number="14">true.var &lt;-<span class="st"> </span>p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">*</span>n</a>
+<a class="sourceLine" id="cb524-15" data-line-number="15"><span class="kw">ggplot</span>(sim.data, <span class="kw">aes</span>(<span class="dt">x=</span>var, <span class="dt">y=</span>..density..)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb524-16" data-line-number="16"><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">30</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb524-17" data-line-number="17"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb524-18" data-line-number="18"><span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span></a>
+<a class="sourceLine" id="cb524-19" data-line-number="19"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-299-1.png" width="672" /></p>
 <p>We see that the sample variances fall neatly about the true variance of <span class="math inline">\(2.4\)</span> in the case where the data is distributed with a constant value for <span class="math inline">\(p\)</span>. However adding a small amount of random noise about the parameter <span class="math inline">\(p\)</span>, and we’d have more variance in the samples.</p>
 <p>The extra uncertainty of the probability of success results in extra variability in the responses.</p>
 <p>We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed
@@ -977,13 +977,13 @@ With the addition of the overdispersion parameter to the model, the differences 
 <span class="math display">\[F=\frac{\left(D_{simple}-D_{complex}\right)/\left(df_{small}-df_{large}\right)}{\hat{\sigma}^{2}}\]</span></p>
 <p>Using the F-test when the the overdispersion parameter is 1 is a less powerful test than the <span class="math inline">\(\chi^{2}\)</span> test, so we’ll only use the F-test when the overdispersion parameter must be estimated.</p>
 <p>Example: We consider an experiment where at five different stream locations, four boxes of trout eggs were buried and retrieved at four different times after the original placement. The number of surviving eggs was recorded and the eggs disposed of.</p>
-<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb523-1" data-line-number="1"><span class="kw">data</span>(troutegg, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>) </a>
-<a class="sourceLine" id="cb523-2" data-line-number="2">troutegg &lt;-<span class="st"> </span>troutegg <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb523-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">perish =</span> total <span class="op">-</span><span class="st"> </span>survive) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb523-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(location, period, survive, perish, total) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb523-5" data-line-number="5"><span class="st">  </span><span class="kw">arrange</span>(location, period)</a>
-<a class="sourceLine" id="cb523-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb523-7" data-line-number="7">troutegg <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(location, period)</a></code></pre></div>
+<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb525-1" data-line-number="1"><span class="kw">data</span>(troutegg, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>) </a>
+<a class="sourceLine" id="cb525-2" data-line-number="2">troutegg &lt;-<span class="st"> </span>troutegg <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb525-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">perish =</span> total <span class="op">-</span><span class="st"> </span>survive) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb525-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(location, period, survive, perish, total) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb525-5" data-line-number="5"><span class="st">  </span><span class="kw">arrange</span>(location, period)</a>
+<a class="sourceLine" id="cb525-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb525-7" data-line-number="7">troutegg <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(location, period)</a></code></pre></div>
 <pre><code>##    location period survive perish total
 ## 1         1      4      89      5    94
 ## 2         1      7      94      4    98
@@ -1006,13 +1006,13 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## 19        5      8      18     70    88
 ## 20        5     11       0    138   138</code></pre>
 <p>We can first visualize the data</p>
-<div class="sourceCode" id="cb525"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb525-1" data-line-number="1"><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span></a>
-<a class="sourceLine" id="cb525-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span></a>
-<a class="sourceLine" id="cb525-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
+<div class="sourceCode" id="cb527"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb527-1" data-line-number="1"><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span></a>
+<a class="sourceLine" id="cb527-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span></a>
+<a class="sourceLine" id="cb527-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
 <p>We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):</p>
-<div class="sourceCode" id="cb526"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb526-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">*</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
-<a class="sourceLine" id="cb526-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
+<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb528-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">*</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
+<a class="sourceLine" id="cb528-2" data-line-number="2"><span class="kw">summary</span>(m)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cbind(survive, perish) ~ location * period, family = binomial, 
@@ -1054,14 +1054,14 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## 
 ## Number of Fisher Scoring iterations: 22</code></pre>
 <p>The residual deviance seems a little large. With <span class="math inline">\(12\)</span> residual degrees of freedom, the deviance should be near <span class="math inline">\(12\)</span>. We can confirm that the deviance is quite large via:</p>
-<div class="sourceCode" id="cb528"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb528-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">64.5</span>, <span class="dt">df=</span><span class="dv">12</span> )</a></code></pre></div>
+<div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb530-1" data-line-number="1"><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">64.5</span>, <span class="dt">df=</span><span class="dv">12</span> )</a></code></pre></div>
 <pre><code>## [1] 3.372415e-09</code></pre>
 <p>We therefore estimate the overdispersion parameter</p>
-<div class="sourceCode" id="cb530"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb530-1" data-line-number="1">sigma2 &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">residuals</span>(m, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>) <span class="op">^</span><span class="dv">2</span> ) <span class="op">/</span><span class="st"> </span><span class="dv">12</span> </a>
-<a class="sourceLine" id="cb530-2" data-line-number="2">sigma2</a></code></pre></div>
+<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb532-1" data-line-number="1">sigma2 &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">residuals</span>(m, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>) <span class="op">^</span><span class="dv">2</span> ) <span class="op">/</span><span class="st"> </span><span class="dv">12</span> </a>
+<a class="sourceLine" id="cb532-2" data-line-number="2">sigma2</a></code></pre></div>
 <pre><code>## [1] 2.29949e-11</code></pre>
 <p>and note that this is quite a bit larger than <span class="math inline">\(1\)</span>, which is what it should be in the non-overdispersed setting. Using this we can now test the significance of the effects of location and period.</p>
-<div class="sourceCode" id="cb532"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb532-1" data-line-number="1"><span class="kw">drop1</span>(m, <span class="dt">scale=</span>sigma2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb534"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb534-1" data-line-number="1"><span class="kw">drop1</span>(m, <span class="dt">scale=</span>sigma2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</a></code></pre></div>
 <pre><code>## Warning in drop1.glm(m, scale = sigma2, test = &quot;F&quot;): F test assumes
 ## &#39;quasibinomial&#39; family</code></pre>
 <pre><code>## Warning in pf(q = q, df1 = df1, ...): NaNs produced</code></pre>
@@ -1077,9 +1077,9 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## location:period 12   64.495 2.8048e+12       0</code></pre>
 <p>and conclude that both location and period are significant predictors of trout egg survivorship.</p>
 <p>We could have avoided having to calculate <span class="math inline">\(\hat{\sigma}^{2}\)</span> by hand by simply using the <code>quasibinomial</code> family instead of the binomial.</p>
-<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb536-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">+</span><span class="st"> </span>period, </a>
-<a class="sourceLine" id="cb536-2" data-line-number="2">          <span class="dt">family=</span>quasibinomial, <span class="dt">data=</span>troutegg) </a>
-<a class="sourceLine" id="cb536-3" data-line-number="3"><span class="kw">summary</span>(m2)</a></code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb538-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">+</span><span class="st"> </span>period, </a>
+<a class="sourceLine" id="cb538-2" data-line-number="2">          <span class="dt">family=</span>quasibinomial, <span class="dt">data=</span>troutegg) </a>
+<a class="sourceLine" id="cb538-3" data-line-number="3"><span class="kw">summary</span>(m2)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cbind(survive, perish) ~ location + period, family = quasibinomial, 
@@ -1109,7 +1109,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## AIC: NA
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
-<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb538-1" data-line-number="1"><span class="kw">drop1</span>(m2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb540-1" data-line-number="1"><span class="kw">drop1</span>(m2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</a></code></pre></div>
 <pre><code>## Single term deletions
 ## 
 ## Model:
@@ -1120,9 +1120,9 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## period    3   228.57  10.176  0.001288 ** 
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb540-1" data-line-number="1"><span class="co"># anova(m2, test=&#39;F&#39;)</span></a></code></pre></div>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb542-1" data-line-number="1"><span class="co"># anova(m2, test=&#39;F&#39;)</span></a></code></pre></div>
 <p>While each of the time periods is different than the first, it looks like periods 7,8, and 11 aren’t different from each other. As usual, we need to turn to the <code>emmeans</code> package for looking at the pairwise differences between the periods.</p>
-<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb541-1" data-line-number="1"><span class="kw">emmeans</span>(m2, pairwise<span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" data-line-number="1"><span class="kw">emmeans</span>(m2, pairwise<span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </a></code></pre></div>
 <pre><code>## $emmeans
 ##  period  prob     SE  df asymp.LCL asymp.UCL
 ##  4      0.960 0.0177 Inf     0.907     0.984
@@ -1146,7 +1146,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## Results are averaged over the levels of: location 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## Tests are performed on the log odds ratio scale</code></pre>
-<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" data-line-number="1"><span class="kw">emmeans</span>(m2, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb545-1" data-line-number="1"><span class="kw">emmeans</span>(m2, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
 ##  11     0.677 0.0549 Inf     0.562     0.774  a    
 ##  8      0.704 0.0618 Inf     0.571     0.809  a    
@@ -1160,8 +1160,8 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## Tests are performed on the log odds ratio scale 
 ## significance level used: alpha = 0.05</code></pre>
 <p>Looking at this experiment, it looks like there is an interaction between location and period. If we fit a model with the interaction, it is the saturated model (20 covariates for 20 observations)</p>
-<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb545-1" data-line-number="1">m3 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(survive, perish) <span class="op">~</span><span class="st"> </span>period <span class="op">*</span><span class="st"> </span>location, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
-<a class="sourceLine" id="cb545-2" data-line-number="2"><span class="kw">summary</span>(m3)</a></code></pre></div>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb547-1" data-line-number="1">m3 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(survive, perish) <span class="op">~</span><span class="st"> </span>period <span class="op">*</span><span class="st"> </span>location, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
+<a class="sourceLine" id="cb547-2" data-line-number="2"><span class="kw">summary</span>(m3)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = cbind(survive, perish) ~ period * location, family = binomial, 
@@ -1204,7 +1204,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## Number of Fisher Scoring iterations: 22</code></pre>
 <p>Notice that we’ve fit the saturated model and we’ve resolved the overdispersion problem because of that.</p>
 <p>As usual, we can now look at the effect of <code>period</code> at each of the locations.</p>
-<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb547-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span><span class="st"> </span>period <span class="op">|</span><span class="st"> </span>location, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb549-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span><span class="st"> </span>period <span class="op">|</span><span class="st"> </span>location, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>()</a></code></pre></div>
 <pre><code>## location = 1:
 ##  period      prob         SE  df asymp.LCL asymp.UCL .group
 ##  8      0.8953488 0.03300798 Inf 0.8109406 0.9446443  1    
@@ -1247,10 +1247,10 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## significance level used: alpha = 0.05</code></pre>
 <p>Notice that there isn’t a huge difference in period for locations 1-4, but in location 5 things are very different.</p>
 <p>We might consider that location really ought to be a random effect. Fortunately <code>lme4</code> supports the family option, although it will not accept quasi families, you either fit a random effect or fit a quasibinomial. In either case, fitting the full interaction model with <code>period*location</code> doesn’t work because we have a saturated model</p>
-<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb549-1" data-line-number="1"><span class="co"># addititive model</span></a>
-<a class="sourceLine" id="cb549-2" data-line-number="2">m3 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>location), </a>
-<a class="sourceLine" id="cb549-3" data-line-number="3">          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
-<a class="sourceLine" id="cb549-4" data-line-number="4"><span class="kw">summary</span>(m3)</a></code></pre></div>
+<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" data-line-number="1"><span class="co"># addititive model</span></a>
+<a class="sourceLine" id="cb551-2" data-line-number="2">m3 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>location), </a>
+<a class="sourceLine" id="cb551-3" data-line-number="3">          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a>
+<a class="sourceLine" id="cb551-4" data-line-number="4"><span class="kw">summary</span>(m3)</a></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
 ##   Approximation) [glmerMod]
 ##  Family: binomial  ( logit )
@@ -1283,7 +1283,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## period7  -0.224              
 ## period8  -0.225  0.732       
 ## period11 -0.234  0.758  0.761</code></pre>
-<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb553-1" data-line-number="1"><span class="kw">emmeans</span>(m3, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</a></code></pre></div>
 <pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
 ##  11     0.679 0.1615 Inf     0.331     0.900  a    
 ##  8      0.705 0.1546 Inf     0.358     0.911  a    
@@ -1295,47 +1295,47 @@ With the addition of the overdispersion parameter to the model, the differences 
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## Tests are performed on the log odds ratio scale 
 ## significance level used: alpha = 0.05</code></pre>
-<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb553-1" data-line-number="1"><span class="co"># Interaction  model</span></a>
-<a class="sourceLine" id="cb553-2" data-line-number="2">m4 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>period<span class="op">|</span>location), </a>
-<a class="sourceLine" id="cb553-3" data-line-number="3">          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a></code></pre></div>
+<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb555-1" data-line-number="1"><span class="co"># Interaction  model</span></a>
+<a class="sourceLine" id="cb555-2" data-line-number="2">m4 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>period<span class="op">|</span>location), </a>
+<a class="sourceLine" id="cb555-3" data-line-number="3">          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</a></code></pre></div>
 <pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl =
 ## control$checkConv, : Model failed to converge with max|grad| = 0.0184817
 ## (tol = 0.001, component 1)</code></pre>
-<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb555-1" data-line-number="1"><span class="co">#summary(m4)</span></a>
-<a class="sourceLine" id="cb555-2" data-line-number="2"><span class="co">#emmeans(m4, ~period, type=&#39;response&#39;) %&gt;% multcomp::cld(Letters=letters)</span></a></code></pre></div>
+<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb557-1" data-line-number="1"><span class="co">#summary(m4)</span></a>
+<a class="sourceLine" id="cb557-2" data-line-number="2"><span class="co">#emmeans(m4, ~period, type=&#39;response&#39;) %&gt;% multcomp::cld(Letters=letters)</span></a></code></pre></div>
 <p>Unfortunately, we aren’t able to fit the saturated model using random effects because the numerical optimization function for finding MLE estimates failed to converge.</p>
 </div>
 <div id="roc-curves" class="section level2">
 <h2><span class="header-section-number">12.7</span> ROC Curves</h2>
 <p>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (ie cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.</p>
-<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb556-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;wbca&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb556-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb556-3" data-line-number="3"><span class="co"># clean up the data</span></a>
-<a class="sourceLine" id="cb556-4" data-line-number="4">wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb556-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Class =</span> <span class="kw">ifelse</span>(Class<span class="op">==</span><span class="dv">0</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb556-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Class, BNucl, UShap, USize) </a>
-<a class="sourceLine" id="cb556-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb556-8" data-line-number="8"><span class="co"># Fit the model where Malignant is considered a success</span></a>
-<a class="sourceLine" id="cb556-9" data-line-number="9"><span class="co"># model &lt;- glm( I(Class==&#39;malignant&#39;) ~ ., data=wbca, family=&#39;binomial&#39; )  # emmeans hates this version</span></a>
-<a class="sourceLine" id="cb556-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb556-11" data-line-number="11">model &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">Class =</span> (Class <span class="op">==</span><span class="st"> &#39;malignant&#39;</span>) ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># Clear what is success</span></a>
-<a class="sourceLine" id="cb556-12" data-line-number="12"><span class="st">  </span><span class="kw">glm</span>( Class <span class="op">~</span>., <span class="dt">data=</span>., <span class="dt">family=</span><span class="st">&#39;binomial&#39;</span> )                     <span class="co"># and emmeans still happy</span></a>
-<a class="sourceLine" id="cb556-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb556-14" data-line-number="14"><span class="co"># Get the response values</span></a>
-<a class="sourceLine" id="cb556-15" data-line-number="15"><span class="co"># type=&#39;response&#39; gives phat values which live in [0,1]</span></a>
-<a class="sourceLine" id="cb556-16" data-line-number="16"><span class="co"># type=&#39;link&#39; gives the Xbeta values whice live in (-infinity, infinity)</span></a>
-<a class="sourceLine" id="cb556-17" data-line-number="17">wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb556-18" data-line-number="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(model, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>),</a>
-<a class="sourceLine" id="cb556-19" data-line-number="19">         <span class="dt">yhat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="st"> </span><span class="fl">.5</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>))</a>
-<a class="sourceLine" id="cb556-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb556-21" data-line-number="21"><span class="co"># Calculate the confusion matrix</span></a>
-<a class="sourceLine" id="cb556-22" data-line-number="22"><span class="kw">table</span>( <span class="dt">Truth=</span>wbca<span class="op">$</span>Class, <span class="dt">Predicted=</span>wbca<span class="op">$</span>yhat )</a></code></pre></div>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb558-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;wbca&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb558-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb558-3" data-line-number="3"><span class="co"># clean up the data</span></a>
+<a class="sourceLine" id="cb558-4" data-line-number="4">wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb558-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Class =</span> <span class="kw">ifelse</span>(Class<span class="op">==</span><span class="dv">0</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb558-6" data-line-number="6"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Class, BNucl, UShap, USize) </a>
+<a class="sourceLine" id="cb558-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb558-8" data-line-number="8"><span class="co"># Fit the model where Malignant is considered a success</span></a>
+<a class="sourceLine" id="cb558-9" data-line-number="9"><span class="co"># model &lt;- glm( I(Class==&#39;malignant&#39;) ~ ., data=wbca, family=&#39;binomial&#39; )  # emmeans hates this version</span></a>
+<a class="sourceLine" id="cb558-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb558-11" data-line-number="11">model &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">Class =</span> (Class <span class="op">==</span><span class="st"> &#39;malignant&#39;</span>) ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># Clear what is success</span></a>
+<a class="sourceLine" id="cb558-12" data-line-number="12"><span class="st">  </span><span class="kw">glm</span>( Class <span class="op">~</span>., <span class="dt">data=</span>., <span class="dt">family=</span><span class="st">&#39;binomial&#39;</span> )                     <span class="co"># and emmeans still happy</span></a>
+<a class="sourceLine" id="cb558-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb558-14" data-line-number="14"><span class="co"># Get the response values</span></a>
+<a class="sourceLine" id="cb558-15" data-line-number="15"><span class="co"># type=&#39;response&#39; gives phat values which live in [0,1]</span></a>
+<a class="sourceLine" id="cb558-16" data-line-number="16"><span class="co"># type=&#39;link&#39; gives the Xbeta values whice live in (-infinity, infinity)</span></a>
+<a class="sourceLine" id="cb558-17" data-line-number="17">wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb558-18" data-line-number="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(model, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>),</a>
+<a class="sourceLine" id="cb558-19" data-line-number="19">         <span class="dt">yhat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="st"> </span><span class="fl">.5</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>))</a>
+<a class="sourceLine" id="cb558-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb558-21" data-line-number="21"><span class="co"># Calculate the confusion matrix</span></a>
+<a class="sourceLine" id="cb558-22" data-line-number="22"><span class="kw">table</span>( <span class="dt">Truth=</span>wbca<span class="op">$</span>Class, <span class="dt">Predicted=</span>wbca<span class="op">$</span>yhat )</a></code></pre></div>
 <pre><code>##            Predicted
 ## Truth       benign malignant
 ##   benign       432        11
 ##   malignant     15       223</code></pre>
 <p>As usual we can calculate the summary tables…</p>
-<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb558-1" data-line-number="1"><span class="kw">summary</span>(model)</a></code></pre></div>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb560-1" data-line-number="1"><span class="kw">summary</span>(model)</a></code></pre></div>
 <pre><code>## 
 ## Call:
 ## glm(formula = Class ~ ., family = &quot;binomial&quot;, data = .)
@@ -1370,11 +1370,11 @@ With the addition of the overdispersion parameter to the model, the differences 
   &amp;= -3.482
   \end{aligned}\]</span></p>
 <p>and therefore <span class="math display">\[\hat{p} = \frac{1}{1+e^{-X\hat{\beta}}} = \frac{1}{1+e^{3.482}} = 0.0297\]</span></p>
-<div class="sourceCode" id="cb561"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb561-1" data-line-number="1">newdata =<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">BNucl=</span><span class="dv">2</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">2</span> )</a>
-<a class="sourceLine" id="cb561-2" data-line-number="2"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata)</a></code></pre></div>
+<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb563-1" data-line-number="1">newdata =<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">BNucl=</span><span class="dv">2</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">2</span> )</a>
+<a class="sourceLine" id="cb563-2" data-line-number="2"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata)</a></code></pre></div>
 <pre><code>##         1 
 ## -3.486719</code></pre>
-<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb563-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb565-1" data-line-number="1"><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</a></code></pre></div>
 <pre><code>##         1 
 ## 0.0296925</code></pre>
 <p>So for a tumor with these covariates, we would classify it as most likely to be benign.</p>
@@ -1452,33 +1452,33 @@ With the addition of the overdispersion parameter to the model, the differences 
 <p>We can think of the True Positive Rate as the probability that a Positive case will be correctly classified as a positive. Similarly a False Positive Rate is the probability that a Negative case will be incorrectly classified as a positive.</p>
 <p>I wish to examine the relationship between the False Positive Rate and the True Positive Rate for any decision rule. So what we could do is select a sequence of decision rules and for each calculate the <code>(FPR, TPR)</code> pair, and then make a plot where we play connect the dots with the <code>(FPR, TPR)</code> pairs.</p>
 <p>Of course we don’t want to have to do this by hand, so we’ll use the package <code>pROC</code> to do it for us.</p>
-<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb565-1" data-line-number="1"><span class="co"># Calculate the ROC information using pROC::roc()</span></a>
-<a class="sourceLine" id="cb565-2" data-line-number="2">myROC &lt;-<span class="st"> </span><span class="kw">roc</span>( wbca<span class="op">$</span>Class,  wbca<span class="op">$</span>phat )</a></code></pre></div>
+<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb567-1" data-line-number="1"><span class="co"># Calculate the ROC information using pROC::roc()</span></a>
+<a class="sourceLine" id="cb567-2" data-line-number="2">myROC &lt;-<span class="st"> </span><span class="kw">roc</span>( wbca<span class="op">$</span>Class,  wbca<span class="op">$</span>phat )</a></code></pre></div>
 <pre><code>## Setting levels: control = benign, case = malignant</code></pre>
 <pre><code>## Setting direction: controls &lt; cases</code></pre>
-<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb568-1" data-line-number="1"><span class="co"># make a nice plot using ggplot2 and pROC::ggroc()</span></a>
-<a class="sourceLine" id="cb568-2" data-line-number="2"><span class="kw">ggroc</span>( myROC ) </a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
+<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb570-1" data-line-number="1"><span class="co"># make a nice plot using ggplot2 and pROC::ggroc()</span></a>
+<a class="sourceLine" id="cb570-2" data-line-number="2"><span class="kw">ggroc</span>( myROC ) </a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
 <p>This looks pretty good and in an ideal classifier that makes prefect predictions, this would be a perfect right angle at the bend.</p>
 <p>Lets zoom in a little on the high specificity values (i.e. low false positive rates)</p>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb569-1" data-line-number="1"><span class="kw">ggroc</span>( myROC ) <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">1</span>, <span class="fl">.9</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
+<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb571-1" data-line-number="1"><span class="kw">ggroc</span>( myROC ) <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">1</span>, <span class="fl">.9</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-317-1.png" width="672" /></p>
 <p>We see that if we want to correctly identify about 99% of maligant tumors, we will have a false positive rate of about 1-0.95 = 0.05. So about 5% of benign tumors would be incorrectly classified as malignant.</p>
 <p>It is a little challenging to read the graph to see what the Sensitivity is for a particular value of Specificity. To do this we’ll use another function because the authors would prefer you to also estimate the confidence intervals for the quantity. This is a case where bootstrap confidence intervals are quite effective.</p>
-<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb570-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;sp&#39;</span>, <span class="dt">sensitivities=</span>.<span class="dv">99</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb572-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;sp&#39;</span>, <span class="dt">sensitivities=</span>.<span class="dv">99</span>)</a></code></pre></div>
 <pre><code>## 95% CI (2000 stratified bootstrap replicates):
 ##    se sp.low sp.median sp.high
-##  0.99 0.9173    0.9571  0.9774</code></pre>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb572-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;se&#39;</span>, <span class="dt">specificities=</span>.<span class="dv">975</span>)</a></code></pre></div>
+##  0.99 0.9173    0.9571  0.9797</code></pre>
+<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb574-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;se&#39;</span>, <span class="dt">specificities=</span>.<span class="dv">975</span>)</a></code></pre></div>
 <pre><code>## 95% CI (2000 stratified bootstrap replicates):
 ##     sp se.low se.median se.high
 ##  0.975 0.8827     0.937  0.9958</code></pre>
 <p>One measure of how far we are from the perfect predictor is the area under the curve. The perfect model would have an area under the curve of 1. For this model the area under the curve is:</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb574-1" data-line-number="1"><span class="kw">auc</span>(myROC) </a></code></pre></div>
+<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb576-1" data-line-number="1"><span class="kw">auc</span>(myROC) </a></code></pre></div>
 <pre><code>## Area under the curve: 0.9929</code></pre>
-<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb576-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb578-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>)</a></code></pre></div>
 <pre><code>## 95% CI: 0.9878-0.9981 (DeLong)</code></pre>
-<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb578-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>, <span class="dt">method=</span><span class="st">&#39;bootstrap&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb580-1" data-line-number="1"><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>, <span class="dt">method=</span><span class="st">&#39;bootstrap&#39;</span>)</a></code></pre></div>
 <pre><code>## 95% CI: 0.9873-0.9973 (2000 stratified bootstrap replicates)</code></pre>
 <p>which seems pretty good and Area Under the Curve (AUC) is often used as a way of comparing the quality of binary classifiers.</p>
 </div>
@@ -1490,8 +1490,8 @@ With the addition of the overdispersion parameter to the model, the differences 
 <li>Fit a binomial regression with <code>Class</code> as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that <code>glm</code> wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?</li>
 <li>Use AIC as the criterion to determine the best subset of variables using the step function.</li>
 <li><p>Use the reduced model to give the estimated probability that a tumor with associated predictor variables</p>
-<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb580-1" data-line-number="1">newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Adhes=</span><span class="dv">1</span>, <span class="dt">BNucl=</span><span class="dv">1</span>, <span class="dt">Chrom=</span><span class="dv">3</span>, <span class="dt">Epith=</span><span class="dv">2</span>, <span class="dt">Mitos=</span><span class="dv">1</span>, </a>
-<a class="sourceLine" id="cb580-2" data-line-number="2">                       <span class="dt">NNucl=</span><span class="dv">1</span>, <span class="dt">Thick=</span><span class="dv">4</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb582-1" data-line-number="1">newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Adhes=</span><span class="dv">1</span>, <span class="dt">BNucl=</span><span class="dv">1</span>, <span class="dt">Chrom=</span><span class="dv">3</span>, <span class="dt">Epith=</span><span class="dv">2</span>, <span class="dt">Mitos=</span><span class="dv">1</span>, </a>
+<a class="sourceLine" id="cb582-2" data-line-number="2">                       <span class="dt">NNucl=</span><span class="dv">1</span>, <span class="dt">Thick=</span><span class="dv">4</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">1</span>)</a></code></pre></div>
 is benign and give a confidence interval for your estimate.</li>
 <li>Suppose that a cancer is classified as benign if <span class="math inline">\(\hat{p}&gt;0.5\)</span> and malignant if <span class="math inline">\(\hat{p}\le0.5\)</span>. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. <em>Hint: save the <span class="math inline">\(\hat{p}\)</span> as a column in the wbca data frame and use that to create a new column <code>Est_Class</code> which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.</em></li>
 <li><p>Suppose we changed the cutoff to <span class="math inline">\(0.9\)</span>. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.</p></li>
@@ -1506,15 +1506,15 @@ is benign and give a confidence interval for your estimate.</li>
 <li>Remove the observations that have missing data (coded as a zero) for either <code>glucose</code> or <code>bmi</code>. <em>The researcher’s choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the <code>pregnant</code> covariate is a true value. The <code>dplyr</code> function <code>filter</code> could be used here.</em></li>
 <li>Fit the logistic regression model for <code>test</code> with using the main effects of <code>glucose</code>, <code>bmi</code>, and <code>pregnant</code>.</li>
 <li><p>Produce a graphic that displays the relationship between the variables. <em>Notice I’ve done the part (a) for you and the assume that your model produced in part (b) is named <code>m</code>. I also split up the pregnancy and bmi values into some logical grouping for the visualization. If you’ve never used the <code>cut</code> function, go look it up because it is extremely handy.</em></p>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb581-1" data-line-number="1">pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( bmi <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>, glucose <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb581-2" data-line-number="2">pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( </a>
-<a class="sourceLine" id="cb581-3" data-line-number="3">  <span class="dt">phat=</span><span class="kw">ilogit</span>(<span class="kw">predict</span>(m)),</a>
-<a class="sourceLine" id="cb581-4" data-line-number="4">  <span class="dt">pregnant.grp =</span> <span class="kw">cut</span>(pregnant, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">100</span>), <span class="dt">right =</span> <span class="ot">FALSE</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;0&#39;</span>,<span class="st">&#39;1:2&#39;</span>,<span class="st">&#39;3:5&#39;</span>,<span class="st">&#39;6+&#39;</span>)),</a>
-<a class="sourceLine" id="cb581-5" data-line-number="5">  <span class="dt">bmi.grp =</span> <span class="kw">cut</span>(bmi, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">100</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Underweight&#39;</span>,<span class="st">&#39;Normal&#39;</span>,<span class="st">&#39;Overweight&#39;</span>,<span class="st">&#39;Obese&#39;</span>)))</a>
-<a class="sourceLine" id="cb581-6" data-line-number="6"><span class="kw">ggplot</span>(pima, <span class="kw">aes</span>(<span class="dt">y=</span>test, <span class="dt">x=</span>glucose)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb581-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb581-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb581-9" data-line-number="9"><span class="st">  </span><span class="kw">facet_grid</span>(bmi.grp <span class="op">~</span><span class="st"> </span>pregnant.grp)</a></code></pre></div></li>
+<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb583-1" data-line-number="1">pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( bmi <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>, glucose <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb583-2" data-line-number="2">pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( </a>
+<a class="sourceLine" id="cb583-3" data-line-number="3">  <span class="dt">phat=</span><span class="kw">ilogit</span>(<span class="kw">predict</span>(m)),</a>
+<a class="sourceLine" id="cb583-4" data-line-number="4">  <span class="dt">pregnant.grp =</span> <span class="kw">cut</span>(pregnant, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">100</span>), <span class="dt">right =</span> <span class="ot">FALSE</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;0&#39;</span>,<span class="st">&#39;1:2&#39;</span>,<span class="st">&#39;3:5&#39;</span>,<span class="st">&#39;6+&#39;</span>)),</a>
+<a class="sourceLine" id="cb583-5" data-line-number="5">  <span class="dt">bmi.grp =</span> <span class="kw">cut</span>(bmi, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">100</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Underweight&#39;</span>,<span class="st">&#39;Normal&#39;</span>,<span class="st">&#39;Overweight&#39;</span>,<span class="st">&#39;Obese&#39;</span>)))</a>
+<a class="sourceLine" id="cb583-6" data-line-number="6"><span class="kw">ggplot</span>(pima, <span class="kw">aes</span>(<span class="dt">y=</span>test, <span class="dt">x=</span>glucose)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb583-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb583-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb583-9" data-line-number="9"><span class="st">  </span><span class="kw">facet_grid</span>(bmi.grp <span class="op">~</span><span class="st"> </span>pregnant.grp)</a></code></pre></div></li>
 <li>Discuss the quality of your predictions based on the graphic above and modify your model accordingly.<br />
 </li>
 <li>Give the probability of testing positive for diabetes for a Pima woman who had had no pregnancies, had <code>bmi=28</code> and a glucose level of <code>110</code>.</li>
