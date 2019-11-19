@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-11-06" />
+<meta name="date" content="2019-11-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -593,9 +593,10 @@ and perform our maximization on this transformed set of data. Once we have our u
 <hr />
 <p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">data</span>(penicillin, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb25-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st">  </span><span class="dv">1</span>    <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)</a>
@@ -834,6 +835,21 @@ where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{
 ## (Intercept)  0.38750    0.04296 5.00064    9.02  0.00028 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>It looks like there is still plenty of unexplained variability, but the next largest source of variability is in the technician and also the lab. Is the variability lab-to-lab large enough for us to convincingly argue that it is statistically significant?</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">ranova</span>(model)</a></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## Fat ~ (1 | Sample:(Technician:Lab)) + (1 | Technician:Lab) + 
+##     (1 | Lab)
+##                               npar logLik     AIC     LRT Df Pr(&gt;Chisq)  
+## &lt;none&gt;                           5 32.118 -54.235                        
+## (1 | Sample:(Technician:Lab))    4 31.316 -54.632 1.60342  1    0.20542  
+## (1 | Technician:Lab)             4 30.740 -53.480 2.75552  1    0.09692 .
+## (1 | Lab)                        4 31.719 -55.439 0.79649  1    0.37215  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>It looks like the technician effect is at the edge of statistically significant, but the lab-to-lab effect is smaller than the pure error and not statistically significant. I’m not thrilled with the repeatability, but the technicians are a bigger concern than the individual labs.</p>
 </div>
 <div id="crossed-effects" class="section level2">
 <h2><span class="header-section-number">11.5</span> Crossed Effects</h2>
@@ -889,20 +905,20 @@ where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{
 </table>
 <p>Our model can be written as <span class="math display">\[y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}\]</span>
 and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We’ll regard both position and run as crossed random effects.</p>
-<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb57-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;abrasion&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
-<a class="sourceLine" id="cb57-2" data-line-number="2"><span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb57-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;abrasion&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb59-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="kw">anova</span>(m)</a></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</a>
+<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="kw">anova</span>(m)</a></code></pre></div>
 <pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
 ##          Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
 ## material 4621.5  1540.5     3     6  25.151 0.0008497 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>material) </a></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>material) </a></code></pre></div>
 <pre><code>## $emmeans
 ##  material emmean   SE   df lower.CL upper.CL
 ##  A           266 7.67 7.47      248      284
@@ -924,7 +940,7 @@ and we notice that the position and run effects are not nested within anything e
 ## 
 ## Degrees-of-freedom method: kenward-roger 
 ## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb62-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </a></code></pre></div>
 <pre><code>##  material emmean   SE   df lower.CL upper.CL .group
 ##  B           220 7.67 7.47      202      238  a    
 ##  D           230 7.67 7.47      213      248  ab   
@@ -936,7 +952,7 @@ and we notice that the position and run effects are not nested within anything e
 ## P value adjustment: tukey method for comparing a family of 4 estimates 
 ## significance level used: alpha = 0.05</code></pre>
 <p>So material D is in between materials B and C for abrasion resistance.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">summary</span>(m)</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1"><span class="kw">summary</span>(m)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
 ## Formula: wear ~ material + (1 | run) + (1 | position)
@@ -970,8 +986,9 @@ and we notice that the position and run effects are not nested within anything e
 ## materialC -0.361  0.500       
 ## materialD -0.361  0.500  0.500</code></pre>
 <p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="kw">anova</span>(m, m2)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</a>
+<a class="sourceLine" id="cb68-2" data-line-number="2">m3 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run), <span class="dt">data=</span>abrasion)</a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="kw">anova</span>(m, m2)  <span class="co"># Run is important; Notice refitting using ML</span></a></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: abrasion
 ## Models:
@@ -982,22 +999,47 @@ and we notice that the position and run effects are not nested within anything e
 ## m   7 134.32 139.73 -60.162   120.32 5.4164      1    0.01995 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1"><span class="kw">anova</span>(m, m3)  <span class="co"># Position is really important; Notice refitting using ML</span></a></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: abrasion
+## Models:
+## m3: wear ~ material + (1 | run)
+## m: wear ~ material + (1 | run) + (1 | position)
+##    Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)   
+## m3  6 139.80 144.44 -63.901   127.80                            
+## m   7 134.32 139.73 -60.162   120.32 7.4794      1   0.006241 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect. Similarly the Likelihood Ratio Test gives a p-value of about <span class="math inline">\(0.02\)</span>. So while the run effect wasn’t visible in our initial graph, it looks like it is a statistically significant effect.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1"><span class="co"># Now do a similar test, but using the REML estimates of the variance components</span></a>
+<a class="sourceLine" id="cb74-2" data-line-number="2"><span class="co"># Recall that REML estimates are unbiased and should be used!</span></a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">ranova</span>(m)</a></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## wear ~ material + (1 | run) + (1 | position)
+##                npar  logLik    AIC    LRT Df Pr(&gt;Chisq)  
+## &lt;none&gt;            7 -50.128 114.26                       
+## (1 | run)         6 -51.651 115.30 3.0459  1    0.08094 .
+## (1 | position)    6 -52.425 116.85 4.5931  1    0.03210 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continutes to be statistically significant, the run has dropped down to marginal significance.</p>
 </div>
 <div id="repeated-measures-longitudinal-studies" class="section level2">
 <h2><span class="header-section-number">11.6</span> Repeated Measures / Longitudinal Studies</h2>
 <p>In repeated measurement experiments, repeated observations are taken on each subject. When those repeated measurements are taken over a sequence of time, we call it a longitudinal study. Typically covariates are also observed at the same time points and we are interested in how the response is related to the covariates.</p>
 <p>In this case the correlation structure is that observations on the same person/object should be more similar than observations between two people/objects. As a result we need to account for repeated measures by including the person/object as a random effect.</p>
 <p>To demonstrate a longitudinal study we turn to the data set <code>sleepstudy</code> in the <code>lme4</code> library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;sleepstudy&#39;</span>, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)</a>
-<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb69-3" data-line-number="3"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb69-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_line</span>()</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw">data</span>(<span class="st">&#39;sleepstudy&#39;</span>, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb76-3" data-line-number="3"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-4" data-line-number="4"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_line</span>()</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Subject), <span class="dt">data=</span>sleepstudy)</a>
-<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="kw">summary</span>(m1)</a></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Subject), <span class="dt">data=</span>sleepstudy)</a>
+<a class="sourceLine" id="cb77-2" data-line-number="2"><span class="kw">summary</span>(m1)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
 ## Formula: Reaction ~ Days + (1 | Subject)
@@ -1025,86 +1067,76 @@ and we notice that the position and run effects are not nested within anything e
 ## Correlation of Fixed Effects:
 ##      (Intr)
 ## Days -0.371</code></pre>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1"><span class="kw">ranef</span>(m1)</a></code></pre></div>
-<pre><code>## $Subject
-##     (Intercept)
-## 308   40.783710
-## 309  -77.849554
-## 310  -63.108567
-## 330    4.406442
-## 331   10.216189
-## 332    8.221238
-## 333   16.500494
-## 334   -2.996981
-## 335  -45.282127
-## 337   72.182686
-## 349  -21.196249
-## 350   14.111363
-## 351   -7.862221
-## 352   36.378425
-## 369    7.036381
-## 370   -6.362703
-## 371   -3.294273
-## 372   18.115747
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1"><span class="kw">ranova</span>(m1)</a></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
 ## 
-## with conditional variances for &quot;Subject&quot;</code></pre>
+## Model:
+## Reaction ~ Days + (1 | Subject)
+##               npar  logLik    AIC   LRT Df Pr(&gt;Chisq)    
+## &lt;none&gt;           4 -893.23 1794.5                        
+## (1 | Subject)    3 -946.83 1899.7 107.2  1  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately <span class="math inline">\(10.4\)</span>.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb74-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m1, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Subject)))</a>
-<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb74-4" data-line-number="4"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb74-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb74-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb74-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m1, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Subject)))</a>
+<a class="sourceLine" id="cb81-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb81-4" data-line-number="4"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb81-5" data-line-number="5"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb81-6" data-line-number="6"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb81-7" data-line-number="7"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
 <p>This isn’t too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1"><span class="co"># Random effects for intercept and Slope </span></a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>( <span class="dv">1</span><span class="op">+</span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)</a>
-<a class="sourceLine" id="cb75-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb75-4" data-line-number="4">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb75-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</a>
-<a class="sourceLine" id="cb75-6" data-line-number="6"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb75-7" data-line-number="7"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb75-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb75-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb75-10" data-line-number="10"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="co"># Random effects for intercept and Slope </span></a>
+<a class="sourceLine" id="cb82-2" data-line-number="2">m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>( <span class="dv">1</span><span class="op">+</span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)</a>
+<a class="sourceLine" id="cb82-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb82-4" data-line-number="4">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb82-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</a>
+<a class="sourceLine" id="cb82-6" data-line-number="6"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb82-7" data-line-number="7"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb82-8" data-line-number="8"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb82-9" data-line-number="9"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb82-10" data-line-number="10"><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <p>This appears to fit the observed data quite a bit better, but it is useful to test this.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1"><span class="kw">anova</span>(m1, m2)</a></code></pre></div>
-<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Data: sleepstudy
-## Models:
-## m1: Reaction ~ Days + (1 | Subject)
-## m2: Reaction ~ Days + (1 + Days | Subject)
-##    Df    AIC    BIC  logLik deviance  Chisq Chi Df Pr(&gt;Chisq)    
-## m1  4 1802.1 1814.8 -897.04   1794.1                             
-## m2  6 1763.9 1783.1 -875.97   1751.9 42.139      2  7.072e-10 ***
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1"><span class="co"># anova(m2, m1)  # the ML analysis, which is not preferred</span></a>
+<a class="sourceLine" id="cb83-2" data-line-number="2"><span class="kw">ranova</span>(m2)</a></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## Reaction ~ Days + (1 + Days | Subject)
+##                              npar  logLik    AIC    LRT Df Pr(&gt;Chisq)    
+## &lt;none&gt;                          6 -871.81 1755.6                         
+## Days in (1 + Days | Subject)    4 -893.23 1794.5 42.837  2   4.99e-10 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <p>Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.</p>
 <p>It is instructive to look at this example from the top down. First we plot the population regression line.</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))</a>
-<a class="sourceLine" id="cb79-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb79-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb79-5" data-line-number="5"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb80-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</a>
-<a class="sourceLine" id="cb80-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb80-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb80-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb80-6" data-line-number="6"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb81-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb81-4" data-line-number="4"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb81-5" data-line-number="5"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb81-6" data-line-number="6"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</a></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb85-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))</a>
+<a class="sourceLine" id="cb85-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb85-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb85-5" data-line-number="5"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb85-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>))</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb86-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb86-6" data-line-number="6"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb86-7" data-line-number="7"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1"><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-2" data-line-number="2"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-4" data-line-number="4"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-5" data-line-number="5"><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb87-6" data-line-number="6"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <p>Finally we want to go back and look at the coefficients for the complex model.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb82-1" data-line-number="1"><span class="kw">summary</span>(m2)</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="kw">summary</span>(m2)</a></code></pre></div>
 <pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
 ## lmerModLmerTest]
 ## Formula: Reaction ~ Days + (1 + Days | Subject)
@@ -1139,75 +1171,75 @@ and we notice that the position and run effects are not nested within anything e
 <p>As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn’t a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the <code>lme4</code> package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.</p>
 <p>Typically the bootstrap is used when we don’t want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data. But, if we don’t mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of <span class="math inline">\(251.4\)</span> and <span class="math inline">\(10.5\)</span>. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of <span class="math inline">\(24.7\)</span> and <span class="math inline">\(5.9\)</span>. Then given a subjects regression line, observations are just normal (mean zero, standard deviation <span class="math inline">\(25.6\)</span>) perturbations from the line. All of these numbers came from the <code>summary(m2)</code> output.</p>
 <p>To create a bootstrap data simulating a new subject, we could do the following:</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">subject.intercept =<span class="st"> </span><span class="fl">251.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">24.7</span>)</a>
-<a class="sourceLine" id="cb84-2" data-line-number="2">subject.slope     =<span class="st"> </span><span class="fl">10.5</span>  <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">10.5</span>)</a>
-<a class="sourceLine" id="cb84-3" data-line-number="3"><span class="kw">c</span>(subject.intercept, subject.slope)</a></code></pre></div>
-<pre><code>## [1] 232.353025   5.396842</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">subject.obs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Reaction =</span> subject.intercept <span class="op">+</span><span class="st"> </span>subject.slope<span class="op">*</span>Days <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">9</span>, <span class="dt">sd=</span><span class="fl">25.6</span>) )</a>
-<a class="sourceLine" id="cb86-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb86-4" data-line-number="4"><span class="kw">ggplot</span>(subject.obs, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>Reaction)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">subject.intercept =<span class="st"> </span><span class="fl">251.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">24.7</span>)</a>
+<a class="sourceLine" id="cb90-2" data-line-number="2">subject.slope     =<span class="st"> </span><span class="fl">10.5</span>  <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">10.5</span>)</a>
+<a class="sourceLine" id="cb90-3" data-line-number="3"><span class="kw">c</span>(subject.intercept, subject.slope)</a></code></pre></div>
+<pre><code>## [1] 288.86733  17.14242</code></pre>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">subject.obs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Reaction =</span> subject.intercept <span class="op">+</span><span class="st"> </span>subject.slope<span class="op">*</span>Days <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">9</span>, <span class="dt">sd=</span><span class="fl">25.6</span>) )</a>
+<a class="sourceLine" id="cb92-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb92-4" data-line-number="4"><span class="kw">ggplot</span>(subject.obs, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>Reaction)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
 <p>This approach is commonly referred to as a “parametric” bootstrap because we are making some assumptions about the parameter distributions, whereas in a “nonparametric” bootstrap we don’t make any distributional assumptions. By default, the <code>bootMer</code> function will perform a parametric bootstrap to create new bootstrap datasets and then analyze them using the same model you origally created.</p>
 <div id="confidence-intervals" class="section level3">
 <h3><span class="header-section-number">11.7.1</span> Confidence Intervals</h3>
 <p>Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The <code>lme4::bootMer</code> function will create bootstrap data sets and then send those into the <code>lmer</code> function.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb87-1" data-line-number="1">ConfData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>)   <span class="co"># What x-values I care about</span></a>
-<a class="sourceLine" id="cb87-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb87-3" data-line-number="3"><span class="co"># Get our best guess as to the relationship between day and reaction time</span></a>
-<a class="sourceLine" id="cb87-4" data-line-number="4">ConfData &lt;-<span class="st"> </span>ConfData <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb87-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Estimate =</span> <span class="kw">predict</span>( m2, <span class="dt">newdata =</span> ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>) )</a>
-<a class="sourceLine" id="cb87-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb87-7" data-line-number="7"><span class="co"># A function to generate yhat from a model</span></a>
-<a class="sourceLine" id="cb87-8" data-line-number="8">myStats &lt;-<span class="st"> </span><span class="cf">function</span>(model){</a>
-<a class="sourceLine" id="cb87-9" data-line-number="9">  out &lt;-<span class="st"> </span><span class="kw">predict</span>( model, <span class="dt">newdata=</span>ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span> )</a>
-<a class="sourceLine" id="cb87-10" data-line-number="10">  <span class="kw">return</span>(out)</a>
-<a class="sourceLine" id="cb87-11" data-line-number="11">}</a>
-<a class="sourceLine" id="cb87-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb87-13" data-line-number="13"><span class="co"># bootMer generates new data sets, calls lmer on the data to produce a model,</span></a>
-<a class="sourceLine" id="cb87-14" data-line-number="14"><span class="co"># and then produces calls whatever function I pass in. It repeats this `nsim`</span></a>
-<a class="sourceLine" id="cb87-15" data-line-number="15"><span class="co"># number of times.</span></a>
-<a class="sourceLine" id="cb87-16" data-line-number="16">bootObj &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">bootMer</span>(m2, <span class="dt">FUN=</span>myStats, <span class="dt">nsim =</span> <span class="dv">1000</span> )</a>
-<a class="sourceLine" id="cb87-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb87-18" data-line-number="18"><span class="co"># using car::hist.boot, but because hist() is overloaded, I&#39;m not able </span></a>
-<a class="sourceLine" id="cb87-19" data-line-number="19"><span class="co"># to call it directly. Unfortunately, it doesn&#39;t allow me to select the </span></a>
-<a class="sourceLine" id="cb87-20" data-line-number="20"><span class="co"># bias-corrected and accelerated method, but the percentile method is ok</span></a>
-<a class="sourceLine" id="cb87-21" data-line-number="21"><span class="co"># for visualizaton.</span></a>
-<a class="sourceLine" id="cb87-22" data-line-number="22"><span class="kw">hist</span>(bootObj, <span class="dt">ci=</span><span class="st">&#39;perc&#39;</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1"><span class="co"># Add the confidence interval values onto estimates data frame</span></a>
-<a class="sourceLine" id="cb88-2" data-line-number="2">CI &lt;-<span class="st"> </span><span class="kw">confint</span>( bootObj,  <span class="dt">level=</span><span class="fl">0.95</span>, <span class="dt">ci=</span><span class="st">&#39;bca&#39;</span>) </a>
-<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lwr&#39;</span>,<span class="st">&#39;upr&#39;</span>) </a>
-<a class="sourceLine" id="cb88-4" data-line-number="4">ConfData &lt;-<span class="st"> </span><span class="kw">cbind</span>(ConfData, CI)</a></code></pre></div>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1"><span class="co"># Now for a nice graph!  </span></a>
-<a class="sourceLine" id="cb89-2" data-line-number="2">ConfData <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb89-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb89-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">ConfData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>)   <span class="co"># What x-values I care about</span></a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb93-3" data-line-number="3"><span class="co"># Get our best guess as to the relationship between day and reaction time</span></a>
+<a class="sourceLine" id="cb93-4" data-line-number="4">ConfData &lt;-<span class="st"> </span>ConfData <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb93-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Estimate =</span> <span class="kw">predict</span>( m2, <span class="dt">newdata =</span> ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>) )</a>
+<a class="sourceLine" id="cb93-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb93-7" data-line-number="7"><span class="co"># A function to generate yhat from a model</span></a>
+<a class="sourceLine" id="cb93-8" data-line-number="8">myStats &lt;-<span class="st"> </span><span class="cf">function</span>(model){</a>
+<a class="sourceLine" id="cb93-9" data-line-number="9">  out &lt;-<span class="st"> </span><span class="kw">predict</span>( model, <span class="dt">newdata=</span>ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span> )</a>
+<a class="sourceLine" id="cb93-10" data-line-number="10">  <span class="kw">return</span>(out)</a>
+<a class="sourceLine" id="cb93-11" data-line-number="11">}</a>
+<a class="sourceLine" id="cb93-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb93-13" data-line-number="13"><span class="co"># bootMer generates new data sets, calls lmer on the data to produce a model,</span></a>
+<a class="sourceLine" id="cb93-14" data-line-number="14"><span class="co"># and then produces calls whatever function I pass in. It repeats this `nsim`</span></a>
+<a class="sourceLine" id="cb93-15" data-line-number="15"><span class="co"># number of times.</span></a>
+<a class="sourceLine" id="cb93-16" data-line-number="16">bootObj &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">bootMer</span>(m2, <span class="dt">FUN=</span>myStats, <span class="dt">nsim =</span> <span class="dv">1000</span> )</a>
+<a class="sourceLine" id="cb93-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb93-18" data-line-number="18"><span class="co"># using car::hist.boot, but because hist() is overloaded, I&#39;m not able </span></a>
+<a class="sourceLine" id="cb93-19" data-line-number="19"><span class="co"># to call it directly. Unfortunately, it doesn&#39;t allow me to select the </span></a>
+<a class="sourceLine" id="cb93-20" data-line-number="20"><span class="co"># bias-corrected and accelerated method, but the percentile method is ok</span></a>
+<a class="sourceLine" id="cb93-21" data-line-number="21"><span class="co"># for visualizaton.</span></a>
+<a class="sourceLine" id="cb93-22" data-line-number="22"><span class="kw">hist</span>(bootObj, <span class="dt">ci=</span><span class="st">&#39;perc&#39;</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1"><span class="co"># Add the confidence interval values onto estimates data frame</span></a>
+<a class="sourceLine" id="cb94-2" data-line-number="2">CI &lt;-<span class="st"> </span><span class="kw">confint</span>( bootObj,  <span class="dt">level=</span><span class="fl">0.95</span>, <span class="dt">ci=</span><span class="st">&#39;bca&#39;</span>) </a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lwr&#39;</span>,<span class="st">&#39;upr&#39;</span>) </a>
+<a class="sourceLine" id="cb94-4" data-line-number="4">ConfData &lt;-<span class="st"> </span><span class="kw">cbind</span>(ConfData, CI)</a></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb95-1" data-line-number="1"><span class="co"># Now for a nice graph!  </span></a>
+<a class="sourceLine" id="cb95-2" data-line-number="2">ConfData <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb95-3" data-line-number="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb95-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
 </div>
 <div id="prediction-intervals" class="section level3">
 <h3><span class="header-section-number">11.7.2</span> Prediction Intervals</h3>
 <p>For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don’t need to fit a model at each bootstrap step. The <code>lme4::simulate</code> function creates the bootstrap dataset and doesn’t send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the original dataset.</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="co"># # set up the structure of new subjects</span></a>
-<a class="sourceLine" id="cb90-2" data-line-number="2">PredData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Subject=</span><span class="st">&#39;new&#39;</span>, <span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="co"># Simulate a NEW patient</span></a>
-<a class="sourceLine" id="cb90-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb90-4" data-line-number="4"><span class="co"># Create a n x 1000 data frame</span></a>
-<a class="sourceLine" id="cb90-5" data-line-number="5">Simulated &lt;-<span class="st"> </span><span class="kw">simulate</span>(m2, <span class="dt">newdata=</span>PredData, <span class="dt">allow.new.levels=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span><span class="dv">1000</span>)</a>
-<a class="sourceLine" id="cb90-6" data-line-number="6"> </a>
-<a class="sourceLine" id="cb90-7" data-line-number="7"><span class="co"># squish the Subject/Day info together with the simulated and then grab the quantiles</span></a>
-<a class="sourceLine" id="cb90-8" data-line-number="8"><span class="co"># for each day</span></a>
-<a class="sourceLine" id="cb90-9" data-line-number="9">PredIntervals &lt;-<span class="st"> </span><span class="kw">cbind</span>(PredData, Simulated) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb90-10" data-line-number="10"><span class="st">  </span><span class="kw">gather</span>(<span class="st">&#39;sim&#39;</span>,<span class="st">&#39;Reaction&#39;</span>, sim_<span class="dv">1</span><span class="op">:</span>sim_<span class="dv">1000</span> ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># go from wide to long structure</span></a>
-<a class="sourceLine" id="cb90-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(Subject, Days) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb90-12" data-line-number="12"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">lwr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.025</span>),</a>
-<a class="sourceLine" id="cb90-13" data-line-number="13">            <span class="dt">upr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.975</span>))</a></code></pre></div>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1"><span class="co"># Plot the prediction and confidence intervals</span></a>
-<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="kw">ggplot</span>(ConfData,  <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb91-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb91-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb91-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>PredIntervals, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</a></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1"><span class="co"># # set up the structure of new subjects</span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2">PredData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Subject=</span><span class="st">&#39;new&#39;</span>, <span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="co"># Simulate a NEW patient</span></a>
+<a class="sourceLine" id="cb96-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb96-4" data-line-number="4"><span class="co"># Create a n x 1000 data frame</span></a>
+<a class="sourceLine" id="cb96-5" data-line-number="5">Simulated &lt;-<span class="st"> </span><span class="kw">simulate</span>(m2, <span class="dt">newdata=</span>PredData, <span class="dt">allow.new.levels=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span><span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb96-6" data-line-number="6"> </a>
+<a class="sourceLine" id="cb96-7" data-line-number="7"><span class="co"># squish the Subject/Day info together with the simulated and then grab the quantiles</span></a>
+<a class="sourceLine" id="cb96-8" data-line-number="8"><span class="co"># for each day</span></a>
+<a class="sourceLine" id="cb96-9" data-line-number="9">PredIntervals &lt;-<span class="st"> </span><span class="kw">cbind</span>(PredData, Simulated) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb96-10" data-line-number="10"><span class="st">  </span><span class="kw">gather</span>(<span class="st">&#39;sim&#39;</span>,<span class="st">&#39;Reaction&#39;</span>, sim_<span class="dv">1</span><span class="op">:</span>sim_<span class="dv">1000</span> ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># go from wide to long structure</span></a>
+<a class="sourceLine" id="cb96-11" data-line-number="11"><span class="st">  </span><span class="kw">group_by</span>(Subject, Days) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb96-12" data-line-number="12"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">lwr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.025</span>),</a>
+<a class="sourceLine" id="cb96-13" data-line-number="13">            <span class="dt">upr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.975</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1"><span class="co"># Plot the prediction and confidence intervals</span></a>
+<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="kw">ggplot</span>(ConfData,  <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb97-3" data-line-number="3"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb97-4" data-line-number="4"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb97-5" data-line-number="5"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>PredIntervals, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</a></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
 </div>
 </div>
 <div id="exercises-10" class="section level2">
@@ -1232,14 +1264,14 @@ and we notice that the position and run effects are not nested within anything e
 </ol></li>
 <li><p>An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups. The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats’ growth. The data are available in the <code>faraway</code> package as <code>ratdrink</code>.
 <em>I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.</em> The following R code might be helpful for the initial visualization.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1"><span class="co"># we need to force ggplot to only draw lines between points for the same</span></a>
-<a class="sourceLine" id="cb92-2" data-line-number="2"><span class="co"># rat.  If I haven&#39;t already defined some aesthetic that is different</span></a>
-<a class="sourceLine" id="cb92-3" data-line-number="3"><span class="co"># for each rat, then it will connect points at the same week but for different</span></a>
-<a class="sourceLine" id="cb92-4" data-line-number="4"><span class="co"># rats. The solution is to add an aesthetic that does the equivalent of the</span></a>
-<a class="sourceLine" id="cb92-5" data-line-number="5"><span class="co"># dplyr function group_by(). In ggplot2, this aesetheic is &quot;group&quot;. </span></a>
-<a class="sourceLine" id="cb92-6" data-line-number="6"><span class="kw">ggplot</span>(ratdrink, <span class="kw">aes</span>(<span class="dt">y=</span>wt, <span class="dt">x=</span>weeks, <span class="dt">color=</span>treat)) <span class="op">+</span><span class="st">    </span></a>
-<a class="sourceLine" id="cb92-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb92-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>subject))  <span class="co"># play with removing the group=subject aesthetic...</span></a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="co"># we need to force ggplot to only draw lines between points for the same</span></a>
+<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="co"># rat.  If I haven&#39;t already defined some aesthetic that is different</span></a>
+<a class="sourceLine" id="cb98-3" data-line-number="3"><span class="co"># for each rat, then it will connect points at the same week but for different</span></a>
+<a class="sourceLine" id="cb98-4" data-line-number="4"><span class="co"># rats. The solution is to add an aesthetic that does the equivalent of the</span></a>
+<a class="sourceLine" id="cb98-5" data-line-number="5"><span class="co"># dplyr function group_by(). In ggplot2, this aesetheic is &quot;group&quot;. </span></a>
+<a class="sourceLine" id="cb98-6" data-line-number="6"><span class="kw">ggplot</span>(ratdrink, <span class="kw">aes</span>(<span class="dt">y=</span>wt, <span class="dt">x=</span>weeks, <span class="dt">color=</span>treat)) <span class="op">+</span><span class="st">    </span></a>
+<a class="sourceLine" id="cb98-7" data-line-number="7"><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb98-8" data-line-number="8"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>subject))  <span class="co"># play with removing the group=subject aesthetic...</span></a></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intercept perform as well as the model with random offsets in both the y-intercept and slope?</li>
 <li>Next consider if you can simplify the model by removing the interaction between Treatment and Week and possibly even the Treatment main effect.<br />

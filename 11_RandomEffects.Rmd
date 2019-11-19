@@ -265,6 +265,7 @@ We'll consider a second example using data from the pharmaceutical industry. We 
 
 ```{r}
 data(penicillin, package='faraway')
+
 ggplot(penicillin, aes(y=yield, x=treat)) +
   geom_point() + 
   facet_wrap( ~ blend, ncol=5)
@@ -335,6 +336,7 @@ model <- lmer(yield ~ Fertilizer + (1|plot/subplot), data=AgData)
 summary(model)
 ```
 Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot.
+
 
 **********************************
 A number of *in-situ* experiments looking at the addition CO$_2$ and warming on landscapes have been done (typically called Free Air CO$_2$ Experiments (FACE)) and these are interesting from an experimental design perspective because we have limited number of replicates because the cost of exposing plants to different CO$_2$ levels outside a greenhouse is extraordinarily expensive. In the `dsData` package, there is a dataset that is inspired by one of those studies.
@@ -488,6 +490,12 @@ Now that we have an idea of how things vary, we can look at the summary table.
 ```{r}
 summary(model)
 ```
+It looks like there is still plenty of unexplained variability, but the next largest source of variability is in the technician and also the lab.  Is the variability lab-to-lab large enough for us to convincingly argue that it is statistically significant?
+```{r}
+ranova(model)
+```
+It looks like the technician effect is at the edge of statistically significant, but the lab-to-lab effect is smaller than the pure error and not statistically significant. I'm not thrilled with the repeatability, but the technicians are a bigger concern than the individual labs.
+
 
 ## Crossed Effects
 If two effects are not nested, we say they are *crossed*. In the penicillin example, the treatments and blends were not nested and are therefore crossed. 
@@ -530,10 +538,20 @@ Notice that run and the pure error have about the same magnitude, but position i
 
 ```{r}
 m2 <- lmer( wear ~ material + (1|position), data=abrasion)
-anova(m, m2)
+m3 <- lmer( wear ~ material + (1|run), data=abrasion)
+anova(m, m2)  # Run is important; Notice refitting using ML
+anova(m, m3)  # Position is really important; Notice refitting using ML
 ```
 
 Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect.  Similarly the Likelihood Ratio Test gives a p-value of about $0.02$. So while the run effect wasn't visible in our initial graph, it looks like it is a statistically significant effect.
+
+```{r}
+# Now do a similar test, but using the REML estimates of the variance components
+# Recall that REML estimates are unbiased and should be used!
+ranova(m)
+```
+This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continutes to be statistically significant, the run has dropped down to marginal significance.
+
 
 ## Repeated Measures / Longitudinal Studies
 
@@ -556,7 +574,7 @@ We want to fit a line to these data, but how should we do this? First we notice 
 ```{r}
 m1 <- lmer( Reaction ~ Days + (1|Subject), data=sleepstudy)
 summary(m1)
-ranef(m1)
+ranova(m1)
 ```
 
 To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately $10.4$.
@@ -584,12 +602,12 @@ ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
     geom_point() + 
     geom_line() +
     geom_line(aes(y=yhat), color='red')
-
 ```
 
 This appears to fit the observed data quite a bit better, but it is useful to test this.
 ```{r}
-anova(m1, m2)
+# anova(m2, m1)  # the ML analysis, which is not preferred
+ranova(m2)
 ```
 
 Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.
@@ -600,7 +618,8 @@ sleepstudy <- sleepstudy %>%
   mutate(yhat = predict(m2, re.form=~0))
 ggplot(sleepstudy, aes(x=Days, y=yhat)) +
   geom_line(color='red') + ylab('Reaction') +
-  ggtitle('Population Estimated Regression Curve')
+  ggtitle('Population Estimated Regression Curve') +
+  scale_x_continuous(breaks = seq(0,9, by=2))
 ```
 
 ```{r}
@@ -609,6 +628,7 @@ sleepstudy <- sleepstudy %>%
 ggplot(sleepstudy, aes(x=Days)) +
   geom_line(aes(y=yhat), size=3) + 
   geom_line(aes(y=yhat.ind, group=Subject), color='red') +
+  scale_x_continuous(breaks = seq(0,9, by=2)) +
   ylab('Reaction') + ggtitle('Person-to-Person Variation')
 ```
 
@@ -616,6 +636,7 @@ ggplot(sleepstudy, aes(x=Days)) +
 ggplot(sleepstudy, aes(x=Days)) +
   geom_line(aes(y=yhat)) + 
   geom_line(aes(y=yhat.ind, group=Subject), color='red') +
+  scale_x_continuous(breaks = seq(0,9, by=2)) +
   ylab('Reaction') + ggtitle('Within Person Variation') +
   facet_wrap(~ Subject, ncol=6) + 
   geom_point(aes(y=Reaction))
