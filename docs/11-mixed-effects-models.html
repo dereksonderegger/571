@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2019-11-19" />
+<meta name="date" content="2019-11-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1169,18 +1169,32 @@ and we notice that the position and run effects are not nested within anything e
 <div id="confidence-and-prediction-intervals" class="section level2">
 <h2><span class="header-section-number">11.7</span> Confidence and Prediction Intervals</h2>
 <p>As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn’t a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the <code>lme4</code> package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.</p>
-<p>Typically the bootstrap is used when we don’t want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data. But, if we don’t mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of <span class="math inline">\(251.4\)</span> and <span class="math inline">\(10.5\)</span>. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of <span class="math inline">\(24.7\)</span> and <span class="math inline">\(5.9\)</span>. Then given a subjects regression line, observations are just normal (mean zero, standard deviation <span class="math inline">\(25.6\)</span>) perturbations from the line. All of these numbers came from the <code>summary(m2)</code> output.</p>
+<p>Recall that the steps of a bootstrap procedure are:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a bootstrap sample.</li>
+<li>Fit a model to that bootstrap sample.</li>
+<li><em>From that model, calculate some statistic(s) you care about. This is the only step that the user needs do any work to specify.</em></li>
+<li>Repeat steps 1-3, many times, generating a bootstrap distribution of the statistics you care about.</li>
+<li>From the bootstrap distribution generate confidence intervals for the value of interest.</li>
+</ol>
+<p>Typically the bootstrap is used when we don’t want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data. But, if we don’t mind making distributional assumptions, then instead of re-sampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of <span class="math inline">\(251.4\)</span> and <span class="math inline">\(10.5\)</span>. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of <span class="math inline">\(24.7\)</span> and <span class="math inline">\(5.9\)</span>. Then given a subjects regression line, observations are just normal (mean zero, standard deviation <span class="math inline">\(25.6\)</span>) perturbations from the line. All of these numbers came from the <code>summary(m2)</code> output.</p>
 <p>To create a bootstrap data simulating a new subject, we could do the following:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1">subject.intercept =<span class="st"> </span><span class="fl">251.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">24.7</span>)</a>
 <a class="sourceLine" id="cb90-2" data-line-number="2">subject.slope     =<span class="st"> </span><span class="fl">10.5</span>  <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">10.5</span>)</a>
 <a class="sourceLine" id="cb90-3" data-line-number="3"><span class="kw">c</span>(subject.intercept, subject.slope)</a></code></pre></div>
-<pre><code>## [1] 288.86733  17.14242</code></pre>
+<pre><code>## [1] 227.80606  17.68275</code></pre>
 <div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb92-1" data-line-number="1">subject.obs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb92-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Reaction =</span> subject.intercept <span class="op">+</span><span class="st"> </span>subject.slope<span class="op">*</span>Days <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">9</span>, <span class="dt">sd=</span><span class="fl">25.6</span>) )</a>
 <a class="sourceLine" id="cb92-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb92-4" data-line-number="4"><span class="kw">ggplot</span>(subject.obs, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>Reaction)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</a></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-54-1.png" width="672" /></p>
-<p>This approach is commonly referred to as a “parametric” bootstrap because we are making some assumptions about the parameter distributions, whereas in a “nonparametric” bootstrap we don’t make any distributional assumptions. By default, the <code>bootMer</code> function will perform a parametric bootstrap to create new bootstrap datasets and then analyze them using the same model you origally created.</p>
+<p>This approach is commonly referred to as a “parametric” bootstrap because we are making some assumptions about the parameter distributions, whereas in a “non-parametric” bootstrap we don’t make any distributional assumptions. By default, the <code>bootMer</code> function will</p>
+<ol style="list-style-type: decimal">
+<li>Perform a parametric bootstrap to create new bootstrap data sets, using the results of the initial model.</li>
+<li>Create a bootstrap model by analyzing the bootstrap data using the same model formula used by the initial model.</li>
+<li>Apply some function you write to each bootstrap model. This function takes in a bootstrap model and returns a statistic or vector of statistics.</li>
+<li>Repeat steps 1-4 repeatedly to create the bootstrap distribution of the statistics returned by your function.</li>
+</ol>
 <div id="confidence-intervals" class="section level3">
 <h3><span class="header-section-number">11.7.1</span> Confidence Intervals</h3>
 <p>Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The <code>lme4::bootMer</code> function will create bootstrap data sets and then send those into the <code>lmer</code> function.</p>
@@ -1191,8 +1205,8 @@ and we notice that the position and run effects are not nested within anything e
 <a class="sourceLine" id="cb93-5" data-line-number="5"><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Estimate =</span> <span class="kw">predict</span>( m2, <span class="dt">newdata =</span> ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>) )</a>
 <a class="sourceLine" id="cb93-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb93-7" data-line-number="7"><span class="co"># A function to generate yhat from a model</span></a>
-<a class="sourceLine" id="cb93-8" data-line-number="8">myStats &lt;-<span class="st"> </span><span class="cf">function</span>(model){</a>
-<a class="sourceLine" id="cb93-9" data-line-number="9">  out &lt;-<span class="st"> </span><span class="kw">predict</span>( model, <span class="dt">newdata=</span>ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span> )</a>
+<a class="sourceLine" id="cb93-8" data-line-number="8">myStats &lt;-<span class="st"> </span><span class="cf">function</span>(model.star){</a>
+<a class="sourceLine" id="cb93-9" data-line-number="9">  out &lt;-<span class="st"> </span><span class="kw">predict</span>( model.star, <span class="dt">newdata=</span>ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span> )</a>
 <a class="sourceLine" id="cb93-10" data-line-number="10">  <span class="kw">return</span>(out)</a>
 <a class="sourceLine" id="cb93-11" data-line-number="11">}</a>
 <a class="sourceLine" id="cb93-12" data-line-number="12"></a>

@@ -650,7 +650,15 @@ summary(m2)
 ## Confidence and Prediction Intervals 
 As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn't a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the `lme4` package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.
 
-Typically the bootstrap is used when we don't want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data.  But, if we don't mind making distributional assumptions, then instead of resampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of $251.4$ and $10.5$. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of $24.7$ and $5.9$.  Then given a subjects regression line, observations are just normal (mean zero, standard deviation $25.6$) perturbations from the line.  All of these numbers came from the `summary(m2)` output.
+Recall that the steps of a bootstrap procedure are:
+
+1. Generate a bootstrap sample.
+2. Fit a model to that bootstrap sample.
+3. *From that model, calculate some statistic(s) you care about. This is the only step that the user needs do any work to specify.*
+4. Repeat steps 1-3, many times, generating a bootstrap distribution of the statistics you care about.
+5. From the bootstrap distribution generate confidence intervals for the value of interest.
+
+Typically the bootstrap is used when we don't want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data.  But, if we don't mind making distributional assumptions, then instead of re-sampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of $251.4$ and $10.5$. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of $24.7$ and $5.9$.  Then given a subjects regression line, observations are just normal (mean zero, standard deviation $25.6$) perturbations from the line.  All of these numbers came from the `summary(m2)` output.
 
 To create a bootstrap data simulating a new subject, we could do the following:
 ```{r}
@@ -664,7 +672,12 @@ subject.obs <- data.frame(Days = 0:8) %>%
 ggplot(subject.obs, aes(x=Days, y=Reaction)) + geom_point()
 ```
 
-This approach is commonly referred to as a "parametric" bootstrap because we are making some assumptions about the parameter distributions, whereas in a "nonparametric" bootstrap we don't make any distributional assumptions. By default, the `bootMer` function will perform a parametric bootstrap to create new bootstrap datasets and then analyze them using the same model you origally created.
+This approach is commonly referred to as a "parametric" bootstrap because we are making some assumptions about the parameter distributions, whereas in a "non-parametric" bootstrap we don't make any distributional assumptions. By default, the `bootMer` function will 
+
+1) Perform a parametric bootstrap to create new bootstrap data sets, using the results of the initial model.
+2) Create a bootstrap model by analyzing the bootstrap data using the same model formula used by the initial model.
+3) Apply some function you write to each bootstrap model. This function takes in a bootstrap model and returns a statistic or vector of statistics.
+4) Repeat steps 1-4 repeatedly to create the bootstrap distribution of the statistics returned by your function.
 
 ### Confidence Intervals
 Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The `lme4::bootMer` function will create bootstrap data sets and then send those into the `lmer` function.
@@ -677,8 +690,8 @@ ConfData <- ConfData %>%
   mutate( Estimate = predict( m2, newdata = ConfData, re.form=~0) )
 
 # A function to generate yhat from a model
-myStats <- function(model){
-  out <- predict( model, newdata=ConfData, re.form=~0 )
+myStats <- function(model.star){
+  out <- predict( model.star, newdata=ConfData, re.form=~0 )
   return(out)
 }
 

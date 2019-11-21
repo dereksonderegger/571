@@ -24,7 +24,7 @@ library(lmerTest)
 ```
 
 
-The general linear model assumes that the observed data is distributed 
+The standard linear model assumes that the observed data is distributed 
 $$\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0,\sigma^2)$$
 which can be re-written as
 $$\boldsymbol{y}\sim N\left(\boldsymbol{\mu}=\boldsymbol{X\beta},\sigma^{2}\boldsymbol{I}\right)$$
@@ -43,11 +43,11 @@ and notably this assumes that the data are independent. This model has $E\left[\
 | ANCOVA                   | 1 Continuous, 1 Categorical | Continuous Normal Response  |
 +--------------------------+-----------------------------+-----------------------------+
 
-The general linear model expanded on the linear model and we allow the data points to be correlated 
+The *general* linear model expanded on the linear model and we allow the data points to be correlated 
 $$\boldsymbol{y}\sim N\left(\boldsymbol{X\beta},\sigma^{2}\boldsymbol{\Omega}\right)$$
 where we assume that $\boldsymbol{\Omega}$ has some known form but may include some unknown correlation parameters. This type of model includes our work with mixed models and time series data.
 
-The study of generalized linear models removes the assumption that the error terms are normally distributed and allows the data to be distributed according to some other distribution such as Binomial, Poisson, or Exponential. These distributions are parameterized differently than the normal (instead of $\mu$ and $\sigma$, we might be interested in $\lambda$ or $p$). However, I am still interested in how my covariates can be used to estimate my parameter of interest.
+The study of *generalized* linear models removes the assumption that the error terms are normally distributed and allows the data to be distributed according to some other distribution such as Binomial, Poisson, or Exponential. These distributions are parameterized differently than the normal (instead of $\mu$ and $\sigma$, we might be interested in $\lambda$ or $p$). However, I am still interested in how my covariates can be used to estimate my parameter of interest.
 
 Critically, I still want to parameterize my covariates as $\boldsymbol{X\beta}$ because we understand the how continuous and discrete covariates added and interpreted and what interactions between them mean. By keeping the $\boldsymbol{X\beta}$ part, we continue to build on the earlier foundations.
 
