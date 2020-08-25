@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger" />
+
+
+<meta name="date" content="2020-08-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="4-contrasts.html"/>
+<link rel="next" href="6-two-way-anova.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="part"><span><b>Statistical Theory</b></span></li>
+<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a><ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.2.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.2.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.2.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#square-matrices"><i class="fa fa-check"></i><b>1.2.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.2.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.2.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.2.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.3.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.3.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.3.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vector-multiplication"><i class="fa fa-check"></i><b>1.3.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.3.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.3.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.3.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.3.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.3.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#determinant"><i class="fa fa-check"></i><b>1.3.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.3.8" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#inverse"><i class="fa fa-check"></i><b>1.3.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.2.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2.2</b> ANOVA model</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.3.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.3.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.3.2</b> Estimation of Variance Parameter</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.4.1</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.4.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.4.2</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.4.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.4.3</b> Summary of pertinent results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>2.5</b> R example</a></li>
+<li class="chapter" data-level="2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>2.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals and Hypothesis Tests</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.3.1</b> Theory</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.4.1</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.4.2" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.4.2</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.4.3</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a><ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
+<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#way-anova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#using-emmeans-package"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>Statistical Models</b></span></li>
+<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="5.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>5.2</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="5.3" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>5.3</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="5.4" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>5.4</b> Iris Example</a></li>
+<li class="chapter" data-level="5.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
+<li class="chapter" data-level="5.6" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#copied-stuff"><i class="fa fa-check"></i><b>5.6</b> Copied Stuff</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#ancova-example"><i class="fa fa-check"></i><b>5.6.1</b> ANCOVA example</a></li>
+<li class="chapter" data-level="5.6.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#ancova"><i class="fa fa-check"></i><b>5.6.2</b> ANCOVA</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>6.1.1</b> An Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>6.1.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="6.1.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>6.1.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="6.1.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>6.1.4</b> Pairwise Comparisons</a></li>
+<li class="chapter" data-level="6.1.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>6.1.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>6.2</b> Two-Way ANOVA</a></li>
+<li class="chapter" data-level="6.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>6.3</b> Orthogonality</a></li>
+<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>6.4.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="6.4.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>6.4.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="6.4.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>6.4.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>6.5.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="6.5.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>6.5.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="6.5.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>6.5.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises-1"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-multiple-regression.html"><a href="7-multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple Regression</a></li>
+<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
+<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="8.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>9.1</b> Interpretation with Correlated Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>10.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="10.1.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>10.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>10.2.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="10.2.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>10.2.2</b> Transforming the Response</a></li>
+<li class="chapter" data-level="10.2.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>10.2.3</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="10.2.4" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>10.2.4</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-too-many-predictors.html"><a href="11-too-many-predictors.html"><i class="fa fa-check"></i><b>11</b> Too many Predictors</a></li>
+<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>12.1</b> Block Designs</a></li>
+<li class="chapter" data-level="12.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>12.2</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="12.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>12.3</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="12.4" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>12.4</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="12.5" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>12.5</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="12.6" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>12.6</b> Nested Effects</a></li>
+<li class="chapter" data-level="12.7" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>12.7</b> Crossed Effects</a></li>
+<li class="chapter" data-level="12.8" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>12.8</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="12.9.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>12.9.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.9.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>12.9.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="12.10" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>12.10</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>13.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>13.2.1</b> Deviance</a></li>
+<li class="chapter" data-level="13.2.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>13.2.2</b> Goodness of Fit</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>13.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="13.4" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>13.4</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="13.5" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>13.5</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="13.6" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>13.6</b> Overdispersion</a></li>
+<li class="chapter" data-level="13.7" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>13.7</b> ROC Curves</a></li>
+<li class="chapter" data-level="13.8" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>13.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="14-poisson-regression.html"><a href="14-poisson-regression.html"><i class="fa fa-check"></i><b>14</b> Poisson Regression</a></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a><ul>
+<li class="chapter" data-level="15.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>15.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="15.2" data-path="15-block-designs.html"><a href="15-block-designs.html"><i class="fa fa-check"></i><b>15.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="15.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>15.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a><ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="16.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
+<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a><ul>
+<li class="chapter" data-level="16.2.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>16.2.1</b> Poisson</a></li>
+<li class="chapter" data-level="16.2.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>16.2.2</b> Exponential</a></li>
+<li class="chapter" data-level="16.2.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>16.2.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a><ul>
+<li class="chapter" data-level="16.3.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>16.3.1</b> Poisson</a></li>
+<li class="chapter" data-level="16.3.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>16.3.2</b> Exponential Example</a></li>
+<li class="chapter" data-level="16.3.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>16.3.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="16.4" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>16.4</b> Discussion</a></li>
+<li class="chapter" data-level="16.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#exercises"><i class="fa fa-check"></i><b>16.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
+<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="16.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>16.6.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="analysis-of-covariance-ancova" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Analysis of Covariance (ANCOVA)</h1>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="5-analysis-of-covariance-ancova.html#cb88-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></span></code></pre></div>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">5.1</span> Introduction</h2>
+<p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. For historical reasons going back to pre “computer in your pocket” days, statisticians call this the <em>Analysis of Covariance</em> (ANCOVA) model. Because it is just another example of a <span class="math inline">\(\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon}\)</span> linear model, I prefer to think of it as simply having both continuous and categorical variables in my model. None of the cookbook calculations change, but the interpretation of the parameters gets much more interesting.</p>
+<p>The dataset <code>teengamb</code> in the package <code>faraway</code> has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?</p>
+<p>There are two possible ways that gender could enter the model. Either:</p>
+<ol style="list-style-type: decimal">
+<li><p>We could fit two lines to the data one for males and one for females but require that the lines be parallel (i.e. having the same slopes for income). This is accomplished by having a separate y-intercept for each gender. In effect, the line for the females would be offset by a constant amount from the male line.</p></li>
+<li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender. One way to remember that this is an interaction is because the effect of income on gambling rate is dependent on the gender of the individual.</p></li>
+</ol>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+</div>
+<div id="offset-parallel-lines-aka-additive-models" class="section level2">
+<h2><span class="header-section-number">5.2</span> Offset parallel Lines (aka additive models)</h2>
+<p>In order to get offset parallel lines, we want to write a model
+<span class="math display">\[y_{i}=\begin{cases}
+\beta_{0}+\beta_{1}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
+\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
+\end{cases}\]</span>
+where <span class="math inline">\(\beta_{1}\)</span> is the vertical offset of the female group regression line to the reference group, which is the males regression line. Because the first <span class="math inline">\(19\)</span> observations are female, we can this in in matrix form as
+<span class="math display">\[\left[\begin{array}{c}
+y_{1}\\
+\vdots\\
+y_{19}\\
+y_{20}\\
+\vdots\\
+y_{47}
+\end{array}\right]=\left[\begin{array}{ccc}
+1 &amp; 1 &amp; x_{1}\\
+\vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 1 &amp; x_{19}\\
+1 &amp; 0 &amp; x_{20}\\
+\vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 0 &amp; x_{47}
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1}\\
+\vdots\\
+\epsilon_{19}\\
+\epsilon_{20}\\
+\vdots\\
+\epsilon_{47}
+\end{array}\right]\]</span></p>
+<p>I like this representation where <span class="math inline">\(\beta_{1}\)</span> is the offset from the male regression line because it makes it very convenient to test if the offset is equal to zero. The second column of the design matrix referred to as a “dummy variable” or “indicator variable” that codes for the female gender. Notice that even though I have two genders, I only had to add one additional variable to my model because we already had a y-intercept <span class="math inline">\(\beta_{0}\)</span> and we only added one indicator variable for females.</p>
+<p>What if we had a third group? Then we would fit another column of indicator variable for the third group. The new beta coefficient in the model would be the offset of the new group to the reference group. For example we consider <span class="math inline">\(n=9\)</span> observations with <span class="math inline">\(n_i=3\)</span> observations per group where <span class="math inline">\(y_{i,j}\)</span>is the <span class="math inline">\(j\)</span> th replication of the <span class="math inline">\(i\)</span>th group.
+<span class="math display">\[\left[\begin{array}{c}
+y_{1,1}\\
+y_{1,2}\\
+y_{1,3}\\
+y_{2,1}\\
+y_{2,2}\\
+y_{2,3}\\
+y_{3,1}\\
+y_{3,2}\\
+y_{3,3}
+\end{array}\right]=\left[\begin{array}{cccc}
+1 &amp; 0 &amp; 0 &amp; x_{1,1}\\
+1 &amp; 0 &amp; 0 &amp; x_{1,2}\\
+1 &amp; 0 &amp; 0 &amp; x_{1,3}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,1}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,2}\\
+1 &amp; 1 &amp; 0 &amp; x_{2,3}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,1}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,2}\\
+1 &amp; 0 &amp; 1 &amp; x_{3,3}
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}\\
+\beta_{3}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1,1}\\
+\epsilon_{1,2}\\
+\epsilon_{1,3}\\
+\epsilon_{2,1}\\
+\epsilon_{2,2}\\
+\epsilon_{2,3}\\
+\epsilon_{3,3}\\
+\epsilon_{3,2}\\
+\epsilon_{3,3}
+\end{array}\right]
+\]</span></p>
+<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The parameter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
+</div>
+<div id="lines-with-different-slopes-aka-interaction-model" class="section level2">
+<h2><span class="header-section-number">5.3</span> Lines with different slopes (aka Interaction model)</h2>
+<p>We can now include a discrete random variable and create regression lines that are parallel, but often that is inappropriate, such as in the teenage gambling dataset. We want to be able to fit a model that has different slopes.
+<span class="math display">\[y_{i}=\begin{cases}
+\left(\beta_{0}+\beta_{1}\right)+\left(\beta_{2}+\beta_{3}\right)x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
+\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
+\end{cases}
+\]</span>
+Where <span class="math inline">\(\beta_{1}\)</span> is the offset in y-intercept of the female group from the male group, and <span class="math inline">\(\beta_{3}\)</span> is the offset in slope. Now our matrix formula looks like</p>
+<p><span class="math display">\[\left[\begin{array}{c}
+y_{1}\\
+\vdots\\
+y_{19}\\
+y_{20}\\
+\vdots\\
+y_{47}
+\end{array}\right]=\left[\begin{array}{cccc}
+1 &amp; 1 &amp; x_{1} &amp; x_{1}\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 1 &amp; x_{19} &amp; x_{19}\\
+1 &amp; 0 &amp; x_{20} &amp; 0\\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
+1 &amp; 0 &amp; x_{47} &amp; 0
+\end{array}\right]\left[\begin{array}{c}
+\beta_{0}\\
+\beta_{1}\\
+\beta_{2}\\
+\beta_{3}
+\end{array}\right]+\left[\begin{array}{c}
+\epsilon_{1}\\
+\vdots\\
+\epsilon_{19}\\
+\epsilon_{20}\\
+\vdots\\
+\epsilon_{47}
+\end{array}\right]
+\]</span>
+where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="5-analysis-of-covariance-ancova.html#cb89-1"></a><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb89-2"><a href="5-analysis-of-covariance-ancova.html#cb89-2"></a></span>
+<span id="cb89-3"><a href="5-analysis-of-covariance-ancova.html#cb89-3"></a><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></span>
+<span id="cb89-4"><a href="5-analysis-of-covariance-ancova.html#cb89-4"></a><span class="co"># relabels the levels to something I understand.</span></span>
+<span id="cb89-5"><a href="5-analysis-of-covariance-ancova.html#cb89-5"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">sex =</span> <span class="kw">ifelse</span>( sex<span class="op">==</span><span class="dv">1</span>, <span class="st">&#39;Female&#39;</span>, <span class="st">&#39;Male&#39;</span>) )</span>
+<span id="cb89-6"><a href="5-analysis-of-covariance-ancova.html#cb89-6"></a></span>
+<span id="cb89-7"><a href="5-analysis-of-covariance-ancova.html#cb89-7"></a><span class="co"># Fit a linear model with the interaction of sex and income</span></span>
+<span id="cb89-8"><a href="5-analysis-of-covariance-ancova.html#cb89-8"></a><span class="co"># Interactions can be specified useing a colon :</span></span>
+<span id="cb89-9"><a href="5-analysis-of-covariance-ancova.html#cb89-9"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </span>
+<span id="cb89-10"><a href="5-analysis-of-covariance-ancova.html#cb89-10"></a></span>
+<span id="cb89-11"><a href="5-analysis-of-covariance-ancova.html#cb89-11"></a><span class="co"># R allows a shortcut for the prior definition</span></span>
+<span id="cb89-12"><a href="5-analysis-of-covariance-ancova.html#cb89-12"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</span>
+<span id="cb89-13"><a href="5-analysis-of-covariance-ancova.html#cb89-13"></a></span>
+<span id="cb89-14"><a href="5-analysis-of-covariance-ancova.html#cb89-14"></a><span class="co"># save the fit, lwr, upr values for each observation</span></span>
+<span id="cb89-15"><a href="5-analysis-of-covariance-ancova.html#cb89-15"></a><span class="co"># these are the yhat and CI </span></span>
+<span id="cb89-16"><a href="5-analysis-of-covariance-ancova.html#cb89-16"></a><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></span>
+<span id="cb89-17"><a href="5-analysis-of-covariance-ancova.html#cb89-17"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></span>
+<span id="cb89-18"><a href="5-analysis-of-covariance-ancova.html#cb89-18"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb89-19"><a href="5-analysis-of-covariance-ancova.html#cb89-19"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
+<span id="cb89-20"><a href="5-analysis-of-covariance-ancova.html#cb89-20"></a></span>
+<span id="cb89-21"><a href="5-analysis-of-covariance-ancova.html#cb89-21"></a><span class="co"># Make a nice plot that includes the regreesion line.</span></span>
+<span id="cb89-22"><a href="5-analysis-of-covariance-ancova.html#cb89-22"></a><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb89-23"><a href="5-analysis-of-covariance-ancova.html#cb89-23"></a><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</span>
+<span id="cb89-24"><a href="5-analysis-of-covariance-ancova.html#cb89-24"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>
+<span id="cb89-25"><a href="5-analysis-of-covariance-ancova.html#cb89-25"></a><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></span>
+<span id="cb89-26"><a href="5-analysis-of-covariance-ancova.html#cb89-26"></a><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="5-analysis-of-covariance-ancova.html#cb90-1"></a><span class="co"># print the model summary</span></span>
+<span id="cb90-2"><a href="5-analysis-of-covariance-ancova.html#cb90-2"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gamble ~ sex * income, data = teengamb)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -56.522  -4.860  -1.790   6.273  93.478 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)   
+## (Intercept)      3.1400     9.2492   0.339  0.73590   
+## sexMale         -5.7996    11.2003  -0.518  0.60724   
+## income           0.1749     1.9034   0.092  0.92721   
+## sexMale:income   6.3432     2.1446   2.958  0.00502 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 20.98 on 43 degrees of freedom
+## Multiple R-squared:  0.5857,	Adjusted R-squared:  0.5568 
+## F-statistic: 20.26 on 3 and 43 DF,  p-value: 2.451e-08</code></pre>
+</div>
+<div id="iris-example" class="section level2">
+<h2><span class="header-section-number">5.4</span> Iris Example</h2>
+<p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="5-analysis-of-covariance-ancova.html#cb92-1"></a><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></span>
+<span id="cb92-2"><a href="5-analysis-of-covariance-ancova.html#cb92-2"></a><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></span></code></pre></div>
+<pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
+<p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="5-analysis-of-covariance-ancova.html#cb94-1"></a><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></span>
+<span id="cb94-2"><a href="5-analysis-of-covariance-ancova.html#cb94-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
+<p>We consider the sequence of building successively more complex models:</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="5-analysis-of-covariance-ancova.html#cb95-1"></a><span class="co"># make virginica the reference group </span></span>
+<span id="cb95-2"><a href="5-analysis-of-covariance-ancova.html#cb95-2"></a>iris &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></span>
+<span id="cb95-3"><a href="5-analysis-of-covariance-ancova.html#cb95-3"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Species =</span> forcats<span class="op">::</span><span class="kw">fct_relevel</span>(Species, <span class="st">&#39;virginica&#39;</span>) )</span>
+<span id="cb95-4"><a href="5-analysis-of-covariance-ancova.html#cb95-4"></a></span>
+<span id="cb95-5"><a href="5-analysis-of-covariance-ancova.html#cb95-5"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></span>
+<span id="cb95-6"><a href="5-analysis-of-covariance-ancova.html#cb95-6"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></span>
+<span id="cb95-7"><a href="5-analysis-of-covariance-ancova.html#cb95-7"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></span></code></pre></div>
+<p>The three models we consider are the following:</p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="5-analysis-of-covariance-ancova.html#cb96-1"></a>m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 5
+##   term         estimate std.error statistic p.value
+##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)     3.42      0.254     13.5    0    
+## 2 Sepal.Length   -0.062     0.043     -1.44   0.152</code></pre>
+<p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
+<p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="5-analysis-of-covariance-ancova.html#cb98-1"></a>m2 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## # A tibble: 4 x 5
+##   term              estimate std.error statistic p.value
+##   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)          0.669     0.308      2.17   0.031
+## 2 Sepal.Length         0.35      0.046      7.56   0    
+## 3 Speciessetosa        1.01      0.093     10.8    0    
+## 4 Speciesversicolor    0.024     0.065      0.37   0.712</code></pre>
+<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
+<p>Finally we consider the most complicated model that includes two more slope parameters</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="5-analysis-of-covariance-ancova.html#cb100-1"></a>m3 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   term                           estimate std.error statistic p.value
+##   &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
+## 1 (Intercept)                       1.45      0.405     3.57    0    
+## 2 Sepal.Length                      0.232     0.061     3.79    0    
+## 3 Speciessetosa                    -2.02      0.686    -2.94    0.004
+## 4 Speciesversicolor                -0.574     0.605    -0.95    0.344
+## 5 Sepal.Length:Speciessetosa        0.567     0.126     4.49    0    
+## 6 Sepal.Length:Speciesversicolor    0.088     0.097     0.905   0.367</code></pre>
+<p>These parameters are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Meaning</th>
+<th>R-label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><em>Reference group y-intercept </em></td>
+<td>(Intercept)</td>
+</tr>
+<tr class="even">
+<td><em>Reference group slope </em></td>
+<td>Sepal.Length</td>
+</tr>
+<tr class="odd">
+<td><em>offset to y-intercept for Setosa</em></td>
+<td>Speciessetosa</td>
+</tr>
+<tr class="even">
+<td><em>offset to y-intercept for Versicolor</em></td>
+<td>Speciesversicolor</td>
+</tr>
+<tr class="odd">
+<td><em>offset to slope for Setosa</em></td>
+<td>Sepal.Length:Speciessetosa</td>
+</tr>
+<tr class="even">
+<td><em>offset to slope for Versicolor</em></td>
+<td>Sepal.Length:Speciesversicolor</td>
+</tr>
+</tbody>
+</table>
+<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="5-analysis-of-covariance-ancova.html#cb102-1"></a><span class="kw">anova</span>(m2, m3)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Sepal.Width ~ Sepal.Length + Species
+## Model 2: Sepal.Width ~ Sepal.Length * Species
+##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
+## 1    146 12.193                                 
+## 2    144 10.680  2    1.5132 10.201 7.19e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The F-test concludes that there is sufficient decrease in the SSE to justify adding two additional parameters to the model.</p>
+</div>
+<div id="exercises" class="section level2">
+<h2><span class="header-section-number">5.5</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>The in the <code>faraway</code> package, there is a dataset named <code>phbirths</code> that gives babies birth weights along with their gestational time in utero along with the mother’s smoking status.
+<ol style="list-style-type: lower-alpha">
+<li><p>Load and inspect the dataset using</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="5-analysis-of-covariance-ancova.html#cb104-1"></a><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></span>
+<span id="cb104-2"><a href="5-analysis-of-covariance-ancova.html#cb104-2"></a>?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></span></code></pre></div></li>
+<li><p>Create a plot of the birth weight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</p></li>
+<li><p>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</p></li>
+<li><p>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</p></li>
+<li><p>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</p></li>
+<li><p>Interpret the relationship between gestational length and mother’s smoking status on birth weight.</p></li>
+</ol></li>
+<li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to ascertain if the lot number makes any difference in clotting time.
+<ol style="list-style-type: lower-alpha">
+<li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number.</li>
+<li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
+</ol></li>
+<li>In the <code>faraway</code> package, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth.
+<ol style="list-style-type: lower-alpha">
+<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function.</li>
+<li>Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).</li>
+<li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>? At this point we don’t know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.</li>
+</ol></li>
+</ol>
+</div>
+<div id="copied-stuff" class="section level2">
+<h2><span class="header-section-number">5.6</span> Copied Stuff</h2>
+<div id="ancova-example" class="section level3">
+<h3><span class="header-section-number">5.6.1</span> ANCOVA example</h3>
+<p>In the ANCOVA case, there are more interesting contrasts to be made. For this example we will use the <code>ToothGrowth</code> dataset. This data measuring the effects of different dose levels of vitamin C on tooth growth of guinea pigs. The two different delivery methods are encoded by the variable supp which has levels of orange juice (OJ) and ascorbic acid (VC).</p>
+<p>We first fit a ANCOVA model with an interaction between log(dose) level and delivery method and graph the result.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="5-analysis-of-covariance-ancova.html#cb105-1"></a><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)</span>
+<span id="cb105-2"><a href="5-analysis-of-covariance-ancova.html#cb105-2"></a>ToothGrowth<span class="op">$</span>logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth<span class="op">$</span>dose )</span>
+<span id="cb105-3"><a href="5-analysis-of-covariance-ancova.html#cb105-3"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">~</span><span class="st"> </span>logDose <span class="op">*</span><span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)</span>
+<span id="cb105-4"><a href="5-analysis-of-covariance-ancova.html#cb105-4"></a></span>
+<span id="cb105-5"><a href="5-analysis-of-covariance-ancova.html#cb105-5"></a><span class="co"># predict() gives me the yhat values and optional CI</span></span>
+<span id="cb105-6"><a href="5-analysis-of-covariance-ancova.html#cb105-6"></a><span class="co"># these are just the &quot;contrasts&quot; defined by X matrix! </span></span>
+<span id="cb105-7"><a href="5-analysis-of-covariance-ancova.html#cb105-7"></a>ToothGrowth &lt;-<span class="st"> </span>ToothGrowth <span class="op">%&gt;%</span></span>
+<span id="cb105-8"><a href="5-analysis-of-covariance-ancova.html#cb105-8"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb105-9"><a href="5-analysis-of-covariance-ancova.html#cb105-9"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>))</span>
+<span id="cb105-10"><a href="5-analysis-of-covariance-ancova.html#cb105-10"></a></span>
+<span id="cb105-11"><a href="5-analysis-of-covariance-ancova.html#cb105-11"></a><span class="co"># Plot the results using ggplot2</span></span>
+<span id="cb105-12"><a href="5-analysis-of-covariance-ancova.html#cb105-12"></a><span class="kw">ggplot</span>( ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">col=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span></span>
+<span id="cb105-13"><a href="5-analysis-of-covariance-ancova.html#cb105-13"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>len)) <span class="op">+</span></span>
+<span id="cb105-14"><a href="5-analysis-of-covariance-ancova.html#cb105-14"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) <span class="op">+</span></span>
+<span id="cb105-15"><a href="5-analysis-of-covariance-ancova.html#cb105-15"></a><span class="st">    </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p>R has fit this model using the offset representation. First we present the summary coefficients so we know which parameters are which.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="5-analysis-of-covariance-ancova.html#cb106-1"></a>m <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 4 x 5
+##   term           estimate std.error statistic  p.value
+##   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 (Intercept)       20.7      0.679     30.4  1.63e-36
+## 2 logDose            9.25     1.20       7.71 2.30e-10
+## 3 suppVC            -3.7      0.960     -3.85 3.03e- 4
+## 4 logDose:suppVC     3.84     1.70       2.27 2.74e- 2</code></pre>
+<p>For a warm-up, we will calculate the y-intercepts of both groups and the slopes of both. For the OJ group, this is just the 1st and 2nd coefficients, while for the VC group it is <span class="math inline">\(\beta_{0}+\beta_{2}\)</span> and <span class="math inline">\(\beta_{1}+\beta_{3}\)</span>.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="5-analysis-of-covariance-ancova.html#cb108-1"></a><span class="co"># Add a heading so that I know which parameter is which!</span></span>
+<span id="cb108-2"><a href="5-analysis-of-covariance-ancova.html#cb108-2"></a><span class="co">#                                Int  logDose  suppVC   logDose:suppVC</span></span>
+<span id="cb108-3"><a href="5-analysis-of-covariance-ancova.html#cb108-3"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Intercept OJ&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,     <span class="dv">0</span>,     <span class="dv">0</span>,          <span class="dv">0</span>          ),</span>
+<span id="cb108-4"><a href="5-analysis-of-covariance-ancova.html#cb108-4"></a>               <span class="st">&quot;Slope     OJ&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,     <span class="dv">1</span>,     <span class="dv">0</span>,          <span class="dv">0</span>          ),</span>
+<span id="cb108-5"><a href="5-analysis-of-covariance-ancova.html#cb108-5"></a>               <span class="st">&quot;Intercept VC&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,     <span class="dv">0</span>,     <span class="dv">1</span>,          <span class="dv">0</span>          ),</span>
+<span id="cb108-6"><a href="5-analysis-of-covariance-ancova.html#cb108-6"></a>               <span class="st">&quot;Slope     VC&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,     <span class="dv">1</span>,     <span class="dv">0</span>,          <span class="dv">1</span>          ) ) </span>
+<span id="cb108-7"><a href="5-analysis-of-covariance-ancova.html#cb108-7"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
+<span id="cb108-8"><a href="5-analysis-of-covariance-ancova.html#cb108-8"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<pre><code>## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = len ~ logDose * supp, data = ToothGrowth)
+## 
+## Linear Hypotheses:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## Intercept OJ == 0  20.6633     0.6791  30.425   &lt;1e-09 ***
+## Slope     OJ == 0   9.2549     1.2000   7.712   &lt;1e-09 ***
+## Intercept VC == 0  16.9633     0.6791  24.977   &lt;1e-09 ***
+## Slope     VC == 0  13.0997     1.2000  10.916   &lt;1e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<p>In our original table of summary coefficients, the (intercept) term corresponds to the tooth growth of a guinea pig when the logDose level is 0 (and therefore dose=1). If I wanted to estimate the tooth growth of a guinea pig fed OJ but with only <span class="math inline">\(1/2\)</span> a dose (and therefore <span class="math inline">\(logDose=\log\left(1/2\right)=-0.69\)</span>), then we want</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{y}_{oj,dose=0.5}	&amp; = 	\hat{\beta}_{0}+\hat{\beta}_{1}\log\left(0.5\right)\\
+	                    &amp; = 	20.6+9.25\log\left(0.5\right)\\
+	                    &amp; = 	20.6+9.25\left(-0.69\right)\\
+	                    &amp; = 	14.21
+\end{aligned}\]</span></p>
+<p>which I can write as
+<span class="math display">\[y_{oj,dose=0.5}	=	\left[\begin{array}{cccc}
+1 &amp; -0.69 &amp; 0 &amp; 0\end{array}\right]\left[\begin{array}{c}
+\hat{\beta_{0}}\\
+\hat{\beta}_{1}\\
+\hat{\beta}_{2}\\
+\hat{\beta}_{3}
+\end{array}\right]
+	=	\boldsymbol{c}_{1}^{T}\hat{\boldsymbol{\beta}}\]</span></p>
+<p>To calculate the same value for the VC group, we need the following contrast:</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{y}_{vc,dose=0.5}	
+    &amp;=	16.9633+13.0997\,\log\left(0.5\right)\\
+    &amp;=	\left(20.66-3.7\right)+\left(9.25+3.8\right)\,\log\left(0.5\right)\\
+	  &amp;=	\left(\hat{\beta}_{0}+\hat{\beta}_{2}\right)+\left(\hat{\beta}_{1}+\hat{\beta}_{3}\right)\,\left(-0.69\right)\\
+	  &amp;=	\left[\begin{array}{cccc}1 &amp; -0.69 &amp; 1 &amp; -0.69\end{array}\right]\left[\begin{array}{c}
+                 \hat{\beta_{0}}\\
+                 \hat{\beta}_{1}\\
+                 \hat{\beta}_{2}\\
+                 \hat{\beta}_{3}\end{array}\right]\\
+	  &amp;=	\boldsymbol{c}_{2}^{T}\hat{\boldsymbol{\beta}}
+	  \end{aligned}\]</span></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="5-analysis-of-covariance-ancova.html#cb110-1"></a><span class="co">#                                Int  logDose  suppVC   logDose:suppVC</span></span>
+<span id="cb110-2"><a href="5-analysis-of-covariance-ancova.html#cb110-2"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   <span class="fl">-0.69</span>,    <span class="dv">0</span>,          <span class="dv">0</span>         ),</span>
+<span id="cb110-3"><a href="5-analysis-of-covariance-ancova.html#cb110-3"></a>               <span class="st">&quot;VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,   <span class="fl">-0.69</span>,    <span class="dv">1</span>,        <span class="fl">-0.69</span>       ))</span>
+<span id="cb110-4"><a href="5-analysis-of-covariance-ancova.html#cb110-4"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
+<span id="cb110-5"><a href="5-analysis-of-covariance-ancova.html#cb110-5"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<pre><code>## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = len ~ logDose * supp, data = ToothGrowth)
+## 
+## Linear Hypotheses:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## OJ; 1/2 dose == 0   14.277      1.071   13.33  &lt; 1e-10 ***
+## VC; 1/2 dose == 0    7.925      1.071    7.40 1.51e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<p>Finally we might be interested in testing if there is a treatment difference between OJ and VC at a 1/2
+dose level. So to do this, we want to calculate the difference between these two previous contrasts, i.e.</p>
+<p><span class="math display">\[\begin{aligned}
+\boldsymbol{c}_{1}^{T}\hat{\boldsymbol{\beta}}-\boldsymbol{c}_{2}^{T}\hat{\boldsymbol{\beta}}	&amp;=	\left(\boldsymbol{c}_{1}^{T}-\boldsymbol{c}_{2}^{T}\right) \hat{\boldsymbol{ \beta }} \\
+	&amp;=	\left(\left[\begin{array}{cccc}
+1 &amp; -0.69 &amp; 0 &amp; 0\end{array}\right]-\left[\begin{array}{cccc}
+1 &amp; -0.69 &amp; 1 &amp; -0.69\end{array}\right]\right)\hat{\boldsymbol{\beta}} \\
+	&amp;=	\left[\begin{array}{cccc}
+0 &amp; 0 &amp; -1 &amp; 0.69\end{array}\right]\hat{\boldsymbol{\beta}}
+\end{aligned}\]</span></p>
+<p>and we can calculate</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="5-analysis-of-covariance-ancova.html#cb112-1"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; 1/2 dose&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">-1</span>, <span class="fl">0.69</span>))</span>
+<span id="cb112-2"><a href="5-analysis-of-covariance-ancova.html#cb112-2"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
+<span id="cb112-3"><a href="5-analysis-of-covariance-ancova.html#cb112-3"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<pre><code>## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = len ~ logDose * supp, data = ToothGrowth)
+## 
+## Linear Hypotheses:
+##                        Estimate Std. Error t value Pr(&gt;|t|)    
+## OJ - VC; 1/2 dose == 0    6.353      1.514   4.195 9.83e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## (Adjusted p values reported -- single-step method)</code></pre>
+<p>When we do the same test, but at dose level 2 (logDose =<span class="math inline">\(\log2=0.69\)</span>) we see that the difference is not statistically significant.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="5-analysis-of-covariance-ancova.html#cb114-1"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;OJ - VC; dose 2&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">-1</span>, <span class="fl">-0.69</span>))</span>
+<span id="cb114-2"><a href="5-analysis-of-covariance-ancova.html#cb114-2"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
+<span id="cb114-3"><a href="5-analysis-of-covariance-ancova.html#cb114-3"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<pre><code>## 
+## 	 Simultaneous Tests for General Linear Hypotheses
+## 
+## Fit: lm(formula = len ~ logDose * supp, data = ToothGrowth)
+## 
+## Linear Hypotheses:
+##                      Estimate Std. Error t value Pr(&gt;|t|)
+## OJ - VC; dose 2 == 0    1.047      1.514   0.691    0.492
+## (Adjusted p values reported -- single-step method)</code></pre>
+</div>
+<div id="ancova" class="section level3">
+<h3><span class="header-section-number">5.6.2</span> ANCOVA</h3>
+<p>We will return to the <code>ToothGrowth</code> dataset and calculate all the interesting contrasts we previously built by hand.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="5-analysis-of-covariance-ancova.html#cb116-1"></a><span class="kw">data</span>(<span class="st">&#39;ToothGrowth&#39;</span>)</span>
+<span id="cb116-2"><a href="5-analysis-of-covariance-ancova.html#cb116-2"></a>ToothGrowth<span class="op">$</span>logDose &lt;-<span class="st"> </span><span class="kw">log</span>( ToothGrowth<span class="op">$</span>dose )</span>
+<span id="cb116-3"><a href="5-analysis-of-covariance-ancova.html#cb116-3"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(len <span class="op">~</span><span class="st"> </span>logDose <span class="op">*</span><span class="st"> </span>supp, <span class="dt">data=</span>ToothGrowth)</span>
+<span id="cb116-4"><a href="5-analysis-of-covariance-ancova.html#cb116-4"></a>ToothGrowth &lt;-<span class="st"> </span>ToothGrowth <span class="op">%&gt;%</span></span>
+<span id="cb116-5"><a href="5-analysis-of-covariance-ancova.html#cb116-5"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb116-6"><a href="5-analysis-of-covariance-ancova.html#cb116-6"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
+<span id="cb116-7"><a href="5-analysis-of-covariance-ancova.html#cb116-7"></a><span class="kw">ggplot</span>(ToothGrowth, <span class="kw">aes</span>(<span class="dt">x=</span>logDose, <span class="dt">color=</span>supp, <span class="dt">fill=</span>supp)) <span class="op">+</span></span>
+<span id="cb116-8"><a href="5-analysis-of-covariance-ancova.html#cb116-8"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
+<span id="cb116-9"><a href="5-analysis-of-covariance-ancova.html#cb116-9"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) ) <span class="op">+</span></span>
+<span id="cb116-10"><a href="5-analysis-of-covariance-ancova.html#cb116-10"></a><span class="st">  </span><span class="kw">geom_point</span>( <span class="kw">aes</span>(<span class="dt">y=</span>len) )</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<p>First, lets get the y-intercept for each group. In the following code, the formula with the <code>| supp</code> part says that we want to do all the calculations for each level of the supplement types. The call to <code>emmeans()</code> calculates the response at logDose level 0. By passing the result of the <code>emmeans()</code> function call to the <code>summary()</code> function, we can tell the summary function to print out both the confidence intervals and t-tests.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="5-analysis-of-covariance-ancova.html#cb117-1"></a><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose <span class="op">|</span><span class="st"> </span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb117-2"><a href="5-analysis-of-covariance-ancova.html#cb117-2"></a><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</span></code></pre></div>
+<pre><code>## supp = OJ:
+##  logDose emmean    SE df lower.CL upper.CL t.ratio p.value
+##        0   20.7 0.679 56     19.3     22.0 30.425  &lt;.0001 
+## 
+## supp = VC:
+##  logDose emmean    SE df lower.CL upper.CL t.ratio p.value
+##        0   17.0 0.679 56     15.6     18.3 24.977  &lt;.0001 
+## 
+## Confidence level used: 0.95</code></pre>
+<p>Next we estimated the tooth growth for a guinea pig with a logdose = -.69 (i.e. dose=1/2) for both the OJ and VC supplements. We also wanted to calculate the contrast between the two supplement predictions.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="5-analysis-of-covariance-ancova.html#cb119-1"></a><span class="kw">emmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb119-2"><a href="5-analysis-of-covariance-ancova.html#cb119-2"></a><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</span></code></pre></div>
+<pre><code>## $emmeans
+##  logDose supp emmean   SE df lower.CL upper.CL t.ratio p.value
+##    -0.69 OJ    14.28 1.07 56    12.13     16.4 13.332  &lt;.0001 
+##    -0.69 VC     7.92 1.07 56     5.78     10.1  7.400  &lt;.0001 
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast                estimate   SE df lower.CL upper.CL t.ratio p.value
+##  (-0.69 OJ) - (-0.69 VC)     6.35 1.51 56     3.32     9.39 4.195   0.0001 
+## 
+## Confidence level used: 0.95</code></pre>
+<p>We next make the same comparison for logdose = 0.69 (i.e. dose=2).</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="5-analysis-of-covariance-ancova.html#cb121-1"></a><span class="kw">emmeans</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span>.<span class="dv">69</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb121-2"><a href="5-analysis-of-covariance-ancova.html#cb121-2"></a><span class="st">  </span><span class="kw">summary</span>(<span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>))</span></code></pre></div>
+<pre><code>## $emmeans
+##  logDose supp emmean   SE df lower.CL upper.CL t.ratio p.value
+##     0.69 OJ       27 1.07 56     24.9     29.2 25.258  &lt;.0001 
+##     0.69 VC       26 1.07 56     23.9     28.1 24.281  &lt;.0001 
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast          estimate   SE df lower.CL upper.CL t.ratio p.value
+##  0.69 OJ - 0.69 VC     1.05 1.51 56    -1.99     4.08 0.691   0.4922 
+## 
+## Confidence level used: 0.95</code></pre>
+<p>While <code>emmeans()</code> makes it very easy to calculate the <span class="math inline">\(\hat{y}\)</span> value for some covariate combination or some difference of <span class="math inline">\(\hat{y}\)</span> values, it doesn’t handle slope parameters particularly well. The companion function <code>emtrends()</code> is intended to make similar calculations among slopes easy to create. We will now assess the difference in slopes between the two groups.</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="5-analysis-of-covariance-ancova.html#cb123-1"></a><span class="kw">emtrends</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</span></code></pre></div>
+<pre><code>##  logDose supp logDose.trend  SE df lower.CL upper.CL
+##        0 OJ            9.25 1.2 56     6.85     11.7
+##        0 VC           13.10 1.2 56    10.70     15.5
+## 
+## Confidence level used: 0.95</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="5-analysis-of-covariance-ancova.html#cb125-1"></a><span class="kw">emtrends</span>(m, pairwise<span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">var =</span> <span class="st">&#39;logDose&#39;</span>)</span></code></pre></div>
+<pre><code>## $emtrends
+##  logDose supp logDose.trend  SE df lower.CL upper.CL
+##        0 OJ            9.25 1.2 56     6.85     11.7
+##        0 VC           13.10 1.2 56    10.70     15.5
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast    estimate  SE df t.ratio p.value
+##  0 OJ - 0 VC    -3.84 1.7 56 -2.266  0.0274</code></pre>
+<div id="common-emmeans-mistake" class="section level4">
+<h4><span class="header-section-number">5.6.2.1</span> Common <code>emmeans()</code> mistake</h4>
+<p>It is very common to make a mistake using <code>emmeans()</code> or <code>emtrends()</code> if you don’t understand what the specification formula means. In particular what happens if you were to use <code>~logDose</code> instead of the correct <code>~logDose*supp</code>.</p>
+<p>Consider the case where we are interested in making predictions for each supplement type at <span class="math inline">\(1/2\)</span> dose (logDose=-0.69).</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="5-analysis-of-covariance-ancova.html#cb127-1"></a><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose<span class="op">*</span>supp, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</span></code></pre></div>
+<pre><code>##  logDose supp emmean   SE df lower.CL upper.CL
+##    -0.69 OJ    14.28 1.07 56    12.13     16.4
+##    -0.69 VC     7.92 1.07 56     5.78     10.1
+## 
+## Confidence level used: 0.95</code></pre>
+<p>If I were to accidentally forget the <code>supp</code> part of this, then <code>emmeans()</code> would figure that I wanted to <em>average</em> over the two levels and give me the average of <span class="math inline">\(14.28\)</span> and <span class="math inline">\(7.92\)</span>, which is <span class="math inline">\(11.1\)</span>. With the interaction term in the model, it is unlikely that I would want to do this, but <code>emmeans()</code> complains a little but lets me do it.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="5-analysis-of-covariance-ancova.html#cb129-1"></a><span class="kw">emmeans</span>(m, <span class="op">~</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="op">-</span>.<span class="dv">69</span>))</span></code></pre></div>
+<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
+<pre><code>##  logDose emmean    SE df lower.CL upper.CL
+##    -0.69   11.1 0.757 56     9.58     12.6
+## 
+## Results are averaged over the levels of: supp 
+## Confidence level used: 0.95</code></pre>
+<p>What would happen if we only use <code>supp</code> in the formula specification? In this case we are lucky because the <code>logDose=-0.69</code> specified what dose level to look at. If we had forgotten to specify this, then we would have done this calculation at the mean <code>logDose</code> value, which happens to be zero.</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="5-analysis-of-covariance-ancova.html#cb132-1"></a><span class="kw">emmeans</span>(m, <span class="op">~</span>supp<span class="op">*</span>logDose, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">logDose=</span><span class="dv">0</span>))</span></code></pre></div>
+<pre><code>##  supp logDose emmean    SE df lower.CL upper.CL
+##  OJ         0   20.7 0.679 56     19.3     22.0
+##  VC         0   17.0 0.679 56     15.6     18.3
+## 
+## Confidence level used: 0.95</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="5-analysis-of-covariance-ancova.html#cb134-1"></a><span class="kw">emmeans</span>(m, <span class="op">~</span>supp)</span></code></pre></div>
+<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
+<pre><code>##  supp emmean    SE df lower.CL upper.CL
+##  OJ     20.7 0.679 56     19.3     22.0
+##  VC     17.0 0.679 56     15.6     18.3
+## 
+## Confidence level used: 0.95</code></pre>
+<p>Because the averaging over factor levels isn’t what I typically want to do, I start the analysis making sure the model formula I used in the <code>lm()</code> command is the same as the one I pass into <code>emmeans()</code>.</p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="4-contrasts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="6-two-way-anova.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/571/raw/master/05_ANCOVA.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

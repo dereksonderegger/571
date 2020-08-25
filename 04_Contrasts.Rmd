@@ -1,0 +1,333 @@
+# Contrasts
+```{r, echo=FALSE}
+# Unattach any packages that happen to already be loaded. In general this is unecessary
+# but is important for the creation of the book to not have package namespaces
+# fighting unexpectedly.
+pkgs = names(sessionInfo()$otherPkgs)
+if( length(pkgs > 0)){
+  pkgs = paste('package:', pkgs, sep = "")
+  for( i in 1:length(pkgs)){
+    detach(pkgs[i], character.only = TRUE, force=TRUE)
+  }
+}
+
+# Set my default chunk options 
+knitr::opts_chunk$set( fig.height=3 )
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)   # ggplot2, dplyr, tidyr
+library(tidymodels)  # for broom functions
+library(emmeans)    # for emmeans()
+# library(multcomp)   # for glht()  - multcomp fights with dplyr, :(
+```
+
+### Learning Outcomes{-}
+
+## Introduction
+We have written our model as $\boldsymbol{y} = \boldsymbol{X\beta}+\boldsymbol{\epsilon}$ and often we are interested in some linear function of the $\boldsymbol{\hat{\beta}}$. Some examples include the model predictions $\hat{y}_i = \boldsymbol{X}_{i\cdot} \boldsymbol{\beta}$ where $\boldsymbol{X}_{i\cdot}$ is the $i^{th}$ row of the $\boldsymbol{X}$ matrix. Other examples include differences in group means in a one-way ANOVA or differences in predicted values $\hat{y}_i - \hat{y}_j$.
+
+All of these can can be written as $\boldsymbol{c}'\boldsymbol{\beta}$ for some vector $\boldsymbol{c}$.
+
+We often are interested in estimating a function of the parameters $\boldsymbol{\beta}$. For example in the offset representation of the ANOVA model with 3 groups we have
+$$y_{ij}=\mu+\tau_{i}+\epsilon_{ij}$$
+where 
+$$
+\boldsymbol{\beta}=\left[\mu\;\tau_{2}\;\tau_{3}\right]^{T}
+$$
+and $\mu$ is the mean of the control group, group one is the control group and thus $\tau_{1}=0$, and $\tau_{2}$ and $\tau_{3}$ are the offsets of group two and three from the control group. In this representation, the mean of group two is $\mu+\tau_{2}$ and is estimated with $\hat{\mu} + \hat{\tau}_2$.
+
+
+A contrast is a linear combinations of elements of $\boldsymbol{\hat{\beta}}$, which is a fancy way of saying that it is a function of the elements of $\boldsymbol{\hat{\beta}}$
+  where the elements can be added, subtracted, or multiplied by constants. In particular, the contrast can be represented by the vector $\boldsymbol{c}$ such that the function we are interested in is $\boldsymbol{c}^{T}\boldsymbol{\hat{\beta}}$.
+
+In the ANOVA case with $k=3$ where we have the offset representation, I might be interested in the mean of group 2, which could be written as 
+$$
+\hat{\mu}_2 = \hat{\mu}+\hat{\tau}_{2}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{ccc}
+1 & 1 & 0\end{array}\right]}}\cdot\underset{\hat{\boldsymbol{\beta}}}{\underbrace{\left[\begin{array}{c}
+\hat{\mu}\\
+\hat{\tau_{2}}\\
+\hat{\tau_{3}}
+\end{array}\right]}}
+$$
+
+Similarly in the simple regression case, I will be interested in the height of the regression line at $x_0$. This height can be written as  
+$$
+\hat{y}_0 =\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}=\underset{\boldsymbol{c}^{T}}{\underbrace{\left[\begin{array}{cc}
+1 & x_{0}\end{array}\right]}}\cdot\underset{\hat{\boldsymbol{\beta}}}{\underbrace{\left[\begin{array}{c}
+\hat{\beta}_{0}\\
+\hat{\beta}_{1}
+\end{array}\right]}}
+$$
+In this manner, we could think of calculating all of the predicted values $\hat{y}_i$ as just the result of the contrast $\boldsymbol{X} \hat{\boldsymbol{\beta}}$ where our design matrix $\boldsymbol{X}$ takes the role of the contrasts.
+
+
+## Estimate and variance
+
+One of the properties of maximum likelihood estimator (MLEs), is that they are invariant under transformations. Meaning that since $\hat{\boldsymbol{\beta}}$ is the MLE of $\boldsymbol{\beta}$, then $\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}$ is the MLE of $\boldsymbol{c}^{T}\boldsymbol{\beta}$. The only thing we need to perform hypotheses tests and create confidence intervals is an estimate of the variance of $\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}$. 
+
+Because we know the variance of $\hat{\boldsymbol{\beta}}$ is
+$$
+Var\left(\hat{\boldsymbol{\beta}}\right)=\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
+$$
+and because $\boldsymbol{c}$ is a constant, then 
+$$
+Var\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)=\sigma^{2}\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}
+$$
+and the standard error is found by plugging in our estimate of $\sigma^{2}$ and taking the square root.
+$$
+StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigma}^{2}\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}
+	=	\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}
+$$ 
+
+As usual, we can now calculate confidence intervals for $\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}$ using the usual formula
+$$Est	\pm	t_{n-p}^{1-\alpha/2}\;StdErr\left(\,Est\,\right)$$
+$$
+\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}	\pm	t_{n-p}^{1-\alpha/2}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}
+$$ 
+
+
+Recall the hostility example which was an ANOVA with three groups with the data
+
+| Method   |	Test Scores                       |
+|:---------|:-----------------------------------|
+|  1	     | 96	79	91	85	83	91	82	87	    | 
+|  2	     | 77	76	74	73	78	71	80		      |
+|  3	     | 66	73	69	66	77	73	71	70	74  |
+
+We have analyzed this data using both the cell means model and the offset and we will demonstrate how to calculate the group means from the offset representation. Thus we are interested in estimating $\mu+\tau_{2}$ and $\mu+\tau_{3}$.  I am also interested in estimating the difference between treatment 2 and 3 and will therefore be interested in estimating $\tau_{2} - \tau_{3}$.
+
+```{r}
+data <- data.frame(
+  y =  c(96,79,91,85,83,91,82,87,
+         77,76,74,73,78,71,80,
+         66,73,69,66,77,73,71,70,74),
+  group = factor(c( rep('Group1',8), rep('Group2',7),rep('Group3',9) ))
+)
+
+ggplot(data, aes(x=group, y=y)) + geom_boxplot()
+```
+
+We can fit the offset model and obtain the design matrix and estimate of $\hat{\sigma}$ via the following code. 
+```{r}
+m <- lm(y ~ group, data=data)          # Fit the ANOVA model (offset representation)
+tidy(m)                                # Show me beta.hat
+X <- model.matrix(m)                   # obtains the design matrix
+sigma.hat <- glance(m) %>% pull(sigma) # grab sigma.hat 
+beta.hat <- tidy(m) %>% pull(estimate) 
+XtX.inv <- solve( t(X) %*% X )
+```
+
+Now we calculate 
+```{r}
+contr <- c(1,1,0)  # define my contrast
+ctb <- t(contr) %*% beta.hat
+std.err <- sigma.hat * sqrt( t(contr) %*% XtX.inv %*% contr )
+
+data.frame(Estimate=ctb, StdErr=std.err)
+```
+
+
+and notice this is the exact same estimate and standard error we got for group two when we fit the cell means model.
+```{r}
+CellMeansModel <- lm(y ~ group - 1, data=data)
+CellMeansModel %>% tidy()
+```
+
+
+## Estimating contrasts using `glht()`
+
+Instead of us doing all the matrix calculations ourselves, all we really need is to is specify the row vector $\boldsymbol{c}^{T}$. The function that will do the rest of the calculations is the generalized linear hypothesis test function `glht()` that can be found in the multiple comparisons package `multcomp`. The p-values will be adjusted to correct for testing multiple hypothesis, so there may be slight differences compared to the p-value seen in just the regular summary table.
+
+### 1-way ANOVA
+
+We will again use the Hostility data set and demonstrate how to calculate the point estimates, standard errors and confidence intervals for the group means given a model fit using the offset representation. 
+
+```{r}
+m <- lm(y ~ group, data=data)
+m %>% tidy()
+```
+
+We will now define a row vector (and it needs to be a matrix or else `glht()` will throw an error. First we note that the simple contrast $\boldsymbol{c}^{T}=\left[1\;0\;0\right]$ just grabs the first coefficient and gives us the same estimate and standard error as the summary did.
+```{r, message=FALSE, warning=FALSE}
+contr <- rbind("Intercept"=c(1,0,0))      # 1x3 matrix with row named "Intercept"
+test <- multcomp::glht(m, linfct=contr)   # the linear function to be tested is contr
+summary(test)
+```
+
+Next we calculate the estimate of all the group means $\mu$, $\mu+\tau_{2}$ and $\mu+\tau_{3}$ and the difference between group 2 and 3. Notice I can specify more than one contrast at a time.
+```{r}
+contr <- rbind("Mean of Group 1"=c(1,0,0),
+               "Mean of Group 2"=c(1,1,0),
+               "Mean of Group 3"=c(1,0,1),
+               "Diff G2-G3"     =c(0,1,-1)) 
+test <- multcomp::glht(m, linfct=contr)
+summary(test)
+```
+
+Finally we calculate confidence intervals in the usual manner using the `confint()` function.
+```{r}
+confint(test, level=0.95)
+```
+
+
+
+
+## Using `emmeans` Package
+Specifying the contrasts by hand is extremely difficult to do correctly and instead we would prefer to specify the contrasts using language like "create all possible pairwise contrasts" where each pair is just a subtraction.  The R-package `emmeans` tries to simply the creation of common contrasts. 
+
+To show how to use the `emmeans` package, we'll consider a bunch of common models and show how to address common statistical questions for each.
+
+### Simple Regression
+There is a dataset built into R named `trees` which describes a set of $n=31$ cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.
+
+```{r}
+data(trees)
+model <- lm( Volume ~ Girth, data=trees )
+trees <- trees %>%
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
+  cbind( predict(model, interval='conf'))
+ggplot(trees, aes(x=Girth, y=Volume)) +
+  geom_point() +
+  geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
+  geom_line( aes(y=fit) )
+```
+
+Using the `summary()` function, we can test hypotheses about if
+the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.
+
+```{r}
+# We could find the regression line heights and CI using 
+# either predict() or emmeans()
+predict(model, newdata=data.frame(Girth=c(10,12)), interval='conf' )
+emmeans(model, specs = ~Girth, at=list(Girth=c(10,12)) )  
+```
+
+The `emmeans()` function requires us to specify the grid of reference points we are interested as well as which variable or variables we wish to separate out.  In the simple regression case, the `specs` argument is just the single covariate.
+
+We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth?  In other words, we want to test
+$$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0$$ 
+$$ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0$$ 
+
+In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$.
+
+```{r}
+emmeans(model, specs = pairwise~Girth,
+        at=list(Girth=c(10,12)) ) 
+```
+
+Notice that if I was interested in 3 points, we would get all of the differences.
+
+```{r}
+emmeans(model, specs = pairwise~Girth,
+        at=list(Girth=c(10,11,12)) ) 
+```
+
+In this very simple case, the slope parameter is easily available as a parameter value, but we could use the `emtrends()` function to obtain the slope.  
+
+```{r}
+emtrends( model, ~Girth, 'Girth' )
+```
+This output is a bit mysterious because because of the `13.248` component. What has happened is that `emtrends` is telling us the slope of the line at a particular point on the x-axis (the mean of all the girth values). While this doesn't matter in this example, because the slope is the same for all values of girth, if we had fit a quadratic model, it would not.
+
+```{r}
+model <- lm( Volume ~ poly(Girth, 2), data=trees )      # Girth + Girth^2
+trees <- trees %>% 
+  dplyr::select(Volume, Girth) %>% 
+  cbind(predict(model, interval='conf'))
+
+ggplot(trees, aes(x=Girth, y=Volume)) +
+  geom_point() +
+  geom_ribbon( aes(ymin=lwr, ymax=upr), alpha=.3 ) +
+  geom_line( aes(y=fit) )
+
+emtrends( model, ~ poly(Girth,2), 'Girth',
+          at=list(Girth=c(10,11,12)) )
+```
+
+
+### 1-way ANOVA
+To consider the pairwise contrasts between different levels we will consider the college student hostility data again. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used $24$ students who obtained high and nearly equal scores in the experiment. Eight subjects were selected at random from among the $24$ problem cases and were treated with method 1, seven of the remaining $16$ students were selected at random and treated with method 2 while the remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table.
+
+```{r}
+Hostility <- data.frame(
+  HLT = c(96,79,91,85,83,91,82,87,
+          77,76,74,73,78,71,80,
+          66,73,69,66,77,73,71,70,74),
+  Method = c( rep('M1',8), rep('M2',7), rep('M3',9) ) )
+```
+
+```{r}
+ggplot(Hostility, aes(x=Method, y=HLT)) +
+  geom_boxplot()
+```
+
+To use the `emmeans()`, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.
+
+```{r}
+model <- lm( HLT ~ Method, data=Hostility )
+emmeans(model, pairwise~Method)
+```
+
+
+## Exercises
+1. I want to include a model quadratic model where we make some predicted values.
+  a) calculate using glht
+  b) calculate using emmeans
+  
+2. Do a 1-way ANOVA using the control offset representation and 
+  a) calculate all the pairwise contrasts using glht
+  b) calculate all the pairwise contrasts using emmeans
+
+1. We will examine a dataset that summarizes cars featured in the magazine Motor Trend during the year 1974. In particular we will examine the relationship between the vehicles gas mileage (`mpg`) versus the weight (`wt`) and number of cylinders (`cyl`) of the vehicle.
+    ```{r, fig.height=4}
+    library(ggplot2)
+    library(dplyr)
+    data(mtcars)
+    mtcars$cyl <- factor(mtcars$cyl)     # treat cylinders as categorical
+    ggplot(mtcars, aes(x=wt, col=cyl)) +
+      geom_point(aes(y=mpg, shape=cyl), size=4) +
+      xlab('Weight (tons)') +
+      ylab('Miles per Gallon') +
+      labs(color='Cylinders', shape='Cylinders')
+    ```
+    a. Create a smaller set of data with just 9 observations (3 from each cylinder group) and create the design matrix $\boldsymbol{X}$ for fitting the the model for estimating mpg using both weight and number of cylinders and their interaction using the following code:
+        ```{r}
+        mtcars %>%      
+          group_by(cyl) %>%              # For each cylinder group
+          arrange(cyl, wt) %>%           # Reorder my dataset
+          slice(1:3)  %>%                # grab first three rows of each group
+          lm( mpg ~ wt*cyl, data=. ) %>% # Linear model
+          model.matrix()
+        ```
+        _Hint: the purpose of this step is to make sure everyone knows the column order of the design matrix so that you interprete the $\beta$ terms in the correct order._
+        
+    b. Denote the coefficients obtained from the summary of your `lm()` call as $\hat{\beta}_{0}$ to $\hat{\beta}_{5}$ (in the order given by R). Write your interaction model using subscript notation and should be in the form
+        $$y_{i}=\begin{cases}
+        ??????? & \;\;\textrm{if 4 cylinder}\\
+        ??????? & \;\;\textrm{if 6 cylinder}\\
+        ??????? & \;\;\textrm{if 8 cylinder}
+        \end{cases}$$ 
+        and give an interpretation for each $\hat{\beta}_{j}$ value.
+        i. $\hat{\beta}_0$ = ???
+        ii. $\hat{\beta}_1$ = ???
+        iii. $\hat{\beta}_2$ = ???
+        iv. $\hat{\beta}_3$ = ???
+        v. $\hat{\beta}_4$ = ???
+        vi. $\hat{\beta}_5$ = ???
+        
+    c. Using the full dataset, fit the model that predicts mpg using both weight and number of cylinders and their interaction using the command
+        ```{r}
+        model <- lm(mpg ~ wt*cyl, data=mtcars)
+        ```
+        Create a vector of fitted values, add it to the data frame `mtcars` and then create a plot that includes the regression lines.
+    
+    d. What is the estimated mpg of a 6-cylinder vehicle weighing 3.5 tons? What is the estimated mpg of a 8-cylinder vehicle weight 3.5 tons? Give the associated 95% confidence intervals. Calculate these using the `predict()` function. *Warning: When making the new data frame, make sure that R interprets cyl as a factor by either coercing it to a factor after creation or inputing the cylinder as a string (i.e. as “6” instead of 6).*
+    
+    e. Recalculate your answer to part (d) using the `multcomp::glht()` function. Also give the estimate and confidence interval for the difference in mpg betwen the 8 and 6 cylinder vehicles that weight 3.5 tones? Is there a statistically significant difference in mpg at 3.5 tons?
+    
+    f. Recalculate your answer to part (e) using the `emmeans()` function.
+    
+    g. Are the slopes of the 8-cylinder and 6-cylinder vehicles statistically different? Use `glht()` to produce this result. 
+    
+    h. Recalculate your answer to part (g) using the `emtrends()` function.

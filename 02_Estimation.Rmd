@@ -22,6 +22,20 @@ library(tidyverse)  # dplyr, tidyr, ggplot2
 ```
 
 
+
+### Learning Outcomes{-}
+* Write simple regression or one-way ANOVA models as $\boldsymbol{y} \sim N(\boldsymbol{X\beta} , \sigma^2 \textbf{I}_n)$ 
+* Utilizing R and a sample of data, calculate the estimators 
+    
+    $$\hat{\boldsymbol{\beta}} = (\textbf{X}^T\textbf{X})^{-1} \textbf{X}^T \textbf{y}$$
+    $$\hat{\textbf{y}} = \textbf{X}\hat{\boldsymbol{\beta}}$$
+    and 
+    $$\hat{\sigma}^2 = \textrm{MSE}  = \frac{1}{n-p}\;\sum_{i=1}^n (y_i - \hat{y}_i)^2$$
+* Calculate the uncertainty of $\hat{\beta_j}$ as
+    $$\textrm{StdErr}\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
+    
+## Introduction
+
 We have previously looked at ANOVA and regression models and, in many
 ways, they felt very similar. In this chapter we will introduce the
 theory that allows us to understand both models as a particular flavor
@@ -55,16 +69,53 @@ y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
 $$
 
 
+## Model Specifications
 
-## Simple Regression
+### Simple Regression
 
 We would like to represent all linear models in a similar compact
 matrix representation. This will allow us to make the transition between
 simple and multiple regression (and ANCOVA) painlessly.
 
-To begin, we think about how to write the simple regression model
+To begin, lets consider the simple regression model.
+
+Typically we'll write the model as if we are specifying the $i^{th}$ element of the
+data set
+$$y_i = \underbrace{\beta_0 + \beta_1 x_i}_{\textrm{signal}} + \underbrace{\epsilon_i}_{\textrm{noise}} \;\;\; \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$$
+Notice we have a data generation model where there is some relationship between the
+explanatory variable and the response which we can refer to as the "signal" part of the
+defined model and the noise term which represents unknown actions effecting each data point
+that move the response variable. We don't know what those unknown or unmeasured effects are,
+but we do know the sum of those effects results in a vertical shift from the signal part
+of the model.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+seed <- runif(1, max=10000) %>% round()
+seed <- 1018
+set.seed(seed)
+n <- 20
+data <- data.frame( x = runif(n)) %>%
+  mutate(Ey = .5 + .5*x,
+         y = Ey + rnorm(n, sd=.2)) %>%
+  arrange(x)
+
+ggplot(data, aes(x=x)) +
+  geom_point(aes(y=y)) +
+  geom_line(aes(y=Ey), color='blue') +
+  annotate('text', x=.9, y=1, color='blue', label=latex2exp::TeX('$\\beta_0 + \\beta_1 x$')) +
+  annotate('line', x=rep(data[13,'x'],2), y=c(data[13,'y'], data[13,'Ey']), color='red') +
+  annotate('text', x=.68, y=1, label=latex2exp::TeX('$\\epsilon_i$'), color='red') +
+  labs(x='Explanatory Variable', y='Response Variable', title='Simple Regression Model') +
+  scale_x_continuous(labels=NULL) +
+  scale_y_continuous(labels=NULL)
+  
+```
+
+
+
+This representation of the model implicitly assumes that our data set has $n$ observations
+and we could write the model using *all* the obsesrvations 
 using matrices and vectors that correspond the the data and the parameters.
-Notice we have
 
 
 $$\begin{aligned}
@@ -110,307 +161,26 @@ $$
 and we compactly write the model as 
 
 $$
-\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}
+\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon} \;\; 
+ \textrm{ where } \; \boldsymbol{\epsilon} \sim N(\boldsymbol{0}, \sigma^2 \boldsymbol{I}_n)
 $$
 where $\boldsymbol{X}$ is referred to as the *design matrix*
 and $\boldsymbol{\beta}$ is the vector of *location parameters* we are interested
-in estimating. 
+in estimating.  To be very general, a vector of random variables needs 
+to describe how each of them varies in relation to each other, so we need to specify 
+the variance *matrix*. However because $\epsilon_i$ is independent of $\epsilon_j$, 
+for all $(i,j)$ pairs, the variance matrix can be written as $\sigma^2\,\boldsymbol{I}$ 
+because all of the covariances are zero.
 
-Our error terms can be collectively described as have a normal distribution with mean $\boldsymbol{\mu}=0$. To be very general, a vector of random variables needs to describe how each of them varies in relation to each other, so we need to specify the variance *matrix*. However because $\epsilon_i$ is independent of $\epsilon_j$, the variance matrix can be written as $\sigma^2\,\boldsymbol{I}$ because all of the covariances are zero. Therefore we finish the matrix formulation of the model by 
-$$\boldsymbol{\epsilon} \sim N( \boldsymbol{\mu}, \sigma^2 \, \boldsymbol{I} )$$
 
-### Estimation of Location Paramters 
-
-Our next goal is to find the best estimate of $\boldsymbol{\beta}$
-given the data. To justify the formula, consider the case where there
-is no error terms (i.e. $\epsilon_{i}=0$ for all $i$). Thus we have
-$$
-\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}
-$$
-and our goal is to solve for $\boldsymbol{\beta}$. To do this, we
-must use a matrix inverse, but since inverses only exist for square
-matrices, we pre-multiple by $\boldsymbol{X}^{T}$ (notice that $\boldsymbol{X}^{T}\boldsymbol{X}$
-is a symmetric $2\times2$ matrix).
-$$
-\boldsymbol{X}^{T}\boldsymbol{y}=\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}
-$$
- and then pre-multiply by $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}$.
-
-$$\begin{aligned}
-\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} 
-  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta} \\
-  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &= \boldsymbol{\beta} 
-\end{aligned}$$
-
-This exercise suggests that $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$
-is a good place to start when looking for the maximum-likelihood estimator
-for $\boldsymbol{\beta}$. It turns out that this quantity is in fact
-the maximum-likelihood estimator (and equivalently minimizes the sum-of-squared
-error). Therefore we will use it as our estimate of $\boldsymbol{\beta}$.
-$$\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$$
-
-
-
-### Estimation of Variance Parameter
-
-Recall our model is 
-$$y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}$$
-where $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$.
-
-Using our estimates $\hat{\boldsymbol{\beta}}$ we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each $x_i$ value in our dataset.
-$$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$$
-Using matrix notation, I would write $\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$.
-
-As usual we will find estimates of the noise terms (which we will
-call residuals or errors) via 
-$$\begin{aligned} \hat{\epsilon}_{i} 
-  &=  y_{i}-\hat{y}_{i}\\
-  &=  y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
-\end{aligned}$$
-
-
-Writing $\hat{\boldsymbol{y}}$ in matrix terms we have
-$$\begin{aligned}
-\hat{\boldsymbol{y}} &= \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
- &=  \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
- &=  \boldsymbol{H}\boldsymbol{y}
-\end{aligned}$$
-where $\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}$
-is often called the *hat-matrix* because it takes $y$ to $\hat{y}$
-and has many interesting theoretical properties.\footnote{Mathematically, $\boldsymbol{H}$ is the projection matrix that takes
-a vector in $n$-dimensional space and projects it onto a $p$-dimension
-subspace spanned by the vectors in $\boldsymbol{X}$. Projection matrices
-have many useful properties and much of the theory of linear models
-utilizes $\boldsymbol{H}$. }
-
-We can now estimate the error terms via
-
-$$\begin{aligned}
-\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}\\
- &=  \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
- &=  \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
-\end{aligned}$$
-
-As usual we estimate $\sigma^{2}$ using the mean-squared error 
-$$\begin{aligned} \hat{\sigma}^{2} 
-  &= \frac{1}{n-2}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\ \\
-  &=  \frac{1}{n-2}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
-\end{aligned}$$
-
-In the general linear model case where $\boldsymbol{\beta}$ has $p$ elements (and thus we have $n-p$ degrees of freedom), the formula is
-$$\hat{\sigma}^{2} = \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
- 
-
-### Expectation and variance of a random vector
-Just as we needed to derive the expected value and variance of $\bar{x}$
-in the previous semester, we must now do the same for $\hat{\boldsymbol{\beta}}$.
-But to do this, we need some properties of expectations and variances.
-
-In the following, let $\boldsymbol{A}_{n\times p}$ and $\boldsymbol{b}_{n\times1}$
-be constants and $\boldsymbol{\epsilon}_{n\times1}$ be a random vector.
-
-Expectations are very similar to the scalar case where
-$$E\left[\boldsymbol{\epsilon}\right]=\left[\begin{array}{c}
-E\left[\epsilon_{1}\right]\\
-E\left[\epsilon_{2}\right]\\
-\vdots\\
-E\left[\epsilon_{n}\right]
-\end{array}\right]$$
-and any constants are pulled through the expectation
-$$E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}$$
-
-
-Variances are a little different. The variance of the vector $\boldsymbol{\epsilon}$
-is
-$$
-Var\left(\boldsymbol{\epsilon}\right)=\left[\begin{array}{cccc}
-Var\left(\epsilon_{1}\right) & Cov\left(\epsilon_{1},\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{1},\epsilon_{n}\right)\\
-Cov\left(\epsilon_{2},\epsilon_{1}\right) & Var\left(\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{2},\epsilon_{n}\right)\\
-\vdots & \vdots & \ddots & \vdots\\
-Cov\left(\epsilon_{n},\epsilon_{1}\right) & Cov\left(\epsilon_{n},\epsilon_{2}\right) & \dots & Var\left(\epsilon_{1}\right)
-\end{array}\right]
-$$
-
-and additive constants are ignored, but multiplicative constants
-are pulled out as follows:
-
-$$
-Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}\right)=\boldsymbol{A}^{T}\,Var\left(\boldsymbol{\epsilon}\right)\,\boldsymbol{A}
-$$
-
-
-
-### Variance of Location Parameters
-
-We next derive the sampling variance of our estimator $\hat{\boldsymbol{\beta}}$
-by first noting that $\boldsymbol{X}$ and $\boldsymbol{\beta}$ are
-constants and therefore 
-$$\begin{aligned} Var\left(\boldsymbol{y}\right) 
-  &=  Var\left(\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\right)\\
-  &=  Var\left(\boldsymbol{\epsilon}\right)\\
-  &=  \sigma^{2}\boldsymbol{I}_{n}
-\end{aligned}$$
-
-because the error terms are independent and therefore $Cov\left(\epsilon_{i},\epsilon_{j}\right)=0$
-when $i\ne j$ and $Var\left(\epsilon_{i}\right)=\sigma^{2}$. Recalling
-that constants come out of the variance operator as the constant _squared_.
-
-$$\begin{aligned} Var\left(\hat{\boldsymbol{\beta}}\right) 
-  &= Var\left(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\right)\\
-  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,Var\left(\boldsymbol{y}\right)\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- &=  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,\sigma^{2}\boldsymbol{I}_{n}\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
- &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
-\end{aligned}$$
-
-Using this, the standard error (i.e. the estimated standard deviation)
-of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
-$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
-
-
-
-### Confidence intervals and hypothesis tests
-
-We can now state the general method of creating confidence intervals
-and perform hypothesis tests for any element of $\boldsymbol{\beta}$. 
-
-The confidence interval formula is (as usual)
-$$\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{j}\right)$$
-
-and a test statistic for testing $H_{0}:\,\beta_{j}=0$ versus $H_{a}:\,\beta_{j}\ne0$ is 
-
-$$t_{n-p}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}$$
- 
-
-
-### Summary of pertinent results
-
-The statistic $\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$ is the unbiased maximum-likelihood estimator of $\boldsymbol{\beta}$.
-    
-The Central Limit Theorem applies to each element of $\boldsymbol{\beta}$. That is, as $n\to\infty$, the distribution of $\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)$.
-    
-The error terms can be calculated via
-$$\begin{aligned} \hat{\boldsymbol{y}}  &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
-\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
-\end{aligned}$$
-
-The estimate of $\sigma^{2}$ is 
-$$\hat{\sigma}^{2}=\frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
-
-The standard error (i.e. the estimated standard deviation) of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
-$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
-
-### An example in R
-
-Here we will work an example in R and see the calculations. Consider
-the following data:
-```{r, fig.height=3, warning=FALSE}
-n <- 20
-x <- seq(0,10, length=n)
-y <- -3 + 2*x + rnorm(n, sd=2)
-my.data <- data.frame(x=x, y=y)
-ggplot(my.data) + geom_point(aes(x=x,y=y))
-```
-
-
-First we must create the design matrix $\boldsymbol{X}$. Recall 
-$$
-\boldsymbol{X}=\left[\begin{array}{cc}
-1 & x_{1}\\
-1 & x_{2}\\
-1 & x_{3}\\
-\vdots & \vdots\\
-1 & x_{n-1}\\
-1 & x_{n}
-\end{array}\right]
-$$
- and can be created in R via the following:
-
-```{r}
-X <- cbind( rep(1,n), x)
-```
-
-
-Given $\boldsymbol{X}$ and $\boldsymbol{y}$ we can calculate 
-$$
-\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
-$$
-in R using the following code:
-```{r}
-XtXinv <- solve( t(X) %*% X )
-beta.hat <- XtXinv %*% t(X) %*% y
-beta.hat
-```
-
-
-Our next step is to calculate the predicted values $\hat{\boldsymbol{y}}$
-and the residuals $\hat{\boldsymbol{\epsilon}}$ 
-
-$$\begin{aligned}
-\hat{\boldsymbol{y}} &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
-\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
-\end{aligned}$$
-
-```{r}
-y.hat <- X %*% beta.hat
-residuals <- y - y.hat
-```
-
-Now that we have the residuals, we can calculate $\hat{\sigma}^{2}$
-and the standard errors of $\hat{\beta}_{j}$
-
-$$\hat{\sigma}^{2}=\frac{1}{n-p}\,\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}$$
-
-$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
-
-```{r}
-sigma2.hat <- ( t(residuals) %*% residuals) / (n-2)
-sigma.hat <- sqrt( sigma2.hat )
-std.errs <- sqrt( sigma2.hat * diag(XtXinv) )
-```
-
-
-We now print out the important values and compare them to the summary
-output given by the `lm()` function in R.
-
-```{r}
-beta.hat
-sigma.hat
-std.errs
-```
-```{r}
-model <- lm(y~x)
-summary(model)
-```
-
-
-We calculate $95\%$ confidence intervals via:
-```{r}
-lwr <- beta.hat - qt(.975, n-2) * std.errs
-upr <- beta.hat + qt(.975, n-2) * std.errs
-CI <- cbind(lwr,upr)
-colnames(CI) <- c('lower','upper')
-rownames(CI) <- c('Intercept', 'x')
-CI
-```
-
-
-These intervals are the same as what we get when we use the `confint()`
-function.
-
-```{r}
-confint(model)
-```
-
-
-## ANOVA model
+### ANOVA model
 
 The anova model is also a linear model and all we must do is create
 a appropriate design matrix. Given the design matrix $\boldsymbol{X}$,
 all the calculations are identical as in the simple regression case.
 
 
-### Cell means representation
+#### Cell means representation
 
 Recall the cell means representation is
 $$
@@ -507,7 +277,7 @@ group. As such, these are often called *indicator variables*.
 Another term for these, which I find less helpful, is *dummy variables*.
 
 
-### Offset from reference group
+#### Offset from reference group
 
 In this model representation of ANOVA, we have an overall mean and
 then offsets from the control group (which will be group one). The
@@ -563,6 +333,285 @@ y_{3,4}
 \end{array}\right]}}
 $$
 
+
+
+
+## Parameter Estimation
+
+For both simple regression and ANOVA, we can write the model in matrix form as
+$$\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; 
+\textrm{ where } \boldsymbol{\epsilon} \sim N(\boldsymbol{0},\sigma^2\boldsymbol{I}_n)$$
+which could also be written as
+$$\boldsymbol{y} \sim N(\boldsymbol{X\beta},\sigma^2\boldsymbol{I}_n)$$
+and we could use the maximum-likelihood principle to find estimators for $\beta$ and $\sigma^2$. 
+In this section, we will introduce the estimators $\hat{\boldsymbol{\beta}}$ and $\hat{\sigma}^2$.
+
+### Estimation of Location Paramters 
+
+Our goal is to find the best estimate of $\boldsymbol{\beta}$
+given the data. To justify the formula, consider the case where there
+is no error terms (i.e. $\epsilon_{i}=0$ for all $i$). Thus we have
+$$
+\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}
+$$
+and our goal is to solve for $\boldsymbol{\beta}$. To do this, we
+must use a matrix inverse, but since inverses only exist for square
+matrices, we pre-multiple by $\boldsymbol{X}^{T}$ (notice that $\boldsymbol{X}^{T}\boldsymbol{X}$
+is a symmetric $2\times2$ matrix).
+$$
+\boldsymbol{X}^{T}\boldsymbol{y}=\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta}
+$$
+ and then pre-multiply by $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}$.
+
+$$\begin{aligned}
+\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} 
+  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\boldsymbol{\beta} \\
+  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y} &= \boldsymbol{\beta} 
+\end{aligned}$$
+
+This exercise suggests that $\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$
+is a good place to start when looking for the maximum-likelihood estimator
+for $\boldsymbol{\beta}$. 
+
+Happily it turns out that this quantity is in fact the maximum-likelihood estimator for the data generation model
+$$\boldsymbol{y} \sim N(\boldsymbol{X\beta}, \sigma^2 \boldsymbol{I}_n)$$
+(and equivalently minimizes the sum-of-squared
+error). In this course we won't prove these two facts, but we will use this as our estimate of $\boldsymbol{\beta}$.
+$$\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$$
+
+
+
+### Estimation of Variance Parameter
+
+Recall our simple regression model is 
+$$y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}$$
+where $\epsilon_{i}\stackrel{iid}{\sim}N\left(0,\sigma^{2}\right)$. 
+
+Using our estimates $\hat{\boldsymbol{\beta}}$ we can obtain predicted values for the regression line at any x-value. In particular we can find the predicted value for each $x_i$ value in our dataset.
+$$\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i$$
+Using matrix notation, I would write $\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$. 
+
+As usual we will find estimates of the noise terms (which we will call residuals or errors) via 
+$$\begin{aligned} \hat{\epsilon}_{i} 
+  &=  y_{i}-\hat{y}_{i}\\
+  &=  y_{i}-\left(\hat{\beta}_{0}+\hat{\beta}_{1}x_{i}\right)
+\end{aligned}$$
+
+
+Writing $\hat{\boldsymbol{y}}$ in matrix terms we have
+$$\begin{aligned}
+\hat{\boldsymbol{y}} &= \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+ &=  \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
+ &=  \boldsymbol{H}\boldsymbol{y}
+\end{aligned}$$
+where $\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}$
+is often called the *hat-matrix* because it takes $y$ to $\hat{y}$
+and has many interesting theoretical properties.\footnote{Mathematically, $\boldsymbol{H}$ is the projection matrix that takes
+a vector in $n$-dimensional space and projects it onto a $p$-dimension
+subspace spanned by the vectors in $\boldsymbol{X}$. Projection matrices
+have many useful properties and much of the theory of linear models
+utilizes $\boldsymbol{H}$. }
+
+We can now estimate the error terms via
+
+$$\begin{aligned}
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}\\
+ &=  \boldsymbol{y}-\boldsymbol{H}\boldsymbol{y}\\
+ &=  \left(\boldsymbol{I}_{n}-\boldsymbol{H}\right)\boldsymbol{y}
+\end{aligned}$$
+
+As usual we estimate $\sigma^{2}$ using the mean-squared error, but the general formula is
+$$\begin{aligned} \hat{\sigma}^{2} &= \textrm{MSE} \\ \\
+  &=  \frac{1}{n-p}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}\\ \\
+  &=  \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\end{aligned}$$ 
+where $\boldsymbol{\beta}$ has $p$ elements, and thus we have $n-p$ degrees of freedom.
+
+## Standard Errors 
+Because our $\hat{\boldsymbol{\beta}}$ estimates vary from sample to sample, we need to estimate
+how much they vary from sample to sample. This will eventually allow us to create confidence intervals for
+and perform hypothesis test relating to the $\boldsymbol{\beta}$ parameter vector.
+
+### Expectation and variance of a random vector
+Just as we needed to derive the expected value and variance of $\bar{x}$ 
+in the previous semester, we must now do the same for $\hat{\boldsymbol{\beta}}$.
+But to do this, we need some properties of expectations and variances.
+
+In the following, let $\boldsymbol{A}_{n\times p}$ and $\boldsymbol{b}_{n\times1}$
+be constants and $\boldsymbol{\epsilon}_{n\times1}$ be a random vector.
+
+Expectations are very similar to the scalar case where
+$$E\left[\boldsymbol{\epsilon}\right]=\left[\begin{array}{c}
+E\left[\epsilon_{1}\right]\\
+E\left[\epsilon_{2}\right]\\
+\vdots\\
+E\left[\epsilon_{n}\right]
+\end{array}\right]$$
+and any constants are pulled through the expectation
+$$E\left[\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right]=\boldsymbol{A}^{T}\,E\left[\boldsymbol{\epsilon}\right]+\boldsymbol{b}$$
+
+
+Variances are a little different. The variance of the vector $\boldsymbol{\epsilon}$
+is
+$$
+Var\left(\boldsymbol{\epsilon}\right)=\left[\begin{array}{cccc}
+Var\left(\epsilon_{1}\right) & Cov\left(\epsilon_{1},\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{1},\epsilon_{n}\right)\\
+Cov\left(\epsilon_{2},\epsilon_{1}\right) & Var\left(\epsilon_{2}\right) & \dots & Cov\left(\epsilon_{2},\epsilon_{n}\right)\\
+\vdots & \vdots & \ddots & \vdots\\
+Cov\left(\epsilon_{n},\epsilon_{1}\right) & Cov\left(\epsilon_{n},\epsilon_{2}\right) & \dots & Var\left(\epsilon_{1}\right)
+\end{array}\right]
+$$
+
+and additive constants are ignored, but multiplicative constants
+are pulled out as follows:
+
+$$
+Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}\right)=\boldsymbol{A}^{T}\,Var\left(\boldsymbol{\epsilon}\right)\,\boldsymbol{A}
+$$
+
+
+
+### Variance of Location Parameters
+
+We next derive the sampling variance of our estimator $\hat{\boldsymbol{\beta}}$
+by first noting that $\boldsymbol{X}$ and $\boldsymbol{\beta}$ are
+constants and therefore 
+$$\begin{aligned} Var\left(\boldsymbol{y}\right) 
+  &=  Var\left(\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon}\right)\\
+  &=  Var\left(\boldsymbol{\epsilon}\right)\\
+  &=  \sigma^{2}\boldsymbol{I}_{n}
+\end{aligned}$$
+
+because the error terms are independent and therefore $Cov\left(\epsilon_{i},\epsilon_{j}\right)=0$
+when $i\ne j$ and $Var\left(\epsilon_{i}\right)=\sigma^{2}$. Recalling
+that constants come out of the variance operator as the constant _squared_.
+
+$$\begin{aligned} Var\left(\hat{\boldsymbol{\beta}}\right) 
+  &= Var\left(\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\right)\\
+  &= \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,Var\left(\boldsymbol{y}\right)\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\,\sigma^{2}\boldsymbol{I}_{n}\,\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\\
+ &=  \sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}
+\end{aligned}$$
+
+Using this, the standard error (i.e. the estimated standard deviation)
+of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
+
+
+
+
+ 
+
+
+### Summary of pertinent results
+
+The statistic $\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}$ is the unbiased maximum-likelihood estimator of $\boldsymbol{\beta}$.
+    
+The Central Limit Theorem applies to each element of $\boldsymbol{\beta}$. That is, as $n\to\infty$, the distribution of $\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)$.
+    
+The error terms can be calculated via
+$$\begin{aligned} \hat{\boldsymbol{y}}  &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{aligned}$$
+
+The estimate of $\sigma^{2}$ is 
+$$\begin{aligned} \hat{\sigma}^{2} = \textrm{MSE} 
+  =  \frac{1}{n-p}\;\sum_{i=1}^{n}\hat{\epsilon}_{i}^{2}
+  =  \frac{1}{n-p}\;\hat{\boldsymbol{\epsilon}}^{T}\hat{\boldsymbol{\epsilon}}
+\end{aligned}$$ 
+
+and is the typical squared distance between an observation and the model prediction.
+
+The standard error (i.e. the estimated standard deviation) of $\hat{\beta}_{j}$ (for any $j$ in $1,\dots,p$) is 
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
+
+## R example
+
+Here we will work an example in R and do both the "hand" calculation as well as using the `lm()` function to obtain the same information.
+
+Consider the following data in a simple regression problem:
+```{r, fig.height=3, warning=FALSE}
+n <- 20
+x <- seq(0,10, length=n)
+y <- -3 + 2*x + rnorm(n, sd=2)
+my.data <- data.frame(x=x, y=y)
+ggplot(my.data) + geom_point(aes(x=x,y=y))
+```
+
+
+First we must create the design matrix $\boldsymbol{X}$. Recall 
+$$
+\boldsymbol{X}=\left[\begin{array}{cc}
+1 & x_{1}\\
+1 & x_{2}\\
+1 & x_{3}\\
+\vdots & \vdots\\
+1 & x_{n-1}\\
+1 & x_{n}
+\end{array}\right]
+$$
+and can be created in R via the following:
+
+```{r}
+X <- cbind( rep(1,n), x)
+```
+
+
+Given $\boldsymbol{X}$ and $\boldsymbol{y}$ we can calculate 
+$$
+\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
+$$
+in R using the following code:
+```{r}
+XtXinv <- solve( t(X) %*% X )           # solve() is the inverse function
+beta.hat <- XtXinv %*% t(X) %*% y %>%   # Do the calculations
+  as.vector()                           # make sure the result is a vector
+```
+
+
+Our next step is to calculate the predicted values $\hat{\boldsymbol{y}}$
+and the residuals $\hat{\boldsymbol{\epsilon}}$ 
+
+$$\begin{aligned}
+\hat{\boldsymbol{y}} &=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\epsilon}} &=  \boldsymbol{y}-\hat{\boldsymbol{y}}
+\end{aligned}$$
+
+```{r}
+y.hat <- X %*% beta.hat
+residuals <- y - y.hat
+```
+
+Now that we have the residuals, we can calculate $\hat{\sigma}^{2}$
+and the standard errors of $\hat{\beta}_{j}$
+
+$$\hat{\sigma}^{2}=\frac{1}{n-p}\,\sum_{i=1}^n\hat{\epsilon}_i^2$$
+
+$$StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}$$
+
+```{r}
+sigma2.hat <- 1/(n-2) * sum( residuals^2 )    # p = 2 
+sigma.hat <- sqrt( sigma2.hat )
+std.errs <- sqrt( sigma2.hat * diag(XtXinv) )
+```
+
+
+We now print out the important values and compare them to the summary
+output given by the `lm()` function in R.
+
+```{r}
+cbind(Est=beta.hat, StdErr=std.errs) 
+sigma.hat
+```
+```{r}
+model <- lm(y~x)
+summary(model)
+```
+
+
+
+
 ## Exercises
 
 1. We will do a simple ANOVA analysis on example 8.2 from Ott \& Longnecker using the matrix representation of the model. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used 24 students who obtained high and nearly equal scores in the experiment. eight were selected at random from among the 24 problem cases and were treated with method 1. Seven of the remaining 16 students were selected at random and treated with method 2. The remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table. (This analysis was done in section 8.3 of my STA 570 notes)
@@ -579,7 +628,7 @@ $$
     
     a. Create one vector of all 24 hostility test scores `y`. (Use the `c()` function.)
     
-    b. Create a design matrix `X` with dummy variables for columns that code for what group an observation belongs to. Notice that `X` will be a $24$ rows by $3$ column matrix. _Hint: An R function that might be handy is `cbind(a,b)` which will bind two vectors or matrices together along the columns. (There is also a corresponding `rbind()` function that binds vectors/matrices along rows.) Also you'll like to have the repeat command `rep()`._
+    b. Create a design matrix `X` with dummy variables for columns that code for what group an observation belongs to. Notice that `X` will be a $24$ rows by $3$ column matrix. _Hint: An R function that might be handy is `cbind(a,b)` which will bind two vectors or matrices together along the columns. There is also a corresponding `rbind()` function that binds vectors/matrices along rows. Furthermore, the repeat command `rep()` could be handy._
     
     c) Find $\hat{\boldsymbol{\beta}}$ using the matrix formula given in class. _Hint: The R function `t(A)` computes the matrix transpose $\mathbf{A}^{T}$, `solve(A)` computes $\mathbf{A}^{-1}$, and the operator `%*%` does matrix multiplication (used as `A %*% B`)._
     

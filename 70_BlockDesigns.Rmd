@@ -1,0 +1,266 @@
+# (PART\*) Appendix{-}
+
+# Block Designs
+
+```{r, echo=FALSE}
+# Unattach any packages that happen to already be loaded. In general this is unecessary
+# but is important for the creation of the book to not have package namespaces
+# fighting unexpectedly.
+pkgs = names(sessionInfo()$otherPkgs)
+if( length(pkgs > 0)){
+  pkgs = paste('package:', pkgs, sep = "")
+  for( i in 1:length(pkgs)){
+    detach(pkgs[i], character.only = TRUE, force=TRUE)
+  }
+}
+
+# Set my default chunk options 
+knitr::opts_chunk$set( fig.height=3 )
+```
+
+```{r, message=FALSE, warning=FALSE}
+# packages for this chapter
+library(tidyverse)    # ggplot2, dplyr, etc...
+library(emmeans)     # TukeyLetters stuff
+```
+
+Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large.  For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.
+
+Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables.  We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are *nested*.
+
+Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.  
+
++--------------+-------------+------------+-----------+
+|              | Field 1     |  Field 2   |  Field 3  |
++==============+=============+============+===========+
+| **Plot 1**   |  Variety A  |  Variety C | Variety B |
++--------------+-------------+------------+-----------+
+| **Plot 2**   |  Variety B  |  Variety A | Variety C |
++--------------+-------------+------------+-----------+
+| **Plot 3**   |  Variety C  |  Variety B | Variety A |
++--------------+-------------+------------+-----------+
+
+
+Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials' use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren't really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.  
+
+## Randomized Complete Block Design (RCBD)
+The dataset `oatvar` in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.
+
+```{r, message=FALSE, warning=FALSE}
+data('oatvar', package='faraway')
+ggplot(oatvar, aes(y=yield, x=block, color=variety)) + 
+	geom_point(size=5) +
+	geom_line(aes(x=as.integer(block))) # connect the dots
+```
+
+While there is one unusual observation in block IV, there doesn't appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have $p=12$ parameters and $28$ residual degrees of freedom because 
+$$\begin{aligned}
+  df_\epsilon	&=	n-p \\
+	    &=	n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
+	    &=	40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+	    &=	40-12 \\
+	    &=	28
+ \end{aligned}$$
+ 
+```{r}
+m1 <- lm( yield ~ block + variety, data=oatvar)
+anova(m1)
+# plot(m1)      # check diagnostic plots - they are fine...
+```
+
+Because this is an orthogonal design, the sums of squares doesn't change regardless of which order we add the factors, but if we remove one or two observations, they would.
+
+In determining the significance of `variety` the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have $28$ residual degrees of freedom.
+
+But the F-value and p-value for testing if `block` is significant is nonsense!  Imagine that variety didn't matter we just have 8 replicate samples per block, but these aren't true replicates, they are what is called *pseudoreplicates*. Imagine taking a sample of $n=3$ people and observing their height at 1000 different points in time during the day.  You don't have 3000 data points for estimating the mean height in the population, you have 3.  Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can't do any statistical inference at the block scale!
+
+Fortunately in this case, we don't care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn't interested in estimating it.  If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don't care about it.
+
+
+```{r}
+# Ignore any p-values regarding block, but I'm happy with the analysis for variety
+letter_df <- emmeans(m1, ~variety) %>% 
+  multcomp::cld(Letters=letters) %>% 
+  dplyr::select(variety, .group) %>%
+  mutate(yield = 500)
+
+ggplot(oatvar, aes(x=variety, y=yield)) +
+  geom_boxplot() +
+  geom_text( data=letter_df, aes(label=.group) ) 
+```
+
+However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about.  To make R do the correct analysis, we have to denote the nesting.  In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the `Error()` function within our formula.  By default, `Error()` just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.
+
+```{r}
+m3 <- aov( yield ~ variety + Error(block), data=oatvar)
+summary(m3)
+```
+
+Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don't have any replication of the blocks.  So our analysis respects that blocks are present, but does not attempt any statistical analyses on them. 
+
+
+## Split-plot designs
+There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can't be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.
+
+```{r, echo=FALSE}
+data('AgData', package='dsData')
+# The data is actually more complex than described. For this example we'll look
+# at the simpler analysis where we model the mean yield in each subplot.
+AgData <- AgData %>% 
+  group_by(plot, subplot, Fertilizer, Irrigation) %>% 
+  summarise( yield = mean(yield))
+head(AgData)
+```
+
+```{r, echo=FALSE}
+AgData <- AgData %>% 
+  mutate( row=ceiling(as.integer(subplot) / 2),
+          col=as.integer(subplot) %% 2 + 1,
+          vis.plot = as.integer(plot)) %>%
+  group_by(plot) %>%
+  mutate(Fertilizer = sample(Fertilizer)) %>%
+  group_by()
+
+# Shuffle the plot labels so the Irrigation levels
+#  look randomly assigned.
+AgData.plots <- AgData %>% 
+  dplyr::select(plot) %>% distinct() %>%
+  mutate(plot2=sample(plot, replace = FALSE))
+AgData <- left_join(AgData, AgData.plots, by='plot') %>%
+  dplyr::select(-plot) %>%
+  rename(plot = plot2)
+
+ggplot(AgData ) +
+   geom_tile(aes(x=col, y=row, fill=Fertilizer),  color='black', size=1) +
+   facet_wrap(  ~ plot, labeller=label_both, ncol=4) +
+   geom_text( aes(label=paste("Irrigation", Irrigation)), x=1.5, y=2.7) +
+   ylim(c(0.5, 2.8))
+```
+
+So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. 
+
+I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios).  So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.
+
+We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.
+
+```{r}
+# AgData came from my data package, dsData, (however I did some summarization
+# first.)
+
+# To analyze Irrigation, average over the subplots first...
+Irrigation.data <-   AgData %>% 
+  group_by(plot, Irrigation) %>%
+  summarise( yield = mean(yield)) %>%
+  as.data.frame()  # the aov command doesn't like tibbles.
+
+# Now do a standard analysis. I use the aov() command instead of lm()
+# because we will shortly do something very tricky that can only be
+# done with aov(). For the most part, everything is 
+# identical from what you are used to.
+m <- aov( yield ~ Irrigation, data=Irrigation.data )
+anova(m)
+```
+
+In this case we see that we have insufficient evidence to conclude that the observed difference between the Irrigation levels could not be due to random chance.
+
+Next we can do the appropriate analysis for the fertilizer, recognizing that all the p-values for the plot effects are nonsense and should be ignored.
+
+```{r}
+m <- aov( yield ~ plot + Fertilizer, data=AgData )
+summary(m)
+```
+
+Ideally I wouldn't have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.
+
+```{r}
+# To do this right, we have to abandon the general lm() command and use the more
+# specialized aov() command.  The Error() part of the formula allows me to nest
+# the error terms and allow us to do the correct analysis. The order of these is
+# to start with the largest/highest level and then work down the nesting.
+m2 <- aov( yield ~ Irrigation + Fertilizer + Error(plot/subplot), data=AgData )
+summary(m2)
+```
+
+In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.
+
+What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?
+
+```{r}
+bad.model <- aov( yield ~ Irrigation + Fertilizer, data=AgData)
+anova(bad.model)
+```
+
+In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different.  Notice that the sums-of-squares in this **wrong** analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools. 
+$$\begin{aligned}
+  RSS_{total} &= RSS_{Fertilizer} + RSS_{Irrigation} \\
+        456.12 &= 273.64 + 182.5
+  \end{aligned}$$
+
+When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool. 
+
+***
+
+A second example of a slightly more complex split plot is given in the package `MASS` under the dataset `oats`. From the help file the data describes the following experiment:
+    
+> The yield of oats from a split-plot field trial using three varieties and four levels of manurial treatment. The experiment was laid out in 6 blocks of 3 main plots, each split into 4 sub-plots. The varieties were applied to the main plots and the manurial treatments to the sub-plots.
+    
+This is a lot to digest so lets unpack it. First we have 6 blocks and we'll replicate the exact same experiment in each block.  Within a block, we'll split it into three sections, which we'll call plots (within the block).  Finally within each plot, we'll have 4 subplots.  
+
+We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of 3 plots, we'll randomly assign the 3 varieties, and to each set of subplots, we'll assign the fertilizers. 
+
+One issue that makes this issue confusing for students is that most texts get lazy and don't define the blocks, plots, and sub-plots when there are no replicates in a particular level.  I prefer to be clear about defining those so.
+
+```{r}
+data('oats', package='MASS')
+oats <- oats %>% mutate(
+  Nf = ordered(N, levels = sort(levels(N))),  # make manure an ordered factor
+  plot = as.integer(V),                       # plot
+  subplot = as.integer(Nf))                   # sub-plot
+```
+
+
+As always we first create a graph to examine the data
+```{r, fig.height=7}
+oats <- oats %>% mutate(B_Plot = interaction(B, plot)) 
+ggplot(oats, aes(x=Nf, y=Y, color=V)) +
+  facet_grid( B ~ plot, labeller=label_both) +
+  geom_point() +
+  geom_line(aes(x=as.integer(Nf)))
+```
+
+This graph also makes me think that variety doesn't matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check. 
+
+```{r}
+#  What makes sense to me
+# m.c <- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)
+```
+Unfortunately the above model isn't correct because R isn't smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting.  So we have to be smart enough to recognize that plot and subplot are actually Variety and Fertilizer.
+
+```{r}
+m.c <- aov( Y ~ V * Nf + Error(B/V/Nf), data=oats)
+summary(m.c)
+```
+
+Sure enough the interaction term is not significant. We next consider the Variety term.
+
+```{r}
+m.s <- aov( Y ~ V + Nf + Error(B/V/Nf), data=oats)
+summary(m.s)
+```
+
+We conclude by noticing that the Variety does not matter, but that the fertilizer level is quite significant.
+
+***
+
+There are many other types of designs out there. For example you might have 5 levels of a factor, but when you split your block into plots, you can only create 3 plots.  So not every block will have every level of the factor. This is called *Randomized Incomplete Block Designs* (RIBD).
+
+You might have a design where you apply even more levels of nesting.  Suppose you have a green house study where you have rooms where you can apply a temperature treatment, within the room you have four tables and can apply a light treatment to each table. Finally within each table you can have four trays where can apply a soil treatment to each tray. This is a continuation of the split-plot design and by extending the nesting we can develop *split-split-plot* and *split-split-split-plot* designs.
+
+You might have 7 covariates each with two levels (High, Low) and you want to investigate how these influence your response but also allow for second and third order interactions.  If you looked at every treatment combination you'd have $2^7=128$ different treatment combinations and perhaps you only have the budget for a sample of $n=32$.  How should you design your experiment? This question is addressed by *fractional factorial* designs.
+
+If your research interests involve designing experiments such as these, you should consider taking an Experimental design course.
+
+## Exercises
+1. ???
+2. ???
+3. ???

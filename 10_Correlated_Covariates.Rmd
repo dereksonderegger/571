@@ -1,0 +1,65 @@
+# Correlated Covariates
+
+
+## Interpretation with Correlated Covariates
+
+The standard interpretation of the slope parameter is that $\beta_{j}$ is the amount of increase in $y$ for a one unit increase in the $j$th covariate, provided that all other covariates stayed the same.
+
+The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation. 
+
+One common issue that make interpretation difficult is that covariates can be highly correlated. 
+
+Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:
+
+  Variable    |   Interpretation
+--------------|----------------------
+ `Weight`     |  Weight (g)
+ `Length.1`   |  Length from nose to beginning of Tail (cm)
+ `Length.2`   |  Length from nose to notch of Tail (cm)
+ `Length.3`   |  Length from nose to tip of tail (cm)
+ `Height`     |  Maximal height as a percentage of `Length.3`
+ `Width`      |  Maximal width as a percentage of `Length.3`
+ `Sex`        |  0=Female, 1=Male
+ `Species`    |  Which species of perch (1-7)
+ 
+ 
+ 
+We first look at the data and observe the expected relationship between length and weight.
+
+```{r, warning=FALSE, message=FALSE}
+file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'  # online
+file <- '~/github/571/data-raw/Fish.csv'                                                   # on my computer
+fish <- read.table(file, header=TRUE, skip=111, sep=',')
+
+### generate a pairs plot in a couple of different ways...
+# pairs(fish)
+# pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )
+# pairs( Weight ~ ., data=fish )
+
+fish %>%
+  dplyr::select(Weight, Length.1, Length.2, Length.3, Height, Width) %>%
+  GGally::ggpairs(upper=list(continuous='points'),
+                  lower=list(continuous='cor'))
+```
+
+Naively, we might consider the linear model with all the length effects present.
+
+```{r}
+model <- lm(Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish)
+summary(model)
+```
+
+This is crazy. There is a negative relationship between `Length.2` and `Weight`. That does not make any sense unless you realize that this is the effect of `Length.2` assuming the other covariates are in the model and can be held constant while changing the value of `Length.2`, which is obviously ridiculous. 
+
+If we remove the highly correlated covariates then we see a much better behaved model
+
+```{r}
+model <- lm(Weight ~ Length.2 + Height + Width, data=fish)
+summary(model)
+```
+
+When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign. 
+
+In this case the sum of the three length covariate estimates was approximately $31$ in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
+
+In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.

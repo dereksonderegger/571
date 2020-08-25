@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Inference | Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Inference | Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Inference | Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger" />
+
+
+<meta name="date" content="2020-06-09" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="3-parameter-estimation.html"/>
+<link rel="next" href="5-analysis-of-covariance-ancova.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="1" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html"><i class="fa fa-check"></i><b>1</b> Matrix Theory</a><ul>
+<li class="chapter" data-level="1.1" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#learning-outcomes"><i class="fa fa-check"></i><b>1.1.1</b> Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.2.2" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.2.3" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.2.4" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#square-matrices"><i class="fa fa-check"></i><b>1.2.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.2.5" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.2.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.2.6" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.2.7" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.3.2" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.3.3" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.3.4" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#vector-multiplication"><i class="fa fa-check"></i><b>1.3.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.3.5" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.3.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.3.6" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.3.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.3.7" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#determinant"><i class="fa fa-check"></i><b>1.3.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.3.8" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#inverse"><i class="fa fa-check"></i><b>1.3.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="1-matrix-theory.html"><a href="1-matrix-theory.html#exercises"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>2</b> Maximum Likelihood Priciple</a><ul>
+<li class="chapter" data-level="2.1" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>2.1</b> Introduction</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i><b>2.1.1</b> Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>2.2</b> Distributions</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>2.2.1</b> Poisson</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>2.2.2</b> Exponential</a></li>
+<li class="chapter" data-level="2.2.3" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>2.2.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>2.3</b> Likelihood Function</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>2.3.1</b> Poisson</a></li>
+<li class="chapter" data-level="2.3.2" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>2.3.2</b> Exponential Example</a></li>
+<li class="chapter" data-level="2.3.3" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>2.3.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>2.4</b> Discussion</a></li>
+<li class="chapter" data-level="2.5" data-path="2-maximum-likelihood-priciple.html"><a href="2-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html"><i class="fa fa-check"></i><b>3</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="3.1" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#introduction-2"><i class="fa fa-check"></i><b>3.1</b> Introduction</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#learning-outcomes-2"><i class="fa fa-check"></i><b>3.1.1</b> Learning Outcomes</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>3.2</b> Simple Regression</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>3.2.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="3.2.2" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>3.2.2</b> Estimation of Variance Parameter</a></li>
+<li class="chapter" data-level="3.2.3" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>3.2.3</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="3.2.4" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>3.2.4</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="3.2.5" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2.5</b> Confidence intervals and hypothesis tests</a></li>
+<li class="chapter" data-level="3.2.6" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>3.2.6</b> Summary of pertinent results</a></li>
+<li class="chapter" data-level="3.2.7" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#an-example-in-r"><i class="fa fa-check"></i><b>3.2.7</b> An example in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>3.3</b> ANOVA model</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#cell-means-representation"><i class="fa fa-check"></i><b>3.3.1</b> Cell means representation</a></li>
+<li class="chapter" data-level="3.3.2" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#offset-from-reference-group"><i class="fa fa-check"></i><b>3.3.2</b> Offset from reference group</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-parameter-estimation.html"><a href="3-parameter-estimation.html#exercises-2"><i class="fa fa-check"></i><b>3.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-inference.html"><a href="4-inference.html"><i class="fa fa-check"></i><b>4</b> Inference</a><ul>
+<li class="chapter" data-level="4.1" data-path="4-inference.html"><a href="4-inference.html#f-tests"><i class="fa fa-check"></i><b>4.1</b> F-tests</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="4-inference.html"><a href="4-inference.html#theory"><i class="fa fa-check"></i><b>4.1.1</b> Theory</a></li>
+<li class="chapter" data-level="4.1.2" data-path="4-inference.html"><a href="4-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>4.1.2</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="4.1.3" data-path="4-inference.html"><a href="4-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>4.1.3</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="4.1.4" data-path="4-inference.html"><a href="4-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>4.1.4</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-inference.html"><a href="4-inference.html#confidence-intervals-for-location-parameters"><i class="fa fa-check"></i><b>4.2</b> Confidence Intervals for location parameters</a></li>
+<li class="chapter" data-level="4.3" data-path="4-inference.html"><a href="4-inference.html#prediction-and-confidence-intervals-for-a-response"><i class="fa fa-check"></i><b>4.3</b> Prediction and Confidence Intervals for a response</a></li>
+<li class="chapter" data-level="4.4" data-path="4-inference.html"><a href="4-inference.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>4.4</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="4.5" data-path="4-inference.html"><a href="4-inference.html#exercises-3"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a><ul>
+<li class="chapter" data-level="5.1" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>5.1</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="5.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>5.2</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="5.3" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>5.3</b> Iris Example</a></li>
+<li class="chapter" data-level="5.4" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#exercises-4"><i class="fa fa-check"></i><b>5.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-contrasts.html"><a href="6-contrasts.html"><i class="fa fa-check"></i><b>6</b> Contrasts</a><ul>
+<li class="chapter" data-level="6.1" data-path="6-contrasts.html"><a href="6-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>6.1</b> Estimate and variance</a></li>
+<li class="chapter" data-level="6.2" data-path="6-contrasts.html"><a href="6-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>6.2</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="6.2.1" data-path="6-contrasts.html"><a href="6-contrasts.html#way-anova"><i class="fa fa-check"></i><b>6.2.1</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="6.2.2" data-path="6-contrasts.html"><a href="6-contrasts.html#ancova-example"><i class="fa fa-check"></i><b>6.2.2</b> ANCOVA example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-contrasts.html"><a href="6-contrasts.html#using-emmeans-package"><i class="fa fa-check"></i><b>6.3</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="6-contrasts.html"><a href="6-contrasts.html#simple-regression-1"><i class="fa fa-check"></i><b>6.3.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="6.3.2" data-path="6-contrasts.html"><a href="6-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>6.3.2</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="6.3.3" data-path="6-contrasts.html"><a href="6-contrasts.html#ancova"><i class="fa fa-check"></i><b>6.3.3</b> ANCOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="6-contrasts.html"><a href="6-contrasts.html#exercises-5"><i class="fa fa-check"></i><b>6.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>7</b> Diagnostics and Transformations</a><ul>
+<li class="chapter" data-level="7.1" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>7.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="7.1.2" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>7.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>7.2</b> Transformations</a><ul>
+<li class="chapter" data-level="7.2.1" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>7.2.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="7.2.2" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>7.2.2</b> Transforming the Response</a></li>
+<li class="chapter" data-level="7.2.3" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>7.2.3</b> Transforming the predictors</a></li>
+<li class="chapter" data-level="7.2.4" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>7.2.4</b> Interpretation of log transformed variables</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="7-diagnostics-and-transformations.html"><a href="7-diagnostics-and-transformations.html#exercises-6"><i class="fa fa-check"></i><b>7.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a><ul>
+<li class="chapter" data-level="8.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
+<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-variable-selection.html"><a href="8-variable-selection.html#exercises-7"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html"><i class="fa fa-check"></i><b>9</b> One way ANOVA</a><ul>
+<li class="chapter" data-level="9.1" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html#an-example"><i class="fa fa-check"></i><b>9.1</b> An Example</a></li>
+<li class="chapter" data-level="9.2" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>9.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="9.3" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>9.3</b> Diagnostics</a></li>
+<li class="chapter" data-level="9.4" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>9.4</b> Pairwise Comparisons</a></li>
+<li class="chapter" data-level="9.5" data-path="9-one-way-anova.html"><a href="9-one-way-anova.html#exercises-8"><i class="fa fa-check"></i><b>9.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html"><i class="fa fa-check"></i><b>10</b> Two-way ANOVA</a><ul>
+<li class="chapter" data-level="10.1" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>10.1</b> Orthogonality</a></li>
+<li class="chapter" data-level="10.2" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>10.2</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>10.2.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="10.2.2" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>10.2.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="10.2.3" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>10.2.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>10.3</b> Interaction Model</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>10.3.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="10.3.2" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>10.3.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="10.3.3" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>10.3.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="10-two-way-anova.html"><a href="10-two-way-anova.html#exercises-9"><i class="fa fa-check"></i><b>10.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-block-designs.html"><a href="11-block-designs.html"><i class="fa fa-check"></i><b>11</b> Block Designs</a><ul>
+<li class="chapter" data-level="11.1" data-path="11-block-designs.html"><a href="11-block-designs.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>11.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="11.2" data-path="11-block-designs.html"><a href="11-block-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>11.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="11.3" data-path="11-block-designs.html"><a href="11-block-designs.html#exercises-10"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="12.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>12.1</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="12.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>12.2</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="12.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>12.3</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="12.4" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>12.4</b> Nested Effects</a></li>
+<li class="chapter" data-level="12.5" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>12.5</b> Crossed Effects</a></li>
+<li class="chapter" data-level="12.6" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>12.6</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="12.7" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.7</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="12.7.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>12.7.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.7.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>12.7.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="12.8" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#exercises-11"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="13.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>13.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="13.2.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>13.2.1</b> Deviance</a></li>
+<li class="chapter" data-level="13.2.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>13.2.2</b> Goodness of Fit</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>13.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="13.4" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>13.4</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="13.5" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>13.5</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="13.6" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>13.6</b> Overdispersion</a></li>
+<li class="chapter" data-level="13.7" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>13.7</b> ROC Curves</a></li>
+<li class="chapter" data-level="13.8" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#exercises-12"><i class="fa fa-check"></i><b>13.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
+<li class="chapter" data-level="13.9" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>13.9</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="13.9.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>13.9.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="inference" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Inference</h1>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="4-inference.html#cb32-1"></a><span class="kw">library</span>(tidymodels) <span class="co"># Grab model results as data frames</span></span>
+<span id="cb32-2"><a href="4-inference.html#cb32-2"></a><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, dplyr, tidyr</span></span></code></pre></div>
+<div id="f-tests" class="section level2">
+<h2><span class="header-section-number">4.1</span> F-tests</h2>
+<p>We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.</p>
+<p>It is important to specify that we are developing a way of testing nested models. By nested, we mean that the simple model can be created from the full model just by setting one or more model parameters to zero.</p>
+<div id="theory" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> Theory</h3>
+<p>Recall that in the simple regression and ANOVA cases we were interested in comparing a simple model versus a more complex model. For each model we computed the residual sum of squares (RSS) and said that if the complicated model performed much better than the simple then <span class="math inline">\(RSS_{simple}\gg RSS_{complex}\)</span>. To do this we needed to standardize by the number of parameters added to the model and the degrees of freedom remaining in the full model. We first defined <span class="math inline">\(RSS_{diff}=RSS_{simple}-RSS_{complex}\)</span> and let <span class="math inline">\(df_{diff}\)</span> be the number of parameters difference between the simple and complex models. Then we had <span class="math display">\[F=\frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}\]</span>
+and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F
+-distribution with degrees of freedom <span class="math inline">\(df_{diff}\)</span> and <span class="math inline">\(df_{complex}\)</span>.</p>
+<p>The critical assumption for the F-test to be appropriate is that the error terms are independent and normally distributed with constant variance.</p>
+<p>We will consider a data set from Johnson and Raven (1973) which also appears in Weisberg (1985). This data set is concerned with the number of tortoise species on <span class="math inline">\(n=30\)</span> different islands in the Galapagos. The variables of interest in the data set are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Species</code></td>
+<td>Number of tortoise species found on the island</td>
+</tr>
+<tr class="even">
+<td><code>Endimics</code></td>
+<td>Number of tortoise species endemic to the island</td>
+</tr>
+<tr class="odd">
+<td><code>Elevation</code></td>
+<td>Elevation of the highest point on the island</td>
+</tr>
+<tr class="even">
+<td><code>Area</code></td>
+<td>Area of the island (km<span class="math inline">\(^2\)</span>)</td>
+</tr>
+<tr class="odd">
+<td><code>Nearest</code></td>
+<td>Distance to the nearest neighboring island (km)</td>
+</tr>
+<tr class="even">
+<td><code>Scruz</code></td>
+<td>Distance to the Santa Cruz islands (km)</td>
+</tr>
+<tr class="odd">
+<td><code>Adjacent</code></td>
+<td>Area of the nearest adjacent island (km<span class="math inline">\(^2\)</span>)</td>
+</tr>
+</tbody>
+</table>
+<p>We will first read in the data set from the package <code>faraway</code>.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="4-inference.html#cb33-1"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)     <span class="co"># import the data set</span></span>
+<span id="cb33-2"><a href="4-inference.html#cb33-2"></a><span class="kw">head</span>(gala)                          <span class="co"># show the first couple of rows</span></span></code></pre></div>
+<pre><code>##              Species Endemics  Area Elevation Nearest Scruz Adjacent
+## Baltra            58       23 25.09       346     0.6   0.6     1.84
+## Bartolome         31       21  1.24       109     0.6  26.3   572.33
+## Caldwell           3        3  0.21       114     2.8  58.7     0.78
+## Champion          25        9  0.10        46     1.9  47.4     0.18
+## Coamano            2        1  0.05        77     1.9   1.9   903.82
+## Daphne.Major      18       11  0.34       119     8.0   8.0     1.84</code></pre>
+<p>First we will create the full model that predicts the number of species as a function of elevation, area, nearest, scruz and adjacent. Notice that this model has <span class="math inline">\(p=6\)</span> <span class="math inline">\(\beta_{i}\)</span> values (one for each coefficient plus the intercept).</p>
+<p><span class="math display">\[ y_i = \beta_0 + \beta_1 Area_i + \beta_2 Elevation_i + \beta_3 Nearest_i + \beta_4 Scruz_i + \beta_5 Adjacent_i + \epsilon_i\]</span></p>
+<p>We can happily fit this model just by adding terms on the left hand side of the model formula. Notice that R creates the design matrix <span class="math inline">\(X\)</span> for us.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="4-inference.html#cb35-1"></a>M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb35-2"><a href="4-inference.html#cb35-2"></a><span class="kw">model.matrix</span>(M.c)  <span class="co"># this is the design matrix X.</span></span></code></pre></div>
+<pre><code>##              (Intercept)    Area Elevation Nearest Scruz Adjacent
+## Baltra                 1   25.09       346     0.6   0.6     1.84
+## Bartolome              1    1.24       109     0.6  26.3   572.33
+## Caldwell               1    0.21       114     2.8  58.7     0.78
+## Champion               1    0.10        46     1.9  47.4     0.18
+## Coamano                1    0.05        77     1.9   1.9   903.82
+## Daphne.Major           1    0.34       119     8.0   8.0     1.84
+## Daphne.Minor           1    0.08        93     6.0  12.0     0.34
+## Darwin                 1    2.33       168    34.1 290.2     2.85
+## Eden                   1    0.03        71     0.4   0.4    17.95
+## Enderby                1    0.18       112     2.6  50.2     0.10
+## Espanola               1   58.27       198     1.1  88.3     0.57
+## Fernandina             1  634.49      1494     4.3  95.3  4669.32
+## Gardner1               1    0.57        49     1.1  93.1    58.27
+## Gardner2               1    0.78       227     4.6  62.2     0.21
+## Genovesa               1   17.35        76    47.4  92.2   129.49
+## Isabela                1 4669.32      1707     0.7  28.1   634.49
+## Marchena               1  129.49       343    29.1  85.9    59.56
+## Onslow                 1    0.01        25     3.3  45.9     0.10
+## Pinta                  1   59.56       777    29.1 119.6   129.49
+## Pinzon                 1   17.95       458    10.7  10.7     0.03
+## Las.Plazas             1    0.23        94     0.5   0.6    25.09
+## Rabida                 1    4.89       367     4.4  24.4   572.33
+## SanCristobal           1  551.62       716    45.2  66.6     0.57
+## SanSalvador            1  572.33       906     0.2  19.8     4.89
+## SantaCruz              1  903.82       864     0.6   0.0     0.52
+## SantaFe                1   24.08       259    16.5  16.5     0.52
+## SantaMaria             1  170.92       640     2.6  49.2     0.10
+## Seymour                1    1.84       147     0.6   9.6    25.09
+## Tortuga                1    1.24       186     6.8  50.9    17.95
+## Wolf                   1    2.85       253    34.1 254.7     2.33
+## attr(,&quot;assign&quot;)
+## [1] 0 1 2 3 4 5</code></pre>
+<p>All the usual calculations from chapter two can be calculated and we can see the summary table for this regression as follows:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="4-inference.html#cb37-1"></a><span class="kw">summary</span>(M.c)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Species ~ Area + Elevation + Nearest + Scruz + Adjacent, 
+##     data = gala)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -111.679  -34.898   -7.862   33.460  182.584 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  7.068221  19.154198   0.369 0.715351    
+## Area        -0.023938   0.022422  -1.068 0.296318    
+## Elevation    0.319465   0.053663   5.953 3.82e-06 ***
+## Nearest      0.009144   1.054136   0.009 0.993151    
+## Scruz       -0.240524   0.215402  -1.117 0.275208    
+## Adjacent    -0.074805   0.017700  -4.226 0.000297 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 60.98 on 24 degrees of freedom
+## Multiple R-squared:  0.7658, Adjusted R-squared:  0.7171 
+## F-statistic:  15.7 on 5 and 24 DF,  p-value: 6.838e-07</code></pre>
+</div>
+<div id="testing-all-covariates" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Testing All Covariates</h3>
+<p>The first test we might want to do is to test if any of the covariates are significant. That is to say that we want to test the full model versus the simple null hypothesis model
+<span class="math display">\[y_{i}=\beta_{0}+\epsilon_{i}\]</span>
+that has no covariates and only a y-intercept. So we will create a simple model</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="4-inference.html#cb39-1"></a>M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>gala)</span></code></pre></div>
+<p>and calculate the appropriate Residual Sums of Squares (RSS) for each model, along with the difference in degrees of freedom between the two models.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="4-inference.html#cb40-1"></a>RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb40-2"><a href="4-inference.html#cb40-2"></a>RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>(<span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span>)</span>
+<span id="cb40-3"><a href="4-inference.html#cb40-3"></a>df.diff &lt;-<span class="st"> </span><span class="dv">5</span>               <span class="co"># complex model has 5 additional parameters</span></span>
+<span id="cb40-4"><a href="4-inference.html#cb40-4"></a>df.c &lt;-<span class="st"> </span><span class="dv">30</span> <span class="op">-</span><span class="st"> </span><span class="dv">6</span>             <span class="co"># complex model has 24 degrees of freedom left</span></span></code></pre></div>
+<p>The F-statistic for this test is therefore</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="4-inference.html#cb41-1"></a>F.stat &lt;-<span class="st">  </span>( (RSS.s <span class="op">-</span><span class="st"> </span>RSS.c) <span class="op">/</span><span class="st"> </span>df.diff ) <span class="op">/</span><span class="st"> </span>( RSS.c <span class="op">/</span><span class="st"> </span>df.c )</span>
+<span id="cb41-2"><a href="4-inference.html#cb41-2"></a>F.stat</span></code></pre></div>
+<pre><code>## [1] 15.69941</code></pre>
+<p>and should be compared against the F-distribution with <span class="math inline">\(5\)</span> and <span class="math inline">\(24\)</span> degrees of freedom. Because a large difference between RSS.s and RSS.c would be evidence for the alternative, larger model, the p-value for this test is <span class="math display">\[p-value=P\left(F_{5,24}\ge\mathtt{F.stat}\right)\]</span></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="4-inference.html#cb43-1"></a>p.value &lt;-<span class="st">  </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(<span class="fl">15.699</span>, <span class="dv">5</span>, <span class="dv">24</span>)</span>
+<span id="cb43-2"><a href="4-inference.html#cb43-2"></a>p.value</span></code></pre></div>
+<pre><code>## [1] 6.839486e-07</code></pre>
+<p>Both the F.stat and its p-value are given at the bottom of the summary table. However, I might be interested in creating an ANOVA table for this situation.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>df</th>
+<th>Sum Sq</th>
+<th>Mean Sq</th>
+<th>F</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Difference</td>
+<td><span class="math inline">\(p-1\)</span></td>
+<td><span class="math inline">\(RSS_d\)</span></td>
+<td><span class="math inline">\(MSE_d = RSS_d / (p-1)\)</span></td>
+<td><span class="math inline">\(MSE_d/MSE_c\)</span></td>
+<td><span class="math inline">\(P(F &gt; F_{p-1,n-p})\)</span></td>
+</tr>
+<tr class="even">
+<td>Complex</td>
+<td><span class="math inline">\(n-p\)</span></td>
+<td><span class="math inline">\(RSS_c\)</span></td>
+<td><span class="math inline">\(MSE_c = RSS_c / (n-p)\)</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Simple</td>
+<td><span class="math inline">\(n-1\)</span></td>
+<td><span class="math inline">\(RSS_s\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>This type of table is often shown in textbooks, but base functions in R don’t produce exactly this table. Instead the <code>anova(simple, complex)</code> command produces the following:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Models</th>
+<th>df</th>
+<th>RSS</th>
+<th>Diff in RSS</th>
+<th>F</th>
+<th>p-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simple</td>
+<td><span class="math inline">\(n-1\)</span></td>
+<td><span class="math inline">\(RSS_s\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Complex</td>
+<td><span class="math inline">\(n-p\)</span></td>
+<td><span class="math inline">\(RSS_c\)</span></td>
+<td><span class="math inline">\(RSS_d\)</span></td>
+<td><span class="math inline">\(MSE_d/MSE_c\)</span></td>
+<td><span class="math inline">\(P(F &gt; F_{p-1,n-p})\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>can be obtained from R by using the <code>anova()</code> function on the two models of interest. This representation skips showing the Mean Squared calculations.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="4-inference.html#cb45-1"></a><span class="kw">anova</span>(M.s, M.c)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ 1
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     29 381081                                  
+## 2     24  89231  5    291850 15.699 6.838e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+</div>
+<div id="testing-a-single-covariate" class="section level3">
+<h3><span class="header-section-number">4.1.3</span> Testing a Single Covariate</h3>
+<p>For a particular covariate, <span class="math inline">\(\beta_{j}\)</span>, we might wish to perform a test to see if it can be removed from the model. It can be shown that the F-statistic can be re-written as</p>
+<p><span class="math display">\[\begin{aligned}
+F   &amp;=  \frac{\left[RSS_{s}-RSS_{c}\right]/1}{RSS_{c}/\left(n-p\right)}\\
+    &amp;=  \vdots\\
+    &amp;=  \left[\frac{\hat{\beta_{j}}}{SE\left(\hat{\beta}_{j}\right)}\right]^{2}\\
+    &amp;= t^{2}
+\end{aligned}\]</span>
+where <span class="math inline">\(t\)</span> has a t-distribution with <span class="math inline">\(n-p\)</span> degrees of freedom under the null hypothesis that the simple model is sufficient.</p>
+<p>We consider the case of removing the covariate <code>Area</code> from the model and will calculate our test statistic using both methods.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="4-inference.html#cb47-1"></a>M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb47-2"><a href="4-inference.html#cb47-2"></a>M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb47-3"><a href="4-inference.html#cb47-3"></a>RSS.c &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.c)<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb47-4"><a href="4-inference.html#cb47-4"></a>RSS.s &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">resid</span>(M.s)<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb47-5"><a href="4-inference.html#cb47-5"></a>df.d &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb47-6"><a href="4-inference.html#cb47-6"></a>df.c &lt;-<span class="st"> </span><span class="dv">30-6</span></span>
+<span id="cb47-7"><a href="4-inference.html#cb47-7"></a>F.stat &lt;-<span class="st"> </span>((RSS.s <span class="op">-</span><span class="st"> </span>RSS.c)<span class="op">/</span><span class="dv">1</span>) <span class="op">/</span><span class="st"> </span>(RSS.c <span class="op">/</span><span class="st"> </span>df.c)</span>
+<span id="cb47-8"><a href="4-inference.html#cb47-8"></a>F.stat</span></code></pre></div>
+<pre><code>## [1] 1.139792</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="4-inference.html#cb49-1"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pf</span>(F.stat, <span class="dv">1</span>, <span class="dv">24</span>)</span></code></pre></div>
+<pre><code>## [1] 0.296318</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="4-inference.html#cb51-1"></a><span class="kw">sqrt</span>(F.stat)</span></code></pre></div>
+<pre><code>## [1] 1.067611</code></pre>
+<p>To calculate it using the estimated coefficient and its standard error, we must grab those values from the summary table</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="4-inference.html#cb53-1"></a>broom<span class="op">::</span><span class="kw">tidy</span>(M.c)  <span class="co"># get the coefficient table </span></span></code></pre></div>
+<pre><code>## # A tibble: 6 x 5
+##   term        estimate std.error statistic    p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1 (Intercept)  7.07      19.2      0.369   0.715     
+## 2 Area        -0.0239     0.0224  -1.07    0.296     
+## 3 Elevation    0.319      0.0537   5.95    0.00000382
+## 4 Nearest      0.00914    1.05     0.00867 0.993     
+## 5 Scruz       -0.241      0.215   -1.12    0.275     
+## 6 Adjacent    -0.0748     0.0177  -4.23    0.000297</code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="4-inference.html#cb55-1"></a>beta.area    &lt;-<span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>(M.c)[<span class="dv">2</span>,<span class="dv">2</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>()   <span class="co"># pull turns it into a scalar</span></span>
+<span id="cb55-2"><a href="4-inference.html#cb55-2"></a>SE.beta.area &lt;-<span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>(M.c)[<span class="dv">2</span>,<span class="dv">3</span>] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>()</span>
+<span id="cb55-3"><a href="4-inference.html#cb55-3"></a>t &lt;-<span class="st"> </span>beta.area <span class="op">/</span><span class="st"> </span>SE.beta.area</span>
+<span id="cb55-4"><a href="4-inference.html#cb55-4"></a>t</span></code></pre></div>
+<pre><code>## [1] -1.067611</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="4-inference.html#cb57-1"></a><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">pt</span>(t, <span class="dv">24</span>)</span></code></pre></div>
+<pre><code>## [1] 0.296318</code></pre>
+<p>All that hand calculation is tedious, so we can again use the <code>anova()</code>() command to compare the two models.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="4-inference.html#cb59-1"></a><span class="kw">anova</span>(M.s, M.c)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ Elevation + Nearest + Scruz + Adjacent
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     25 93469                           
+## 2     24 89231  1    4237.7 1.1398 0.2963</code></pre>
+</div>
+<div id="testing-a-subset-of-covariates" class="section level3">
+<h3><span class="header-section-number">4.1.4</span> Testing a Subset of Covariates</h3>
+<p>Often a researcher will want to remove a subset of covariates from the model. In the Galapagos example, Area, Nearest, and Scruz all have non-significant p-values and would be removed when comparing the full model to the model without that one covariate. While each of them might be non-significant, is the sum of all three significant?</p>
+<p>Because the individual <span class="math inline">\(\hat{\beta}_{j}\)</span> values are not independent, then we cannot claim that the subset is not statistically significant just because each variable in turn was insignificant. Instead we again create simple and complex models in the same fashion as we have previously done.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="4-inference.html#cb61-1"></a>M.c &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb61-2"><a href="4-inference.html#cb61-2"></a>M.s &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st">        </span>Elevation <span class="op">+</span><span class="st">                   </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb61-3"><a href="4-inference.html#cb61-3"></a><span class="kw">anova</span>(M.s, M.c)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Model 1: Species ~ Elevation + Adjacent
+## Model 2: Species ~ Area + Elevation + Nearest + Scruz + Adjacent
+##   Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+## 1     27 100003                           
+## 2     24  89231  3     10772 0.9657  0.425</code></pre>
+<p>We find a large p-value associated with this test and can safely stay with the null hypothesis, that the simple model is sufficient to explain the observed variability in the number of species of tortoise.</p>
+</div>
+</div>
+<div id="confidence-intervals-for-location-parameters" class="section level2">
+<h2><span class="header-section-number">4.2</span> Confidence Intervals for location parameters</h2>
+<p>Recall that
+<span class="math display">\[\hat{\boldsymbol{\beta}}\sim N\left(\boldsymbol{\beta},\,\sigma^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\right)\]</span>
+and it is easy to calculate the estimate of <span class="math inline">\(\sigma^{2}\)</span>. This estimate will be the “average” squared residual <span class="math display">\[\hat{\sigma}^{2}=\frac{RSS}{df}\]</span>
+where <span class="math inline">\(RSS\)</span> is the residual sum of squares and <span class="math inline">\(df\)</span> is the degrees of freedom <span class="math inline">\(n-p\)</span> where <span class="math inline">\(p\)</span> is the number of <span class="math inline">\(\beta_{j}\)</span> parameters. Therefore the standard error of the <span class="math inline">\(\hat{\beta}_{j}\)</span> values is
+<span class="math display">\[SE\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}\]</span></p>
+<p>We can see this calculation in the summary regression table. We again consider the Galapagos Island data set. First we must create the design matrix</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="4-inference.html#cb63-1"></a>y &lt;-<span class="st"> </span>gala<span class="op">$</span>Species</span>
+<span id="cb63-2"><a href="4-inference.html#cb63-2"></a>X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">30</span>), gala<span class="op">$</span>Elevation, gala<span class="op">$</span>Adjacent )</span></code></pre></div>
+<p>And then create <span class="math inline">\(\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\)</span></p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="4-inference.html#cb64-1"></a>XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>(  <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</span>
+<span id="cb64-2"><a href="4-inference.html#cb64-2"></a>XtXinv</span></code></pre></div>
+<pre><code>##               [,1]          [,2]          [,3]
+## [1,]  6.094829e-02 -8.164025e-05  9.312123e-06
+## [2,] -8.164025e-05  2.723835e-07 -7.126027e-08
+## [3,]  9.312123e-06 -7.126027e-08  6.478031e-08</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="4-inference.html#cb66-1"></a><span class="kw">diag</span>(XtXinv)</span></code></pre></div>
+<pre><code>## [1] 6.094829e-02 2.723835e-07 6.478031e-08</code></pre>
+<p>Eventually we will need <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="4-inference.html#cb68-1"></a>beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y</span>
+<span id="cb68-2"><a href="4-inference.html#cb68-2"></a>beta.hat</span></code></pre></div>
+<pre><code>##            [,1]
+## [1,]  1.4328722
+## [2,]  0.2765683
+## [3,] -0.0688855</code></pre>
+<p>And now find the estimate <span class="math inline">\(\hat{\sigma}\)</span></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="4-inference.html#cb70-1"></a>H &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X)</span>
+<span id="cb70-2"><a href="4-inference.html#cb70-2"></a>y.hat &lt;-<span class="st"> </span>H <span class="op">%*%</span><span class="st"> </span>y</span>
+<span id="cb70-3"><a href="4-inference.html#cb70-3"></a>RSS &lt;-<span class="st"> </span><span class="kw">sum</span>( (y<span class="op">-</span>y.hat)<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb70-4"><a href="4-inference.html#cb70-4"></a>sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>(  RSS<span class="op">/</span>(<span class="dv">30-3</span>) )</span>
+<span id="cb70-5"><a href="4-inference.html#cb70-5"></a>sigma.hat</span></code></pre></div>
+<pre><code>## [1] 60.85898</code></pre>
+<p>The standard errors of <span class="math inline">\(\hat{\beta}\)</span> is thus</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="4-inference.html#cb72-1"></a><span class="kw">sqrt</span>( sigma.hat<span class="op">^</span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(XtXinv) )</span></code></pre></div>
+<pre><code>## [1] 15.02468680  0.03176253  0.01548981</code></pre>
+<p>We can double check that this is what R calculates in the summary table</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="4-inference.html#cb74-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb74-2"><a href="4-inference.html#cb74-2"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 5
+##   term        estimate std.error statistic       p.value
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+## 1 (Intercept)   1.43     15.0       0.0954 0.925        
+## 2 Elevation     0.277     0.0318    8.71   0.00000000253
+## 3 Adjacent     -0.0689    0.0155   -4.45   0.000134</code></pre>
+<p>It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is
+<span class="math display">\[Estimate\;\pm Critical\,Value\;\cdot\;StandardError\left(Estimate\right)\]</span>
+For any specific <span class="math inline">\(\beta_{j}\)</span> we will have
+<span class="math display">\[\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}\]</span>
+where <span class="math inline">\(\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}\)</span> is the <span class="math inline">\([j,j]\)</span> element of the variance/covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
+<p>To demonstrate this, we return to the Galapagos Island data set.</p>
+<p>Finally we can calculate confidence intervals for our three <span class="math inline">\(\beta_{j}\)</span> values</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="4-inference.html#cb76-1"></a>lower &lt;-<span class="st"> </span>beta.hat <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</span>
+<span id="cb76-2"><a href="4-inference.html#cb76-2"></a>upper &lt;-<span class="st"> </span>beta.hat <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">diag</span>(XtXinv) )</span>
+<span id="cb76-3"><a href="4-inference.html#cb76-3"></a><span class="kw">cbind</span>(lower, upper)</span></code></pre></div>
+<pre><code>##            [,1]        [,2]
+## [1,] -29.395239 32.26098305
+## [2,]   0.211397  0.34173962
+## [3,]  -0.100668 -0.03710303</code></pre>
+<p>That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the <code>confint()</code>() command or the <code>broom::tidy()</code> command.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="4-inference.html#cb78-1"></a><span class="co"># confint(model)</span></span>
+<span id="cb78-2"><a href="4-inference.html#cb78-2"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model, <span class="dt">conf.int=</span><span class="ot">TRUE</span>, <span class="dt">conf.level=</span>.<span class="dv">95</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 7
+##   term        estimate std.error statistic       p.value conf.low conf.high
+##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+## 1 (Intercept)   1.43     15.0       0.0954 0.925          -29.4     32.3   
+## 2 Elevation     0.277     0.0318    8.71   0.00000000253    0.211    0.342 
+## 3 Adjacent     -0.0689    0.0155   -4.45   0.000134        -0.101   -0.0371</code></pre>
+</div>
+<div id="prediction-and-confidence-intervals-for-a-response" class="section level2">
+<h2><span class="header-section-number">4.3</span> Prediction and Confidence Intervals for a response</h2>
+<p>Given a vector of predictor covariates <span class="math inline">\(\boldsymbol{x}_{0}\)</span> (think of <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> as potentially one row in <span class="math inline">\(\boldsymbol{X}\)</span>. Because we might want to predict some other values than what we observe, we do not restrict ourselves to <em>only</em> rows in <span class="math inline">\(\boldsymbol{X}\)</span>), we want to make inference on the expected value <span class="math inline">\(\hat{y}_{0}\)</span>. We can calculate the value by
+<span class="math display">\[\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\]</span>
+and we are interested in two different types of predictions.</p>
+<ol style="list-style-type: decimal">
+<li><p>We might be interested in the uncertainty of a new data point. This uncertainty has two components: the uncertainty of the regression model and uncertainty of a new data point from its expected value.</p></li>
+<li><p>Second, we might be interested in only the uncertainty about the regression model.</p></li>
+</ol>
+<p>We note that because <span class="math inline">\(\boldsymbol{x}_{0}^{T}\)</span> is just a constant, we can calculate the variance of this value as
+<span class="math display">\[ \begin{aligned}
+Var\left(\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\right)  
+  &amp;= \boldsymbol{x}_{0}^{T}\,Var\left(\hat{\boldsymbol{\beta}}\right)\,\boldsymbol{x}_{0} \\
+    &amp;=  \boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\sigma^{2}\,\boldsymbol{x}_{0} \\
+    &amp;=  \boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\,\sigma^{2}
+\end{aligned}\]</span>
+and use this to calculate two types of intervals. First, a prediction interval for a new observation is <span class="math display">\[\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{1+\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}\]</span>
+and a confidence interval for the mean response for the given <span class="math inline">\(\boldsymbol{x}_{0}\)</span> is
+<span class="math display">\[\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}\]</span></p>
+<p>Again using the Galapagos Island data set as an example, we might be interested in predicting the number of tortoise species of an island with highest point <span class="math inline">\(400\)</span> meters and nearest adjacent island with area <span class="math inline">\(200 km^{2}\)</span>. We then have <span class="math display">\[\boldsymbol{x}_{0}^{T} = \left[\begin{array}{ccc}1  &amp;  400  &amp;  200\end{array}\right]\]</span>
+and we can calculate</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="4-inference.html#cb80-1"></a>x0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">400</span>, <span class="dv">200</span>)</span>
+<span id="cb80-2"><a href="4-inference.html#cb80-2"></a>y0 &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span>beta.hat</span>
+<span id="cb80-3"><a href="4-inference.html#cb80-3"></a>y0</span></code></pre></div>
+<pre><code>##          [,1]
+## [1,] 98.28309</code></pre>
+<p>and then calculate <span class="math inline">\(\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\)</span></p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="4-inference.html#cb82-1"></a>xt.XtXinv.x &lt;-<span class="st"> </span><span class="kw">t</span>(x0) <span class="op">%*%</span><span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X ) <span class="op">%*%</span><span class="st"> </span>x0</span></code></pre></div>
+<p>Thus the prediction interval will be</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="4-inference.html#cb83-1"></a><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x),</span>
+<span id="cb83-2"><a href="4-inference.html#cb83-2"></a>  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>xt.XtXinv.x))</span></code></pre></div>
+<pre><code>## [1] -28.70241 225.26858</code></pre>
+<p>while a confidence interval for the expectation is</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="4-inference.html#cb85-1"></a><span class="kw">c</span>(y0 <span class="op">-</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x),</span>
+<span id="cb85-2"><a href="4-inference.html#cb85-2"></a>  y0 <span class="op">+</span><span class="st"> </span><span class="kw">qt</span>(.<span class="dv">975</span>, <span class="dv">27</span>) <span class="op">*</span><span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(xt.XtXinv.x))</span></code></pre></div>
+<pre><code>## [1]  75.21317 121.35301</code></pre>
+<p>These prediction and confidence intervals can be calculated in R using the predict() function</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="4-inference.html#cb87-1"></a>x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Elevation=</span><span class="dv">400</span>, <span class="dt">Adjacent=</span><span class="dv">200</span>)</span>
+<span id="cb87-2"><a href="4-inference.html#cb87-2"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;prediction&#39;</span>)</span></code></pre></div>
+<pre><code>##        fit       lwr      upr
+## 1 98.28309 -28.70241 225.2686</code></pre>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="4-inference.html#cb89-1"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</span></code></pre></div>
+<pre><code>##        fit      lwr     upr
+## 1 98.28309 75.21317 121.353</code></pre>
+</div>
+<div id="interpretation-with-correlated-covariates" class="section level2">
+<h2><span class="header-section-number">4.4</span> Interpretation with Correlated Covariates</h2>
+<p>The standard interpretation of the slope parameter is that <span class="math inline">\(\beta_{j}\)</span> is the amount of increase in <span class="math inline">\(y\)</span> for a one unit increase in the <span class="math inline">\(j\)</span>th covariate, provided that all other covariates stayed the same.</p>
+<p>The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation.</p>
+<p>One common issue that make interpretation difficult is that covariates can be highly correlated.</p>
+<p>Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Weight</code></td>
+<td>Weight (g)</td>
+</tr>
+<tr class="even">
+<td><code>Length.1</code></td>
+<td>Length from nose to beginning of Tail (cm)</td>
+</tr>
+<tr class="odd">
+<td><code>Length.2</code></td>
+<td>Length from nose to notch of Tail (cm)</td>
+</tr>
+<tr class="even">
+<td><code>Length.3</code></td>
+<td>Length from nose to tip of tail (cm)</td>
+</tr>
+<tr class="odd">
+<td><code>Height</code></td>
+<td>Maximal height as a percentage of <code>Length.3</code></td>
+</tr>
+<tr class="even">
+<td><code>Width</code></td>
+<td>Maximal width as a percentage of <code>Length.3</code></td>
+</tr>
+<tr class="odd">
+<td><code>Sex</code></td>
+<td>0=Female, 1=Male</td>
+</tr>
+<tr class="even">
+<td><code>Species</code></td>
+<td>Which species of perch (1-7)</td>
+</tr>
+</tbody>
+</table>
+<p>We first look at the data and observe the expected relationship between length and weight.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="4-inference.html#cb91-1"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
+<span id="cb91-2"><a href="4-inference.html#cb91-2"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
+<span id="cb91-3"><a href="4-inference.html#cb91-3"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
+<span id="cb91-4"><a href="4-inference.html#cb91-4"></a></span>
+<span id="cb91-5"><a href="4-inference.html#cb91-5"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
+<span id="cb91-6"><a href="4-inference.html#cb91-6"></a><span class="co"># pairs(fish)</span></span>
+<span id="cb91-7"><a href="4-inference.html#cb91-7"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
+<span id="cb91-8"><a href="4-inference.html#cb91-8"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
+<span id="cb91-9"><a href="4-inference.html#cb91-9"></a></span>
+<span id="cb91-10"><a href="4-inference.html#cb91-10"></a>fish <span class="op">%&gt;%</span></span>
+<span id="cb91-11"><a href="4-inference.html#cb91-11"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
+<span id="cb91-12"><a href="4-inference.html#cb91-12"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
+<span id="cb91-13"><a href="4-inference.html#cb91-13"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p>Naively, we might consider the linear model with all the length effects present.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="4-inference.html#cb92-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb92-2"><a href="4-inference.html#cb92-2"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Height + 
+##     Width, data = fish)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -302.22  -79.72  -39.88   92.63  344.85 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -724.539     77.133  -9.393   &lt;2e-16 ***
+## Length.1      32.389     45.134   0.718   0.4741    
+## Length.2      -9.184     48.367  -0.190   0.8497    
+## Length.3       8.747     16.283   0.537   0.5919    
+## Height         4.947      2.768   1.787   0.0759 .  
+## Width          8.636      6.972   1.239   0.2174    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 132.9 on 152 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.8675, Adjusted R-squared:  0.8631 
+## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
+<p>If we remove the highly correlated covariates then we see a much better behaved model</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="4-inference.html#cb94-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb94-2"><a href="4-inference.html#cb94-2"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -306.14  -75.11  -36.45   89.54  337.95 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -701.0750    71.0438  -9.868  &lt; 2e-16 ***
+## Length.2      30.4360     0.9841  30.926  &lt; 2e-16 ***
+## Height         5.5141     1.4311   3.853 0.000171 ***
+## Width          5.6513     5.2016   1.086 0.278974    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 132.3 on 154 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.8669, Adjusted R-squared:  0.8643 
+## F-statistic: 334.2 on 3 and 154 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign.</p>
+<p>In this case the sum of the three length covariate estimates was approximately <span class="math inline">\(31\)</span> in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.</p>
+<p>In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.</p>
+</div>
+<div id="exercises-3" class="section level2">
+<h2><span class="header-section-number">4.5</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>The dataset prostate in package <code>faraway</code> has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="4-inference.html#cb96-1"></a><span class="kw">data</span>(prostate, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb96-2"><a href="4-inference.html#cb96-2"></a><span class="kw">head</span>(prostate)</span></code></pre></div>
+<p>It is possible to get information about the data set using the command <code>help(prostate)</code>. Fit a model with <code>lpsa</code> as the response and all the other variables as predictors.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Compute <span class="math inline">\(90\%\)</span> and <span class="math inline">\(95\%\)</span> confidence intervals for the parameter associated with <code>age</code>. Using just these intervals, what could we deduced about the p-value for age in the regression summary. <em>Hint: look at the help for the function <code>confint()</code>. You’ll find the <code>level</code> option to be helpful. Alternatively use the <code>broom::tidy()</code> function with the <code>conf.int=TRUE</code> option and also use the <code>level=</code> option as well.</em></p></li>
+<li><p>Remove all the predictors that are not significant at the <span class="math inline">\(5\%\)</span> level. Test this model against the original model. Which is preferred?</p></li>
+</ol></li>
+<li><p>Thirty samples of cheddar cheese were analyzed for their content of acetic acid, hydrogen sulfide and lactic acid. Each sample was tasted and scored by a panel of judges and the average taste score produces. Used the <code>cheddar</code> dataset from the <code>faraway</code> package (import it the same way you did in problem one, but now use <code>cheddar</code>) to answer the following:</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a regression model with taste as the response and the three chemical contents as predictors. Identify the predictors that are statistically significant at the <span class="math inline">\(5\%\)</span> level.</p></li>
+<li><p><code>Acetic</code> and <code>H2S</code> are measured on a log<span class="math inline">\(_{10}\)</span> scale. Create two new columns in the <code>cheddar</code> data frame that contain the values on their original scale. Fit a linear model that uses the three covariates on their non-log scale. Identify the predictors that are statistically significant at the 5% level for this model.</p></li>
+<li><p>Can we use an <span class="math inline">\(F\)</span>-test to compare these two models? Explain why or why not. Which model provides a better fit to the data? Explain your reasoning.</p></li>
+<li><p>For the model in part (a), if a sample of cheese were to have <code>H2S</code> increased by 2 (where H2S is on the log scale and we increase this value by 2 using some method), what change in taste would be expected? What caveates must be made in this interpretation? <em>Hint: I don’t want to get into interpreting parameters on the log scale just yet. So just interpret this as adding 2 to the covariate value and predicting the change in taste.</em></p></li>
+</ol></li>
+<li><p>The <code>sat</code> data set in the <code>faraway</code> package gives data collected to study the relationship between expenditures on public education and test results.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a model that with <code>total</code> SAT score as the response and only the intercept as a covariate.</p></li>
+<li><p>Fit a model with <code>total</code> SAT score as the response and <code>expend</code>, <code>ratio</code>, and <code>salary</code> as predictors (along with the intercept).</p></li>
+<li><p>Compare the models in parts (a) and (b) using an F-test. Is the larger model superior?</p></li>
+<li><p>Examine the summary table of the larger model? Does this contradict your results in part (c)? What might be causing this issue? Create a graph or summary diagnostics to support your guess.</p></li>
+<li><p>Fit the model with <code>salary</code> and <code>ratio</code> (along with the intercept) as predictor variables and examine the summary table. Which covariates are significant?</p></li>
+<li><p>Now add <code>takers</code> to the model (so the model now includes three predictor variables along with the intercept). Test the hypothesis that <span class="math inline">\(\beta_{takers}=0\)</span> using the summary table.</p></li>
+<li><p>Discuss why <code>ratio</code> was not significant in the model in part (e) but was significant in part (f). <em>Hint: Look at the Residual Standard Error <span class="math inline">\(\hat{\sigma}\)</span> in each model and argue that each t-statistic is some variant of a “signal-to-noise” ratio and that the “noise” part is reduced in the second model.</em></p></li>
+</ol></li>
+<li><p>In this exercise, we will show that adding a covariate to the model that is just random noise will decrease the model Sum of Squared Error (SSE).</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a linear model to the <code>trees</code> dataset that is always preloaded in R. Recall that this dataset has observations from 31 cherry trees with variables tree height, girth and volume of lumber produced. Fit Volume ~ Height.</p></li>
+<li><p>From this simple regression model, obtain the SSE. <em>Hint: you can calculate this yourself, pull it from the broom::glance() output where it is entitled <code>deviance</code> or extract it from the output of the <code>anova()</code> command.</em></p></li>
+<li><p>Add a new covariate to the model named <code>Noise</code> that is generated at random from a uniform distribution using the following code:</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="4-inference.html#cb97-1"></a>trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span></span>
+<span id="cb97-2"><a href="4-inference.html#cb97-2"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Noise =</span> <span class="kw">runif</span>( <span class="kw">n</span>() ) )</span></code></pre></div></li>
+<li><p>Fit a linear model that includes this new <code>Noise</code> variable in addition to the <code>Height</code>. Calculate the SSE error in the same manner as before. Does it decrease or increase. Quantify how much it has changed.</p></li>
+<li><p>Repeat parts (c) and (d) several times. Comment on the trend in change in SSE. <em>Hint: This isn’t strictly necessary but is how I would go about answering this question. Wrap parts (c) and (d) in a <code>for</code> loop and generate a data.frame of a couple hundred runs. Then make a density plot of the SSE values for the complex models and add a vertical line on the graph of the simple model SSE.</em></p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="4-inference.html#cb98-1"></a>results &lt;-<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb98-2"><a href="4-inference.html#cb98-2"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2000</span> ){</span>
+<span id="cb98-3"><a href="4-inference.html#cb98-3"></a>  <span class="co"># Do stuff</span></span>
+<span id="cb98-4"><a href="4-inference.html#cb98-4"></a>  results &lt;-<span class="st"> </span>results <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>( <span class="kw">glance</span>(model) ) </span>
+<span id="cb98-5"><a href="4-inference.html#cb98-5"></a>}</span>
+<span id="cb98-6"><a href="4-inference.html#cb98-6"></a><span class="kw">ggplot</span>(results, <span class="kw">aes</span>(<span class="dt">x=</span>deviance)) <span class="op">+</span></span>
+<span id="cb98-7"><a href="4-inference.html#cb98-7"></a><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></span>
+<span id="cb98-8"><a href="4-inference.html#cb98-8"></a><span class="st">  </span><span class="kw">geom_vline</span>( <span class="dt">xintercept =</span> simple.SSE )</span></code></pre></div></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="3-parameter-estimation.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="5-analysis-of-covariance-ancova.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/571/raw/master/03_Inference.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -20,19 +20,103 @@ library(tidymodels) # Grab model results as data frames
 library(tidyverse)  # ggplot2, dplyr, tidyr
 ```
 
+
+### Learning Outcomes{-}
+* Utilize $\hat{\boldsymbol{\beta}}$ and its standard errors of to produce confidence intervals and hypothesis tests for $\beta_j$ values.
+* Convert hypothesis tests for $\beta_j=0$ into a model comparison F-test.
+* Utilize F-tests to perform a hypothesis test of multiple $\beta_j$ values all being equal to zero. This is the simple vs complex model comparison.
+* Create confidence intervals for $\beta_j$ values leveraging the normality assumption of residuals.
+
+
+## Introduction
+
+The goal of statistics is to take information calculated from sample data and use that information to estimate population parameters. The problem is that the sample statistic is only a rough guess and if we were to collect another sample of data, we'd get a different sample statistic and thus a different parameter estimate. Therefore, we need to utilize the sample statistics to create confidence intervals and make hypothesis tests about those parameters. 
+
+
+
+* Introduce the inference ideas about why we care.
+* Introduce the Gala data set.
+* 
+
+In this chapter, we'll consider a dataset about the Galápagos Islands relating the number of tortoise species on an island to various island characteristics such as size, maximum elevation, etc. The set contains $n=30$ islands and 
+
+  Variable  |   Description
+------------|-----------------
+`Species`   |  Number of tortoise species found on the island
+`Endimics`  |  Number of tortoise species endemic to the island
+`Elevation` |  Elevation of the highest point on the island
+`Area`      |  Area of the island (km$^2$)
+`Nearest`   |  Distance to the nearest neighboring island (km)
+`Scruz`     |  Distance to the Santa Cruz islands (km)
+`Adjacent`  |  Area of the nearest adjacent island (km$^2$)
+
+
+```{r}
+data('gala', package='faraway')     # import the data set
+head(gala)                          # show the first couple of rows
+```
+
+
+
+## Confidence Intervals and Hypothesis Tests
+
+We can now state the general method of creating confidence intervals
+and perform hypothesis tests for any element of $\boldsymbol{\beta}$. 
+
+The general recipe for a $(1-\alpha)*100\%$ confidence interval is
+$$\textrm{Estimate} \pm Q^*_{1-\alpha/2} \;\textrm{StdErr( Estimate )}$$
+where $Q^*_{1-\alpha/2}$ is the $1-\alpha/2$ quantile from some appropriate distribution. The mathematical details about which distribution the quantile should come from are often obscure, but usually involve the degrees of freedom $n-p$ where $p$ is the number of parameters in the "signal" part of the model.
+
+The confidence interval formula for the $\beta$ parameters in a linear model is 
+$$\hat{\beta}_{j}\pm t^*_{1-\alpha/2, n-p}\,StdErr\left(\hat{\beta}_{j}\right)$$
+
+where $t^*_{1-\alpha/2, n-p}$ is the $1-\alpha/2$ quantile from the t-distribution with $n-p$ degrees of freedom. A test statistic for testing $H_{0}:\,\beta_{j}=0$ versus $H_{a}:\,\beta_{j}\ne0$ is 
+
+$$t_{n-p}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}$$
+
+
 ## F-tests
 
 We wish to develop a rigorous way to compare nested models and decide if a complicated model explains enough more variability than a simple model to justify the additional intellectual effort of thinking about the data in the complicated fashion.
 
-It is important to specify that we are developing a way of testing nested models. By nested, we mean that the simple model can be created from the full model just by setting one or more model parameters to zero.
+It is important to specify that we are developing a way of testing nested models. By nested, we mean that the simple model can be created from the full model just by setting one or more model parameters to zero. This method doesn't constrain us for testing just a single parameter being possibly zero. Instead we can test if an entire set of parameters all possibly being equal to zero. 
 
 ### Theory
 
-Recall that in the simple regression and ANOVA cases we were interested in comparing a simple model versus a more complex model. For each model we computed the residual sum of squares (RSS) and said that if the complicated model performed much better than the simple then $RSS_{simple}\gg RSS_{complex}$. To do this we needed to standardize by the number of parameters added to the model and the degrees of freedom remaining in the full model. We first defined $RSS_{diff}=RSS_{simple}-RSS_{complex}$ and let $df_{diff}$ be the number of parameters difference between the simple and complex models. Then we had $$F=\frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}$$
-and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F
- -distribution with degrees of freedom $df_{diff}$ and $df_{complex}$.
+Recall that in the simple regression and ANOVA cases we were interested in comparing a simple model versus a more complex model. For each model we computed the sum of squares error (SSE) and said that if the complicated model performed much better than the simple then $SSE_{simple}\gg SSE_{complex}$.
 
-The critical assumption for the F-test to be appropriate is that the error terms are independent and normally distributed with constant variance.
+Recall from the estimation chapter, the model parameter estimates are found by using the $\hat{\boldsymbol{\beta}}$ values that minimize the SSE. If it were to turn out that a $\hat{\beta}_j$ of zero minimized SSE, then zero would be estimate. Next consider that we are requiring the simple model to be a simplification of the complex model by setting certain parameters to zero. So we are considering a simple model that sets $\hat{\beta}_j=0$ and vs a complex model that allows for $\hat{\beta}_j$ to be any real value (including), then because we select $\hat{\beta}_j$ to be the value that minimizes SSE, then $SSE_{simple} \ge SSE_{complex}$. 
+
+We'll define $SSE_{difference} = SSE_{simple} - SSE{complex} \ge 0$ and observe that if the complex model is a much better fit to the data, then $SSE_{difference}$ is large.  But how large is large enough to be statistically significant? In part, it depends on how many more parameters were added to the model and what the amount of unexplained variability left in the complex model. Let $df_{diff}$ be the number of parameters difference between the simple and complex models. 
+
+As with most test statistics, the F statistic can be considered as a "Signal-to-Noise" ratio where the signal part is the increased amount of variability explained per additional parameter by the complex model and the noise part is just the MSE of the complex model.
+
+$$F = \frac{\textrm{Signal}}{\textrm{Noise}} = \frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}$$
+
+and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F-distribution with degrees of freedom $df_{diff}$ and $df_{complex}$. 
+
+The F-distribution is centered near one and we should reject the simple model (in favor of the complex model) if this F statistic is much larger than one. Therefore the p-value for the test is
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+data <- data.frame(x = seq(0,8, by=.01)) %>%
+  mutate( y = df(x, 3, 30) )
+ggplot(data, aes(x=x, y=y)) +
+  geom_line() +
+  geom_area(data=data%>%filter(x>=3), fill='red') +
+  annotate('text', x=5, y=.5, label='Suppose we observe F=3', size=8) +
+  annotate('text', x=5, y=.38, label='then', size=5) +
+  annotate('text', x=5, y=0.2, label=latex2exp::TeX('p-value = $P(F_{df_{diff},df_{complex}} > F)$'), 
+           size=8, color='red' ) +
+  labs(y='density', title=latex2exp::TeX('$F_{df_{diff}, \\; df_{complex}}$ distribution'))
+
+```
+
+
+
+
+This hypothesis test doesn't require a particular difference in number of parameters in each model, while the single parameter t-test is stuck testing if just a single parameter is possibly zero. In the single parameter test case, the t-test and F-test give the same prior hypothesis test previous t-test. The a corresponding t-test and F-test will give the same p-value and therefore the same inference about if $\beta_j$ is possibly zero.
+
+## Example
 
 We will consider a data set from Johnson and Raven (1973) which also appears in Weisberg (1985). This data set is concerned with the number of tortoise species on $n=30$ different islands in the Galapagos. The variables of interest in the data set are:
 
@@ -185,207 +269,8 @@ anova(M.s, M.c)
 
 We find a large p-value associated with this test and can safely stay with the null hypothesis, that the simple model is sufficient to explain the observed variability in the number of species of tortoise.
 
-## Confidence Intervals for location parameters
-
-Recall that 
-$$\hat{\boldsymbol{\beta}}\sim N\left(\boldsymbol{\beta},\,\sigma^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}\right)$$
-and it is easy to calculate the estimate of $\sigma^{2}$. This estimate will be the “average” squared residual $$\hat{\sigma}^{2}=\frac{RSS}{df}$$
-where $RSS$ is the residual sum of squares and $df$ is the degrees of freedom $n-p$ where $p$ is the number of $\beta_{j}$ parameters. Therefore the standard error of the $\hat{\beta}_{j}$ values is
-$$SE\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}$$
- 
-
-We can see this calculation in the summary regression table. We again consider the Galapagos Island data set. First we must create the design matrix
-
-```{r}
-y <- gala$Species
-X <- cbind( rep(1,30), gala$Elevation, gala$Adjacent )
-```
-
-And then create $\left(\mathbf{X}^{T}\mathbf{X}\right)^{-1}$
-```{r}
-XtXinv <- solve(  t(X) %*% X )
-XtXinv
-diag(XtXinv)
-```
 
 
-Eventually we will need $\hat{\boldsymbol{\beta}}$
- 
-```{r}
-beta.hat <- XtXinv %*% t(X) %*% y
-beta.hat
-```
-
-And now find the estimate $\hat{\sigma}$
- 
-
-```{r}
-H <- X %*% XtXinv %*% t(X)
-y.hat <- H %*% y
-RSS <- sum( (y-y.hat)^2 )
-sigma.hat <- sqrt(  RSS/(30-3) )
-sigma.hat
-```
-
-The standard errors of $\hat{\beta}$ is thus
-
-```{r}
-sqrt( sigma.hat^2 * diag(XtXinv) )
-```
-
-We can double check that this is what R calculates in the summary table
-
-```{r}
-model <- lm(Species ~ Elevation + Adjacent, data=gala)
-broom::tidy(model)
-```
-
-It is highly desirable to calculate confidence intervals for the regression parameters. Recall that the general form of a confidence interval is
-$$Estimate\;\pm Critical\,Value\;\cdot\;StandardError\left(Estimate\right)$$
-For any specific $\beta_{j}$ we will have 
-$$\hat{\beta}_{j}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}}$$
-where $\hat{\sigma}^{2}\left(\mathbf{X}^{T}\mathbf{X}\right)_{jj}^{-1}$ is the $[j,j]$ element of the variance/covariance of $\hat{\boldsymbol{\beta}}$. 
-
-To demonstrate this, we return to the Galapagos Island data set.
-
-Finally we can calculate confidence intervals for our three $\beta_{j}$ values
-
-```{r}
-lower <- beta.hat - qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
-upper <- beta.hat + qt(.975, 27) * sigma.hat * sqrt( diag(XtXinv) )
-cbind(lower, upper)
-```
-
-That is certainly a lot of work to do by hand (even with R doing all the matrix multiplication) but we can get these from R by using the `confint()`() command or the `broom::tidy()` command.
-
-```{r}
-# confint(model)
-broom::tidy(model, conf.int=TRUE, conf.level=.95)
-```
-
-
-
-## Prediction and Confidence Intervals for a response
-
-Given a vector of predictor covariates $\boldsymbol{x}_{0}$ (think of $\boldsymbol{x}_{0}^{T}$ as potentially one row in $\boldsymbol{X}$. Because we might want to predict some other values than what we observe, we do not restrict ourselves to *only* rows in $\boldsymbol{X}$), we want to make inference on the expected value $\hat{y}_{0}$. We can calculate the value by 
-$$\hat{y}_{0}=\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}$$
-and we are interested in two different types of predictions. 
-
-1. We might be interested in the uncertainty of a new data point. This uncertainty has two components: the uncertainty of the regression model and uncertainty of a new data point from its expected value.
-
-2. Second, we might be interested in only the uncertainty about the regression model.
-
-We note that because $\boldsymbol{x}_{0}^{T}$ is just a constant, we can calculate the variance of this value as
-\[ \begin{aligned}
-Var\left(\boldsymbol{x}_{0}^{T}\hat{\boldsymbol{\beta}}\right)	
-  &= \boldsymbol{x}_{0}^{T}\,Var\left(\hat{\boldsymbol{\beta}}\right)\,\boldsymbol{x}_{0} \\
-	&=	\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\sigma^{2}\,\boldsymbol{x}_{0} \\
-	&=	\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}\,\sigma^{2}
-\end{aligned}\]
-and use this to calculate two types of intervals. First, a prediction interval for a new observation is $$\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{1+\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}$$
-and a confidence interval for the mean response for the given $\boldsymbol{x}_{0}$ is 
-$$\hat{y}_{0}\pm t_{n-p}^{1-\alpha/2}\,\hat{\sigma}\sqrt{\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}}$$
-
-Again using the Galapagos Island data set as an example, we might be interested in predicting the number of tortoise species of an island with highest point $400$ meters and nearest adjacent island with area $200 km^{2}$. We then have $$\boldsymbol{x}_{0}^{T} = \left[\begin{array}{ccc}1  &  400  &  200\end{array}\right]$$
-and we can calculate
-
-```{r}
-x0 <- c(1, 400, 200)
-y0 <- t(x0) %*% beta.hat
-y0
-```
-
-and then calculate $\boldsymbol{x}_{0}^{T}\,\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\,\boldsymbol{x}_{0}$
- 
-```{r}
-xt.XtXinv.x <- t(x0) %*% solve( t(X) %*% X ) %*% x0
-```
-
-Thus the prediction interval will be 
-
-```{r}
-c(y0 - qt(.975, 27) * sigma.hat * sqrt(1 + xt.XtXinv.x),
-  y0 + qt(.975, 27) * sigma.hat * sqrt(1 + xt.XtXinv.x))
-```
-
-while a confidence interval for the expectation is
-
-```{r}
-c(y0 - qt(.975, 27) * sigma.hat * sqrt(xt.XtXinv.x),
-  y0 + qt(.975, 27) * sigma.hat * sqrt(xt.XtXinv.x))
-```
-
-
-These prediction and confidence intervals can be calculated in R using the predict() function
-
-```{r}
-x0 <- data.frame(Elevation=400, Adjacent=200)
-predict(model, newdata=x0, interval='prediction')
-predict(model, newdata=x0, interval='confidence')
-```
-
-## Interpretation with Correlated Covariates
-
-The standard interpretation of the slope parameter is that $\beta_{j}$ is the amount of increase in $y$ for a one unit increase in the $j$th covariate, provided that all other covariates stayed the same.
-
-The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation. 
-
-One common issue that make interpretation difficult is that covariates can be highly correlated. 
-
-Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:
-
-  Variable    |   Interpretation
---------------|----------------------
- `Weight`     |  Weight (g)
- `Length.1`   |  Length from nose to beginning of Tail (cm)
- `Length.2`   |  Length from nose to notch of Tail (cm)
- `Length.3`   |  Length from nose to tip of tail (cm)
- `Height`     |  Maximal height as a percentage of `Length.3`
- `Width`      |  Maximal width as a percentage of `Length.3`
- `Sex`        |  0=Female, 1=Male
- `Species`    |  Which species of perch (1-7)
- 
- 
- 
-We first look at the data and observe the expected relationship between length and weight.
-
-```{r, warning=FALSE, message=FALSE}
-file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'  # online
-file <- '~/github/571/data-raw/Fish.csv'                                                   # on my computer
-fish <- read.table(file, header=TRUE, skip=111, sep=',')
-
-### generate a pairs plot in a couple of different ways...
-# pairs(fish)
-# pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )
-# pairs( Weight ~ ., data=fish )
-
-fish %>%
-  dplyr::select(Weight, Length.1, Length.2, Length.3, Height, Width) %>%
-  GGally::ggpairs(upper=list(continuous='points'),
-                  lower=list(continuous='cor'))
-```
-
-Naively, we might consider the linear model with all the length effects present.
-
-```{r}
-model <- lm(Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish)
-summary(model)
-```
-
-This is crazy. There is a negative relationship between `Length.2` and `Weight`. That does not make any sense unless you realize that this is the effect of `Length.2` assuming the other covariates are in the model and can be held constant while changing the value of `Length.2`, which is obviously ridiculous. 
-
-If we remove the highly correlated covariates then we see a much better behaved model
-
-```{r}
-model <- lm(Weight ~ Length.2 + Height + Width, data=fish)
-summary(model)
-```
-
-When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign. 
-
-In this case the sum of the three length covariate estimates was approximately $31$ in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
-
-In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.
 
 ## Exercises
 1. The dataset prostate in package `faraway` has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.
