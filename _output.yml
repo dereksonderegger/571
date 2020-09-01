@@ -8,8 +8,8 @@ bookdown::gitbook:
       before: |
         <li><a href="./">Statistical Methods II</a></li>
       after: |
-    edit:
-      link: https://github.com/dereksonderegger/571/raw/master/%s
+    view: https://github.com/dereksonderegger/571/raw/master/%s
+    edit: https://github.com/dereksonderegger/571/blob/master/%s
     download:
       - ["Statistical_Methods_II.pdf",  "PDF"]
       - ["Statistical_Methods_II.epub", "EPUB"]

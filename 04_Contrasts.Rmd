@@ -89,11 +89,11 @@ $$
 
 Recall the hostility example which was an ANOVA with three groups with the data
 
-| Method   |	Test Scores                       |
-|:---------|:-----------------------------------|
-|  1	     | 96	79	91	85	83	91	82	87	    | 
-|  2	     | 77	76	74	73	78	71	80		      |
-|  3	     | 66	73	69	66	77	73	71	70	74  |
+| Method   | Test Scores                        |
+|:--------:|:-----------------------------------|
+|   1      | 96 79 91 85 83 91 82 87            |
+|   2      | 77 76 74 73 78 71 80               |
+|   3      | 66 73 69 66 77 73 71 70 74         |
 
 We have analyzed this data using both the cell means model and the offset and we will demonstrate how to calculate the group means from the offset representation. Thus we are interested in estimating $\mu+\tau_{2}$ and $\mu+\tau_{3}$.  I am also interested in estimating the difference between treatment 2 and 3 and will therefore be interested in estimating $\tau_{2} - \tau_{3}$.
 
@@ -270,10 +270,10 @@ emmeans(model, pairwise~Method)
 ```
 
 
-## Exercises
+## Exercises {#Exercises_Contrasts}
 1. I want to include a model quadratic model where we make some predicted values.
-  a) calculate using glht
-  b) calculate using emmeans
+  a) calculate using `glht`
+  b) calculate using `emmeans`
   
 2. Do a 1-way ANOVA using the control offset representation and 
   a) calculate all the pairwise contrasts using glht

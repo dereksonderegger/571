@@ -526,7 +526,7 @@ by zero. Just as we cannot find the inverse of zero (i.e. solve $0x=1$
 for $x$), a matrix with zero determinate is said to have no inverse.
 
 
-## Exercises
+## Exercises {#Exercises_MatrixTheory}
 Consider the following matrices: 
 $$\mathbf{A}=\left[\begin{array}{ccc}
 1 & 2 & 3\\

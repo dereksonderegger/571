@@ -272,7 +272,7 @@ We find a large p-value associated with this test and can safely stay with the n
 
 
 
-## Exercises
+## Exercises {#Exercises_Inference}
 1. The dataset prostate in package `faraway` has information about a study of 97 men with prostate cancer. We import the data and examine the first four observations using the following commands.
     ```{r, eval=FALSE}
     data(prostate, package='faraway')

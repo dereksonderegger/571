@@ -825,7 +825,7 @@ ggplot(ConfData,  aes(x=Days)) +
 ```
 
 
-## Exercises
+## Exercises {#Exercises_RandomEffects}
 1. An experiment was conducted to determine the effect of recipe and baking temperature on chocolate cake quality. For each recipe, $15$ batches of cake mix for were prepared (so 45 batches total). Each batch was sufficient for six cakes. Each of the six cakes was baked at a different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is available in the `faraway` package as `choccake`.
     a. For the variables Temperature, Recipe, and Batch, which should be fixed and which should be random?
     b. Inspect the data. How many levels of batch are there and how will that influence your model statements in R?

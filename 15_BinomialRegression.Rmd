@@ -761,7 +761,7 @@ ci(myROC, of='auc', method='bootstrap')
 ```
 which seems pretty good and Area Under the Curve (AUC) is often used as a way of comparing the quality of binary classifiers.
 
-## Exercises
+## Exercises {#Exercises_BinomialRegression}
 
 1. The dataset `faraway::wbca` comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (i.e. cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called 'fine needle aspiration', which draws only a small sample of tissue, could be effective in determining tumor status.
     a. Fit a binomial regression with `Class` as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that `glm` wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?

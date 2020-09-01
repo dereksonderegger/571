@@ -267,7 +267,7 @@ Using these results, we can calculate the difference in AIC values to be the sam
 	&=	6.533
 	\end{aligned}$$
  
-## Exercises
+## Exercises {#Exercises_VariableSelection}
 1. Consider the `prostate` data from the `faraway` package. The variable `lpsa` is a measurement of a prostate specific antigen which higher levels are indicative of prostate cancer. Use `lpsa` as the response and all the other variables as predictors (no interactions). Determine the “best” model using:
     a. Backward elimination using the analysis of variance F-statistic as the criteria.
     b. Forward selection using AIC as the criteria.
