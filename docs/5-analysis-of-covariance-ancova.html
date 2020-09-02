@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-08-31" />
+<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -198,11 +198,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
 <li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
 <li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a><ul>
-<li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#way-anova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#using-emmeans-package"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
-<li class="chapter" data-level="4.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
-<li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#way-anova-1"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="4-contrasts.html"><a href="4-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
@@ -341,7 +341,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="analysis-of-covariance-ancova" class="section level1">
 <h1><span class="header-section-number">Chapter 5</span> Analysis of Covariance (ANCOVA)</h1>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="5-analysis-of-covariance-ancova.html#cb88-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="5-analysis-of-covariance-ancova.html#cb87-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></span>
+<span id="cb87-2"><a href="5-analysis-of-covariance-ancova.html#cb87-2"></a><span class="kw">library</span>(emmeans)   </span></code></pre></div>
 <div id="introduction" class="section level2">
 <h2><span class="header-section-number">5.1</span> Introduction</h2>
 <p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. For historical reasons going back to pre “computer in your pocket” days, statisticians call this the <em>Analysis of Covariance</em> (ANCOVA) model. Because it is just another example of a <span class="math inline">\(\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon}\)</span> linear model, I prefer to think of it as simply having both continuous and categorical variables in my model. None of the cookbook calculations change, but the interpretation of the parameters gets much more interesting.</p>
@@ -467,35 +468,35 @@ y_{47}
 \end{array}\right]
 \]</span>
 where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="5-analysis-of-covariance-ancova.html#cb89-1"></a><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb89-2"><a href="5-analysis-of-covariance-ancova.html#cb89-2"></a></span>
-<span id="cb89-3"><a href="5-analysis-of-covariance-ancova.html#cb89-3"></a><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></span>
-<span id="cb89-4"><a href="5-analysis-of-covariance-ancova.html#cb89-4"></a><span class="co"># relabels the levels to something I understand.</span></span>
-<span id="cb89-5"><a href="5-analysis-of-covariance-ancova.html#cb89-5"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">sex =</span> <span class="kw">ifelse</span>( sex<span class="op">==</span><span class="dv">1</span>, <span class="st">&#39;Female&#39;</span>, <span class="st">&#39;Male&#39;</span>) )</span>
-<span id="cb89-6"><a href="5-analysis-of-covariance-ancova.html#cb89-6"></a></span>
-<span id="cb89-7"><a href="5-analysis-of-covariance-ancova.html#cb89-7"></a><span class="co"># Fit a linear model with the interaction of sex and income</span></span>
-<span id="cb89-8"><a href="5-analysis-of-covariance-ancova.html#cb89-8"></a><span class="co"># Interactions can be specified useing a colon :</span></span>
-<span id="cb89-9"><a href="5-analysis-of-covariance-ancova.html#cb89-9"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </span>
-<span id="cb89-10"><a href="5-analysis-of-covariance-ancova.html#cb89-10"></a></span>
-<span id="cb89-11"><a href="5-analysis-of-covariance-ancova.html#cb89-11"></a><span class="co"># R allows a shortcut for the prior definition</span></span>
-<span id="cb89-12"><a href="5-analysis-of-covariance-ancova.html#cb89-12"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</span>
-<span id="cb89-13"><a href="5-analysis-of-covariance-ancova.html#cb89-13"></a></span>
-<span id="cb89-14"><a href="5-analysis-of-covariance-ancova.html#cb89-14"></a><span class="co"># save the fit, lwr, upr values for each observation</span></span>
-<span id="cb89-15"><a href="5-analysis-of-covariance-ancova.html#cb89-15"></a><span class="co"># these are the yhat and CI </span></span>
-<span id="cb89-16"><a href="5-analysis-of-covariance-ancova.html#cb89-16"></a><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></span>
-<span id="cb89-17"><a href="5-analysis-of-covariance-ancova.html#cb89-17"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></span>
-<span id="cb89-18"><a href="5-analysis-of-covariance-ancova.html#cb89-18"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
-<span id="cb89-19"><a href="5-analysis-of-covariance-ancova.html#cb89-19"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
-<span id="cb89-20"><a href="5-analysis-of-covariance-ancova.html#cb89-20"></a></span>
-<span id="cb89-21"><a href="5-analysis-of-covariance-ancova.html#cb89-21"></a><span class="co"># Make a nice plot that includes the regreesion line.</span></span>
-<span id="cb89-22"><a href="5-analysis-of-covariance-ancova.html#cb89-22"></a><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb89-23"><a href="5-analysis-of-covariance-ancova.html#cb89-23"></a><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</span>
-<span id="cb89-24"><a href="5-analysis-of-covariance-ancova.html#cb89-24"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>
-<span id="cb89-25"><a href="5-analysis-of-covariance-ancova.html#cb89-25"></a><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></span>
-<span id="cb89-26"><a href="5-analysis-of-covariance-ancova.html#cb89-26"></a><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="5-analysis-of-covariance-ancova.html#cb88-1"></a><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb88-2"><a href="5-analysis-of-covariance-ancova.html#cb88-2"></a></span>
+<span id="cb88-3"><a href="5-analysis-of-covariance-ancova.html#cb88-3"></a><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></span>
+<span id="cb88-4"><a href="5-analysis-of-covariance-ancova.html#cb88-4"></a><span class="co"># relabels the levels to something I understand.</span></span>
+<span id="cb88-5"><a href="5-analysis-of-covariance-ancova.html#cb88-5"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">sex =</span> <span class="kw">ifelse</span>( sex<span class="op">==</span><span class="dv">1</span>, <span class="st">&#39;Female&#39;</span>, <span class="st">&#39;Male&#39;</span>) )</span>
+<span id="cb88-6"><a href="5-analysis-of-covariance-ancova.html#cb88-6"></a></span>
+<span id="cb88-7"><a href="5-analysis-of-covariance-ancova.html#cb88-7"></a><span class="co"># Fit a linear model with the interaction of sex and income</span></span>
+<span id="cb88-8"><a href="5-analysis-of-covariance-ancova.html#cb88-8"></a><span class="co"># Interactions can be specified useing a colon :</span></span>
+<span id="cb88-9"><a href="5-analysis-of-covariance-ancova.html#cb88-9"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </span>
+<span id="cb88-10"><a href="5-analysis-of-covariance-ancova.html#cb88-10"></a></span>
+<span id="cb88-11"><a href="5-analysis-of-covariance-ancova.html#cb88-11"></a><span class="co"># R allows a shortcut for the prior definition</span></span>
+<span id="cb88-12"><a href="5-analysis-of-covariance-ancova.html#cb88-12"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</span>
+<span id="cb88-13"><a href="5-analysis-of-covariance-ancova.html#cb88-13"></a></span>
+<span id="cb88-14"><a href="5-analysis-of-covariance-ancova.html#cb88-14"></a><span class="co"># save the fit, lwr, upr values for each observation</span></span>
+<span id="cb88-15"><a href="5-analysis-of-covariance-ancova.html#cb88-15"></a><span class="co"># these are the yhat and CI </span></span>
+<span id="cb88-16"><a href="5-analysis-of-covariance-ancova.html#cb88-16"></a><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></span>
+<span id="cb88-17"><a href="5-analysis-of-covariance-ancova.html#cb88-17"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></span>
+<span id="cb88-18"><a href="5-analysis-of-covariance-ancova.html#cb88-18"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb88-19"><a href="5-analysis-of-covariance-ancova.html#cb88-19"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
+<span id="cb88-20"><a href="5-analysis-of-covariance-ancova.html#cb88-20"></a></span>
+<span id="cb88-21"><a href="5-analysis-of-covariance-ancova.html#cb88-21"></a><span class="co"># Make a nice plot that includes the regreesion line.</span></span>
+<span id="cb88-22"><a href="5-analysis-of-covariance-ancova.html#cb88-22"></a><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb88-23"><a href="5-analysis-of-covariance-ancova.html#cb88-23"></a><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</span>
+<span id="cb88-24"><a href="5-analysis-of-covariance-ancova.html#cb88-24"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>
+<span id="cb88-25"><a href="5-analysis-of-covariance-ancova.html#cb88-25"></a><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></span>
+<span id="cb88-26"><a href="5-analysis-of-covariance-ancova.html#cb88-26"></a><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="5-analysis-of-covariance-ancova.html#cb90-1"></a><span class="co"># print the model summary</span></span>
-<span id="cb90-2"><a href="5-analysis-of-covariance-ancova.html#cb90-2"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="5-analysis-of-covariance-ancova.html#cb89-1"></a><span class="co"># print the model summary</span></span>
+<span id="cb89-2"><a href="5-analysis-of-covariance-ancova.html#cb89-2"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = gamble ~ sex * income, data = teengamb)
@@ -516,30 +517,121 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 ## Residual standard error: 20.98 on 43 degrees of freedom
 ## Multiple R-squared:  0.5857,	Adjusted R-squared:  0.5568 
 ## F-statistic: 20.26 on 3 and 43 DF,  p-value: 2.451e-08</code></pre>
+<p>To interpret the terms, we have</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Coefficients</th>
+<th align="left">Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>(Intercept)</code></td>
+<td align="left">y-intercept for the females</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sexMale</code></td>
+<td align="left">The difference in y-intercept for Males</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>income</code></td>
+<td align="left">Slope of the female regression line</td>
+</tr>
+<tr class="even">
+<td align="left"><code>sexMale:income</code></td>
+<td align="left">The offset in slopes for the Males</td>
+</tr>
+</tbody>
+</table>
+<p>So looking at the summary, we see the interaction term <code>sexMale:income</code> is statistically significant indicating that we prefer the more complicated model with different slopes for each gender.</p>
+<p>To calculate the differences between the predicted values at an <code>income</code> levels of 5 and 10, we could use <code>multcomp::glht()</code> and figure out the appropriate contrast vector, but we’ll use the easy version with <code>emmeans()</code></p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="5-analysis-of-covariance-ancova.html#cb91-1"></a><span class="kw">emmeans</span>(m1, <span class="dt">specs =</span> <span class="op">~</span><span class="st"> </span>income <span class="op">*</span><span class="st"> </span>sex, </span>
+<span id="cb91-2"><a href="5-analysis-of-covariance-ancova.html#cb91-2"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>), <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
+<pre><code>##  income sex    emmean    SE df lower.CL upper.CL
+##       5 Male    29.93  3.97 43    21.93     37.9
+##      10 Male    62.52  6.35 43    49.71     75.3
+##       5 Female   4.01  5.08 43    -6.23     14.3
+##      10 Female   4.89 12.13 43   -19.58     29.4
+## 
+## Confidence level used: 0.95</code></pre>
+<p>If we are interested in the differences we can just do a <code>pairwise</code> in the <code>specs</code> argument, but I also want to just calculate the differences at each income level.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="5-analysis-of-covariance-ancova.html#cb93-1"></a><span class="co"># The pipe in the formula is essentially a group_by </span></span>
+<span id="cb93-2"><a href="5-analysis-of-covariance-ancova.html#cb93-2"></a><span class="kw">emmeans</span>(m1, <span class="dt">specs =</span> pairwise <span class="op">~</span><span class="st"> </span>sex <span class="op">|</span><span class="st"> </span>income, </span>
+<span id="cb93-3"><a href="5-analysis-of-covariance-ancova.html#cb93-3"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>), </span>
+<span id="cb93-4"><a href="5-analysis-of-covariance-ancova.html#cb93-4"></a>                <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
+<pre><code>## $emmeans
+## income =  5:
+##  sex    emmean    SE df lower.CL upper.CL
+##  Male    29.93  3.97 43    21.93     37.9
+##  Female   4.01  5.08 43    -6.23     14.3
+## 
+## income = 10:
+##  sex    emmean    SE df lower.CL upper.CL
+##  Male    62.52  6.35 43    49.71     75.3
+##  Female   4.89 12.13 43   -19.58     29.4
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+## income =  5:
+##  contrast      estimate    SE df t.ratio p.value
+##  Male - Female     25.9  6.44 43 4.022   0.0002 
+## 
+## income = 10:
+##  contrast      estimate    SE df t.ratio p.value
+##  Male - Female     57.6 13.69 43 4.208   0.0001</code></pre>
+<p>If we want the slopes as well as the difference in slopes, we would use the <code>emtrends()</code> function.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="5-analysis-of-covariance-ancova.html#cb95-1"></a><span class="kw">emtrends</span>(m1, pairwise <span class="op">~</span><span class="st"> </span>income <span class="op">*</span><span class="st"> </span>sex, <span class="dt">var =</span> <span class="st">&quot;income&quot;</span>, </span>
+<span id="cb95-2"><a href="5-analysis-of-covariance-ancova.html#cb95-2"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="dv">10</span>, <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
+<pre><code>## $emtrends
+##  income sex    income.trend    SE df lower.CL upper.CL
+##      10 Male          6.518 0.988 43     4.53     8.51
+##      10 Female        0.175 1.903 43    -3.66     4.01
+## 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast            estimate   SE df t.ratio p.value
+##  10 Male - 10 Female     6.34 2.14 43 2.958   0.0050</code></pre>
+<p>While I specified to calculate the slope at the x-value of <code>income=10</code>, that doesn’t matter because the slopes are the same at all x-values</p>
+<p>Somewhat less interestingly, we could calculate the average of the Male and Female slopes.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="5-analysis-of-covariance-ancova.html#cb97-1"></a><span class="co"># when specs doesn&#39;t include a variable that was used </span></span>
+<span id="cb97-2"><a href="5-analysis-of-covariance-ancova.html#cb97-2"></a><span class="co"># in the model, this will either</span></span>
+<span id="cb97-3"><a href="5-analysis-of-covariance-ancova.html#cb97-3"></a><span class="co">#   a) average over the missing levels (categorical)</span></span>
+<span id="cb97-4"><a href="5-analysis-of-covariance-ancova.html#cb97-4"></a><span class="co">#   b) use the average value of the variable (quantitative)</span></span>
+<span id="cb97-5"><a href="5-analysis-of-covariance-ancova.html#cb97-5"></a><span class="kw">emtrends</span>(m1, <span class="dt">specs =</span> <span class="op">~</span><span class="st"> </span>income, <span class="dt">var =</span> <span class="st">&#39;income&#39;</span>,</span>
+<span id="cb97-6"><a href="5-analysis-of-covariance-ancova.html#cb97-6"></a>         <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="dv">10</span>))</span></code></pre></div>
+<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
+<pre><code>##  income income.trend   SE df lower.CL upper.CL
+##      10         3.35 1.07 43     1.18     5.51
+## 
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95</code></pre>
 </div>
 <div id="iris-example" class="section level2">
 <h2><span class="header-section-number">5.4</span> Iris Example</h2>
 <p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="5-analysis-of-covariance-ancova.html#cb92-1"></a><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></span>
-<span id="cb92-2"><a href="5-analysis-of-covariance-ancova.html#cb92-2"></a><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="5-analysis-of-covariance-ancova.html#cb100-1"></a><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></span>
+<span id="cb100-2"><a href="5-analysis-of-covariance-ancova.html#cb100-2"></a><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></span></code></pre></div>
 <pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
 <p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="5-analysis-of-covariance-ancova.html#cb94-1"></a><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></span>
-<span id="cb94-2"><a href="5-analysis-of-covariance-ancova.html#cb94-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="5-analysis-of-covariance-ancova.html#cb102-1"></a><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></span>
+<span id="cb102-2"><a href="5-analysis-of-covariance-ancova.html#cb102-2"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
 <p>We consider the sequence of building successively more complex models:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="5-analysis-of-covariance-ancova.html#cb95-1"></a><span class="co"># make virginica the reference group </span></span>
-<span id="cb95-2"><a href="5-analysis-of-covariance-ancova.html#cb95-2"></a>iris &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></span>
-<span id="cb95-3"><a href="5-analysis-of-covariance-ancova.html#cb95-3"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Species =</span> forcats<span class="op">::</span><span class="kw">fct_relevel</span>(Species, <span class="st">&#39;virginica&#39;</span>) )</span>
-<span id="cb95-4"><a href="5-analysis-of-covariance-ancova.html#cb95-4"></a></span>
-<span id="cb95-5"><a href="5-analysis-of-covariance-ancova.html#cb95-5"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></span>
-<span id="cb95-6"><a href="5-analysis-of-covariance-ancova.html#cb95-6"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></span>
-<span id="cb95-7"><a href="5-analysis-of-covariance-ancova.html#cb95-7"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="5-analysis-of-covariance-ancova.html#cb103-1"></a><span class="co"># make virginica the reference group </span></span>
+<span id="cb103-2"><a href="5-analysis-of-covariance-ancova.html#cb103-2"></a>iris &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></span>
+<span id="cb103-3"><a href="5-analysis-of-covariance-ancova.html#cb103-3"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Species =</span> forcats<span class="op">::</span><span class="kw">fct_relevel</span>(Species, <span class="st">&#39;virginica&#39;</span>) )</span>
+<span id="cb103-4"><a href="5-analysis-of-covariance-ancova.html#cb103-4"></a></span>
+<span id="cb103-5"><a href="5-analysis-of-covariance-ancova.html#cb103-5"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></span>
+<span id="cb103-6"><a href="5-analysis-of-covariance-ancova.html#cb103-6"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></span>
+<span id="cb103-7"><a href="5-analysis-of-covariance-ancova.html#cb103-7"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></span></code></pre></div>
 <p>The three models we consider are the following:</p>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="5-analysis-of-covariance-ancova.html#cb96-1"></a>m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="5-analysis-of-covariance-ancova.html#cb104-1"></a>m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 5
 ##   term         estimate std.error statistic p.value
 ##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -547,7 +639,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 ## 2 Sepal.Length   -0.062     0.043     -1.44   0.152</code></pre>
 <p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
 <p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="5-analysis-of-covariance-ancova.html#cb98-1"></a>m2 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="5-analysis-of-covariance-ancova.html#cb106-1"></a>m2 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 5
 ##   term              estimate std.error statistic p.value
 ##   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -557,7 +649,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 ## 4 Speciesversicolor    0.024     0.065      0.37   0.712</code></pre>
 <p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
 <p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="5-analysis-of-covariance-ancova.html#cb100-1"></a>m3 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="5-analysis-of-covariance-ancova.html#cb108-1"></a>m3 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 5
 ##   term                           estimate std.error statistic p.value
 ##   &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
@@ -603,7 +695,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 </tbody>
 </table>
 <p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="5-analysis-of-covariance-ancova.html#cb102-1"></a><span class="kw">anova</span>(m2, m3)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="5-analysis-of-covariance-ancova.html#cb110-1"></a><span class="kw">anova</span>(m2, m3)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: Sepal.Width ~ Sepal.Length + Species
@@ -621,8 +713,8 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <li>The in the <code>faraway</code> package, there is a dataset named <code>phbirths</code> that gives babies birth weights along with their gestational time in utero along with the mother’s smoking status.
 <ol style="list-style-type: lower-alpha">
 <li><p>Load and inspect the dataset using</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="5-analysis-of-covariance-ancova.html#cb104-1"></a><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></span>
-<span id="cb104-2"><a href="5-analysis-of-covariance-ancova.html#cb104-2"></a>?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="5-analysis-of-covariance-ancova.html#cb112-1"></a><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></span>
+<span id="cb112-2"><a href="5-analysis-of-covariance-ancova.html#cb112-2"></a>?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></span></code></pre></div></li>
 <li><p>Create a plot of the birth weight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</p></li>
 <li><p>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</p></li>
 <li><p>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</p></li>

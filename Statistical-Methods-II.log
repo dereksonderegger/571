@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.18)  31 AUG 2020 17:05
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019) (preloaded format=xelatex 2020.3.18)  1 SEP 2020 23:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -427,9 +427,6 @@ LaTeX Warning: Label `learning-outcomes' multiply defined.
 
 
 LaTeX Warning: Label `introduction' multiply defined.
-
-
-LaTeX Warning: Label `simple-regression' multiply defined.
 
 
 LaTeX Warning: Label `introduction' multiply defined.
@@ -1249,8 +1246,14 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <14.4> not available
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-43-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-43-1.pdf>
-[55] [56]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 2482--2482
+[55]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 2460--2460
+[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
+ 3 estimates[] 
+ []
+
+[56]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 2487--2487
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
@@ -1263,19 +1266,15 @@ file (type pdf)
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-50-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-50-1.pdf>
-
-Overfull \hbox (38.25pt too wide) in paragraph at lines 2582--2582
+[59]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 2587--2587
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
 
-[59]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-52-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-52-1.pdf>
-[60] [61] [62] [63
+[60] [61] [62
 
-] [64]
+] [63] [64]
 Chapter 5.
 [65
 
@@ -1293,60 +1292,66 @@ file (type pdf)
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[68] [69]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-60-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-60-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-62-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-62-1.pdf>
+[68]
+Overfull \vbox (15.18826pt too high) has occurred while \output is active []
 
-Underfull \vbox (badness 1314) has occurred while \output is active []
+[69] [70]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 2989--2989
+[]\TU/lmtt/m/n/10 ## NOTE: Results may be misleading due to involvement in inte
+ractions[] 
+ []
 
-[70] [71]
-Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
+[71]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-64-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-64-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-66-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-66-1.pdf>
+[72] [73]
+Overfull \hbox (33.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ##   term                           estimate std.error statis
 tic p.value[] 
  []
 
 
-Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (33.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ##   <chr>                             <dbl>     <dbl>     <d
 bl>   <dbl>[] 
  []
 
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (12.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 1 (Intercept)                       1.45      0.405     3.
 57    0[] 
  []
 
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (12.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 2 Sepal.Length                      0.232     0.061     3.
 79    0[] 
  []
 
 
-Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (33.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 3 Speciessetosa                    -2.02      0.686    -2.
 94    0.004[] 
  []
 
 
-Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (33.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 4 Speciesversicolor                -0.574     0.605    -0.
 95    0.344[] 
  []
 
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (12.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 5 Sepal.Length:Speciessetosa        0.567     0.126     4.
 49    0[] 
  []
 
 
-Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
+Overfull \hbox (33.0pt too wide) in paragraph at lines 3102--3102
 []\TU/lmtt/m/n/10 ## 6 Sepal.Length:Speciesversicolor    0.088     0.097     0.
 905   0.367[] 
  []
@@ -1354,128 +1359,78 @@ Overfull \hbox (33.0pt too wide) in paragraph at lines 3044--3044
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[72] [73]
-Underfull \hbox (badness 1028) in paragraph at lines 3122--3124
+[74] [75]
+Underfull \hbox (badness 1028) in paragraph at lines 3180--3182
 []\TU/lmr/m/n/10 Log transform the \TU/lmtt/m/n/10 time \TU/lmr/m/n/10 and \TU/
 lmtt/m/n/10 conc \TU/lmr/m/n/10 variable and plot the log-
  []
 
-[74]
+[76]
 Chapter 6.
-[75
+[77
 
 ]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-72-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-72-1.pdf>
-[76] [77]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-74-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-74-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-75-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-75-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-75-2.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-75-2.pdf>
-
-Underfull \vbox (badness 1132) has occurred while \output is active []
-
-[78]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-76-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-76-1.pdf>
-[79]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3328--3328
-[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
- 4 estimates[] 
- []
-
-[80]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3353--3353
-[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
- 4 estimates[] 
- []
-
+[78] [79]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-78-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-78-1.pdf>
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-79-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-79-1.pdf>
-[81] [82]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-79-2.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-79-2.pdf>
+
+Underfull \vbox (badness 1132) has occurred while \output is active []
+
+[80]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-80-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-80-1.pdf>
+[81]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 3386--3386
+[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
+ 4 estimates[] 
+ []
 
-Overfull \hbox (6.45453pt too wide) in alignment at lines 3462--3464
+[82]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 3411--3411
+[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
+ 4 estimates[] 
+ []
+
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-83-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-83-1.pdf>
+[83] [84]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-84-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-84-1.pdf>
+
+Overfull \hbox (6.45453pt too wide) in alignment at lines 3520--3522
  [] [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (3.58127pt too wide) in paragraph at lines 3470--3471
+Overfull \hbox (3.58127pt too wide) in paragraph at lines 3528--3529
 []\TU/lmr/m/n/10 Females|  
  []
 
 
-Overfull \hbox (1.17747pt too wide) in paragraph at lines 3476--3477
+Overfull \hbox (1.17747pt too wide) in paragraph at lines 3534--3535
 []\TU/lmr/m/n/10 Males|  
  []
 
 
-Overfull \hbox (3.58127pt too wide) in paragraph at lines 3478--3479
+Overfull \hbox (3.58127pt too wide) in paragraph at lines 3536--3537
 []\TU/lmr/m/n/10 Females|  
  []
 
 
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3481--3482
-[]\TU/lmr/m/n/10 Treatment 
- []
-
-
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3489--3490
-[]\TU/lmr/m/n/10 Treatment 
- []
-
-
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3496--3497
-[]\TU/lmr/m/n/10 Treatment 
- []
-
-
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3504--3505
-[]\TU/lmr/m/n/10 Treatment 
- []
-
-
-Overfull \hbox (6.45453pt too wide) in alignment at lines 3464--3511
- [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (6.45453pt too wide) in alignment at lines 3513--3515
- [] [] [] [] [] [] [] 
- []
-
-
-Overfull \hbox (3.58127pt too wide) in paragraph at lines 3521--3522
-[]\TU/lmr/m/n/10 Females|  
- []
-
-
-Overfull \hbox (1.17747pt too wide) in paragraph at lines 3527--3528
-[]\TU/lmr/m/n/10 Males|  
- []
-
-
-Overfull \hbox (3.58127pt too wide) in paragraph at lines 3529--3530
-[]\TU/lmr/m/n/10 Females|  
- []
-
-
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3532--3533
-[]\TU/lmr/m/n/10 Treatment 
- []
-
-
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3540--3541
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3539--3540
 []\TU/lmr/m/n/10 Treatment 
  []
 
@@ -1485,751 +1440,773 @@ Overfull \hbox (0.72832pt too wide) in paragraph at lines 3547--3548
  []
 
 
-Overfull \hbox (0.72832pt too wide) in paragraph at lines 3555--3556
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3554--3555
 []\TU/lmr/m/n/10 Treatment 
  []
 
 
-Overfull \hbox (6.45453pt too wide) in alignment at lines 3515--3562
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3562--3563
+[]\TU/lmr/m/n/10 Treatment 
+ []
+
+
+Overfull \hbox (6.45453pt too wide) in alignment at lines 3522--3569
  [] [] [] [] [] [] [] 
  []
 
-[83] [84]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-82-1.pdf Graphic 
+
+Overfull \hbox (6.45453pt too wide) in alignment at lines 3571--3573
+ [] [] [] [] [] [] [] 
+ []
+
+
+Overfull \hbox (3.58127pt too wide) in paragraph at lines 3579--3580
+[]\TU/lmr/m/n/10 Females|  
+ []
+
+
+Overfull \hbox (1.17747pt too wide) in paragraph at lines 3585--3586
+[]\TU/lmr/m/n/10 Males|  
+ []
+
+
+Overfull \hbox (3.58127pt too wide) in paragraph at lines 3587--3588
+[]\TU/lmr/m/n/10 Females|  
+ []
+
+
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3590--3591
+[]\TU/lmr/m/n/10 Treatment 
+ []
+
+
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3598--3599
+[]\TU/lmr/m/n/10 Treatment 
+ []
+
+
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3605--3606
+[]\TU/lmr/m/n/10 Treatment 
+ []
+
+
+Overfull \hbox (0.72832pt too wide) in paragraph at lines 3613--3614
+[]\TU/lmr/m/n/10 Treatment 
+ []
+
+
+Overfull \hbox (6.45453pt too wide) in alignment at lines 3573--3620
+ [] [] [] [] [] [] [] 
+ []
+
+[85] [86]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-86-1.pdf Graphic 
 file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-82-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-86-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[85]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-83-1.pdf Graphic 
+[87]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-87-1.pdf Graphic 
 file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-83-1.pdf>
-[86]
-Overfull \hbox (4.76747pt too wide) in paragraph at lines 3750--3751
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-87-1.pdf>
+[88]
+Overfull \hbox (4.76747pt too wide) in paragraph at lines 3808--3809
 []\TU/lmr/m/n/10 Source|  
  []
 
 
-Overfull \hbox (1.35599pt too wide) in alignment at lines 3747--3763
+Overfull \hbox (1.35599pt too wide) in alignment at lines 3805--3821
  [] [] [] [] [] [] 
  []
 
 
-Overfull \hbox (22.68428pt too wide) in paragraph at lines 3773--3774
+Overfull \hbox (22.68428pt too wide) in paragraph at lines 3831--3832
 []$[][][][][][][]$|  
  []
 
 
-Overfull \hbox (22.71228pt too wide) in paragraph at lines 3786--3787
+Overfull \hbox (22.71228pt too wide) in paragraph at lines 3844--3845
 []$[][][][][][][]$|  
  []
 
 
-Overfull \hbox (3.37747pt too wide) in paragraph at lines 3791--3792
+Overfull \hbox (3.37747pt too wide) in paragraph at lines 3849--3850
 []\TU/lmr/bx/n/10 Error|  
  []
 
 
-Overfull \hbox (3.12276pt too wide) in paragraph at lines 3797--3798
+Overfull \hbox (3.12276pt too wide) in paragraph at lines 3855--3856
 [][][][][][][][]$|  
  []
 
 
-Overfull \hbox (1.35599pt too wide) in alignment at lines 3763--3804
+Overfull \hbox (1.35599pt too wide) in alignment at lines 3821--3862
  [] [] [] [] [] [] 
  []
 
-[87] [88] [89]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3904--3904
+[89] [90] [91]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 3962--3962
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
 
 
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3934--3934
+Overfull \hbox (38.25pt too wide) in paragraph at lines 3992--3992
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3955--3955
+Overfull \hbox (38.25pt too wide) in paragraph at lines 4013--4013
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
 
-[90]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 3974--3974
+[92]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 4032--4032
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
-[91]
-Overfull \hbox (6.01231pt too wide) in paragraph at lines 4026--4027
+[93]
+Overfull \hbox (6.01231pt too wide) in paragraph at lines 4084--4085
 []\TU/lmr/bx/n/10 10C|  
  []
 
 
-Overfull \hbox (6.01231pt too wide) in paragraph at lines 4037--4038
+Overfull \hbox (6.01231pt too wide) in paragraph at lines 4095--4096
 []\TU/lmr/bx/n/10 30C|  
  []
 
 
-Overfull \hbox (26.13239pt too wide) in paragraph at lines 4087--4088
+Overfull \hbox (26.13239pt too wide) in paragraph at lines 4145--4146
 []$[][][][][][][]$|  
  []
 
 
-Overfull \hbox (26.16039pt too wide) in paragraph at lines 4100--4101
+Overfull \hbox (26.16039pt too wide) in paragraph at lines 4158--4159
 []$[][][][][][][]$|  
  []
 
 
-Overfull \hbox (32.17339pt too wide) in paragraph at lines 4113--4114
+Overfull \hbox (32.17339pt too wide) in paragraph at lines 4171--4172
 []$[][][][][][][]$|  
  []
 
 
-Overfull \hbox (6.83084pt too wide) in paragraph at lines 4118--4119
+Overfull \hbox (6.83084pt too wide) in paragraph at lines 4176--4177
 []\TU/lmr/bx/n/10 Error|  
  []
 
-[92]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-89-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-89-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[93]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-89-2.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-89-2.pdf>
 [94]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-91-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-91-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-92-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-92-1.pdf>
-[95]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-93-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-93-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-94-1.pdf Graphic 
-file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-94-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+[95]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-93-2.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-93-2.pdf>
 [96]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-95-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-95-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-96-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-96-1.pdf>
 [97]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-97-1.pdf Graphic 
 file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-97-1.pdf>
-[98] [99]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 4386--4386
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-98-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-98-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[98]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-99-1.pdf Graphic 
+file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-99-1.pdf>
+[99]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-101-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-101-1.pdf>
+[100] [101]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 4444--4444
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  6 estimates[] 
  []
 
-[100]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 4424--4424
+[102]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 4482--4482
 []\TU/lmtt/m/n/10 ## NOTE: Results may be misleading due to involvement in inte
 ractions[] 
  []
 
 
-Overfull \hbox (38.25pt too wide) in paragraph at lines 4446--4446
+Overfull \hbox (38.25pt too wide) in paragraph at lines 4504--4504
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
 
-[101]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 4456--4456
+[103]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 4514--4514
 []\TU/lmtt/m/n/10 ## NOTE: Results may be misleading due to involvement in inte
 ractions[] 
  []
 
 
-Overfull \hbox (17.25pt too wide) in paragraph at lines 4489--4489
+Overfull \hbox (17.25pt too wide) in paragraph at lines 4547--4547
 []\TU/lmtt/m/n/10 ## []summarise()[] ungrouping output (override with [].groups
 [] argument)[] 
  []
 
-[102] [103] [104]
+[104] [105] [106]
 Chapter 7.
-[105
+[107
 
-] [106
+] [108
 
 ]
 Chapter 8.
-[107] [108]
-Overfull \hbox (33.0pt too wide) in paragraph at lines 4637--4637
+[109] [110]
+Overfull \hbox (33.0pt too wide) in paragraph at lines 4695--4695
 []\TU/lmtt/m/n/10 ##  $ Murder    : num  15.1 11.3 7.8 10.1 10.3 6.8 3.1 6.2 10
 .7 13.9 ...[] 
  []
 
 
-Overfull \hbox (43.5pt too wide) in paragraph at lines 4637--4637
+Overfull \hbox (43.5pt too wide) in paragraph at lines 4695--4695
 []\TU/lmtt/m/n/10 ##  $ HS.Grad   : num  41.3 66.7 58.1 39.9 62.6 63.9 56 54.6 
 52.6 40.6 ...[] 
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-106-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-110-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-106-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-110-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[109] [110] [111] [112]
-Overfull \hbox (43.5pt too wide) in paragraph at lines 4810--4810
+[111] [112] [113] [114]
+Overfull \hbox (43.5pt too wide) in paragraph at lines 4868--4868
 []\TU/lmtt/m/n/10 ## lm(formula = Life.Exp ~ Illiteracy + Murder + Frost, data 
 = state.data)[] 
  []
 
-[113] [114]
+[115] [116]
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 4884.
-[115] [116] [117] [118]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 5069--5069
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 4942.
+[117] [118] [119] [120]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 5127--5127
 []\TU/lmtt/m/n/10 ## lm(formula = Life.Exp ~ Murder + Frost + HS.Grad + Log.Pop
 ulation,[] 
  []
 
 
-Overfull \hbox (80.25pt too wide) in paragraph at lines 5069--5069
+Overfull \hbox (80.25pt too wide) in paragraph at lines 5127--5127
 []\TU/lmtt/m/n/10 ##    (Intercept)          Murder           Frost         HS.
 Grad  Log.Population[] 
  []
 
 
-Overfull \hbox (80.25pt too wide) in paragraph at lines 5069--5069
+Overfull \hbox (80.25pt too wide) in paragraph at lines 5127--5127
 []\TU/lmtt/m/n/10 ##      68.720810       -0.290016       -0.005174        0.05
 4550        0.246836[] 
  []
 
-[119] [120] [121] [122
+[121] [122] [123] [124
 
 ]
 Chapter 9.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[123]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-121-1.pdf Graphic
+[125]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-125-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-121-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-125-1.pdf>
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 5277--5277
+Overfull \hbox (1.5pt too wide) in paragraph at lines 5335--5335
 []\TU/lmtt/m/n/10 ## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Hei
 ght +[] 
  []
 
-[124] [125] [126]
+[126] [127] [128]
 Chapter 10.
-[127
+[129
 
 ]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-126-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-130-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-126-1.pdf>
-[128] [129]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-127-1.pdf Graphic
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-130-1.pdf>
+[130] [131]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-131-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-127-1.pdf>
-[130]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-128-1.pdf Graphic
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-131-1.pdf>
+[132]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-132-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-128-1.pdf>
-[131]
-Overfull \hbox (1.5pt too wide) in paragraph at lines 5482--5482
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-132-1.pdf>
+[133]
+Overfull \hbox (1.5pt too wide) in paragraph at lines 5540--5540
 []\TU/lmtt/m/n/10 ## Warning: Removed 1 rows containing missing values (geom_po
 int).[] 
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-129-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-129-1.pdf>
-[132] [133]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-131-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-131-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-132-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-132-1.pdf>
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-133-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-133-1.pdf>
-
-Underfull \vbox (badness 1694) has occurred while \output is active []
-
 [134] [135]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-134-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-134-1.pdf>
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-135-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-135-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[136]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-136-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-136-1.pdf>
-[137]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-137-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-137-1.pdf>
+
+Underfull \vbox (badness 1694) has occurred while \output is active []
+
+[136] [137]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-138-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-138-1.pdf>
-
-Underfull \vbox (badness 7256) has occurred while \output is active []
-
-[138]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-139-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-139-1.pdf>
-[139]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-140-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-140-1.pdf>
-[140]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-142-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-142-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-143-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-143-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
+[138]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-140-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-140-1.pdf>
+[139]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-141-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-141-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-142-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-142-1.pdf>
+
+Underfull \vbox (badness 7256) has occurred while \output is active []
+
+[140]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-143-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-143-1.pdf>
 [141]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-144-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-144-1.pdf>
 [142]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-145-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-145-1.pdf>
-
-Overfull \hbox (40.07376pt too wide) in paragraph at lines 5797--5799
-\TU/lmr/m/n/10 like this: [] 
- []
-
-[143]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-146-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-146-1.pdf>
-[144]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-147-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-147-1.pdf>
-[145] [146]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[143]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-148-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-148-1.pdf>
+[144]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-149-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-149-1.pdf>
+
+Overfull \hbox (40.07376pt too wide) in paragraph at lines 5855--5857
+\TU/lmr/m/n/10 like this: [] 
+ []
+
+[145]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-150-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-150-1.pdf>
+[146]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-151-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-151-1.pdf>
+[147] [148]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-152-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-152-1.pdf>
 
 Underfull \vbox (badness 3219) has occurred while \output is active []
 
-[147]
-Overfull \hbox (12.0pt too wide) in paragraph at lines 5945--5945
+[149]
+Overfull \hbox (12.0pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##     Species            Area            Elevation          
 Nearest[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  Min.   :  2.00   Min.   :   0.010   Min.   :  25.00   Min
 .   : 0.20[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  1st Qu.: 13.00   1st Qu.:   0.258   1st Qu.:  97.75   1st
  Qu.: 0.80[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  Median : 42.00   Median :   2.590   Median : 192.00   Med
 ian : 3.05[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  Mean   : 85.23   Mean   : 261.709   Mean   : 368.03   Mea
 n   :10.06[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  3rd Qu.: 96.00   3rd Qu.:  59.237   3rd Qu.: 435.25   3rd
  Qu.:10.03[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 5945--5945
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6003--6003
 []\TU/lmtt/m/n/10 ##  Max.   :444.00   Max.   :4669.320   Max.   :1707.00   Max
 .   :47.40[] 
  []
 
-[148]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-150-1.pdf Graphic
+[150]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-154-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-150-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-154-1.pdf>
 
-Overfull \hbox (80.25pt too wide) in paragraph at lines 5996--5996
+Overfull \hbox (80.25pt too wide) in paragraph at lines 6054--6054
 []\TU/lmtt/m/n/10 ## Model 2: log(Species) ~ log(Area) + log(Nearest) + sqrt(Sc
 ruz) + log(Adjacent)[] 
  []
 
-[149] [150]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-155-1.pdf Graphic
+[151] [152]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-159-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-155-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-156-1.pdf Graphic
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-159-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-160-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-156-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-160-1.pdf>
 
 Underfull \vbox (badness 7540) has occurred while \output is active []
 
-[151] [152]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 6121--6121
+[153] [154]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 6179--6179
 []\TU/lmtt/m/n/10 ## []stat_bin()[] using []bins = 30[]. Pick better value with
  []binwidth[].[] 
  []
 
 
-Overfull \hbox (17.25pt too wide) in paragraph at lines 6121--6121
+Overfull \hbox (17.25pt too wide) in paragraph at lines 6179--6179
 []\TU/lmtt/m/n/10 ## []stat_bin()[] using []bins = 30[]. Pick better value with
  []binwidth[].[] 
  []
 
 
-Overfull \hbox (17.25pt too wide) in paragraph at lines 6121--6121
+Overfull \hbox (17.25pt too wide) in paragraph at lines 6179--6179
 []\TU/lmtt/m/n/10 ## []stat_bin()[] using []bins = 30[]. Pick better value with
  []binwidth[].[] 
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-157-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-161-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-157-1.pdf>
-[153] [154] [155] [156] [157] [158] [159]
-Underfull \hbox (badness 10000) in paragraph at lines 6485--6487
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-161-1.pdf>
+[155] [156] [157] [158] [159] [160] [161]
+Underfull \hbox (badness 10000) in paragraph at lines 6543--6545
 
  []
 
-[160]
+[162]
 Chapter 11.
-[161
+[163
 
-] [162
+] [164
 
 ]
 Chapter 12.
-[163]
-Underfull \hbox (badness 10000) in paragraph at lines 6575--6575
+[165]
+Underfull \hbox (badness 10000) in paragraph at lines 6633--6633
 []\TU/lmr/bx/n/14.4 Randomized Complete Block Design
  []
 
-[164]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-170-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-170-1.pdf>
-[165]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-172-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-172-1.pdf>
-
-Underfull \vbox (badness 7851) has occurred while \output is active []
-
-[166] [167] [168] [169] [170]
-Overfull \hbox (78.96355pt too wide) detected at line 6764
-[] [] []
- []
-
-[171]
+[166]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-174-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-174-1.pdf>
-[172]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 6871--6871
+[167]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-176-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-176-1.pdf>
+
+Underfull \vbox (badness 7851) has occurred while \output is active []
+
+[168] [169] [170] [171] [172]
+Overfull \hbox (78.96355pt too wide) detected at line 6822
+[] [] []
+ []
+
+[173]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-178-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-178-1.pdf>
+[174]
+Overfull \hbox (27.75pt too wide) in paragraph at lines 6929--6929
 []\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
 ]s method [[] 
  []
 
-[173] [174]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-179-1.pdf Graphic
+[175] [176]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-183-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-179-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-183-1.pdf>
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 6945--6945
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7003--7003
 []\TU/lmtt/m/n/10 ##         npar    AIC    BIC  logLik deviance Chisq Df Pr(>C
 hisq)[] 
  []
 
 
-Overfull \hbox (22.5pt too wide) in paragraph at lines 6945--6945
+Overfull \hbox (22.5pt too wide) in paragraph at lines 7003--7003
 []\TU/lmtt/m/n/10 ## model.1   10 421.67 438.56 -200.84   401.67 39.27  7  1.73
 6e-06 ***[] 
  []
 
-[175]
-Overfull \hbox (1.5pt too wide) in paragraph at lines 6964--6964
+[177]
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7022--7022
 []\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
 method[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7038--7038
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7096--7096
 []\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
 ]s method [[] 
  []
 
-[176] [177]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 7071--7071
+[178] [179]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 7129--7129
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  8 estimates[] 
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-185-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-189-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-185-1.pdf>
-[178]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-186-1.pdf Graphic
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-189-1.pdf>
+[180]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-190-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-186-1.pdf>
-[179]
-Overfull \hbox (6.75pt too wide) in paragraph at lines 7128--7128
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-190-1.pdf>
+[181]
+Overfull \hbox (6.75pt too wide) in paragraph at lines 7186--7186
 []\TU/lmtt/m/n/10 ##         npar    AIC    BIC  logLik deviance  Chisq Df Pr(>
 Chisq)[] 
  []
 
 
-Overfull \hbox (6.75pt too wide) in paragraph at lines 7128--7128
+Overfull \hbox (6.75pt too wide) in paragraph at lines 7186--7186
 []\TU/lmtt/m/n/10 ## model.1    6 129.28 135.25 -58.639   117.28 4.0474  3     
 0.2564[] 
  []
 
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7140--7140
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7198--7198
 []\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
 method[] 
- []
-
-[180]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7193--7193
-[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
-]s method [[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-191-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-191-1.pdf>
-[181]
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7224--7224
-[]\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
-method[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7264--7264
-[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
-]s method [[] 
  []
 
 [182]
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7264--7264
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7251--7251
+[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
+]s method [[] 
+ []
+
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-195-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-195-1.pdf>
+[183]
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7282--7282
+[]\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
+method[] 
+ []
+
+
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7322--7322
+[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
+]s method [[] 
+ []
+
+[184]
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7322--7322
 []\TU/lmtt/m/n/10 ## (Intercept)     21.0211     1.2056  8.9744  17.436 3.14e-0
 8 ***[] 
  []
 
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7264--7264
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7322--7322
 []\TU/lmtt/m/n/10 ## FertilizerHigh   4.6323     0.8328 23.0000   5.563 1.17e-0
 5 ***[] 
  []
 
-[183]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-195-1.pdf Graphic
+[185]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-199-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-195-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-199-1.pdf>
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7308--7308
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7366--7366
 []\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
 method[] 
  []
 
-[184]
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+[186]
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 1 A     1         1  364.  312. paste([][],[][],hat(paste(
 []y[])),[][],[] = 311[],[]. 78[])[] 
  []
 
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 2 A     2         1  269.  312. paste([][],[][],hat(paste(
 []y[])),[][],[] = 311[],[]. 78[])[] 
  []
 
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 3 A     3         1  321.  312. paste([][],[][],hat(paste(
 []y[])),[][],[] = 311[],[]. 78[])[] 
  []
 
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 4 B     4         1  189.  235. paste([][],[][],hat(paste(
 []y[])),[][],[] = 234[],[]. 53[])[] 
  []
 
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 5 B     5         1  265.  235. paste([][],[][],hat(paste(
 []y[])),[][],[] = 234[],[]. 53[])[] 
  []
 
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 7339--7339
+Overfull \hbox (85.5pt too wide) in paragraph at lines 7397--7397
 []\TU/lmtt/m/n/10 ## 6 B     6         1  251.  235. paste([][],[][],hat(paste(
 []y[])),[][],[] = 234[],[]. 53[])[] 
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-198-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-202-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-198-1.pdf>
-[185]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-201-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-201-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[186] [187]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-203-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-203-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-204-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-204-1.pdf>
-[188]
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-202-1.pdf>
+[187]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-205-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-205-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-206-1.pdf Graphic
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[188] [189]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-207-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-206-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-207-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-208-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-208-1.pdf>
+[190]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-209-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-209-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-210-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-210-1.pdf>
 
 Underfull \vbox (badness 2134) has occurred while \output is active []
 
-[189]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7501--7501
+[191]
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7559--7559
 []\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
 ]s method [[] 
  []
 
-[190]
-Overfull \hbox (43.5pt too wide) in paragraph at lines 7524--7524
+[192]
+Overfull \hbox (43.5pt too wide) in paragraph at lines 7582--7582
 []\TU/lmtt/m/n/10 ##                               npar logLik     AIC     LRT 
 Df Pr(>Chisq)[] 
  []
 
 
-Overfull \hbox (43.5pt too wide) in paragraph at lines 7524--7524
+Overfull \hbox (43.5pt too wide) in paragraph at lines 7582--7582
 []\TU/lmtt/m/n/10 ## (1 | Sample:(Technician:Lab))    4 31.316 -54.632 1.60342 
  1    0.20542[] 
  []
 
 
-Overfull \hbox (54.0pt too wide) in paragraph at lines 7524--7524
+Overfull \hbox (54.0pt too wide) in paragraph at lines 7582--7582
 []\TU/lmtt/m/n/10 ## (1 | Technician:Lab)             4 30.740 -53.480 2.75552 
  1    0.09692 .[] 
  []
 
 
-Overfull \hbox (43.5pt too wide) in paragraph at lines 7524--7524
+Overfull \hbox (43.5pt too wide) in paragraph at lines 7582--7582
 []\TU/lmtt/m/n/10 ## (1 | Lab)                        4 31.719 -55.439 0.79649 
  1    0.37215[] 
  []
 
-[191]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-210-1.pdf Graphic
+[193]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-214-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-210-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-214-1.pdf>
 
-Overfull \hbox (1.5pt too wide) in paragraph at lines 7625--7625
+Overfull \hbox (1.5pt too wide) in paragraph at lines 7683--7683
 []\TU/lmtt/m/n/10 ## Type III Analysis of Variance Table with Satterthwaite[]s 
 method[] 
  []
 
-[192]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 7657--7657
+[194]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 7715--7715
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (38.25pt too wide) in paragraph at lines 7676--7676
+Overfull \hbox (38.25pt too wide) in paragraph at lines 7734--7734
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7719--7719
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7777--7777
 []\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
 ]s method [[] 
  []
 
-[193] [194] [195]
-Underfull \hbox (badness 1043) in paragraph at lines 7799--7800
+[195] [196] [197]
+Underfull \hbox (badness 1043) in paragraph at lines 7857--7858
 []\TU/lmr/m/n/10 In this case the correlation structure is that observations on
  the same
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-216-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-220-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-216-1.pdf>
-[196]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 7852--7852
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-220-1.pdf>
+[198]
+Overfull \hbox (27.75pt too wide) in paragraph at lines 7910--7910
 []\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
 ]s method [[] 
  []
-
-[197]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-218-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-218-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-219-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-219-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[198]
-Overfull \hbox (33.0pt too wide) in paragraph at lines 7926--7926
-[]\TU/lmtt/m/n/10 ##                              npar  logLik    AIC    LRT Df
- Pr(>Chisq)[] 
- []
-
-
-Overfull \hbox (54.0pt too wide) in paragraph at lines 7926--7926
-[]\TU/lmtt/m/n/10 ## Days in (1 + Days | Subject)    4 -893.23 1794.5 42.837  2
-   4.99e-10 ***[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-221-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-221-1.pdf>
-
-Underfull \vbox (badness 1253) has occurred while \output is active []
 
 [199]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-222-1.pdf Graphic
@@ -2239,428 +2216,342 @@ File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-223-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-223-1.pdf>
 
-Underfull \vbox (badness 2150) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [200]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 8010--8010
-[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
-]s method [[] 
+Overfull \hbox (33.0pt too wide) in paragraph at lines 7984--7984
+[]\TU/lmtt/m/n/10 ##                              npar  logLik    AIC    LRT Df
+ Pr(>Chisq)[] 
  []
 
-[201]
+
+Overfull \hbox (54.0pt too wide) in paragraph at lines 7984--7984
+[]\TU/lmtt/m/n/10 ## Days in (1 + Days | Subject)    4 -893.23 1794.5 42.837  2
+   4.99e-10 ***[] 
+ []
+
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-225-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-225-1.pdf>
-[202] [203]
+
+Underfull \vbox (badness 1253) has occurred while \output is active []
+
+[201]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-226-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-226-1.pdf>
-[204]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-227-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-227-1.pdf>
 
-Overfull \hbox (85.5pt too wide) in paragraph at lines 8156--8156
+Underfull \vbox (badness 2150) has occurred while \output is active []
+
+[202]
+Overfull \hbox (27.75pt too wide) in paragraph at lines 8068--8068
+[]\TU/lmtt/m/n/10 ## Linear mixed model fit by REML. t-tests use Satterthwaite[
+]s method [[] 
+ []
+
+[203]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-229-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-229-1.pdf>
+[204] [205]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-230-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-230-1.pdf>
+[206]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-231-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-231-1.pdf>
+
+Overfull \hbox (85.5pt too wide) in paragraph at lines 8214--8214
 []\TU/lmtt/m/n/10 ## []summarise()[] regrouping output by []Subject[] (override
  with [].groups[] argument)[] 
  []
 
-[205]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-229-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-229-1.pdf>
-[206]
-Underfull \hbox (badness 10000) in paragraph at lines 8234--8236
-
- []
-
-[207] [208]
-Chapter 13.
-[209
-
-] [210]
+[207]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-233-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-233-1.pdf>
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-234-1.pdf Graphic
+[208]
+Underfull \hbox (badness 10000) in paragraph at lines 8292--8294
+
+ []
+
+[209] [210]
+Chapter 13.
+[211
+
+] [212]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-237-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-234-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-237-1.pdf>
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-238-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-238-1.pdf>
 
 Underfull \vbox (badness 5302) has occurred while \output is active []
 
-[211]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-235-1.pdf Graphic
+[213]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-239-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-235-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-239-1.pdf>
 
-Overfull \hbox (102.82378pt too wide) in paragraph at lines 8359--8361
+Overfull \hbox (102.82378pt too wide) in paragraph at lines 8417--8419
 \TU/lmr/m/n/10 more like the following: [] 
  []
 
 
 Underfull \vbox (badness 3240) has occurred while \output is active []
 
-[212] [213] [214]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 8501--8501
+[214] [215] [216]
+Overfull \hbox (17.25pt too wide) in paragraph at lines 8559--8559
 []\TU/lmtt/m/n/10 ## glm(formula = Occupancy ~ CCU, family = binomial, data = M
 ayflies)[] 
  []
 
-[215] [216]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-240-1.pdf Graphic
+[217] [218]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-244-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-240-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-244-1.pdf>
 
 Underfull \vbox (badness 2961) has occurred while \output is active []
 
-[217] [218] [219]
+[219] [220] [221]
 File: Statistical-Methods-II_files/figure-latex/Profile_CI2-1.pdf Graphic file 
 (type pdf)
 <use Statistical-Methods-II_files/figure-latex/Profile_CI2-1.pdf>
-[220] [221] [222]
-Overfull \hbox (54.0pt too wide) in paragraph at lines 8910--8910
+[222] [223] [224]
+Overfull \hbox (54.0pt too wide) in paragraph at lines 8968--8968
 []\TU/lmtt/m/n/10 ## glm(formula = cbind(disease, nondisease) ~ sex * food, fam
 ily = binomial,[] 
  []
 
-[223] [224] [225] [226] [227]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9119--9119
+[225] [226] [227] [228] [229]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9177--9177
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  3 estimates[] 
  []
 
-[228]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9147--9147
-[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
- 3 estimates[] 
- []
-
-[229]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-259-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-259-1.pdf>
 [230]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 9270--9270
-[]\TU/lmtt/m/n/10 ##  - attr(*, "names")= chr [1:3] "p = 0.25:" "p = 0.50:" "p 
-= 0.75:"[] 
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9205--9205
+[]\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
+ 3 estimates[] 
  []
 
 [231]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-263-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-263-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [232]
-Underfull \hbox (badness 10000) in paragraph at lines 9332--9333
-
+Overfull \hbox (17.25pt too wide) in paragraph at lines 9328--9328
+[]\TU/lmtt/m/n/10 ##  - attr(*, "names")= chr [1:3] "p = 0.25:" "p = 0.50:" "p 
+= 0.75:"[] 
  []
 
 [233]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-265-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-267-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-265-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-267-1.pdf>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[234]
+Underfull \hbox (badness 10000) in paragraph at lines 9390--9391
+
+ []
+
+[235]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-269-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-269-1.pdf>
 
 Underfull \vbox (badness 5607) has occurred while \output is active []
 
-[234]
-Overfull \hbox (69.75pt too wide) in paragraph at lines 9439--9439
+[236]
+Overfull \hbox (69.75pt too wide) in paragraph at lines 9497--9497
 []\TU/lmtt/m/n/10 ## glm(formula = cbind(survive, perish) ~ location * period, 
 family = binomial,[] 
  []
 
 
-Overfull \hbox (6.75pt too wide) in paragraph at lines 9439--9439
+Overfull \hbox (6.75pt too wide) in paragraph at lines 9497--9497
 []\TU/lmtt/m/n/10 ##  [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
   0  0[] 
  []
 
-[235]
-Overfull \hbox (22.5pt too wide) in paragraph at lines 9477--9477
+[237]
+Overfull \hbox (22.5pt too wide) in paragraph at lines 9535--9535
 []\TU/lmtt/m/n/10 ## Warning in drop1.glm(m, scale = sigma2, test = "F"): F tes
 t assumes[] 
  []
 
-[236]
-Overfull \hbox (96.0pt too wide) in paragraph at lines 9538--9538
+[238]
+Overfull \hbox (96.0pt too wide) in paragraph at lines 9596--9596
 []\TU/lmtt/m/n/10 ## glm(formula = cbind(survive, perish) ~ location + period, 
 family = quasibinomial,[] 
  []
 
 
-Overfull \hbox (27.75pt too wide) in paragraph at lines 9538--9538
+Overfull \hbox (27.75pt too wide) in paragraph at lines 9596--9596
 []\TU/lmtt/m/n/10 ## (Dispersion parameter for quasibinomial family taken to be
  5.330358)[] 
  []
 
-[237] [238]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9597--9597
+[239] [240]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9655--9655
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9618--9618
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9676--9676
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (69.75pt too wide) in paragraph at lines 9670--9670
+Overfull \hbox (69.75pt too wide) in paragraph at lines 9728--9728
 []\TU/lmtt/m/n/10 ## glm(formula = cbind(survive, perish) ~ period * location, 
 family = binomial,[] 
  []
 
 
-Overfull \hbox (6.75pt too wide) in paragraph at lines 9670--9670
+Overfull \hbox (6.75pt too wide) in paragraph at lines 9728--9728
 []\TU/lmtt/m/n/10 ##  [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
   0  0[] 
  []
 
-[239] [240]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9723--9723
+[241] [242]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9781--9781
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
 
-Overfull \hbox (12.0pt too wide) in paragraph at lines 9771--9771
+Overfull \hbox (12.0pt too wide) in paragraph at lines 9829--9829
 []\TU/lmtt/m/n/10 ## Generalized linear mixed model fit by maximum likelihood (
 Laplace[] 
  []
 
-[241]
-Overfull \hbox (38.25pt too wide) in paragraph at lines 9791--9791
+[243]
+Overfull \hbox (38.25pt too wide) in paragraph at lines 9849--9849
 []\TU/lmtt/m/n/10 ## P value adjustment: tukey method for comparing a family of
  4 estimates[] 
  []
 
-[242]
-Overfull \hbox (80.25pt too wide) in paragraph at lines 9804--9804
+[244]
+Overfull \hbox (80.25pt too wide) in paragraph at lines 9862--9862
 []\TU/lmtt/m/n/10 ## Warning in checkConv(attr(opt, "derivs"), opt$par, ctrl = 
 control$checkConv, :[] 
  []
 
 
-Overfull \hbox (80.25pt too wide) in paragraph at lines 9804--9804
+Overfull \hbox (80.25pt too wide) in paragraph at lines 9862--9862
 []\TU/lmtt/m/n/10 ## Model failed to converge with max|grad| = 0.0184817 (tol =
  0.002, component 1)[] 
  []
 
-[243] [244] [245]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-280-1.pdf Graphic
+[245] [246] [247]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-284-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-280-1.pdf>
-[246]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-281-1.pdf Graphic
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-284-1.pdf>
+[248]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-285-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-281-1.pdf>
-[247] [248] [249]
-Underfull \hbox (badness 10000) in paragraph at lines 10188--10190
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-285-1.pdf>
+[249] [250] [251]
+Underfull \hbox (badness 10000) in paragraph at lines 10246--10248
 
  []
 
-[250]
+[252]
 Chapter 14.
-[251
+[253
 
-] [252
+] [254
 
-] [253] [254]
+] [255] [256]
 Chapter 15.
-[255
+[257
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 10271--10271
+Underfull \hbox (badness 10000) in paragraph at lines 10329--10329
 []\TU/lmr/bx/n/14.4 Randomized Complete Block Design
  []
 
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-288-1.pdf Graphic
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-292-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-288-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-292-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[256] [257]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-290-1.pdf Graphic
+[258] [259]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-294-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-290-1.pdf>
-[258]
-Overfull \hbox (201.0pt too wide) in paragraph at lines 10376--10376
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-294-1.pdf>
+[260]
+Overfull \hbox (201.0pt too wide) in paragraph at lines 10434--10434
 []\TU/lmtt/m/n/10 ## []summarise()[] regrouping output by []plot[], []subplot[]
 , []Fertilizer[] (override with [].groups[] argument)[] 
  []
 
-[259]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-293-1.pdf Graphic
+[261]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-297-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-293-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-297-1.pdf>
 
-Overfull \hbox (69.75pt too wide) in paragraph at lines 10414--10414
+Overfull \hbox (69.75pt too wide) in paragraph at lines 10472--10472
 []\TU/lmtt/m/n/10 ## []summarise()[] regrouping output by []plot[] (override wi
 th [].groups[] argument)[] 
  []
 
-[260] [261] [262]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-299-1.pdf Graphic
+[262] [263] [264]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-303-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-299-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-303-1.pdf>
 
 Underfull \vbox (badness 2970) has occurred while \output is active []
 
-[263] [264] [265] [266]
+[265] [266] [267] [268]
 Chapter 16.
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10682--10682
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-[267
-
-]
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-305-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-305-1.pdf>
-[268]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10706--10706
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-306-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-306-1.pdf>
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10722--10722
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-307-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-307-1.pdf>
-[269]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10742--10742
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10742--10742
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-308-1.pdf Graphic
- file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-308-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[270]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10774--10774
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-[271]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10774--10774
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-309-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-309-1.pdf>
-[272]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 10816--10816
-[]\TU/lmtt/m/n/10 ## []summarise()[] ungrouping output (override with [].groups
-[] argument)[] 
- []
+[269
 
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10824--10824
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10824--10824
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-310-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-310-1.pdf>
+[270]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-311-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-311-1.pdf>
-
-Underfull \vbox (badness 4927) has occurred while \output is active []
-
-[273] [274]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 10874--10874
-[]\TU/lmtt/m/n/10 ## []summarise()[] ungrouping output (override with [].groups
-[] argument)[] 
- []
-
-
-Overfull \hbox (6.75pt too wide) in paragraph at lines 10878--10878
-[]\TU/lmtt/m/n/10 ## Warning: Removed 1 row(s) containing missing values (geom_
-path).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10883--10883
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (6.75pt too wide) in paragraph at lines 10887--10887
-[]\TU/lmtt/m/n/10 ## Warning: Removed 1 row(s) containing missing values (geom_
-path).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10892--10892
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+[271]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-312-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-312-1.pdf>
+[272]
 File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-313-1.pdf Graphic
  file (type pdf)
 <use Statistical-Methods-II_files/figure-latex/unnamed-chunk-313-1.pdf>
+[273]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-315-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-315-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[275] [276]
-Overfull \hbox (59.25pt too wide) in paragraph at lines 10941--10941
-[]\TU/lmtt/m/n/10 ## []summarise()[] regrouping output by []mu[] (override with
- [].groups[] argument)[] 
- []
-
-
-Overfull \hbox (48.75pt too wide) in paragraph at lines 10945--10945
-[]\TU/lmtt/m/n/10 ## Warning: Removed 35050 rows containing non-finite values (
-stat_contour).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10953--10953
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10953--10953
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-316-1.pdf Graphic
+[274] [275]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-317-1.pdf Graphic
  file (type pdf)
-<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-316-1.pdf>
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-317-1.pdf>
+[276]
+File: Statistical-Methods-II_files/figure-latex/unnamed-chunk-320-1.pdf Graphic
+ file (type pdf)
+<use Statistical-Methods-II_files/figure-latex/unnamed-chunk-320-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -2668,12 +2559,12 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ]
 No file Statistical-Methods-II.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11073.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11034.
 [282]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 11073.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 11034.
 (./Statistical-Methods-II.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11073.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11073
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11034.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11034
 .
 Package rerunfilecheck Info: File `Statistical-Methods-II.out' has not changed.
 
@@ -2681,13 +2572,13 @@ Package rerunfilecheck Info: File `Statistical-Methods-II.out' has not changed.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11073.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11034.
  ) 
 Here is how much of TeX's memory you used:
- 17567 strings out of 481790
- 343445 string characters out of 5936466
+ 17563 strings out of 481790
+ 343141 string characters out of 5936466
  751603 words of memory out of 5000000
- 34186 multiletter control sequences out of 15000+600000
+ 34183 multiletter control sequences out of 15000+600000
  541496 words of font info for 113 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  52i,15n,115p,1089b,526s stack positions out of 5000i,500n,10000p,200000b,80000s

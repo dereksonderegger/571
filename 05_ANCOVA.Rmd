@@ -20,6 +20,7 @@ knitr::opts_chunk$set( fig.height=3 )
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)  # ggplot2, tidyr, dplyr
+library(emmeans)   
 ```
 
 ## Introduction
@@ -198,6 +199,50 @@ ggplot(teengamb, aes(x=income, col=sex, fill=sex)) +
 # print the model summary
 summary(m1)
 ```
+
+To interpret the terms, we have
+
+| Coefficients   | Interpretation                         |
+|:----------|:--------------------------------------------|
+| `(Intercept)`  | y-intercept for the females            |
+| `sexMale`      | The difference in y-intercept for Males |
+| `income`       | Slope of the female regression line    |
+| `sexMale:income` | The offset in slopes for the Males   |
+
+So looking at the summary, we see the interaction term `sexMale:income` is statistically significant indicating that we prefer the more complicated model with different slopes for each gender.
+
+To calculate the differences between the predicted values at an `income` levels of 5 and 10, we could use `multcomp::glht()` and figure out the appropriate contrast vector, but we'll use the easy version with `emmeans()`
+
+```{r}
+emmeans(m1, specs = ~ income * sex, 
+        at=list(income=c(5,10), sex=c('Male','Female')))
+```
+If we are interested in the differences we can just do a `pairwise` in the `specs` argument, but I also want to just calculate the differences at each income level.
+
+```{r}
+# The pipe in the formula is essentially a group_by 
+emmeans(m1, specs = pairwise ~ sex | income, 
+        at=list(income=c(5,10), 
+                sex=c('Male','Female')))
+```
+
+If we want the slopes as well as the difference in slopes, we would use the `emtrends()` function.
+```{r}
+emtrends(m1, pairwise ~ income * sex, var = "income", 
+        at=list(income=10, sex=c('Male','Female')))
+```
+While I specified to calculate the slope at the x-value of `income=10`, that doesn't matter because the slopes are the same at all x-values
+
+Somewhat less interestingly, we could calculate the average of the Male and Female slopes.
+```{r}
+# when specs doesn't include a variable that was used 
+# in the model, this will either
+#   a) average over the missing levels (categorical)
+#   b) use the average value of the variable (quantitative)
+emtrends(m1, specs = ~ income, var = 'income',
+         at=list(income=10))
+```
+
 
 ## Iris Example
 
