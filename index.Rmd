@@ -1,7 +1,7 @@
 --- 
 title: "Statistical Methods II"
 author: "Derek L. Sonderegger"
-date: "`r Sys.Date()`"
+date: "`r format(Sys.Date(), format='%B %d, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book

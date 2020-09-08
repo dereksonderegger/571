@@ -18,11 +18,11 @@ if( length(pkgs > 0)){
 knitr::opts_chunk$set( fig.height=3, cache=TRUE )
 ```
 
-### Learning Outcomes{-}
+### Learning Outcomes{-#MatrixTheory_LearningOutcomes}
 * Perform basic vector and matrix operations of addition and multiplication
 * Perform matrix operations of transpose and inverse.
 
-## Introduction
+## Introduction {#MatrixTheory_Introduction}
 
 Almost all of the calculations done in classical statistics require
 formulas with large number of subscripts and many different sums.

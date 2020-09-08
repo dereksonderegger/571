@@ -1,6 +1,6 @@
 # (PART\*) Statistical Models{-}
 
-# Analysis of Covariance (ANCOVA)
+# Analysis of Covariance (ANCOVA) {#ANCOVA_Chapter}
 
 ```{r, echo=FALSE}
 # Unattach any packages that happen to already be loaded. In general this is unecessary
@@ -23,7 +23,7 @@ library(tidyverse)  # ggplot2, tidyr, dplyr
 library(emmeans)   
 ```
 
-## Introduction
+## Introduction {#ANCOVA_Introduction}
 One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. For historical reasons going back to pre "computer in your pocket" days, statisticians call this the *Analysis of Covariance* (ANCOVA) model. Because it is just another example of a $\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon}$ linear model, I prefer to think of it as simply having both continuous and categorical variables in my model. None of the cookbook calculations change, but the interpretation of the parameters gets much more interesting.
 
 The dataset `teengamb` in the package `faraway` has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?
@@ -51,7 +51,7 @@ ggplot(temp, aes(x=income, col=sex)) +
 
 We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix $\boldsymbol{X}$.
 
-## Offset parallel Lines (aka additive models)
+## Offset parallel Lines (aka additive models) {#ANCOVA_Additive}
 
 In order to get offset parallel lines, we want to write a model 
 $$y_{i}=\begin{cases}
@@ -129,7 +129,7 @@ $$
 
 In this model, $\beta_0$ is the y-intercept for group $1$. The parameter $\beta_1$ is the vertical offset from the reference group (group $1$) for the second group.  Similarly $\beta_2$ is the vertical offset for group $3$. All groups will share the same slope, $\beta_4$.  
 
-## Lines with different slopes (aka Interaction model)
+## Lines with different slopes (aka Interaction model) {#ANCOVA_Interaction}
 
 We can now include a discrete random variable and create regression lines that are parallel, but often that is inappropriate, such as in the teenage gambling dataset. We want to be able to fit a model that has different slopes.
 $$y_{i}=\begin{cases}
@@ -244,7 +244,7 @@ emtrends(m1, specs = ~ income, var = 'income',
 ```
 
 
-## Iris Example
+## Iris Example {#ANCOVA_Iris_Example}
 
 For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as `iris`. 
 
@@ -330,7 +330,7 @@ anova(m2, m3)
 
 The F-test concludes that there is sufficient decrease in the SSE to justify adding two additional parameters to the model. 
 
-## Exercises  {#Exercises_ANCOVA}
+## Exercises  {#ANCOVA_Exercises}
 
 1. The in the `faraway` package, there is a dataset named `phbirths` that gives babies birth weights along with their gestational time in utero along with the mother's smoking status. 
     a. Load and inspect the dataset using

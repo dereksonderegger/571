@@ -157,9 +157,6 @@ ggplot(coagulation, aes(x=diet, y=coag)) +
 
 
 
-### Exercises
-1. Use the dataset `chickwts` in the `datasets` package. This was an experiment to determine which feed types result in the largest chickens.  A set of 71 chicks were all randomly assigned one of six feed types and their weight in grams after six weeks was recorded.  Determine whether there are differences in the weights of chickens according to their feed. Perform all necessary model diagnostics and examine the contrasts between each pair of feed levels. Summarize these results. 
-
 
 ## Two-Way ANOVA
 

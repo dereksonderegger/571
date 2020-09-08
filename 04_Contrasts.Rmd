@@ -22,9 +22,9 @@ library(emmeans)    # for emmeans()
 # library(multcomp)   # for glht()  - multcomp fights with dplyr, :(
 ```
 
-### Learning Outcomes{-}
+### Learning Outcomes{-#Contrasts_LearningOutcomes}
 
-## Introduction
+## Introduction {#Contrasts_Introduction}
 We have written our model as $\boldsymbol{y} = \boldsymbol{X\beta}+\boldsymbol{\epsilon}$ and often we are interested in some linear function of the $\boldsymbol{\hat{\beta}}$. Some examples include the model predictions $\hat{y}_i = \boldsymbol{X}_{i\cdot} \boldsymbol{\beta}$ where $\boldsymbol{X}_{i\cdot}$ is the $i^{th}$ row of the $\boldsymbol{X}$ matrix. Other examples include differences in group means in a one-way ANOVA or differences in predicted values $\hat{y}_i - \hat{y}_j$.
 
 All of these can can be written as $\boldsymbol{c}'\boldsymbol{\beta}$ for some vector $\boldsymbol{c}$.
@@ -209,11 +209,11 @@ We might next ask if the difference in volume between a tree with 10 inch girth 
 $$ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0$$ 
 $$ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0$$ 
 
-In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$.
+In this case, we want to look at all possible pairwise differences between the predicted values at $10$ and $12$. (The *rev* part just reverses the order in which we do the subtraction.)
 
 ```{r}
 emmeans(model, specs = revpairwise~Girth,
-        at=list(Girth=c(10,12,14)) ) 
+        at=list(Girth=c(10,12)) ) 
 ```
 
 Notice that if I was interested in 3 points, we would get all of the differences.
@@ -266,9 +266,12 @@ To use the `emmeans()`, we again will use the pairwise command where we specify 
 
 ```{r}
 model <- lm( HLT ~ Method, data=Hostility )
-emmeans(model, specs = pairwise~Method)
+emmeans(model, specs = pairwise~Method, 
+        infer=c(TRUE,TRUE) )     # Print out Confidence Intervals and Pvalues
 ```
 
+
+By default, `emmeans()` and `emtrends()` don't provide p-values for testing if the effect could possibly be equal to zero. To get those, you'll need to set the inference option to return both confidence intervals and p-values using the `infer=c(TRUE,TRUE)`, where the two logical values control the inclusion of the confidence interval and p-value, respectively.
 
 ## Exercises {#Exercises_Contrasts}
 1. The American Community Survey is on ongoing survey being conducted monthly by the US Census Bureau and the package `Lock5Data` has a dataset called `EmployedACS` that has 431 randomly selected anonymous US residents from this survey.

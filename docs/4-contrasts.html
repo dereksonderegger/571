@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Contrasts | Statistical Methods II</title>
+  <title>Chapter 4 Contrasts | Untitled</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Contrasts | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 4 Contrasts | Untitled" />
   <meta property="og:type" content="book" />
   
   
@@ -16,15 +16,14 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Contrasts | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 4 Contrasts | Untitled" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
 
-<meta name="author" content="Derek L. Sonderegger" />
+<meta name="author" content="Derek Sonderegger" />
 
 
-<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +32,7 @@
   
 <link rel="prev" href="3-inference.html"/>
 <link rel="next" href="5-analysis-of-covariance-ancova.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +50,20 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +83,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -136,10 +134,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="part"><span><b>Statistical Theory</b></span></li>
-<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
-<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a>
+<ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_Introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
 <li class="chapter" data-level="1.2.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
 <li class="chapter" data-level="1.2.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
@@ -148,7 +148,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
 <li class="chapter" data-level="1.2.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
 <li class="chapter" data-level="1.3.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
 <li class="chapter" data-level="1.3.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
@@ -160,18 +161,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#Exercises_MatrixTheory"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
-<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a><ul>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a>
+<ul>
 <li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.2.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2.2</b> ANOVA model</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a>
+<ul>
 <li class="chapter" data-level="2.3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.3.1</b> Estimation of Location Paramters</a></li>
 <li class="chapter" data-level="2.3.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.3.2</b> Estimation of Variance Parameter</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a><ul>
+<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.4.1</b> Expectation and variance of a random vector</a></li>
 <li class="chapter" data-level="2.4.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.4.2</b> Variance of Location Parameters</a></li>
 <li class="chapter" data-level="2.4.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.4.3</b> Summary of pertinent results</a></li>
@@ -179,43 +184,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>2.5</b> R example</a></li>
 <li class="chapter" data-level="2.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#Exercises_Estimation"><i class="fa fa-check"></i><b>2.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
 <li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals and Hypothesis Tests</a></li>
-<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.3.1</b> Theory</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a><ul>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.4.1</b> Testing All Covariates</a></li>
 <li class="chapter" data-level="3.4.2" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.4.2</b> Testing a Single Covariate</a></li>
 <li class="chapter" data-level="3.4.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.4.3</b> Testing a Subset of Covariates</a></li>
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#Exercises_Inference"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="4.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
 <li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
-<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a>
+<ul>
 <li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="4-contrasts.html"><a href="4-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>Statistical Models</b></span></li>
-<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a><ul>
-<li class="chapter" data-level="5.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>5.2</b> Offset parallel Lines (aka additive models)</a></li>
 <li class="chapter" data-level="5.3" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>5.3</b> Lines with different slopes (aka Interaction model)</a></li>
 <li class="chapter" data-level="5.4" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>5.4</b> Iris Example</a></li>
 <li class="chapter" data-level="5.5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#Exercises_ANCOVA"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a><ul>
-<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a><ul>
+<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a>
+<ul>
 <li class="chapter" data-level="6.1.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>6.1.1</b> An Example</a></li>
 <li class="chapter" data-level="6.1.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>6.1.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="6.1.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>6.1.3</b> Diagnostics</a></li>
@@ -224,12 +238,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>6.2</b> Two-Way ANOVA</a></li>
 <li class="chapter" data-level="6.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>6.3</b> Orthogonality</a></li>
-<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>6.4.1</b> Example - Fruit Trees</a></li>
 <li class="chapter" data-level="6.4.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>6.4.2</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.4.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>6.4.3</b> Estimating Contrasts</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a><ul>
+<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>6.5.1</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.5.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>6.5.2</b> Example - Fruit Trees (continued)</a></li>
 <li class="chapter" data-level="6.5.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>6.5.3</b> Example - Warpbreaks</a></li>
@@ -237,27 +253,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="7-multiple-regression.html"><a href="7-multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple Regression</a></li>
-<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a><ul>
+<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
-<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a>
+<ul>
 <li class="chapter" data-level="8.3.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="8.3.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
 <li class="chapter" data-level="8.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="8.4" data-path="8-variable-selection.html"><a href="8-variable-selection.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a><ul>
+<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>9.1</b> Interpretation with Correlated Covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a><ul>
-<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>10.1.1</b> Measures of Influence</a></li>
 <li class="chapter" data-level="10.1.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>10.1.2</b> Diagnostic Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a><ul>
+<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>10.2.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
 <li class="chapter" data-level="10.2.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>10.2.2</b> Transforming the Response</a></li>
 <li class="chapter" data-level="10.2.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>10.2.3</b> Transforming the predictors</a></li>
@@ -266,7 +289,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="11-too-many-predictors.html"><a href="11-too-many-predictors.html"><i class="fa fa-check"></i><b>11</b> Too many Predictors</a></li>
-<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>12.1</b> Block Designs</a></li>
 <li class="chapter" data-level="12.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>12.2</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="12.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>12.3</b> Review of Maximum Likelihood Methods</a></li>
@@ -275,15 +299,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.6" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>12.6</b> Nested Effects</a></li>
 <li class="chapter" data-level="12.7" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>12.7</b> Crossed Effects</a></li>
 <li class="chapter" data-level="12.8" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>12.8</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a>
+<ul>
 <li class="chapter" data-level="12.9.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>12.9.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.9.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>12.9.2</b> Prediction Intervals</a></li>
 </ul></li>
 <li class="chapter" data-level="12.10" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#Exercises_RandomEffects"><i class="fa fa-check"></i><b>12.10</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>13.1</b> Binomial Regression Model</a></li>
-<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>13.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="13.2.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>13.2.2</b> Goodness of Fit</a></li>
 </ul></li>
@@ -296,20 +323,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="14-poisson-regression.html"><a href="14-poisson-regression.html"><i class="fa fa-check"></i><b>14</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a><ul>
+<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>15.1</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="15.2" data-path="15-block-designs.html"><a href="15-block-designs.html"><i class="fa fa-check"></i><b>15.2</b> Split-plot designs</a></li>
 <li class="chapter" data-level="15.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>15.3</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="16.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
-<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a><ul>
+<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="16.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
+<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a>
+<ul>
 <li class="chapter" data-level="16.2.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>16.2.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.2.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>16.2.2</b> Exponential</a></li>
 <li class="chapter" data-level="16.2.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>16.2.3</b> Normal</a></li>
 </ul></li>
-<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a><ul>
+<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a>
+<ul>
 <li class="chapter" data-level="16.3.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>16.3.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.3.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>16.3.2</b> Exponential Example</a></li>
 <li class="chapter" data-level="16.3.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>16.3.3</b> Normal</a></li>
@@ -317,8 +348,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.4" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>16.4</b> Discussion</a></li>
 <li class="chapter" data-level="16.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>16.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
-<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
+<ul>
+<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>16.6.1</b> WIBGIs</a></li>
 </ul></li>
 </ul></li>
@@ -331,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Untitled</a>
           </h1>
         </div>
 
@@ -339,16 +372,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="contrasts" class="section level1">
+<div id="contrasts" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Contrasts</h1>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="4-contrasts.html#cb49-1"></a><span class="kw">library</span>(tidyverse)   <span class="co"># ggplot2, dplyr, tidyr</span></span>
-<span id="cb49-2"><a href="4-contrasts.html#cb49-2"></a><span class="kw">library</span>(tidymodels)  <span class="co"># for broom functions</span></span>
-<span id="cb49-3"><a href="4-contrasts.html#cb49-3"></a><span class="kw">library</span>(emmeans)    <span class="co"># for emmeans()</span></span>
-<span id="cb49-4"><a href="4-contrasts.html#cb49-4"></a><span class="co"># library(multcomp)   # for glht()  - multcomp fights with dplyr, :(</span></span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="4-contrasts.html#cb49-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># ggplot2, dplyr, tidyr</span></span>
+<span id="cb49-2"><a href="4-contrasts.html#cb49-2" aria-hidden="true"></a><span class="kw">library</span>(tidymodels)  <span class="co"># for broom functions</span></span>
+<span id="cb49-3"><a href="4-contrasts.html#cb49-3" aria-hidden="true"></a><span class="kw">library</span>(emmeans)    <span class="co"># for emmeans()</span></span>
+<span id="cb49-4"><a href="4-contrasts.html#cb49-4" aria-hidden="true"></a><span class="co"># library(multcomp)   # for glht()  - multcomp fights with dplyr, :(</span></span></code></pre></div>
 <div id="learning-outcomes" class="section level3 unnumbered">
 <h3>Learning Outcomes</h3>
 </div>
-<div id="introduction" class="section level2">
+<div id="introduction" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Introduction</h2>
 <p>We have written our model as <span class="math inline">\(\boldsymbol{y} = \boldsymbol{X\beta}+\boldsymbol{\epsilon}\)</span> and often we are interested in some linear function of the <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>. Some examples include the model predictions <span class="math inline">\(\hat{y}_i = \boldsymbol{X}_{i\cdot} \boldsymbol{\beta}\)</span> where <span class="math inline">\(\boldsymbol{X}_{i\cdot}\)</span> is the <span class="math inline">\(i^{th}\)</span> row of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix. Other examples include differences in group means in a one-way ANOVA or differences in predicted values <span class="math inline">\(\hat{y}_i - \hat{y}_j\)</span>.</p>
 <p>All of these can can be written as <span class="math inline">\(\boldsymbol{c}&#39;\boldsymbol{\beta}\)</span> for some vector <span class="math inline">\(\boldsymbol{c}\)</span>.</p>
@@ -380,7 +413,7 @@ where the elements can be added, subtracted, or multiplied by constants. In part
 \]</span>
 In this manner, we could think of calculating all of the predicted values <span class="math inline">\(\hat{y}_i\)</span> as just the result of the contrast <span class="math inline">\(\boldsymbol{X} \hat{\boldsymbol{\beta}}\)</span> where our design matrix <span class="math inline">\(\boldsymbol{X}\)</span> takes the role of the contrasts.</p>
 </div>
-<div id="estimate-and-variance" class="section level2">
+<div id="estimate-and-variance" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Estimate and variance</h2>
 <p>One of the properties of maximum likelihood estimator (MLEs), is that they are invariant under transformations. Meaning that since <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is the MLE of <span class="math inline">\(\boldsymbol{\beta}\)</span>, then <span class="math inline">\(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\)</span> is the MLE of <span class="math inline">\(\boldsymbol{c}^{T}\boldsymbol{\beta}\)</span>. The only thing we need to perform hypotheses tests and create confidence intervals is an estimate of the variance of <span class="math inline">\(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\)</span>.</p>
 <p>Because we know the variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is
@@ -425,39 +458,39 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 </tbody>
 </table>
 <p>We have analyzed this data using both the cell means model and the offset and we will demonstrate how to calculate the group means from the offset representation. Thus we are interested in estimating <span class="math inline">\(\mu+\tau_{2}\)</span> and <span class="math inline">\(\mu+\tau_{3}\)</span>. I am also interested in estimating the difference between treatment 2 and 3 and will therefore be interested in estimating <span class="math inline">\(\tau_{2} - \tau_{3}\)</span>.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="4-contrasts.html#cb50-1"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb50-2"><a href="4-contrasts.html#cb50-2"></a>  <span class="dt">y =</span>  <span class="kw">c</span>(<span class="dv">96</span>,<span class="dv">79</span>,<span class="dv">91</span>,<span class="dv">85</span>,<span class="dv">83</span>,<span class="dv">91</span>,<span class="dv">82</span>,<span class="dv">87</span>,</span>
-<span id="cb50-3"><a href="4-contrasts.html#cb50-3"></a>         <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,</span>
-<span id="cb50-4"><a href="4-contrasts.html#cb50-4"></a>         <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>),</span>
-<span id="cb50-5"><a href="4-contrasts.html#cb50-5"></a>  <span class="dt">group =</span> <span class="kw">factor</span>(<span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;Group1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;Group2&#39;</span>,<span class="dv">7</span>),<span class="kw">rep</span>(<span class="st">&#39;Group3&#39;</span>,<span class="dv">9</span>) ))</span>
-<span id="cb50-6"><a href="4-contrasts.html#cb50-6"></a>)</span>
-<span id="cb50-7"><a href="4-contrasts.html#cb50-7"></a></span>
-<span id="cb50-8"><a href="4-contrasts.html#cb50-8"></a><span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>group, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="4-contrasts.html#cb50-1" aria-hidden="true"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb50-2"><a href="4-contrasts.html#cb50-2" aria-hidden="true"></a>  <span class="dt">y =</span>  <span class="kw">c</span>(<span class="dv">96</span>,<span class="dv">79</span>,<span class="dv">91</span>,<span class="dv">85</span>,<span class="dv">83</span>,<span class="dv">91</span>,<span class="dv">82</span>,<span class="dv">87</span>,</span>
+<span id="cb50-3"><a href="4-contrasts.html#cb50-3" aria-hidden="true"></a>         <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,</span>
+<span id="cb50-4"><a href="4-contrasts.html#cb50-4" aria-hidden="true"></a>         <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>),</span>
+<span id="cb50-5"><a href="4-contrasts.html#cb50-5" aria-hidden="true"></a>  <span class="dt">group =</span> <span class="kw">factor</span>(<span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;Group1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;Group2&#39;</span>,<span class="dv">7</span>),<span class="kw">rep</span>(<span class="st">&#39;Group3&#39;</span>,<span class="dv">9</span>) ))</span>
+<span id="cb50-6"><a href="4-contrasts.html#cb50-6" aria-hidden="true"></a>)</span>
+<span id="cb50-7"><a href="4-contrasts.html#cb50-7" aria-hidden="true"></a></span>
+<span id="cb50-8"><a href="4-contrasts.html#cb50-8" aria-hidden="true"></a><span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>group, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>We can fit the offset model and obtain the design matrix and estimate of <span class="math inline">\(\hat{\sigma}\)</span> via the following code.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="4-contrasts.html#cb51-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group, <span class="dt">data=</span>data)          <span class="co"># Fit the ANOVA model (offset representation)</span></span>
-<span id="cb51-2"><a href="4-contrasts.html#cb51-2"></a><span class="kw">tidy</span>(m)                                <span class="co"># Show me beta.hat</span></span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="4-contrasts.html#cb51-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group, <span class="dt">data=</span>data)          <span class="co"># Fit the ANOVA model (offset representation)</span></span>
+<span id="cb51-2"><a href="4-contrasts.html#cb51-2" aria-hidden="true"></a><span class="kw">tidy</span>(m)                                <span class="co"># Show me beta.hat</span></span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)     86.8      1.52     57.1  1.57e-24
 ## 2 groupGroup2    -11.2      2.22     -5.03 5.58e- 5
 ## 3 groupGroup3    -15.8      2.09     -7.55 2.06e- 7</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="4-contrasts.html#cb53-1"></a>X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(m)                   <span class="co"># obtains the design matrix</span></span>
-<span id="cb53-2"><a href="4-contrasts.html#cb53-2"></a>sigma.hat &lt;-<span class="st"> </span><span class="kw">glance</span>(m) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(sigma) <span class="co"># grab sigma.hat </span></span>
-<span id="cb53-3"><a href="4-contrasts.html#cb53-3"></a>beta.hat &lt;-<span class="st"> </span><span class="kw">tidy</span>(m) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(estimate) </span>
-<span id="cb53-4"><a href="4-contrasts.html#cb53-4"></a>XtX.inv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="4-contrasts.html#cb53-1" aria-hidden="true"></a>X &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(m)                   <span class="co"># obtains the design matrix</span></span>
+<span id="cb53-2"><a href="4-contrasts.html#cb53-2" aria-hidden="true"></a>sigma.hat &lt;-<span class="st"> </span><span class="kw">glance</span>(m) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(sigma) <span class="co"># grab sigma.hat </span></span>
+<span id="cb53-3"><a href="4-contrasts.html#cb53-3" aria-hidden="true"></a>beta.hat &lt;-<span class="st"> </span><span class="kw">tidy</span>(m) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">pull</span>(estimate) </span>
+<span id="cb53-4"><a href="4-contrasts.html#cb53-4" aria-hidden="true"></a>XtX.inv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )</span></code></pre></div>
 <p>Now we calculate</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="4-contrasts.html#cb54-1"></a>contr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)  <span class="co"># define my contrast</span></span>
-<span id="cb54-2"><a href="4-contrasts.html#cb54-2"></a>ctb &lt;-<span class="st"> </span><span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>beta.hat</span>
-<span id="cb54-3"><a href="4-contrasts.html#cb54-3"></a>std.err &lt;-<span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>XtX.inv <span class="op">%*%</span><span class="st"> </span>contr )</span>
-<span id="cb54-4"><a href="4-contrasts.html#cb54-4"></a></span>
-<span id="cb54-5"><a href="4-contrasts.html#cb54-5"></a><span class="kw">data.frame</span>(<span class="dt">Estimate=</span>ctb, <span class="dt">StdErr=</span>std.err)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="4-contrasts.html#cb54-1" aria-hidden="true"></a>contr &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>)  <span class="co"># define my contrast</span></span>
+<span id="cb54-2"><a href="4-contrasts.html#cb54-2" aria-hidden="true"></a>ctb &lt;-<span class="st"> </span><span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>beta.hat</span>
+<span id="cb54-3"><a href="4-contrasts.html#cb54-3" aria-hidden="true"></a>std.err &lt;-<span class="st"> </span>sigma.hat <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>( <span class="kw">t</span>(contr) <span class="op">%*%</span><span class="st"> </span>XtX.inv <span class="op">%*%</span><span class="st"> </span>contr )</span>
+<span id="cb54-4"><a href="4-contrasts.html#cb54-4" aria-hidden="true"></a></span>
+<span id="cb54-5"><a href="4-contrasts.html#cb54-5" aria-hidden="true"></a><span class="kw">data.frame</span>(<span class="dt">Estimate=</span>ctb, <span class="dt">StdErr=</span>std.err)</span></code></pre></div>
 <pre><code>##   Estimate   StdErr
 ## 1 75.57143 1.622994</code></pre>
 <p>and notice this is the exact same estimate and standard error we got for group two when we fit the cell means model.</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="4-contrasts.html#cb56-1"></a>CellMeansModel &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>data)</span>
-<span id="cb56-2"><a href="4-contrasts.html#cb56-2"></a>CellMeansModel <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="4-contrasts.html#cb56-1" aria-hidden="true"></a>CellMeansModel &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group <span class="op">-</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>data)</span>
+<span id="cb56-2"><a href="4-contrasts.html#cb56-2" aria-hidden="true"></a>CellMeansModel <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -465,14 +498,14 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 ## 2 groupGroup2     75.6      1.62      46.6 1.12e-22
 ## 3 groupGroup3     71        1.43      49.6 2.99e-23</code></pre>
 </div>
-<div id="estimating-contrasts-using-glht" class="section level2">
+<div id="estimating-contrasts-using-glht" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Estimating contrasts using <code>glht()</code></h2>
 <p>Instead of us doing all the matrix calculations ourselves, all we really need is to is specify the row vector <span class="math inline">\(\boldsymbol{c}^{T}\)</span>. The function that will do the rest of the calculations is the generalized linear hypothesis test function <code>glht()</code> that can be found in the multiple comparisons package <code>multcomp</code>. The p-values will be adjusted to correct for testing multiple hypothesis, so there may be slight differences compared to the p-value seen in just the regular summary table.</p>
-<div id="Contrasts_glht_OneWayAnova" class="section level3">
+<div id="Contrasts_glht_OneWayAnova" class="section level3" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> 1-way ANOVA</h3>
 <p>We will again use the Hostility data set and demonstrate how to calculate the point estimates, standard errors and confidence intervals for the group means given a model fit using the offset representation.</p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="4-contrasts.html#cb58-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group, <span class="dt">data=</span>data)</span>
-<span id="cb58-2"><a href="4-contrasts.html#cb58-2"></a>m <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="4-contrasts.html#cb58-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group, <span class="dt">data=</span>data)</span>
+<span id="cb58-2"><a href="4-contrasts.html#cb58-2" aria-hidden="true"></a>m <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -480,9 +513,9 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 ## 2 groupGroup2    -11.2      2.22     -5.03 5.58e- 5
 ## 3 groupGroup3    -15.8      2.09     -7.55 2.06e- 7</code></pre>
 <p>We will now define a row vector (and it needs to be a matrix or else <code>glht()</code> will throw an error. First we note that the simple contrast <span class="math inline">\(\boldsymbol{c}^{T}=\left[1\;0\;0\right]\)</span> just grabs the first coefficient and gives us the same estimate and standard error as the summary did.</p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="4-contrasts.html#cb60-1"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Intercept&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>))      <span class="co"># 1x3 matrix with row named &quot;Intercept&quot;</span></span>
-<span id="cb60-2"><a href="4-contrasts.html#cb60-2"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)   <span class="co"># the linear function to be tested is contr</span></span>
-<span id="cb60-3"><a href="4-contrasts.html#cb60-3"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="4-contrasts.html#cb60-1" aria-hidden="true"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Intercept&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>))      <span class="co"># 1x3 matrix with row named &quot;Intercept&quot;</span></span>
+<span id="cb60-2"><a href="4-contrasts.html#cb60-2" aria-hidden="true"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)   <span class="co"># the linear function to be tested is contr</span></span>
+<span id="cb60-3"><a href="4-contrasts.html#cb60-3" aria-hidden="true"></a><span class="kw">summary</span>(test)</span></code></pre></div>
 <pre><code>## 
 ## 	 Simultaneous Tests for General Linear Hypotheses
 ## 
@@ -495,12 +528,12 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
 <p>Next we calculate the estimate of all the group means <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\mu+\tau_{2}\)</span> and <span class="math inline">\(\mu+\tau_{3}\)</span> and the difference between group 2 and 3. Notice I can specify more than one contrast at a time.</p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="4-contrasts.html#cb62-1"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Mean of Group 1&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
-<span id="cb62-2"><a href="4-contrasts.html#cb62-2"></a>               <span class="st">&quot;Mean of Group 2&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
-<span id="cb62-3"><a href="4-contrasts.html#cb62-3"></a>               <span class="st">&quot;Mean of Group 3&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
-<span id="cb62-4"><a href="4-contrasts.html#cb62-4"></a>               <span class="st">&quot;Diff G2-G3&quot;</span>     =<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)) </span>
-<span id="cb62-5"><a href="4-contrasts.html#cb62-5"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
-<span id="cb62-6"><a href="4-contrasts.html#cb62-6"></a><span class="kw">summary</span>(test)</span></code></pre></div>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="4-contrasts.html#cb62-1" aria-hidden="true"></a>contr &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="st">&quot;Mean of Group 1&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb62-2"><a href="4-contrasts.html#cb62-2" aria-hidden="true"></a>               <span class="st">&quot;Mean of Group 2&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
+<span id="cb62-3"><a href="4-contrasts.html#cb62-3" aria-hidden="true"></a>               <span class="st">&quot;Mean of Group 3&quot;</span>=<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>),</span>
+<span id="cb62-4"><a href="4-contrasts.html#cb62-4" aria-hidden="true"></a>               <span class="st">&quot;Diff G2-G3&quot;</span>     =<span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="op">-</span><span class="dv">1</span>)) </span>
+<span id="cb62-5"><a href="4-contrasts.html#cb62-5" aria-hidden="true"></a>test &lt;-<span class="st"> </span>multcomp<span class="op">::</span><span class="kw">glht</span>(m, <span class="dt">linfct=</span>contr)</span>
+<span id="cb62-6"><a href="4-contrasts.html#cb62-6" aria-hidden="true"></a><span class="kw">summary</span>(test)</span></code></pre></div>
 <pre><code>## 
 ## 	 Simultaneous Tests for General Linear Hypotheses
 ## 
@@ -516,7 +549,7 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## (Adjusted p values reported -- single-step method)</code></pre>
 <p>Finally we calculate confidence intervals in the usual manner using the <code>confint()</code> function.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="4-contrasts.html#cb64-1"></a><span class="kw">confint</span>(test, <span class="dt">level=</span><span class="fl">0.95</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="4-contrasts.html#cb64-1" aria-hidden="true"></a><span class="kw">confint</span>(test, <span class="dt">level=</span><span class="fl">0.95</span>)</span></code></pre></div>
 <pre><code>## 
 ## 	 Simultaneous Confidence Intervals
 ## 
@@ -534,32 +567,32 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 ## Diff G2-G3 == 0       4.5714  -1.1546 10.2975</code></pre>
 </div>
 </div>
-<div id="Contrasts_emmeans" class="section level2">
+<div id="Contrasts_emmeans" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Using <code>emmeans</code> Package</h2>
 <p>Specifying the contrasts by hand is extremely difficult to do correctly and instead we would prefer to specify the contrasts using language like “create all possible pairwise contrasts” where each pair is just a subtraction. The R-package <code>emmeans</code> tries to simply the creation of common contrasts.</p>
 <p>To show how to use the <code>emmeans</code> package, we’ll consider a bunch of common models and show how to address common statistical questions for each.</p>
-<div id="Contrasts_SimpleRegression" class="section level3">
+<div id="Contrasts_SimpleRegression" class="section level3" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> Simple Regression</h3>
 <p>There is a dataset built into R named <code>trees</code> which describes a set of <span class="math inline">\(n=31\)</span> cherry trees and the goal is to predict the volume of timber produced by each tree just using the tree girth a 4.5 feet above the ground.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="4-contrasts.html#cb66-1"></a><span class="kw">data</span>(trees)</span>
-<span id="cb66-2"><a href="4-contrasts.html#cb66-2"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span>Girth, <span class="dt">data=</span>trees )</span>
-<span id="cb66-3"><a href="4-contrasts.html#cb66-3"></a>trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span></span>
-<span id="cb66-4"><a href="4-contrasts.html#cb66-4"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
-<span id="cb66-5"><a href="4-contrasts.html#cb66-5"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
-<span id="cb66-6"><a href="4-contrasts.html#cb66-6"></a><span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span></span>
-<span id="cb66-7"><a href="4-contrasts.html#cb66-7"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb66-8"><a href="4-contrasts.html#cb66-8"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
-<span id="cb66-9"><a href="4-contrasts.html#cb66-9"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="4-contrasts.html#cb66-1" aria-hidden="true"></a><span class="kw">data</span>(trees)</span>
+<span id="cb66-2"><a href="4-contrasts.html#cb66-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span>Girth, <span class="dt">data=</span>trees )</span>
+<span id="cb66-3"><a href="4-contrasts.html#cb66-3" aria-hidden="true"></a>trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span></span>
+<span id="cb66-4"><a href="4-contrasts.html#cb66-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb66-5"><a href="4-contrasts.html#cb66-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
+<span id="cb66-6"><a href="4-contrasts.html#cb66-6" aria-hidden="true"></a><span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span></span>
+<span id="cb66-7"><a href="4-contrasts.html#cb66-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb66-8"><a href="4-contrasts.html#cb66-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
+<span id="cb66-9"><a href="4-contrasts.html#cb66-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <p>Using the <code>summary()</code> function, we can test hypotheses about if
 the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="4-contrasts.html#cb67-1"></a><span class="co"># We could find the regression line heights and CI using </span></span>
-<span id="cb67-2"><a href="4-contrasts.html#cb67-2"></a><span class="co"># either predict() or emmeans()</span></span>
-<span id="cb67-3"><a href="4-contrasts.html#cb67-3"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)), <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="4-contrasts.html#cb67-1" aria-hidden="true"></a><span class="co"># We could find the regression line heights and CI using </span></span>
+<span id="cb67-2"><a href="4-contrasts.html#cb67-2" aria-hidden="true"></a><span class="co"># either predict() or emmeans()</span></span>
+<span id="cb67-3"><a href="4-contrasts.html#cb67-3" aria-hidden="true"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)), <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span> )</span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 13.71511 11.44781 15.98240
 ## 2 23.84682 22.16204 25.53159</code></pre>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="4-contrasts.html#cb69-1"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> <span class="op">~</span>Girth, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) )  </span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="4-contrasts.html#cb69-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> <span class="op">~</span>Girth, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) )  </span></code></pre></div>
 <pre><code>##  Girth emmean    SE df lower.CL upper.CL
 ##     10   13.7 1.109 29     11.4     16.0
 ##     12   23.8 0.824 29     22.2     25.5
@@ -569,27 +602,22 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <p>We might next ask if the difference in volume between a tree with 10 inch girth is statistically different than a tree with 12 inch girth? In other words, we want to test
 <span class="math display">\[ H_0:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) = 0\]</span>
 <span class="math display">\[ H_a:\; (\beta_0 + \beta_1\cdot10 ) - (\beta_0 + \beta_1 \cdot 12) \ne 0\]</span></p>
-<p>In this case, we want to look at all possible pairwise differences between the predicted values at <span class="math inline">\(10\)</span> and <span class="math inline">\(12\)</span>.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="4-contrasts.html#cb71-1"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> revpairwise<span class="op">~</span>Girth,</span>
-<span id="cb71-2"><a href="4-contrasts.html#cb71-2"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">14</span>)) ) </span></code></pre></div>
+<p>In this case, we want to look at all possible pairwise differences between the predicted values at <span class="math inline">\(10\)</span> and <span class="math inline">\(12\)</span>. (The <em>rev</em> part just reverses the order in which we do the subtraction.)</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="4-contrasts.html#cb71-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> revpairwise<span class="op">~</span>Girth,</span>
+<span id="cb71-2"><a href="4-contrasts.html#cb71-2" aria-hidden="true"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">12</span>)) ) </span></code></pre></div>
 <pre><code>## $emmeans
 ##  Girth emmean    SE df lower.CL upper.CL
 ##     10   13.7 1.109 29     11.4     16.0
 ##     12   23.8 0.824 29     22.2     25.5
-##     14   34.0 0.786 29     32.4     35.6
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast estimate    SE df t.ratio p.value
-##  12 - 10      10.1 0.495 29 20.478  &lt;.0001 
-##  14 - 10      20.3 0.990 29 20.478  &lt;.0001 
-##  14 - 12      10.1 0.495 29 20.478  &lt;.0001 
-## 
-## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+##  12 - 10      10.1 0.495 29 20.478  &lt;.0001</code></pre>
 <p>Notice that if I was interested in 3 points, we would get all of the differences.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="4-contrasts.html#cb73-1"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,</span>
-<span id="cb73-2"><a href="4-contrasts.html#cb73-2"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) ) </span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="4-contrasts.html#cb73-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Girth,</span>
+<span id="cb73-2"><a href="4-contrasts.html#cb73-2" aria-hidden="true"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) ) </span></code></pre></div>
 <pre><code>## $emmeans
 ##  Girth emmean    SE df lower.CL upper.CL
 ##     10   13.7 1.109 29     11.4     16.0
@@ -606,24 +634,24 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 ## 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 <p>In this very simple case, the slope parameter is easily available as a parameter value, but we could use the <code>emtrends()</code> function to obtain the slope.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="4-contrasts.html#cb75-1"></a><span class="kw">emtrends</span>( model, <span class="op">~</span>Girth, <span class="st">&#39;Girth&#39;</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="4-contrasts.html#cb75-1" aria-hidden="true"></a><span class="kw">emtrends</span>( model, <span class="op">~</span>Girth, <span class="st">&#39;Girth&#39;</span> )</span></code></pre></div>
 <pre><code>##  Girth Girth.trend    SE df lower.CL upper.CL
 ##   13.2        5.07 0.247 29     4.56     5.57
 ## 
 ## Confidence level used: 0.95</code></pre>
 <p>This output is a bit mysterious because because of the <code>13.248</code> component. What has happened is that <code>emtrends</code> is telling us the slope of the line at a particular point on the x-axis (the mean of all the girth values). While this doesn’t matter in this example, because the slope is the same for all values of girth, if we had fit a quadratic model, it would not.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="4-contrasts.html#cb77-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth, <span class="dv">2</span>), <span class="dt">data=</span>trees )      <span class="co"># Girth + Girth^2</span></span>
-<span id="cb77-2"><a href="4-contrasts.html#cb77-2"></a>trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb77-3"><a href="4-contrasts.html#cb77-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Volume, Girth) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb77-4"><a href="4-contrasts.html#cb77-4"></a><span class="st">  </span><span class="kw">cbind</span>(<span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
-<span id="cb77-5"><a href="4-contrasts.html#cb77-5"></a></span>
-<span id="cb77-6"><a href="4-contrasts.html#cb77-6"></a><span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span></span>
-<span id="cb77-7"><a href="4-contrasts.html#cb77-7"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb77-8"><a href="4-contrasts.html#cb77-8"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
-<span id="cb77-9"><a href="4-contrasts.html#cb77-9"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="4-contrasts.html#cb77-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( Volume <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth, <span class="dv">2</span>), <span class="dt">data=</span>trees )      <span class="co"># Girth + Girth^2</span></span>
+<span id="cb77-2"><a href="4-contrasts.html#cb77-2" aria-hidden="true"></a>trees &lt;-<span class="st"> </span>trees <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb77-3"><a href="4-contrasts.html#cb77-3" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Volume, Girth) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb77-4"><a href="4-contrasts.html#cb77-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>(<span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
+<span id="cb77-5"><a href="4-contrasts.html#cb77-5" aria-hidden="true"></a></span>
+<span id="cb77-6"><a href="4-contrasts.html#cb77-6" aria-hidden="true"></a><span class="kw">ggplot</span>(trees, <span class="kw">aes</span>(<span class="dt">x=</span>Girth, <span class="dt">y=</span>Volume)) <span class="op">+</span></span>
+<span id="cb77-7"><a href="4-contrasts.html#cb77-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb77-8"><a href="4-contrasts.html#cb77-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
+<span id="cb77-9"><a href="4-contrasts.html#cb77-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="4-contrasts.html#cb78-1"></a><span class="kw">emtrends</span>( model, <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth,<span class="dv">2</span>), <span class="st">&#39;Girth&#39;</span>,</span>
-<span id="cb78-2"><a href="4-contrasts.html#cb78-2"></a>          <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) )</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="4-contrasts.html#cb78-1" aria-hidden="true"></a><span class="kw">emtrends</span>( model, <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth,<span class="dv">2</span>), <span class="st">&#39;Girth&#39;</span>,</span>
+<span id="cb78-2"><a href="4-contrasts.html#cb78-2" aria-hidden="true"></a>          <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) )</span></code></pre></div>
 <pre><code>##  Girth Girth.trend    SE df lower.CL upper.CL
 ##     10        3.00 0.510 28     1.96     4.05
 ##     11        3.51 0.405 28     2.68     4.34
@@ -631,43 +659,47 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 ## 
 ## Confidence level used: 0.95</code></pre>
 </div>
-<div id="Contrasts_OneWayAnova" class="section level3">
+<div id="Contrasts_OneWayAnova" class="section level3" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> 1-way ANOVA</h3>
 <p>To consider the pairwise contrasts between different levels we will consider the college student hostility data again. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used <span class="math inline">\(24\)</span> students who obtained high and nearly equal scores in the experiment. Eight subjects were selected at random from among the <span class="math inline">\(24\)</span> problem cases and were treated with method 1, seven of the remaining <span class="math inline">\(16\)</span> students were selected at random and treated with method 2 while the remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table.</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="4-contrasts.html#cb80-1"></a>Hostility &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb80-2"><a href="4-contrasts.html#cb80-2"></a>  <span class="dt">HLT =</span> <span class="kw">c</span>(<span class="dv">96</span>,<span class="dv">79</span>,<span class="dv">91</span>,<span class="dv">85</span>,<span class="dv">83</span>,<span class="dv">91</span>,<span class="dv">82</span>,<span class="dv">87</span>,</span>
-<span id="cb80-3"><a href="4-contrasts.html#cb80-3"></a>          <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,</span>
-<span id="cb80-4"><a href="4-contrasts.html#cb80-4"></a>          <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>),</span>
-<span id="cb80-5"><a href="4-contrasts.html#cb80-5"></a>  <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</span></code></pre></div>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="4-contrasts.html#cb81-1"></a><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span></span>
-<span id="cb81-2"><a href="4-contrasts.html#cb81-2"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="4-contrasts.html#cb80-1" aria-hidden="true"></a>Hostility &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb80-2"><a href="4-contrasts.html#cb80-2" aria-hidden="true"></a>  <span class="dt">HLT =</span> <span class="kw">c</span>(<span class="dv">96</span>,<span class="dv">79</span>,<span class="dv">91</span>,<span class="dv">85</span>,<span class="dv">83</span>,<span class="dv">91</span>,<span class="dv">82</span>,<span class="dv">87</span>,</span>
+<span id="cb80-3"><a href="4-contrasts.html#cb80-3" aria-hidden="true"></a>          <span class="dv">77</span>,<span class="dv">76</span>,<span class="dv">74</span>,<span class="dv">73</span>,<span class="dv">78</span>,<span class="dv">71</span>,<span class="dv">80</span>,</span>
+<span id="cb80-4"><a href="4-contrasts.html#cb80-4" aria-hidden="true"></a>          <span class="dv">66</span>,<span class="dv">73</span>,<span class="dv">69</span>,<span class="dv">66</span>,<span class="dv">77</span>,<span class="dv">73</span>,<span class="dv">71</span>,<span class="dv">70</span>,<span class="dv">74</span>),</span>
+<span id="cb80-5"><a href="4-contrasts.html#cb80-5" aria-hidden="true"></a>  <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="4-contrasts.html#cb81-1" aria-hidden="true"></a><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span></span>
+<span id="cb81-2"><a href="4-contrasts.html#cb81-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <p>To use the <code>emmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="4-contrasts.html#cb82-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )</span>
-<span id="cb82-2"><a href="4-contrasts.html#cb82-2"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Method)</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="4-contrasts.html#cb82-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )</span>
+<span id="cb82-2"><a href="4-contrasts.html#cb82-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Method, </span>
+<span id="cb82-3"><a href="4-contrasts.html#cb82-3" aria-hidden="true"></a>        <span class="dt">infer=</span><span class="kw">c</span>(<span class="ot">TRUE</span>,<span class="ot">TRUE</span>) )     <span class="co"># Print out Confidence Intervals and Pvalues</span></span></code></pre></div>
 <pre><code>## $emmeans
-##  Method emmean   SE df lower.CL upper.CL
-##  M1       86.8 1.52 21     83.6     89.9
-##  M2       75.6 1.62 21     72.2     78.9
-##  M3       71.0 1.43 21     68.0     74.0
+##  Method emmean   SE df lower.CL upper.CL t.ratio p.value
+##  M1       86.8 1.52 21     83.6     89.9 57.141  &lt;.0001 
+##  M2       75.6 1.62 21     72.2     78.9 46.563  &lt;.0001 
+##  M3       71.0 1.43 21     68.0     74.0 49.604  &lt;.0001 
 ## 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
-##  contrast estimate   SE df t.ratio p.value
-##  M1 - M2     11.18 2.22 21 5.030   0.0002 
-##  M1 - M3     15.75 2.09 21 7.548   &lt;.0001 
-##  M2 - M3      4.57 2.16 21 2.112   0.1114 
+##  contrast estimate   SE df lower.CL upper.CL t.ratio p.value
+##  M1 - M2     11.18 2.22 21    5.577     16.8 5.030   0.0002 
+##  M1 - M3     15.75 2.09 21   10.491     21.0 7.548   &lt;.0001 
+##  M2 - M3      4.57 2.16 21   -0.883     10.0 2.112   0.1114 
 ## 
+## Confidence level used: 0.95 
+## Conf-level adjustment: tukey method for comparing a family of 3 estimates 
 ## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
+<p>By default, <code>emmeans()</code> and <code>emtrends()</code> don’t provide p-values for testing if the effect could possibly be equal to zero. To get those, you’ll need to set the inference option to return both confidence intervals and p-values using the <code>infer=c(TRUE,TRUE)</code>, where the two logical values control the inclusion of the confidence interval and p-value, respectively.</p>
 </div>
 </div>
-<div id="Exercises_Contrasts" class="section level2">
+<div id="Exercises_Contrasts" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li><p>The American Community Survey is on ongoing survey being conducted monthly by the US Census Bureau and the package <code>Lock5Data</code> has a dataset called <code>EmployedACS</code> that has 431 randomly selected anonymous US residents from this survey.</p>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="4-contrasts.html#cb84-1"></a><span class="kw">data</span>(<span class="st">&#39;EmployedACS&#39;</span>, <span class="dt">package=</span><span class="st">&#39;Lock5Data&#39;</span>)</span>
-<span id="cb84-2"><a href="4-contrasts.html#cb84-2"></a>?Lock5Data<span class="op">::</span>EmployedACS</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="4-contrasts.html#cb84-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;EmployedACS&#39;</span>, <span class="dt">package=</span><span class="st">&#39;Lock5Data&#39;</span>)</span>
+<span id="cb84-2"><a href="4-contrasts.html#cb84-2" aria-hidden="true"></a>?Lock5Data<span class="op">::</span>EmployedACS</span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li>Create a boxplot of the respondents’ <code>Race</code> and <code>Income</code>.</li>
 <li>Fit a 1-way ANOVA on these data.</li>
@@ -675,21 +707,21 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <li>Use <code>emmeans()</code> to calculate all the pairwise differnces between the race categories.</li>
 </ol></li>
 <li><p>We will examine a data set from Ashton et al. (2007) that relates the length of a tortoise’s carapace to the number of eggs laid in a clutch. The data are</p>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="4-contrasts.html#cb85-1"></a>Eggs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb85-2"><a href="4-contrasts.html#cb85-2"></a>  <span class="dt">carapace    =</span> <span class="kw">c</span>(<span class="dv">284</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">298</span>,<span class="dv">299</span>,<span class="dv">302</span>,<span class="dv">306</span>,<span class="dv">306</span>,</span>
-<span id="cb85-3"><a href="4-contrasts.html#cb85-3"></a>                  <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),</span>
-<span id="cb85-4"><a href="4-contrasts.html#cb85-4"></a>  <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,</span>
-<span id="cb85-5"><a href="4-contrasts.html#cb85-5"></a>                  <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) </span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="4-contrasts.html#cb85-1" aria-hidden="true"></a>Eggs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb85-2"><a href="4-contrasts.html#cb85-2" aria-hidden="true"></a>  <span class="dt">carapace    =</span> <span class="kw">c</span>(<span class="dv">284</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">298</span>,<span class="dv">299</span>,<span class="dv">302</span>,<span class="dv">306</span>,<span class="dv">306</span>,</span>
+<span id="cb85-3"><a href="4-contrasts.html#cb85-3" aria-hidden="true"></a>                  <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),</span>
+<span id="cb85-4"><a href="4-contrasts.html#cb85-4" aria-hidden="true"></a>  <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,</span>
+<span id="cb85-5"><a href="4-contrasts.html#cb85-5" aria-hidden="true"></a>                  <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) </span></code></pre></div>
 <ol style="list-style-type: lower-alpha">
 <li><p>Plot the data with carapace as the explanatory variable and clutch size as the response.</p></li>
 <li><p>We want to fit the model
 <span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \epsilon_i \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\]</span>
 To fit this model, we need the design matrix with a column of ones, a column of <span class="math inline">\(x_i\)</span> values and a column of <span class="math inline">\(x_i^2\)</span> values. To fit this model, we could create a new column of <span class="math inline">\(x_i^2\)</span> values, or do it in the formula.</p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="4-contrasts.html#cb86-1"></a>Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace<span class="op">^</span><span class="dv">2</span> )</span>
-<span id="cb86-2"><a href="4-contrasts.html#cb86-2"></a></span>
-<span id="cb86-3"><a href="4-contrasts.html#cb86-3"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span>carapace<span class="fl">.2</span>, <span class="dt">data=</span>Eggs)   <span class="co"># one version</span></span>
-<span id="cb86-4"><a href="4-contrasts.html#cb86-4"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(carapace<span class="op">^</span><span class="dv">2</span>), <span class="dt">data=</span>Eggs) <span class="co"># Do squaring inside formula</span></span>
-<span id="cb86-5"><a href="4-contrasts.html#cb86-5"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dt">degree=</span><span class="dv">2</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>), <span class="dt">data=</span>Eggs) <span class="co"># using polynomial function</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="4-contrasts.html#cb86-1" aria-hidden="true"></a>Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb86-2"><a href="4-contrasts.html#cb86-2" aria-hidden="true"></a></span>
+<span id="cb86-3"><a href="4-contrasts.html#cb86-3" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span>carapace<span class="fl">.2</span>, <span class="dt">data=</span>Eggs)   <span class="co"># one version</span></span>
+<span id="cb86-4"><a href="4-contrasts.html#cb86-4" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(carapace<span class="op">^</span><span class="dv">2</span>), <span class="dt">data=</span>Eggs) <span class="co"># Do squaring inside formula</span></span>
+<span id="cb86-5"><a href="4-contrasts.html#cb86-5" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(clutch.size <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dt">degree=</span><span class="dv">2</span>, <span class="dt">raw=</span><span class="ot">TRUE</span>), <span class="dt">data=</span>Eggs) <span class="co"># using polynomial function</span></span></code></pre></div></li>
 <li><p>Use the <code>predict()</code> function to calculate the regression predictions and add those predictions to the <code>Eggs</code> dataset.</p></li>
 <li><p>Graph the data with the regression curve.</p></li>
 <li><p>Use the <code>emmeans()</code> function to estimate the clutch sizes for tortoise’s with carapace sizes of 300 and 320. Provide a confidence interval for the estimates and a p-value for the hypothesis test that the value could be zero.</p></li>

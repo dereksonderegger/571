@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Parameter Estimation | Statistical Methods II</title>
+  <title>Chapter 2 Parameter Estimation | Untitled</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Parameter Estimation | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 2 Parameter Estimation | Untitled" />
   <meta property="og:type" content="book" />
   
   
@@ -16,15 +16,14 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Parameter Estimation | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 2 Parameter Estimation | Untitled" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
 
-<meta name="author" content="Derek L. Sonderegger" />
+<meta name="author" content="Derek Sonderegger" />
 
 
-<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +32,7 @@
   
 <link rel="prev" href="1-matrix-manipulation.html"/>
 <link rel="next" href="3-inference.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +50,20 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +83,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -136,10 +134,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="part"><span><b>Statistical Theory</b></span></li>
-<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
-<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a>
+<ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_Introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
 <li class="chapter" data-level="1.2.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
 <li class="chapter" data-level="1.2.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
@@ -148,7 +148,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
 <li class="chapter" data-level="1.2.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
 <li class="chapter" data-level="1.3.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
 <li class="chapter" data-level="1.3.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
@@ -160,18 +161,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#Exercises_MatrixTheory"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
-<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a><ul>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a>
+<ul>
 <li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.2.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2.2</b> ANOVA model</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a>
+<ul>
 <li class="chapter" data-level="2.3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.3.1</b> Estimation of Location Paramters</a></li>
 <li class="chapter" data-level="2.3.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.3.2</b> Estimation of Variance Parameter</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a><ul>
+<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.4.1</b> Expectation and variance of a random vector</a></li>
 <li class="chapter" data-level="2.4.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.4.2</b> Variance of Location Parameters</a></li>
 <li class="chapter" data-level="2.4.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.4.3</b> Summary of pertinent results</a></li>
@@ -179,43 +184,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>2.5</b> R example</a></li>
 <li class="chapter" data-level="2.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#Exercises_Estimation"><i class="fa fa-check"></i><b>2.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
 <li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals and Hypothesis Tests</a></li>
-<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.3.1</b> Theory</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a><ul>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.4.1</b> Testing All Covariates</a></li>
 <li class="chapter" data-level="3.4.2" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.4.2</b> Testing a Single Covariate</a></li>
 <li class="chapter" data-level="3.4.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.4.3</b> Testing a Subset of Covariates</a></li>
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#Exercises_Inference"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="4.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
 <li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
-<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a>
+<ul>
 <li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="4-contrasts.html"><a href="4-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>Statistical Models</b></span></li>
-<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a><ul>
-<li class="chapter" data-level="5.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>5.2</b> Offset parallel Lines (aka additive models)</a></li>
 <li class="chapter" data-level="5.3" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>5.3</b> Lines with different slopes (aka Interaction model)</a></li>
 <li class="chapter" data-level="5.4" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>5.4</b> Iris Example</a></li>
 <li class="chapter" data-level="5.5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#Exercises_ANCOVA"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a><ul>
-<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a><ul>
+<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a>
+<ul>
 <li class="chapter" data-level="6.1.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>6.1.1</b> An Example</a></li>
 <li class="chapter" data-level="6.1.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>6.1.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="6.1.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>6.1.3</b> Diagnostics</a></li>
@@ -224,12 +238,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>6.2</b> Two-Way ANOVA</a></li>
 <li class="chapter" data-level="6.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>6.3</b> Orthogonality</a></li>
-<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>6.4.1</b> Example - Fruit Trees</a></li>
 <li class="chapter" data-level="6.4.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>6.4.2</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.4.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>6.4.3</b> Estimating Contrasts</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a><ul>
+<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>6.5.1</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.5.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>6.5.2</b> Example - Fruit Trees (continued)</a></li>
 <li class="chapter" data-level="6.5.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>6.5.3</b> Example - Warpbreaks</a></li>
@@ -237,27 +253,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="7-multiple-regression.html"><a href="7-multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple Regression</a></li>
-<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a><ul>
+<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
-<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a>
+<ul>
 <li class="chapter" data-level="8.3.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="8.3.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
 <li class="chapter" data-level="8.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="8.4" data-path="8-variable-selection.html"><a href="8-variable-selection.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a><ul>
+<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>9.1</b> Interpretation with Correlated Covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a><ul>
-<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>10.1.1</b> Measures of Influence</a></li>
 <li class="chapter" data-level="10.1.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>10.1.2</b> Diagnostic Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a><ul>
+<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>10.2.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
 <li class="chapter" data-level="10.2.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>10.2.2</b> Transforming the Response</a></li>
 <li class="chapter" data-level="10.2.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>10.2.3</b> Transforming the predictors</a></li>
@@ -266,7 +289,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="11-too-many-predictors.html"><a href="11-too-many-predictors.html"><i class="fa fa-check"></i><b>11</b> Too many Predictors</a></li>
-<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>12.1</b> Block Designs</a></li>
 <li class="chapter" data-level="12.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>12.2</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="12.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>12.3</b> Review of Maximum Likelihood Methods</a></li>
@@ -275,15 +299,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.6" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>12.6</b> Nested Effects</a></li>
 <li class="chapter" data-level="12.7" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>12.7</b> Crossed Effects</a></li>
 <li class="chapter" data-level="12.8" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>12.8</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a>
+<ul>
 <li class="chapter" data-level="12.9.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>12.9.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.9.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>12.9.2</b> Prediction Intervals</a></li>
 </ul></li>
 <li class="chapter" data-level="12.10" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#Exercises_RandomEffects"><i class="fa fa-check"></i><b>12.10</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>13.1</b> Binomial Regression Model</a></li>
-<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>13.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="13.2.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>13.2.2</b> Goodness of Fit</a></li>
 </ul></li>
@@ -296,20 +323,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="14-poisson-regression.html"><a href="14-poisson-regression.html"><i class="fa fa-check"></i><b>14</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a><ul>
+<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>15.1</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="15.2" data-path="15-block-designs.html"><a href="15-block-designs.html"><i class="fa fa-check"></i><b>15.2</b> Split-plot designs</a></li>
 <li class="chapter" data-level="15.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>15.3</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="16.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
-<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a><ul>
+<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="16.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
+<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a>
+<ul>
 <li class="chapter" data-level="16.2.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>16.2.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.2.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>16.2.2</b> Exponential</a></li>
 <li class="chapter" data-level="16.2.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>16.2.3</b> Normal</a></li>
 </ul></li>
-<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a><ul>
+<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a>
+<ul>
 <li class="chapter" data-level="16.3.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>16.3.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.3.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>16.3.2</b> Exponential Example</a></li>
 <li class="chapter" data-level="16.3.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>16.3.3</b> Normal</a></li>
@@ -317,8 +348,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.4" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>16.4</b> Discussion</a></li>
 <li class="chapter" data-level="16.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>16.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
-<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
+<ul>
+<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>16.6.1</b> WIBGIs</a></li>
 </ul></li>
 </ul></li>
@@ -331,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Untitled</a>
           </h1>
         </div>
 
@@ -339,9 +372,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="parameter-estimation" class="section level1">
+<div id="parameter-estimation" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Parameter Estimation</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="2-parameter-estimation.html#cb1-1"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="2-parameter-estimation.html#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot2</span></span></code></pre></div>
 <div id="learning-outcomes" class="section level3 unnumbered">
 <h3>Learning Outcomes</h3>
 <ul>
@@ -355,7 +388,7 @@ and
 <span class="math display">\[\textrm{StdErr}\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}\]</span></p></li>
 </ul>
 </div>
-<div id="introduction" class="section level2">
+<div id="introduction" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Introduction</h2>
 <p>We have previously looked at ANOVA and regression models and, in many
 ways, they felt very similar. In this chapter we will introduce the
@@ -409,9 +442,9 @@ on a parameter. Thus the following is <em>not</em> a linear model
 y_{i}=\beta_{0}+\beta_{1}x_{i}^{\alpha}+\epsilon_{i}
 \]</span></p>
 </div>
-<div id="model-specifications" class="section level2">
+<div id="model-specifications" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> Model Specifications</h2>
-<div id="simple-regression" class="section level3">
+<div id="simple-regression" class="section level3" number="2.2.1">
 <h3><span class="header-section-number">2.2.1</span> Simple Regression</h3>
 <p>We would like to represent all linear models in a similar compact
 matrix representation. This will allow us to make the transition between
@@ -480,12 +513,12 @@ the variance <em>matrix</em>. However because <span class="math inline">\(\epsil
 for all <span class="math inline">\((i,j)\)</span> pairs, the variance matrix can be written as <span class="math inline">\(\sigma^2\,\boldsymbol{I}\)</span>
 because all of the covariances are zero.</p>
 </div>
-<div id="anova-model" class="section level3">
+<div id="anova-model" class="section level3" number="2.2.2">
 <h3><span class="header-section-number">2.2.2</span> ANOVA model</h3>
 <p>The anova model is also a linear model and all we must do is create
 a appropriate design matrix. Given the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>,
 all the calculations are identical as in the simple regression case.</p>
-<div id="cell-means-representation" class="section level4">
+<div id="cell-means-representation" class="section level4" number="2.2.2.1">
 <h4><span class="header-section-number">2.2.2.1</span> Cell means representation</h4>
 <p>Recall the cell means representation is
 <span class="math display">\[
@@ -577,7 +610,7 @@ as an indicator if the observation is an element of the appropriate
 group. As such, these are often called <em>indicator variables</em>.
 Another term for these, which I find less helpful, is <em>dummy variables</em>.</p>
 </div>
-<div id="offset-from-reference-group" class="section level4">
+<div id="offset-from-reference-group" class="section level4" number="2.2.2.2">
 <h4><span class="header-section-number">2.2.2.2</span> Offset from reference group</h4>
 <p>In this model representation of ANOVA, we have an overall mean and
 then offsets from the control group (which will be group one). The
@@ -635,7 +668,7 @@ y_{3,4}
 </div>
 </div>
 </div>
-<div id="parameter-estimation-1" class="section level2">
+<div id="parameter-estimation-1" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Parameter Estimation</h2>
 <p>For both simple regression and ANOVA, we can write the model in matrix form as
 <span class="math display">\[\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; 
@@ -644,7 +677,7 @@ which could also be written as
 <span class="math display">\[\boldsymbol{y} \sim N(\boldsymbol{X\beta},\sigma^2\boldsymbol{I}_n)\]</span>
 and we could use the maximum-likelihood principle to find estimators for <span class="math inline">\(\beta\)</span> and <span class="math inline">\(\sigma^2\)</span>.
 In this section, we will introduce the estimators <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and <span class="math inline">\(\hat{\sigma}^2\)</span>.</p>
-<div id="estimation-of-location-paramters" class="section level3">
+<div id="estimation-of-location-paramters" class="section level3" number="2.3.1">
 <h3><span class="header-section-number">2.3.1</span> Estimation of Location Paramters</h3>
 <p>Our goal is to find the best estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span>
 given the data. To justify the formula, consider the case where there
@@ -674,7 +707,7 @@ for <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
 error). In this course we won’t prove these two facts, but we will use this as our estimate of <span class="math inline">\(\boldsymbol{\beta}\)</span>.
 <span class="math display">\[\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\]</span></p>
 </div>
-<div id="estimation-of-variance-parameter" class="section level3">
+<div id="estimation-of-variance-parameter" class="section level3" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Estimation of Variance Parameter</h3>
 <p>Recall our simple regression model is
 <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i}+\epsilon_{i}\]</span>
@@ -710,12 +743,12 @@ and has many interesting theoretical properties.</p>
 where <span class="math inline">\(\boldsymbol{\beta}\)</span> has <span class="math inline">\(p\)</span> elements, and thus we have <span class="math inline">\(n-p\)</span> degrees of freedom.</p>
 </div>
 </div>
-<div id="standard-errors" class="section level2">
+<div id="standard-errors" class="section level2" number="2.4">
 <h2><span class="header-section-number">2.4</span> Standard Errors</h2>
 <p>Because our <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> estimates vary from sample to sample, we need to estimate
 how much they vary from sample to sample. This will eventually allow us to create confidence intervals for
 and perform hypothesis test relating to the <span class="math inline">\(\boldsymbol{\beta}\)</span> parameter vector.</p>
-<div id="expectation-and-variance-of-a-random-vector" class="section level3">
+<div id="expectation-and-variance-of-a-random-vector" class="section level3" number="2.4.1">
 <h3><span class="header-section-number">2.4.1</span> Expectation and variance of a random vector</h3>
 <p>Just as we needed to derive the expected value and variance of <span class="math inline">\(\bar{x}\)</span>
 in the previous semester, we must now do the same for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.
@@ -747,7 +780,7 @@ are pulled out as follows:</p>
 Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}+\boldsymbol{b}\right)=Var\left(\boldsymbol{A}^{T}\boldsymbol{\epsilon}\right)=\boldsymbol{A}^{T}\,Var\left(\boldsymbol{\epsilon}\right)\,\boldsymbol{A}
 \]</span></p>
 </div>
-<div id="variance-of-location-parameters" class="section level3">
+<div id="variance-of-location-parameters" class="section level3" number="2.4.2">
 <h3><span class="header-section-number">2.4.2</span> Variance of Location Parameters</h3>
 <p>We next derive the sampling variance of our estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>
 by first noting that <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span> are
@@ -771,7 +804,7 @@ that constants come out of the variance operator as the constant <em>squared</em
 of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="math inline">\(j\)</span> in <span class="math inline">\(1,\dots,p\)</span>) is
 <span class="math display">\[StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}\]</span></p>
 </div>
-<div id="summary-of-pertinent-results" class="section level3">
+<div id="summary-of-pertinent-results" class="section level3" number="2.4.3">
 <h3><span class="header-section-number">2.4.3</span> Summary of pertinent results</h3>
 <p>The statistic <span class="math inline">\(\hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\)</span> is the unbiased maximum-likelihood estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
 <p>The Central Limit Theorem applies to each element of <span class="math inline">\(\boldsymbol{\beta}\)</span>. That is, as <span class="math inline">\(n\to\infty\)</span>, the distribution of <span class="math inline">\(\hat{\beta}_{j}\to N\left(\beta_{j},\left[\sigma^{2}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}\right)\)</span>.</p>
@@ -789,15 +822,15 @@ of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="ma
 <span class="math display">\[StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}\]</span></p>
 </div>
 </div>
-<div id="r-example" class="section level2">
+<div id="r-example" class="section level2" number="2.5">
 <h2><span class="header-section-number">2.5</span> R example</h2>
 <p>Here we will work an example in R and do both the “hand” calculation as well as using the <code>lm()</code> function to obtain the same information.</p>
 <p>Consider the following data in a simple regression problem:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2-parameter-estimation.html#cb2-1"></a>n &lt;-<span class="st"> </span><span class="dv">20</span></span>
-<span id="cb2-2"><a href="2-parameter-estimation.html#cb2-2"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="dt">length=</span>n)</span>
-<span id="cb2-3"><a href="2-parameter-estimation.html#cb2-3"></a>y &lt;-<span class="st"> </span><span class="dv">-3</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)</span>
-<span id="cb2-4"><a href="2-parameter-estimation.html#cb2-4"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)</span>
-<span id="cb2-5"><a href="2-parameter-estimation.html#cb2-5"></a><span class="kw">ggplot</span>(my.data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y))</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="2-parameter-estimation.html#cb2-1" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">20</span></span>
+<span id="cb2-2"><a href="2-parameter-estimation.html#cb2-2" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="dt">length=</span>n)</span>
+<span id="cb2-3"><a href="2-parameter-estimation.html#cb2-3" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="dv">-3</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)</span>
+<span id="cb2-4"><a href="2-parameter-estimation.html#cb2-4" aria-hidden="true"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)</span>
+<span id="cb2-5"><a href="2-parameter-estimation.html#cb2-5" aria-hidden="true"></a><span class="kw">ggplot</span>(my.data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y))</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>First we must create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>. Recall
 <span class="math display">\[
@@ -811,40 +844,40 @@ of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="ma
 \end{array}\right]
 \]</span>
 and can be created in R via the following:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="2-parameter-estimation.html#cb3-1"></a>X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,n), x)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="2-parameter-estimation.html#cb3-1" aria-hidden="true"></a>X &lt;-<span class="st"> </span><span class="kw">cbind</span>( <span class="kw">rep</span>(<span class="dv">1</span>,n), x)</span></code></pre></div>
 <p>Given <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{y}\)</span> we can calculate
 <span class="math display">\[
 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}
 \]</span>
 in R using the following code:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="2-parameter-estimation.html#cb4-1"></a>XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )           <span class="co"># solve() is the inverse function</span></span>
-<span id="cb4-2"><a href="2-parameter-estimation.html#cb4-2"></a>beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># Do the calculations</span></span>
-<span id="cb4-3"><a href="2-parameter-estimation.html#cb4-3"></a><span class="st">  </span><span class="kw">as.vector</span>()                           <span class="co"># make sure the result is a vector</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="2-parameter-estimation.html#cb4-1" aria-hidden="true"></a>XtXinv &lt;-<span class="st"> </span><span class="kw">solve</span>( <span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>X )           <span class="co"># solve() is the inverse function</span></span>
+<span id="cb4-2"><a href="2-parameter-estimation.html#cb4-2" aria-hidden="true"></a>beta.hat &lt;-<span class="st"> </span>XtXinv <span class="op">%*%</span><span class="st"> </span><span class="kw">t</span>(X) <span class="op">%*%</span><span class="st"> </span>y <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># Do the calculations</span></span>
+<span id="cb4-3"><a href="2-parameter-estimation.html#cb4-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">as.vector</span>()                           <span class="co"># make sure the result is a vector</span></span></code></pre></div>
 <p>Our next step is to calculate the predicted values <span class="math inline">\(\hat{\boldsymbol{y}}\)</span>
 and the residuals <span class="math inline">\(\hat{\boldsymbol{\epsilon}}\)</span></p>
 <p><span class="math display">\[\begin{aligned}
 \hat{\boldsymbol{y}} &amp;=  \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
 \hat{\boldsymbol{\epsilon}} &amp;=  \boldsymbol{y}-\hat{\boldsymbol{y}}
 \end{aligned}\]</span></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="2-parameter-estimation.html#cb5-1"></a>y.hat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta.hat</span>
-<span id="cb5-2"><a href="2-parameter-estimation.html#cb5-2"></a>residuals &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>y.hat</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="2-parameter-estimation.html#cb5-1" aria-hidden="true"></a>y.hat &lt;-<span class="st"> </span>X <span class="op">%*%</span><span class="st"> </span>beta.hat</span>
+<span id="cb5-2"><a href="2-parameter-estimation.html#cb5-2" aria-hidden="true"></a>residuals &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>y.hat</span></code></pre></div>
 <p>Now that we have the residuals, we can calculate <span class="math inline">\(\hat{\sigma}^{2}\)</span>
 and the standard errors of <span class="math inline">\(\hat{\beta}_{j}\)</span></p>
 <p><span class="math display">\[\hat{\sigma}^{2}=\frac{1}{n-p}\,\sum_{i=1}^n\hat{\epsilon}_i^2\]</span></p>
 <p><span class="math display">\[StdErr\left(\hat{\beta}_{j}\right)=\sqrt{\hat{\sigma}^{2}\left[\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\right]_{jj}}\]</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2-parameter-estimation.html#cb6-1"></a>sigma2.hat &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(n<span class="dv">-2</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>( residuals<span class="op">^</span><span class="dv">2</span> )    <span class="co"># p = 2 </span></span>
-<span id="cb6-2"><a href="2-parameter-estimation.html#cb6-2"></a>sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat )</span>
-<span id="cb6-3"><a href="2-parameter-estimation.html#cb6-3"></a>std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(XtXinv) )</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="2-parameter-estimation.html#cb6-1" aria-hidden="true"></a>sigma2.hat &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">/</span>(n<span class="dv">-2</span>) <span class="op">*</span><span class="st"> </span><span class="kw">sum</span>( residuals<span class="op">^</span><span class="dv">2</span> )    <span class="co"># p = 2 </span></span>
+<span id="cb6-2"><a href="2-parameter-estimation.html#cb6-2" aria-hidden="true"></a>sigma.hat &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat )</span>
+<span id="cb6-3"><a href="2-parameter-estimation.html#cb6-3" aria-hidden="true"></a>std.errs &lt;-<span class="st"> </span><span class="kw">sqrt</span>( sigma2.hat <span class="op">*</span><span class="st"> </span><span class="kw">diag</span>(XtXinv) )</span></code></pre></div>
 <p>We now print out the important values and compare them to the summary
 output given by the <code>lm()</code> function in R.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="2-parameter-estimation.html#cb7-1"></a><span class="kw">cbind</span>(<span class="dt">Est=</span>beta.hat, <span class="dt">StdErr=</span>std.errs) </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="2-parameter-estimation.html#cb7-1" aria-hidden="true"></a><span class="kw">cbind</span>(<span class="dt">Est=</span>beta.hat, <span class="dt">StdErr=</span>std.errs) </span></code></pre></div>
 <pre><code>##         Est    StdErr
 ##   -1.448250 0.7438740
 ## x  1.681485 0.1271802</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="2-parameter-estimation.html#cb9-1"></a>sigma.hat</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="2-parameter-estimation.html#cb9-1" aria-hidden="true"></a>sigma.hat</span></code></pre></div>
 <pre><code>## [1] 1.726143</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="2-parameter-estimation.html#cb11-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x)</span>
-<span id="cb11-2"><a href="2-parameter-estimation.html#cb11-2"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="2-parameter-estimation.html#cb11-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(y<span class="op">~</span>x)</span>
+<span id="cb11-2"><a href="2-parameter-estimation.html#cb11-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = y ~ x)
@@ -864,7 +897,7 @@ output given by the <code>lm()</code> function in R.</p>
 ## Multiple R-squared:  0.9066,	Adjusted R-squared:  0.9015 
 ## F-statistic: 174.8 on 1 and 18 DF,  p-value: 1.044e-10</code></pre>
 </div>
-<div id="Exercises_Estimation" class="section level2">
+<div id="Exercises_Estimation" class="section level2" number="2.6">
 <h2><span class="header-section-number">2.6</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li><p>We will do a simple ANOVA analysis on example 8.2 from Ott &amp; Longnecker using the matrix representation of the model. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used 24 students who obtained high and nearly equal scores in the experiment. eight were selected at random from among the 24 problem cases and were treated with method 1. Seven of the remaining 16 students were selected at random and treated with method 2. The remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table. (This analysis was done in section 8.3 of my STA 570 notes)</p>

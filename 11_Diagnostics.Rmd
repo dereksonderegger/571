@@ -1,4 +1,4 @@
-# Diagnostics and Transformations
+# Diagnostics and Transformations {#Diagnostics_Chapter}
 ```{r, echo=FALSE}
 # Unnattach any packages that happen to already be loaded. In general this is unecessary
 # but is important for the creation of the book to not have package namespaces

@@ -1,4 +1,4 @@
-# Variable Selection
+# Variable Selection {#VariableSelection_Chapter}
 
 ```{r, echo=FALSE}
 # Unattach any packages that happen to already be loaded. In general this is unecessary

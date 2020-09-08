@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 10 Diagnostics and Transformations | Statistical Methods II</title>
+  <title>Chapter 10 Diagnostics and Transformations | Untitled</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 10 Diagnostics and Transformations | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 10 Diagnostics and Transformations | Untitled" />
   <meta property="og:type" content="book" />
   
   
@@ -16,15 +16,14 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 10 Diagnostics and Transformations | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 10 Diagnostics and Transformations | Untitled" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
 
-<meta name="author" content="Derek L. Sonderegger" />
+<meta name="author" content="Derek Sonderegger" />
 
 
-<meta name="date" content="2020-09-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,6 +32,7 @@
   
 <link rel="prev" href="9-correlated-covariates.html"/>
 <link rel="next" href="11-too-many-predictors.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,22 +50,20 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 <style type="text/css">
-code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
-code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -85,7 +83,7 @@ pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-le
 div.sourceCode
   {   }
 @media screen {
-code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -136,10 +134,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
 <li class="part"><span><b>Statistical Theory</b></span></li>
-<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
-<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a><ul>
+<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a>
+<ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_Introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a>
+<ul>
 <li class="chapter" data-level="1.2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
 <li class="chapter" data-level="1.2.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
 <li class="chapter" data-level="1.2.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
@@ -148,7 +148,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
 <li class="chapter" data-level="1.2.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a><ul>
+<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a>
+<ul>
 <li class="chapter" data-level="1.3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
 <li class="chapter" data-level="1.3.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
 <li class="chapter" data-level="1.3.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
@@ -160,18 +161,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="1.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#Exercises_MatrixTheory"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
-<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a><ul>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a>
+<ul>
 <li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.2.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2.2</b> ANOVA model</a></li>
 </ul></li>
-<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a><ul>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a>
+<ul>
 <li class="chapter" data-level="2.3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.3.1</b> Estimation of Location Paramters</a></li>
 <li class="chapter" data-level="2.3.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.3.2</b> Estimation of Variance Parameter</a></li>
 </ul></li>
-<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a><ul>
+<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.4.1</b> Expectation and variance of a random vector</a></li>
 <li class="chapter" data-level="2.4.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.4.2</b> Variance of Location Parameters</a></li>
 <li class="chapter" data-level="2.4.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.4.3</b> Summary of pertinent results</a></li>
@@ -179,43 +184,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>2.5</b> R example</a></li>
 <li class="chapter" data-level="2.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#Exercises_Estimation"><i class="fa fa-check"></i><b>2.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
 <li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals and Hypothesis Tests</a></li>
-<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a><ul>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a>
+<ul>
 <li class="chapter" data-level="3.3.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.3.1</b> Theory</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a><ul>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a>
+<ul>
 <li class="chapter" data-level="3.4.1" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.4.1</b> Testing All Covariates</a></li>
 <li class="chapter" data-level="3.4.2" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.4.2</b> Testing a Single Covariate</a></li>
 <li class="chapter" data-level="3.4.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.4.3</b> Testing a Subset of Covariates</a></li>
 </ul></li>
 <li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#Exercises_Inference"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="4.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
 <li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
-<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a><ul>
+<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a>
+<ul>
 <li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a><ul>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a>
+<ul>
 <li class="chapter" data-level="4.4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
 <li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
 </ul></li>
 <li class="chapter" data-level="4.5" data-path="4-contrasts.html"><a href="4-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
 </ul></li>
 <li class="part"><span><b>Statistical Models</b></span></li>
-<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a><ul>
-<li class="chapter" data-level="5.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
 <li class="chapter" data-level="5.2" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#offset-parallel-lines-aka-additive-models"><i class="fa fa-check"></i><b>5.2</b> Offset parallel Lines (aka additive models)</a></li>
 <li class="chapter" data-level="5.3" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#lines-with-different-slopes-aka-interaction-model"><i class="fa fa-check"></i><b>5.3</b> Lines with different slopes (aka Interaction model)</a></li>
 <li class="chapter" data-level="5.4" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#iris-example"><i class="fa fa-check"></i><b>5.4</b> Iris Example</a></li>
 <li class="chapter" data-level="5.5" data-path="5-analysis-of-covariance-ancova.html"><a href="5-analysis-of-covariance-ancova.html#Exercises_ANCOVA"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a><ul>
-<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a><ul>
+<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a>
+<ul>
 <li class="chapter" data-level="6.1.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>6.1.1</b> An Example</a></li>
 <li class="chapter" data-level="6.1.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>6.1.2</b> Degrees of Freedom</a></li>
 <li class="chapter" data-level="6.1.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#diagnostics"><i class="fa fa-check"></i><b>6.1.3</b> Diagnostics</a></li>
@@ -224,12 +238,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>6.2</b> Two-Way ANOVA</a></li>
 <li class="chapter" data-level="6.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>6.3</b> Orthogonality</a></li>
-<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a><ul>
+<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>6.4.1</b> Example - Fruit Trees</a></li>
 <li class="chapter" data-level="6.4.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>6.4.2</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.4.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>6.4.3</b> Estimating Contrasts</a></li>
 </ul></li>
-<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a><ul>
+<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a>
+<ul>
 <li class="chapter" data-level="6.5.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>6.5.1</b> ANOVA Table</a></li>
 <li class="chapter" data-level="6.5.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>6.5.2</b> Example - Fruit Trees (continued)</a></li>
 <li class="chapter" data-level="6.5.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>6.5.3</b> Example - Warpbreaks</a></li>
@@ -237,27 +253,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="7-multiple-regression.html"><a href="7-multiple-regression.html"><i class="fa fa-check"></i><b>7</b> Multiple Regression</a></li>
-<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a><ul>
+<li class="chapter" data-level="8" data-path="8-variable-selection.html"><a href="8-variable-selection.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
-<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a><ul>
+<li class="chapter" data-level="8.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a>
+<ul>
 <li class="chapter" data-level="8.2.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
 </ul></li>
-<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a><ul>
+<li class="chapter" data-level="8.3" data-path="8-variable-selection.html"><a href="8-variable-selection.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a>
+<ul>
 <li class="chapter" data-level="8.3.1" data-path="8-variable-selection.html"><a href="8-variable-selection.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="8.3.2" data-path="8-variable-selection.html"><a href="8-variable-selection.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
 <li class="chapter" data-level="8.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="8.4" data-path="8-variable-selection.html"><a href="8-variable-selection.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a><ul>
+<li class="chapter" data-level="9" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="9-correlated-covariates.html"><a href="9-correlated-covariates.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>9.1</b> Interpretation with Correlated Covariates</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a><ul>
-<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a><ul>
+<li class="chapter" data-level="10" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html"><i class="fa fa-check"></i><b>10</b> Diagnostics and Transformations</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>10.1</b> Detecting Assumption Violations</a>
+<ul>
 <li class="chapter" data-level="10.1.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#measures-of-influence"><i class="fa fa-check"></i><b>10.1.1</b> Measures of Influence</a></li>
 <li class="chapter" data-level="10.1.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#diagnostic-plots"><i class="fa fa-check"></i><b>10.1.2</b> Diagnostic Plots</a></li>
 </ul></li>
-<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a><ul>
+<li class="chapter" data-level="10.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transformations"><i class="fa fa-check"></i><b>10.2</b> Transformations</a>
+<ul>
 <li class="chapter" data-level="10.2.1" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>10.2.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
 <li class="chapter" data-level="10.2.2" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-response"><i class="fa fa-check"></i><b>10.2.2</b> Transforming the Response</a></li>
 <li class="chapter" data-level="10.2.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#transforming-the-predictors"><i class="fa fa-check"></i><b>10.2.3</b> Transforming the predictors</a></li>
@@ -266,7 +289,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10.3" data-path="10-diagnostics-and-transformations.html"><a href="10-diagnostics-and-transformations.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>10.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="11-too-many-predictors.html"><a href="11-too-many-predictors.html"><i class="fa fa-check"></i><b>11</b> Too many Predictors</a></li>
-<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a><ul>
+<li class="chapter" data-level="12" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html"><i class="fa fa-check"></i><b>12</b> Mixed Effects Models</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>12.1</b> Block Designs</a></li>
 <li class="chapter" data-level="12.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>12.2</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="12.3" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>12.3</b> Review of Maximum Likelihood Methods</a></li>
@@ -275,15 +299,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.6" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>12.6</b> Nested Effects</a></li>
 <li class="chapter" data-level="12.7" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>12.7</b> Crossed Effects</a></li>
 <li class="chapter" data-level="12.8" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>12.8</b> Repeated Measures / Longitudinal Studies</a></li>
-<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a><ul>
+<li class="chapter" data-level="12.9" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>12.9</b> Confidence and Prediction Intervals</a>
+<ul>
 <li class="chapter" data-level="12.9.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>12.9.1</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="12.9.2" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>12.9.2</b> Prediction Intervals</a></li>
 </ul></li>
 <li class="chapter" data-level="12.10" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#Exercises_RandomEffects"><i class="fa fa-check"></i><b>12.10</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a><ul>
+<li class="chapter" data-level="13" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html"><i class="fa fa-check"></i><b>13</b> Binomial Regression</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>13.1</b> Binomial Regression Model</a></li>
-<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a><ul>
+<li class="chapter" data-level="13.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>13.2</b> Measures of Fit Quality</a>
+<ul>
 <li class="chapter" data-level="13.2.1" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>13.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="13.2.2" data-path="13-binomial-regression.html"><a href="13-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>13.2.2</b> Goodness of Fit</a></li>
 </ul></li>
@@ -296,20 +323,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="14-poisson-regression.html"><a href="14-poisson-regression.html"><i class="fa fa-check"></i><b>14</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a><ul>
+<li class="chapter" data-level="15" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>15</b> Block Designs</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="12-mixed-effects-models.html"><a href="12-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>15.1</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="15.2" data-path="15-block-designs.html"><a href="15-block-designs.html"><i class="fa fa-check"></i><b>15.2</b> Split-plot designs</a></li>
 <li class="chapter" data-level="15.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>15.3</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a><ul>
-<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="16.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
-<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a><ul>
+<li class="chapter" data-level="16" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>16</b> Maximum Likelihood Priciple</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="16.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>16.1</b> Introduction</a></li>
+<li class="chapter" data-level="16.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>16.2</b> Distributions</a>
+<ul>
 <li class="chapter" data-level="16.2.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>16.2.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.2.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>16.2.2</b> Exponential</a></li>
 <li class="chapter" data-level="16.2.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>16.2.3</b> Normal</a></li>
 </ul></li>
-<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a><ul>
+<li class="chapter" data-level="16.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>16.3</b> Likelihood Function</a>
+<ul>
 <li class="chapter" data-level="16.3.1" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>16.3.1</b> Poisson</a></li>
 <li class="chapter" data-level="16.3.2" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>16.3.2</b> Exponential Example</a></li>
 <li class="chapter" data-level="16.3.3" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>16.3.3</b> Normal</a></li>
@@ -317,8 +348,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="16.4" data-path="16-maximum-likelihood-priciple.html"><a href="16-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>16.4</b> Discussion</a></li>
 <li class="chapter" data-level="16.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#exercises"><i class="fa fa-check"></i><b>16.5</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a><ul>
-<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a><ul>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
+<ul>
+<li class="chapter" data-level="16.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>16.6</b> Weeks 1 – 4 (Project Feasibility)</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>16.6.1</b> WIBGIs</a></li>
 </ul></li>
 </ul></li>
@@ -331,7 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Untitled</a>
           </h1>
         </div>
 
@@ -339,11 +372,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="diagnostics-and-transformations" class="section level1">
+<div id="diagnostics-and-transformations" class="section level1" number="10">
 <h1><span class="header-section-number">Chapter 10</span> Diagnostics and Transformations</h1>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="10-diagnostics-and-transformations.html#cb223-1"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
-<span id="cb223-2"><a href="10-diagnostics-and-transformations.html#cb223-2"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
-<span id="cb223-3"><a href="10-diagnostics-and-transformations.html#cb223-3"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="10-diagnostics-and-transformations.html#cb223-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
+<span id="cb223-2"><a href="10-diagnostics-and-transformations.html#cb223-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
+<span id="cb223-3"><a href="10-diagnostics-and-transformations.html#cb223-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
 <p>We will be interested in analyzing whether or not our linear model is a good model and whether or not the data violate any of the assumptions that are required. In general we will be interested in three classes of assumption violations and our diagnostic measures might be able detect one or more of the following issues:</p>
 <ol style="list-style-type: decimal">
 <li><p>Unusual observations that contribute too much influence to the analysis. These few observations might drastically change the outcome of the model.</p></li>
@@ -351,33 +384,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Error distribution. We have assumed that <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)\)</span> but autocorrelation, heteroscedasticity, and non-normality might be present.</p></li>
 </ol>
 <p>Often problems with one of these can be corrected by transforming either the explanatory or response variables.</p>
-<div id="detecting-assumption-violations" class="section level2">
+<div id="detecting-assumption-violations" class="section level2" number="10.1">
 <h2><span class="header-section-number">10.1</span> Detecting Assumption Violations</h2>
 <p>Throughout this chapter I will use data created by Francis Anscombe that show how simple linear regression can be misused. In particular, these data sets will show how our diagnostic measures will detect various departures from the model assumptions.</p>
 <p>The data are available in R as a data frame <code>anscombe</code> and is loaded by default. The data consists of four datasets, each having the same linear regression <span class="math inline">\(\hat{y}=3+0.5\,x\)</span> but the data are drastically different.</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="10-diagnostics-and-transformations.html#cb224-1"></a><span class="co"># The anscombe dataset has 8 columns - x1,x2,x3,x4,y1,y2,y3,y4</span></span>
-<span id="cb224-2"><a href="10-diagnostics-and-transformations.html#cb224-2"></a><span class="co"># and I want it to have 3 columns - Set, X, Y</span></span>
-<span id="cb224-3"><a href="10-diagnostics-and-transformations.html#cb224-3"></a>Anscombe &lt;-<span class="st"> </span><span class="kw">rbind</span>( </span>
-<span id="cb224-4"><a href="10-diagnostics-and-transformations.html#cb224-4"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x1, <span class="dt">y=</span>anscombe<span class="op">$</span>y1, <span class="dt">set=</span><span class="st">&#39;Set 1&#39;</span>),</span>
-<span id="cb224-5"><a href="10-diagnostics-and-transformations.html#cb224-5"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x2, <span class="dt">y=</span>anscombe<span class="op">$</span>y2, <span class="dt">set=</span><span class="st">&#39;Set 2&#39;</span>),</span>
-<span id="cb224-6"><a href="10-diagnostics-and-transformations.html#cb224-6"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x3, <span class="dt">y=</span>anscombe<span class="op">$</span>y3, <span class="dt">set=</span><span class="st">&#39;Set 3&#39;</span>),</span>
-<span id="cb224-7"><a href="10-diagnostics-and-transformations.html#cb224-7"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x4, <span class="dt">y=</span>anscombe<span class="op">$</span>y4, <span class="dt">set=</span><span class="st">&#39;Set 4&#39;</span>)) </span>
-<span id="cb224-8"><a href="10-diagnostics-and-transformations.html#cb224-8"></a></span>
-<span id="cb224-9"><a href="10-diagnostics-and-transformations.html#cb224-9"></a><span class="co"># order them by their x values, and add an index column</span></span>
-<span id="cb224-10"><a href="10-diagnostics-and-transformations.html#cb224-10"></a>Anscombe &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb224-11"><a href="10-diagnostics-and-transformations.html#cb224-11"></a><span class="st">  </span><span class="kw">group_by</span>(set) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># Every subsequent action happens by dataset</span></span>
-<span id="cb224-12"><a href="10-diagnostics-and-transformations.html#cb224-12"></a><span class="st">  </span><span class="kw">arrange</span>(x,y) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># sort them on the x-values and if tied, by y-value</span></span>
-<span id="cb224-13"><a href="10-diagnostics-and-transformations.html#cb224-13"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">index =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">n</span>() ) <span class="co"># give each observation within a set, an ID number</span></span>
-<span id="cb224-14"><a href="10-diagnostics-and-transformations.html#cb224-14"></a></span>
-<span id="cb224-15"><a href="10-diagnostics-and-transformations.html#cb224-15"></a><span class="co"># Make a nice graph</span></span>
-<span id="cb224-16"><a href="10-diagnostics-and-transformations.html#cb224-16"></a><span class="kw">ggplot</span>(Anscombe, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span></span>
-<span id="cb224-17"><a href="10-diagnostics-and-transformations.html#cb224-17"></a><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb224-18"><a href="10-diagnostics-and-transformations.html#cb224-18"></a><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) <span class="op">+</span></span>
-<span id="cb224-19"><a href="10-diagnostics-and-transformations.html#cb224-19"></a><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y<span class="op">~</span>x, <span class="dt">se=</span><span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="10-diagnostics-and-transformations.html#cb224-1" aria-hidden="true"></a><span class="co"># The anscombe dataset has 8 columns - x1,x2,x3,x4,y1,y2,y3,y4</span></span>
+<span id="cb224-2"><a href="10-diagnostics-and-transformations.html#cb224-2" aria-hidden="true"></a><span class="co"># and I want it to have 3 columns - Set, X, Y</span></span>
+<span id="cb224-3"><a href="10-diagnostics-and-transformations.html#cb224-3" aria-hidden="true"></a>Anscombe &lt;-<span class="st"> </span><span class="kw">rbind</span>( </span>
+<span id="cb224-4"><a href="10-diagnostics-and-transformations.html#cb224-4" aria-hidden="true"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x1, <span class="dt">y=</span>anscombe<span class="op">$</span>y1, <span class="dt">set=</span><span class="st">&#39;Set 1&#39;</span>),</span>
+<span id="cb224-5"><a href="10-diagnostics-and-transformations.html#cb224-5" aria-hidden="true"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x2, <span class="dt">y=</span>anscombe<span class="op">$</span>y2, <span class="dt">set=</span><span class="st">&#39;Set 2&#39;</span>),</span>
+<span id="cb224-6"><a href="10-diagnostics-and-transformations.html#cb224-6" aria-hidden="true"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x3, <span class="dt">y=</span>anscombe<span class="op">$</span>y3, <span class="dt">set=</span><span class="st">&#39;Set 3&#39;</span>),</span>
+<span id="cb224-7"><a href="10-diagnostics-and-transformations.html#cb224-7" aria-hidden="true"></a>  <span class="kw">data.frame</span>(<span class="dt">x=</span>anscombe<span class="op">$</span>x4, <span class="dt">y=</span>anscombe<span class="op">$</span>y4, <span class="dt">set=</span><span class="st">&#39;Set 4&#39;</span>)) </span>
+<span id="cb224-8"><a href="10-diagnostics-and-transformations.html#cb224-8" aria-hidden="true"></a></span>
+<span id="cb224-9"><a href="10-diagnostics-and-transformations.html#cb224-9" aria-hidden="true"></a><span class="co"># order them by their x values, and add an index column</span></span>
+<span id="cb224-10"><a href="10-diagnostics-and-transformations.html#cb224-10" aria-hidden="true"></a>Anscombe &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb224-11"><a href="10-diagnostics-and-transformations.html#cb224-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(set) <span class="op">%&gt;%</span><span class="st">       </span><span class="co"># Every subsequent action happens by dataset</span></span>
+<span id="cb224-12"><a href="10-diagnostics-and-transformations.html#cb224-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">arrange</span>(x,y) <span class="op">%&gt;%</span><span class="st">        </span><span class="co"># sort them on the x-values and if tied, by y-value</span></span>
+<span id="cb224-13"><a href="10-diagnostics-and-transformations.html#cb224-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">index =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">n</span>() ) <span class="co"># give each observation within a set, an ID number</span></span>
+<span id="cb224-14"><a href="10-diagnostics-and-transformations.html#cb224-14" aria-hidden="true"></a></span>
+<span id="cb224-15"><a href="10-diagnostics-and-transformations.html#cb224-15" aria-hidden="true"></a><span class="co"># Make a nice graph</span></span>
+<span id="cb224-16"><a href="10-diagnostics-and-transformations.html#cb224-16" aria-hidden="true"></a><span class="kw">ggplot</span>(Anscombe, <span class="kw">aes</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)) <span class="op">+</span></span>
+<span id="cb224-17"><a href="10-diagnostics-and-transformations.html#cb224-17" aria-hidden="true"></a><span class="st"> </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb224-18"><a href="10-diagnostics-and-transformations.html#cb224-18" aria-hidden="true"></a><span class="st"> </span><span class="kw">facet_wrap</span>(<span class="op">~</span>set, <span class="dt">scales=</span><span class="st">&#39;free&#39;</span>) <span class="op">+</span></span>
+<span id="cb224-19"><a href="10-diagnostics-and-transformations.html#cb224-19" aria-hidden="true"></a><span class="st"> </span><span class="kw">stat_smooth</span>(<span class="dt">method=</span><span class="st">&quot;lm&quot;</span>, <span class="dt">formula=</span>y<span class="op">~</span>x, <span class="dt">se=</span><span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
-<div id="measures-of-influence" class="section level3">
+<div id="measures-of-influence" class="section level3" number="10.1.1">
 <h3><span class="header-section-number">10.1.1</span> Measures of Influence</h3>
-<div id="standardized-residuals-aka-studentized" class="section level4">
+<div id="standardized-residuals-aka-studentized" class="section level4" number="10.1.1.1">
 <h4><span class="header-section-number">10.1.1.1</span> Standardized Residuals (aka Studentized )</h4>
 <p>Recall that we have</p>
 <p><span class="math display">\[\begin{aligned}\hat{\boldsymbol{y}}	
@@ -391,44 +424,44 @@ where <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> is the <span clas
 <span class="math display">\[\hat{\epsilon}_{i}^{*}=\frac{\hat{\epsilon}_{i}}{\hat{\sigma}\sqrt{1-\boldsymbol{H}_{ii}}}\]</span> which, if the normality and homoscedasticity assumptions hold, should behave as a <span class="math inline">\(N\left(0,1\right)\)</span> sample.</p>
 <p>These rescaled residuals are called “studentized residuals”, though R typically refers to them as “standardized”. Since we have a good intuition about the scale of a standard normal distribution, the scale of standardized residuals will give a good indicator if normality is violated.</p>
 <p>There are actually two types of studentized residuals, typically called <em>internal</em> and <em>external</em> among statisticians. The version presented above is the <em>internal</em> version which can be obtained using the R function <code>rstandard()</code> while the <em>external</em> version is available using <code>rstudent()</code>. Whenever you see R present standardized residuals, they are talking about internally studentized residuals. For sake of clarity, I will use the term <em>standardized</em> as well.</p>
-<div id="example---anscombes-set-3" class="section level5">
+<div id="example---anscombes-set-3" class="section level5" number="10.1.1.1.1">
 <h5><span class="header-section-number">10.1.1.1.1</span> Example - Anscombe’s set 3</h5>
 <p>For the third dataset, the outlier is the ninth observation with <span class="math inline">\(x_{9}=13\)</span> and <span class="math inline">\(y_{9}=12.74\)</span>. We calculate the standardized residuals using the function <code>rstandard()</code> and plot them</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="10-diagnostics-and-transformations.html#cb225-1"></a>Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>) <span class="co"># Just set 3</span></span>
-<span id="cb225-2"><a href="10-diagnostics-and-transformations.html#cb225-2"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)               <span class="co"># Fit the regression line</span></span>
-<span id="cb225-3"><a href="10-diagnostics-and-transformations.html#cb225-3"></a>Set3<span class="op">$</span>stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(model)           <span class="co"># rstandard() returns the standardized residuals</span></span>
-<span id="cb225-4"><a href="10-diagnostics-and-transformations.html#cb225-4"></a></span>
-<span id="cb225-5"><a href="10-diagnostics-and-transformations.html#cb225-5"></a><span class="kw">ggplot</span>(Set3, <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>stdresid)) <span class="op">+</span><span class="st">    </span><span class="co"># make a plot</span></span>
-<span id="cb225-6"><a href="10-diagnostics-and-transformations.html#cb225-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb225-7"><a href="10-diagnostics-and-transformations.html#cb225-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Observation Index&#39;</span>, </span>
-<span id="cb225-8"><a href="10-diagnostics-and-transformations.html#cb225-8"></a>       <span class="dt">y=</span><span class="st">&#39;Standardized Residuals&#39;</span>, </span>
-<span id="cb225-9"><a href="10-diagnostics-and-transformations.html#cb225-9"></a>       <span class="dt">title=</span><span class="st">&#39;Standardized Residuals vs Observation Index&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="10-diagnostics-and-transformations.html#cb225-1" aria-hidden="true"></a>Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>) <span class="co"># Just set 3</span></span>
+<span id="cb225-2"><a href="10-diagnostics-and-transformations.html#cb225-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)               <span class="co"># Fit the regression line</span></span>
+<span id="cb225-3"><a href="10-diagnostics-and-transformations.html#cb225-3" aria-hidden="true"></a>Set3<span class="op">$</span>stdresid &lt;-<span class="st"> </span><span class="kw">rstandard</span>(model)           <span class="co"># rstandard() returns the standardized residuals</span></span>
+<span id="cb225-4"><a href="10-diagnostics-and-transformations.html#cb225-4" aria-hidden="true"></a></span>
+<span id="cb225-5"><a href="10-diagnostics-and-transformations.html#cb225-5" aria-hidden="true"></a><span class="kw">ggplot</span>(Set3, <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>stdresid)) <span class="op">+</span><span class="st">    </span><span class="co"># make a plot</span></span>
+<span id="cb225-6"><a href="10-diagnostics-and-transformations.html#cb225-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb225-7"><a href="10-diagnostics-and-transformations.html#cb225-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&#39;Observation Index&#39;</span>, </span>
+<span id="cb225-8"><a href="10-diagnostics-and-transformations.html#cb225-8" aria-hidden="true"></a>       <span class="dt">y=</span><span class="st">&#39;Standardized Residuals&#39;</span>, </span>
+<span id="cb225-9"><a href="10-diagnostics-and-transformations.html#cb225-9" aria-hidden="true"></a>       <span class="dt">title=</span><span class="st">&#39;Standardized Residuals vs Observation Index&#39;</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
 <p>and we notice that the outlier residual is really big. If the model assumptions were true, then the standardized residuals should follow a standard normal distribution, and I would need to have hundreds of observations before I wouldn’t be surprised to see a residual more than 3 standard deviations from 0.</p>
 </div>
 </div>
-<div id="leverage" class="section level4">
+<div id="leverage" class="section level4" number="10.1.1.2">
 <h4><span class="header-section-number">10.1.1.2</span> Leverage</h4>
 <p>The extremely large standardized residual suggests that this data point is important, but we would like to quantify how important this observation actually is.</p>
 <p>One way to quantify this is to look at the elements of <span class="math inline">\(\boldsymbol{H}\)</span>. Because <span class="math display">\[\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}\]</span>
 then the <span class="math inline">\(i\)</span>th row of <span class="math inline">\(\boldsymbol{H}\)</span> is a vector of weights that tell us how influential a point <span class="math inline">\(y_{j}\)</span> is for calculating the predicted value <span class="math inline">\(\hat{y}_{i}\)</span>. If I look at just the main diagonal of <span class="math inline">\(\boldsymbol{H}\)</span>, these are how much weight a point has on its predicted value. As such, I can think of the <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> as the amount of leverage a particular data point has on the regression line. It can be shown that the leverages must be <span class="math inline">\(0 \le \boldsymbol{H}_{ii} \le 1\)</span> and that <span class="math inline">\(\sum \boldsymbol{H}_{ii} = p\)</span>.</p>
 <p>Fortunately there is already a function <code>hatvalues()</code> to compute these <span class="math inline">\(\boldsymbol{H}_{ii}\)</span> values for me. We will compare the leverages from Anscombe’s set 3 versus set 4.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="10-diagnostics-and-transformations.html#cb226-1"></a>Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>)</span>
-<span id="cb226-2"><a href="10-diagnostics-and-transformations.html#cb226-2"></a>Set4 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 4&#39;</span>)</span>
-<span id="cb226-3"><a href="10-diagnostics-and-transformations.html#cb226-3"></a></span>
-<span id="cb226-4"><a href="10-diagnostics-and-transformations.html#cb226-4"></a>model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set3 )</span>
-<span id="cb226-5"><a href="10-diagnostics-and-transformations.html#cb226-5"></a>model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set4 )</span>
-<span id="cb226-6"><a href="10-diagnostics-and-transformations.html#cb226-6"></a></span>
-<span id="cb226-7"><a href="10-diagnostics-and-transformations.html#cb226-7"></a>Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model3))  <span class="co"># add leverage columns</span></span>
-<span id="cb226-8"><a href="10-diagnostics-and-transformations.html#cb226-8"></a>Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model4))</span>
-<span id="cb226-9"><a href="10-diagnostics-and-transformations.html#cb226-9"></a></span>
-<span id="cb226-10"><a href="10-diagnostics-and-transformations.html#cb226-10"></a><span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) <span class="op">+</span></span>
-<span id="cb226-11"><a href="10-diagnostics-and-transformations.html#cb226-11"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb226-12"><a href="10-diagnostics-and-transformations.html#cb226-12"></a><span class="st">  </span><span class="kw">facet_grid</span>( . <span class="op">~</span><span class="st"> </span>set )</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="10-diagnostics-and-transformations.html#cb226-1" aria-hidden="true"></a>Set3 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 3&#39;</span>)</span>
+<span id="cb226-2"><a href="10-diagnostics-and-transformations.html#cb226-2" aria-hidden="true"></a>Set4 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( set <span class="op">==</span><span class="st"> &#39;Set 4&#39;</span>)</span>
+<span id="cb226-3"><a href="10-diagnostics-and-transformations.html#cb226-3" aria-hidden="true"></a></span>
+<span id="cb226-4"><a href="10-diagnostics-and-transformations.html#cb226-4" aria-hidden="true"></a>model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set3 )</span>
+<span id="cb226-5"><a href="10-diagnostics-and-transformations.html#cb226-5" aria-hidden="true"></a>model4 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data =</span> Set4 )</span>
+<span id="cb226-6"><a href="10-diagnostics-and-transformations.html#cb226-6" aria-hidden="true"></a></span>
+<span id="cb226-7"><a href="10-diagnostics-and-transformations.html#cb226-7" aria-hidden="true"></a>Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model3))  <span class="co"># add leverage columns</span></span>
+<span id="cb226-8"><a href="10-diagnostics-and-transformations.html#cb226-8" aria-hidden="true"></a>Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">leverage =</span> <span class="kw">hatvalues</span>(model4))</span>
+<span id="cb226-9"><a href="10-diagnostics-and-transformations.html#cb226-9" aria-hidden="true"></a></span>
+<span id="cb226-10"><a href="10-diagnostics-and-transformations.html#cb226-10" aria-hidden="true"></a><span class="kw">ggplot</span>( <span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>leverage) ) <span class="op">+</span></span>
+<span id="cb226-11"><a href="10-diagnostics-and-transformations.html#cb226-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb226-12"><a href="10-diagnostics-and-transformations.html#cb226-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>( . <span class="op">~</span><span class="st"> </span>set )</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-132-1.png" width="672" /></p>
 <p>This leverage idea only picks out the <em>potential</em> for a specific value of <span class="math inline">\(x\)</span> to be influential, but does not actually measure influence. It has picked out the issue with the fourth data set, but does not adequately address the outlier in set 3.</p>
 </div>
-<div id="cooks-distance" class="section level4">
+<div id="cooks-distance" class="section level4" number="10.1.1.3">
 <h4><span class="header-section-number">10.1.1.3</span> Cook’s Distance</h4>
 <p>To attempt to measure the actual influence of an observation <span class="math inline">\(\left\{ y_{i},\boldsymbol{x}_{i}^{T}\right\}\)</span> on the linear model, we consider the effect on the regression if we removed the observation and fit the same model. Let <span class="math display">\[\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\]</span>
 be the vector of predicted values, where <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is created using all of the data, and <span class="math inline">\(\hat{\boldsymbol{y}}_{(i)}=\boldsymbol{X}\hat{\boldsymbol{\beta}}_{(i)}\)</span> be the vector of predicted values where <span class="math inline">\(\hat{\boldsymbol{\beta}}_{(i)}\)</span> was estimated using all of the data except the <span class="math inline">\(i\)</span>th observation. Letting <span class="math inline">\(p\)</span> be the number of <span class="math inline">\(\beta_{j}\)</span> parameters as usual we define Cook’s distance of the <span class="math inline">\(i\)</span>th observation as
@@ -437,27 +470,27 @@ which boils down to saying if the predicted values have large changes when the <
 <span class="math display">\[D_{i}=\frac{\hat{\epsilon}_{i}^{*}\boldsymbol{H}_{ii}}{p\left(1-H_{ii}\right)}\]</span>
 which expresses Cook’s distance in terms of the <span class="math inline">\(i\)</span>th studentized residual and the <span class="math inline">\(i\)</span>th leverage.</p>
 <p>Nicely, the R function <code>cooks.distance()</code> will calculate Cook’s distance.</p>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="10-diagnostics-and-transformations.html#cb227-1"></a>Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model3))  </span>
-<span id="cb227-2"><a href="10-diagnostics-and-transformations.html#cb227-2"></a>Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model4))</span>
-<span id="cb227-3"><a href="10-diagnostics-and-transformations.html#cb227-3"></a></span>
-<span id="cb227-4"><a href="10-diagnostics-and-transformations.html#cb227-4"></a><span class="co"># Note: The high leverage point in set 4 has a Cook&#39;s distance of Infinity.</span></span>
-<span id="cb227-5"><a href="10-diagnostics-and-transformations.html#cb227-5"></a><span class="kw">ggplot</span>(<span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>cooksd)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb227-6"><a href="10-diagnostics-and-transformations.html#cb227-6"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb227-7"><a href="10-diagnostics-and-transformations.html#cb227-7"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>set) <span class="op">+</span></span>
-<span id="cb227-8"><a href="10-diagnostics-and-transformations.html#cb227-8"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Cook&#39;s Distance&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="10-diagnostics-and-transformations.html#cb227-1" aria-hidden="true"></a>Set3 &lt;-<span class="st"> </span>Set3 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model3))  </span>
+<span id="cb227-2"><a href="10-diagnostics-and-transformations.html#cb227-2" aria-hidden="true"></a>Set4 &lt;-<span class="st"> </span>Set4 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">cooksd =</span> <span class="kw">cooks.distance</span>(model4))</span>
+<span id="cb227-3"><a href="10-diagnostics-and-transformations.html#cb227-3" aria-hidden="true"></a></span>
+<span id="cb227-4"><a href="10-diagnostics-and-transformations.html#cb227-4" aria-hidden="true"></a><span class="co"># Note: The high leverage point in set 4 has a Cook&#39;s distance of Infinity.</span></span>
+<span id="cb227-5"><a href="10-diagnostics-and-transformations.html#cb227-5" aria-hidden="true"></a><span class="kw">ggplot</span>(<span class="kw">rbind</span>(Set3,Set4), <span class="kw">aes</span>(<span class="dt">x=</span>index, <span class="dt">y=</span>cooksd)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb227-6"><a href="10-diagnostics-and-transformations.html#cb227-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb227-7"><a href="10-diagnostics-and-transformations.html#cb227-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>set) <span class="op">+</span></span>
+<span id="cb227-8"><a href="10-diagnostics-and-transformations.html#cb227-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&quot;Cook&#39;s Distance&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-133-1.png" width="672" /></p>
 <p>Some texts will give a rule of thumb that points with Cook’s distances greater than 1 should be considered influential, while other books claim a reasonable rule of thumb is <span class="math inline">\(4/\left(n-p-1\right)\)</span> where <span class="math inline">\(n\)</span> is the sample size, and <span class="math inline">\(p\)</span> is the number of parameters in <span class="math inline">\(\boldsymbol{\beta}\)</span>. My take on this, is that you should look for values that are highly different from the rest of your data.</p>
 </div>
 </div>
-<div id="diagnostic-plots" class="section level3">
+<div id="diagnostic-plots" class="section level3" number="10.1.2">
 <h3><span class="header-section-number">10.1.2</span> Diagnostic Plots</h3>
 <p>After fitting a linear model in R, you have the option of looking at diagnostic plots that help to decide if any assumptions are being violated. We will step through each of the plots that are generated by the function <code>plot(model)</code> or using <code>ggplot2</code> using the package <code>ggfortify</code>.</p>
 <p>In the package <code>ggfortify</code> there is a function that will calculate the diagnostics measures and add them to your dataset. This will simplify our graphing process.</p>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="10-diagnostics-and-transformations.html#cb229-1"></a>Set1 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 1&#39;</span>)</span>
-<span id="cb229-2"><a href="10-diagnostics-and-transformations.html#cb229-2"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set1)</span>
-<span id="cb229-3"><a href="10-diagnostics-and-transformations.html#cb229-3"></a>Set1 &lt;-<span class="st"> </span><span class="kw">fortify</span>(model)  <span class="co"># add dignostic measures to the dataset</span></span>
-<span id="cb229-4"><a href="10-diagnostics-and-transformations.html#cb229-4"></a>Set1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># show the dataset nicely</span></span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="10-diagnostics-and-transformations.html#cb229-1" aria-hidden="true"></a>Set1 &lt;-<span class="st"> </span>Anscombe <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(set <span class="op">==</span><span class="st"> &#39;Set 1&#39;</span>)</span>
+<span id="cb229-2"><a href="10-diagnostics-and-transformations.html#cb229-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set1)</span>
+<span id="cb229-3"><a href="10-diagnostics-and-transformations.html#cb229-3" aria-hidden="true"></a>Set1 &lt;-<span class="st"> </span><span class="kw">fortify</span>(model)  <span class="co"># add dignostic measures to the dataset</span></span>
+<span id="cb229-4"><a href="10-diagnostics-and-transformations.html#cb229-4" aria-hidden="true"></a>Set1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># show the dataset nicely</span></span></code></pre></div>
 <pre><code>##        y  x  .hat .sigma .cooksd .fitted .resid .stdresid
 ## 1   4.26  4 0.318  1.273   0.123   5.000 -0.740    -0.725
 ## 2   5.68  5 0.236  1.310   0.004   5.501  0.179     0.166
@@ -470,26 +503,26 @@ which expresses Cook’s distance in terms of the <span class="math inline">\(i\
 ## 9  10.84 12 0.173  1.100   0.279   9.001  1.839     1.635
 ## 10  7.58 13 0.236  1.056   0.489   9.501 -1.921    -1.778
 ## 11  9.96 14 0.318  1.311   0.000  10.001 -0.041    -0.041</code></pre>
-<div id="residuals-vs-fitted" class="section level4">
+<div id="residuals-vs-fitted" class="section level4" number="10.1.2.1">
 <h4><span class="header-section-number">10.1.2.1</span> Residuals vs Fitted</h4>
 <p>In the simple linear regression the most useful plot to look at was the residuals versus the <span class="math inline">\(x\)</span>-covariate, but we also saw that this was similar to looking at the residuals versus the fitted values. In the general linear model, we will look at the residuals versus the fitted values or possibly the studentized residuals versus the fitted values.</p>
-<div id="polynomial-relationships" class="section level5">
+<div id="polynomial-relationships" class="section level5" number="10.1.2.1.1">
 <h5><span class="header-section-number">10.1.2.1.1</span> Polynomial relationships</h5>
 <p>To explore how this plot can detect non-linear relationships between <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span>, we will examine a data set from Ashton et al. (2007) that relates the length of a tortoise’s carapace to the number of eggs laid in a clutch. The data are</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="10-diagnostics-and-transformations.html#cb231-1"></a>Eggs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
-<span id="cb231-2"><a href="10-diagnostics-and-transformations.html#cb231-2"></a>  <span class="dt">carapace    =</span> <span class="kw">c</span>(<span class="dv">284</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">298</span>,<span class="dv">299</span>,<span class="dv">302</span>,<span class="dv">306</span>,<span class="dv">306</span>,</span>
-<span id="cb231-3"><a href="10-diagnostics-and-transformations.html#cb231-3"></a>                  <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),</span>
-<span id="cb231-4"><a href="10-diagnostics-and-transformations.html#cb231-4"></a>  <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,</span>
-<span id="cb231-5"><a href="10-diagnostics-and-transformations.html#cb231-5"></a>                  <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) </span>
-<span id="cb231-6"><a href="10-diagnostics-and-transformations.html#cb231-6"></a><span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb231-7"><a href="10-diagnostics-and-transformations.html#cb231-7"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="10-diagnostics-and-transformations.html#cb231-1" aria-hidden="true"></a>Eggs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb231-2"><a href="10-diagnostics-and-transformations.html#cb231-2" aria-hidden="true"></a>  <span class="dt">carapace    =</span> <span class="kw">c</span>(<span class="dv">284</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">290</span>,<span class="dv">298</span>,<span class="dv">299</span>,<span class="dv">302</span>,<span class="dv">306</span>,<span class="dv">306</span>,</span>
+<span id="cb231-3"><a href="10-diagnostics-and-transformations.html#cb231-3" aria-hidden="true"></a>                  <span class="dv">309</span>,<span class="dv">310</span>,<span class="dv">311</span>,<span class="dv">317</span>,<span class="dv">317</span>,<span class="dv">320</span>,<span class="dv">323</span>,<span class="dv">334</span>,<span class="dv">334</span>),</span>
+<span id="cb231-4"><a href="10-diagnostics-and-transformations.html#cb231-4" aria-hidden="true"></a>  <span class="dt">clutch.size =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">7</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">8</span>,<span class="dv">8</span>,</span>
+<span id="cb231-5"><a href="10-diagnostics-and-transformations.html#cb231-5" aria-hidden="true"></a>                  <span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">6</span>,<span class="dv">13</span>,<span class="dv">2</span>,<span class="dv">8</span>)) </span>
+<span id="cb231-6"><a href="10-diagnostics-and-transformations.html#cb231-6" aria-hidden="true"></a><span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace, <span class="dt">y=</span>clutch.size)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb231-7"><a href="10-diagnostics-and-transformations.html#cb231-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
 <p>Looking at the data, it seems that we are violating the assumption that a linear model is appropriate, but we will fit the model anyway and look at the residual graph.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="10-diagnostics-and-transformations.html#cb232-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )</span>
-<span id="cb232-2"><a href="10-diagnostics-and-transformations.html#cb232-2"></a><span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># which=1 tells R to only make the first plot</span></span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="10-diagnostics-and-transformations.html#cb232-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )</span>
+<span id="cb232-2"><a href="10-diagnostics-and-transformations.html#cb232-2" aria-hidden="true"></a><span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># which=1 tells R to only make the first plot</span></span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="10-diagnostics-and-transformations.html#cb233-1"></a><span class="kw">library</span>(ggfortify)        <span class="co"># need the ggfortify library for autoplot.lm() to work</span></span>
-<span id="cb233-2"><a href="10-diagnostics-and-transformations.html#cb233-2"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2</span></span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="10-diagnostics-and-transformations.html#cb233-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)        <span class="co"># need the ggfortify library for autoplot.lm() to work</span></span>
+<span id="cb233-2"><a href="10-diagnostics-and-transformations.html#cb233-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2</span></span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
 <p>The red/blue lines going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in <code>carapace length</code>. We will create a new covariate, <code>carapace.2</code>, which is the square of the carapace length and add it to the model.</p>
 <p>In general I could write the quadratic model as
@@ -516,71 +549,71 @@ and note that my model is still a linear model with respect to covariates <span 
 \vdots\\
 \epsilon_{n}
 \end{array}\right]\end{aligned}\]</span></p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="10-diagnostics-and-transformations.html#cb234-1"></a><span class="co"># add a new column that is carapace^2</span></span>
-<span id="cb234-2"><a href="10-diagnostics-and-transformations.html#cb234-2"></a>Eggs2 &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace<span class="op">^</span><span class="dv">2</span> )</span>
-<span id="cb234-3"><a href="10-diagnostics-and-transformations.html#cb234-3"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span>carapace<span class="fl">.2</span>,    <span class="dt">data=</span>Eggs2 )</span>
-<span id="cb234-4"><a href="10-diagnostics-and-transformations.html#cb234-4"></a></span>
-<span id="cb234-5"><a href="10-diagnostics-and-transformations.html#cb234-5"></a><span class="co"># make R do it inside the formula... convenient</span></span>
-<span id="cb234-6"><a href="10-diagnostics-and-transformations.html#cb234-6"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(carapace<span class="op">^</span><span class="dv">2</span>), <span class="dt">data=</span>Eggs )</span>
-<span id="cb234-7"><a href="10-diagnostics-and-transformations.html#cb234-7"></a></span>
-<span id="cb234-8"><a href="10-diagnostics-and-transformations.html#cb234-8"></a><span class="co"># Fit an arbitrary degree polynomial</span></span>
-<span id="cb234-9"><a href="10-diagnostics-and-transformations.html#cb234-9"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dv">2</span>),        <span class="dt">data=</span>Eggs )</span>
-<span id="cb234-10"><a href="10-diagnostics-and-transformations.html#cb234-10"></a></span>
-<span id="cb234-11"><a href="10-diagnostics-and-transformations.html#cb234-11"></a><span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span></span>
-<span id="cb234-12"><a href="10-diagnostics-and-transformations.html#cb234-12"></a><span class="co"># otherwise you can skip it and R will do the right thing.</span></span>
-<span id="cb234-13"><a href="10-diagnostics-and-transformations.html#cb234-13"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>, <span class="dt">data=</span>Eggs)  </span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="10-diagnostics-and-transformations.html#cb234-1" aria-hidden="true"></a><span class="co"># add a new column that is carapace^2</span></span>
+<span id="cb234-2"><a href="10-diagnostics-and-transformations.html#cb234-2" aria-hidden="true"></a>Eggs2 &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">carapace.2 =</span> carapace<span class="op">^</span><span class="dv">2</span> )</span>
+<span id="cb234-3"><a href="10-diagnostics-and-transformations.html#cb234-3" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span>carapace<span class="fl">.2</span>,    <span class="dt">data=</span>Eggs2 )</span>
+<span id="cb234-4"><a href="10-diagnostics-and-transformations.html#cb234-4" aria-hidden="true"></a></span>
+<span id="cb234-5"><a href="10-diagnostics-and-transformations.html#cb234-5" aria-hidden="true"></a><span class="co"># make R do it inside the formula... convenient</span></span>
+<span id="cb234-6"><a href="10-diagnostics-and-transformations.html#cb234-6" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(carapace<span class="op">^</span><span class="dv">2</span>), <span class="dt">data=</span>Eggs )</span>
+<span id="cb234-7"><a href="10-diagnostics-and-transformations.html#cb234-7" aria-hidden="true"></a></span>
+<span id="cb234-8"><a href="10-diagnostics-and-transformations.html#cb234-8" aria-hidden="true"></a><span class="co"># Fit an arbitrary degree polynomial</span></span>
+<span id="cb234-9"><a href="10-diagnostics-and-transformations.html#cb234-9" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(carapace, <span class="dv">2</span>),        <span class="dt">data=</span>Eggs )</span>
+<span id="cb234-10"><a href="10-diagnostics-and-transformations.html#cb234-10" aria-hidden="true"></a></span>
+<span id="cb234-11"><a href="10-diagnostics-and-transformations.html#cb234-11" aria-hidden="true"></a><span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span></span>
+<span id="cb234-12"><a href="10-diagnostics-and-transformations.html#cb234-12" aria-hidden="true"></a><span class="co"># otherwise you can skip it and R will do the right thing.</span></span>
+<span id="cb234-13"><a href="10-diagnostics-and-transformations.html#cb234-13" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>, <span class="dt">data=</span>Eggs)  </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-138-1.png" width="672" /></p>
 <p>Now our residual plot versus fitted values does not show any trend, suggesting that the quadratic model is fitting the data well. Graphing the original data along with the predicted values confirms this.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="10-diagnostics-and-transformations.html#cb235-1"></a><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span></span>
-<span id="cb235-2"><a href="10-diagnostics-and-transformations.html#cb235-2"></a>Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb235-3"><a href="10-diagnostics-and-transformations.html#cb235-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span></span>
-<span id="cb235-4"><a href="10-diagnostics-and-transformations.html#cb235-4"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )</span>
-<span id="cb235-5"><a href="10-diagnostics-and-transformations.html#cb235-5"></a></span>
-<span id="cb235-6"><a href="10-diagnostics-and-transformations.html#cb235-6"></a><span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace)) <span class="op">+</span></span>
-<span id="cb235-7"><a href="10-diagnostics-and-transformations.html#cb235-7"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb235-8"><a href="10-diagnostics-and-transformations.html#cb235-8"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
-<span id="cb235-9"><a href="10-diagnostics-and-transformations.html#cb235-9"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="10-diagnostics-and-transformations.html#cb235-1" aria-hidden="true"></a><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span></span>
+<span id="cb235-2"><a href="10-diagnostics-and-transformations.html#cb235-2" aria-hidden="true"></a>Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb235-3"><a href="10-diagnostics-and-transformations.html#cb235-3" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">do</span>(<span class="cf">if</span>(<span class="op">!</span><span class="kw">is.null</span>(.<span class="op">$</span>fit)){dplyr<span class="op">::</span><span class="kw">select</span>(<span class="op">-</span>fit,<span class="op">-</span>upr,<span class="op">-</span>lwr )}<span class="cf">else</span>{.}) <span class="op">%&gt;%</span><span class="st">   </span></span>
+<span id="cb235-4"><a href="10-diagnostics-and-transformations.html#cb235-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(model, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>) )</span>
+<span id="cb235-5"><a href="10-diagnostics-and-transformations.html#cb235-5" aria-hidden="true"></a></span>
+<span id="cb235-6"><a href="10-diagnostics-and-transformations.html#cb235-6" aria-hidden="true"></a><span class="kw">ggplot</span>(Eggs, <span class="kw">aes</span>(<span class="dt">x=</span>carapace)) <span class="op">+</span></span>
+<span id="cb235-7"><a href="10-diagnostics-and-transformations.html#cb235-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb235-8"><a href="10-diagnostics-and-transformations.html#cb235-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb235-9"><a href="10-diagnostics-and-transformations.html#cb235-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-139-1.png" width="672" /></p>
 </div>
-<div id="heteroskedasticity" class="section level5">
+<div id="heteroskedasticity" class="section level5" number="10.1.2.1.2">
 <h5><span class="header-section-number">10.1.2.1.2</span> Heteroskedasticity</h5>
 <p>The plot of residuals versus fitted values can detect heteroskedasticity (non-constant variance) in the error terms.</p>
 <p>To illustrate this, we turn to another dataset in the Faraway book. The dataset <code>airquality</code> uses data taken from an environmental study that measured four variables, ozone, solar radiation, temperature and wind speed for 153 consecutive days in New York. The goal is to predict the level of ozone using the weather variables.</p>
 <p>We first graph all pairs of variables in the dataset.</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="10-diagnostics-and-transformations.html#cb236-1"></a><span class="kw">data</span>(airquality)</span>
-<span id="cb236-2"><a href="10-diagnostics-and-transformations.html#cb236-2"></a><span class="kw">pairs</span>(<span class="op">~</span><span class="st"> </span>Ozone <span class="op">+</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="10-diagnostics-and-transformations.html#cb236-1" aria-hidden="true"></a><span class="kw">data</span>(airquality)</span>
+<span id="cb236-2"><a href="10-diagnostics-and-transformations.html#cb236-2" aria-hidden="true"></a><span class="kw">pairs</span>(<span class="op">~</span><span class="st"> </span>Ozone <span class="op">+</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
 <p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance among the predictors.</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="10-diagnostics-and-transformations.html#cb237-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
-<span id="cb237-2"><a href="10-diagnostics-and-transformations.html#cb237-2"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="10-diagnostics-and-transformations.html#cb237-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
+<span id="cb237-2"><a href="10-diagnostics-and-transformations.html#cb237-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-141-1.png" width="672" /></p>
 <p>As we feared, we have both a non-constant variance and a non-linear relationship. A transformation of the <span class="math inline">\(y\)</span> variable might be able to fix our problem.</p>
 </div>
 </div>
-<div id="qqplots" class="section level4">
+<div id="qqplots" class="section level4" number="10.1.2.2">
 <h4><span class="header-section-number">10.1.2.2</span> QQplots</h4>
 <p>If we are taking a sample of size <span class="math inline">\(n=10\)</span> from a standard normal distribution, then I should expect that the smallest observation will be negative. Intuitively, you would expect the smallest observation to be near the <span class="math inline">\(10\)</span>th percentile of the standard normal, and likewise the second smallest should be near the <span class="math inline">\(20\)</span>th percentile.</p>
 <p>This idea needs a little modification because the largest observation cannot be near the <span class="math inline">\(100\)</span>th percentile (because that is <span class="math inline">\(\infty\)</span>). So we’ll adjust the estimates to still be spaced at <span class="math inline">\((1/n)\)</span> quantile increments, but starting at the <span class="math inline">\(0.5/n\)</span> quantile instead of the <span class="math inline">\(1/n\)</span> quantile. So the smallest observation should be near the <span class="math inline">\(0.05\)</span> quantile, the second smallest should be near the <span class="math inline">\(0.15\)</span> quantile, and the largest observation should be near the <span class="math inline">\(0.95\)</span> quantile. I will refer to these as the <em>theoretical quantiles</em>.</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-142-1.png" width="672" /></p>
 <p>I can then graph the theoretical quantiles vs my observed values and if they lie on the 1-to-1 line, then my data comes from a standard normal distribution.</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="10-diagnostics-and-transformations.html#cb238-1"></a><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span></span>
-<span id="cb238-2"><a href="10-diagnostics-and-transformations.html#cb238-2"></a></span>
-<span id="cb238-3"><a href="10-diagnostics-and-transformations.html#cb238-3"></a>n &lt;-<span class="st"> </span><span class="dv">10</span></span>
-<span id="cb238-4"><a href="10-diagnostics-and-transformations.html#cb238-4"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">observed =</span> <span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) ) <span class="op">%&gt;%</span></span>
-<span id="cb238-5"><a href="10-diagnostics-and-transformations.html#cb238-5"></a><span class="st">  </span><span class="kw">arrange</span>(observed) <span class="op">%&gt;%</span></span>
-<span id="cb238-6"><a href="10-diagnostics-and-transformations.html#cb238-6"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">theoretical =</span> <span class="kw">qnorm</span>( (<span class="dv">1</span><span class="op">:</span>n <span class="fl">-.5</span>)<span class="op">/</span>n ) )</span>
-<span id="cb238-7"><a href="10-diagnostics-and-transformations.html#cb238-7"></a></span>
-<span id="cb238-8"><a href="10-diagnostics-and-transformations.html#cb238-8"></a><span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>theoretical, <span class="dt">y=</span>observed) ) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb238-9"><a href="10-diagnostics-and-transformations.html#cb238-9"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
-<span id="cb238-10"><a href="10-diagnostics-and-transformations.html#cb238-10"></a><span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb238-11"><a href="10-diagnostics-and-transformations.html#cb238-11"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="10-diagnostics-and-transformations.html#cb238-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span></span>
+<span id="cb238-2"><a href="10-diagnostics-and-transformations.html#cb238-2" aria-hidden="true"></a></span>
+<span id="cb238-3"><a href="10-diagnostics-and-transformations.html#cb238-3" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb238-4"><a href="10-diagnostics-and-transformations.html#cb238-4" aria-hidden="true"></a>data &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">observed =</span> <span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span><span class="dv">1</span>) ) <span class="op">%&gt;%</span></span>
+<span id="cb238-5"><a href="10-diagnostics-and-transformations.html#cb238-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">arrange</span>(observed) <span class="op">%&gt;%</span></span>
+<span id="cb238-6"><a href="10-diagnostics-and-transformations.html#cb238-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">theoretical =</span> <span class="kw">qnorm</span>( (<span class="dv">1</span><span class="op">:</span>n <span class="fl">-.5</span>)<span class="op">/</span>n ) )</span>
+<span id="cb238-7"><a href="10-diagnostics-and-transformations.html#cb238-7" aria-hidden="true"></a></span>
+<span id="cb238-8"><a href="10-diagnostics-and-transformations.html#cb238-8" aria-hidden="true"></a><span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>theoretical, <span class="dt">y=</span>observed) ) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb238-9"><a href="10-diagnostics-and-transformations.html#cb238-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb238-10"><a href="10-diagnostics-and-transformations.html#cb238-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb238-11"><a href="10-diagnostics-and-transformations.html#cb238-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-143-1.png" width="672" /></p>
 <p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the air quality example, R will calculate the qqplot for us.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="10-diagnostics-and-transformations.html#cb239-1"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
-<span id="cb239-2"><a href="10-diagnostics-and-transformations.html#cb239-2"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="10-diagnostics-and-transformations.html#cb239-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
+<span id="cb239-2"><a href="10-diagnostics-and-transformations.html#cb239-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-144-1.png" width="672" /></p>
 <p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="10-diagnostics-and-transformations.html#cb240-1"></a><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="10-diagnostics-and-transformations.html#cb240-1" aria-hidden="true"></a><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</span></code></pre></div>
 <pre><code>## 
 ## 	Shapiro-Wilk normality test
 ## 
@@ -588,25 +621,25 @@ and note that my model is still a linear model with respect to covariates <span 
 ## W = 0.9151, p-value = 2.819e-06</code></pre>
 <p>The tail of the distribution of observed residuals is <em>far</em> from what we expect to see.</p>
 </div>
-<div id="scale-location-plot" class="section level4">
+<div id="scale-location-plot" class="section level4" number="10.1.2.3">
 <h4><span class="header-section-number">10.1.2.3</span> Scale-Location Plot</h4>
 <p>This plot is a variation on the fitted vs residuals plot, but the y-axis uses the square root of the absolute value of the standardized residuals. Supposedly this makes detecting increasing variance easier to detect, but I’m not convinced.</p>
 </div>
-<div id="residuals-vs-leverage-plus-cooks-distance" class="section level4">
+<div id="residuals-vs-leverage-plus-cooks-distance" class="section level4" number="10.1.2.4">
 <h4><span class="header-section-number">10.1.2.4</span> Residuals vs Leverage (plus Cook’s Distance)</h4>
 <p>This plot lets the user examine the which observations have a high potential for being influential (i.e. high leverage) versus how large the residual is. Because Cook’s distance is a function of those two traits, we can also divide the graph up into regions by the value of Cook’s Distance.</p>
 <p>Returning to Anscombe’s third set of data, we see</p>
 <p>&lt;&lt;&gt;&gt;=</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="10-diagnostics-and-transformations.html#cb242-1"></a>model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)</span>
-<span id="cb242-2"><a href="10-diagnostics-and-transformations.html#cb242-2"></a><span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="10-diagnostics-and-transformations.html#cb242-1" aria-hidden="true"></a>model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)</span>
+<span id="cb242-2"><a href="10-diagnostics-and-transformations.html#cb242-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
 <p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the <code>ggfortify</code> version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="10-diagnostics-and-transformations.html#cb243-1"></a><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="10-diagnostics-and-transformations.html#cb243-1" aria-hidden="true"></a><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
 </div>
 </div>
 </div>
-<div id="transformations" class="section level2">
+<div id="transformations" class="section level2" number="10.2">
 <h2><span class="header-section-number">10.2</span> Transformations</h2>
 <p>Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms.</p>
 <p>Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
@@ -619,7 +652,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <li>The model contains all the appropriate covariates and no more.</li>
 </ol>
 <p>In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4.</p>
-<div id="a-review-of-logx-and-ex" class="section level3">
+<div id="a-review-of-logx-and-ex" class="section level3" number="10.2.1">
 <h3><span class="header-section-number">10.2.1</span> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></h3>
 <p>One of the most common transformations that is used on either the response <span class="math inline">\(y\)</span> or the covariates <span class="math inline">\(x\)</span> is the <span class="math inline">\(\log()\)</span> function. In this next section we will consider <span class="math inline">\(\log()\)</span> with base <span class="math inline">\(e\)</span>. However, if you prefer <span class="math inline">\(\log_2()\)</span> or <span class="math inline">\(\log_{10}\)</span> you may substitute <span class="math inline">\(e\)</span> with <span class="math inline">\(2\)</span> or <span class="math inline">\(10\)</span> everywhere.</p>
 <p>In primary school you might have learned that the <span class="math inline">\(\log()\)</span> function looks like this:
@@ -646,7 +679,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <p>The reason we like using a <span class="math inline">\(\log()\)</span> transformation is that it acts differentially on large values than small. In particular for <span class="math inline">\(x &gt;1\)</span> we have that <span class="math inline">\(\log(x)\)</span> makes all of the smaller, but the transformation on big values of <span class="math inline">\(x\)</span> is more extreme. Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we’d like to reduce that.</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
 </div>
-<div id="transforming-the-response" class="section level3">
+<div id="transforming-the-response" class="section level3" number="10.2.2">
 <h3><span class="header-section-number">10.2.2</span> Transforming the Response</h3>
 <p>When the normality or constant variance assumption is violated, sometimes it is possible to transform the response to satisfy the assumption. Often times count data is analyzed as <code>log(count)</code> and weights are analyzed after taking a square root or cube root transform. Statistics involving income or other monetary values are usually analyzed on the log scale so as to reduce the leverage of high income observations.</p>
 <p>While we may want to transform the response in order to satisfy the statistical assumptions, it is often necessary to back-transform to the original scale. For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>)
@@ -655,7 +688,7 @@ then we might want to give a prediction interval for an <span class="math inline
 <span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}\]</span>
 and we could calculate the appropriate predicted income as <span class="math inline">\(\hat{y}_{0}=e^{log\left(\hat{y}_{0}\right)}\)</span>. Likewise if we had a confidence interval or prediction interval for <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span> of the form <span class="math inline">\(\left(l,u\right)\)</span> then the appropriate interval for <span class="math inline">\(\hat{y}_{0}\)</span> is <span class="math inline">\(\left(e^{l},e^{u}\right)\)</span>. Notice that while <span class="math inline">\(\left(l,u\right)\)</span> might be symmetric about <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span>, the back-transformed interval is not symmetric about <span class="math inline">\(\hat{y}_{0}\)</span>.</p>
 <p>Unfortunately the interpretation of the regression coefficients <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> on the untransformed scale becomes more complicated. This is a very serious difficulty and might sway a researcher from transforming their data.</p>
-<div id="box-cox-family-of-transformations" class="section level4">
+<div id="box-cox-family-of-transformations" class="section level4" number="10.2.2.1">
 <h4><span class="header-section-number">10.2.2.1</span> Box-Cox Family of Transformations</h4>
 <p>The Box-Cox method is a popular way of determining what transformation to make. It is intended for responses that are strictly positive (because <span class="math inline">\(\log0=-\infty\)</span> and the square root of a number gives complex numbers, which we don’t know how to address in regression). The transformation is defined as <span class="math display">\[g\left(y\right)=\begin{cases}
 \frac{y^{\lambda}-1}{\lambda} &amp; \lambda\ne0\\
@@ -664,15 +697,15 @@ and we could calculate the appropriate predicted income as <span class="math inl
 This transformation is a smooth family of transformations because <span class="math display">\[\lim_{\lambda\to0}\frac{y^{\lambda}-1}{\lambda}=\log y\]</span>
 In the case that <span class="math inline">\(\lambda\ne 0\)</span>, then a researcher will usually use the simpler transformation <span class="math inline">\(y^{\lambda}\)</span> because the subtraction and division does not change anything in a non-linear fashion. Thus for purposes of addressing the assumption violations, all we care about is the <span class="math inline">\(y^{\lambda}\)</span> and prefer the simpler (i.e. more interpretable) transformation.</p>
 <p>Finding the best transformation can be done by adding the <span class="math inline">\(\lambda\)</span> parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don’t have to do this by hand, as the function <code>boxcox()</code> in the <code>MASS</code> library will do all the heavy calculation for us.</p>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="10-diagnostics-and-transformations.html#cb244-1"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb244-2"><a href="10-diagnostics-and-transformations.html#cb244-2"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
-<span id="cb244-3"><a href="10-diagnostics-and-transformations.html#cb244-3"></a></span>
-<span id="cb244-4"><a href="10-diagnostics-and-transformations.html#cb244-4"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
-<span id="cb244-5"><a href="10-diagnostics-and-transformations.html#cb244-5"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
-<span id="cb244-6"><a href="10-diagnostics-and-transformations.html#cb244-6"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
-<span id="cb244-7"><a href="10-diagnostics-and-transformations.html#cb244-7"></a><span class="co"># </span></span>
-<span id="cb244-8"><a href="10-diagnostics-and-transformations.html#cb244-8"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
-<span id="cb244-9"><a href="10-diagnostics-and-transformations.html#cb244-9"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="10-diagnostics-and-transformations.html#cb244-1" aria-hidden="true"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb244-2"><a href="10-diagnostics-and-transformations.html#cb244-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb244-3"><a href="10-diagnostics-and-transformations.html#cb244-3" aria-hidden="true"></a></span>
+<span id="cb244-4"><a href="10-diagnostics-and-transformations.html#cb244-4" aria-hidden="true"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
+<span id="cb244-5"><a href="10-diagnostics-and-transformations.html#cb244-5" aria-hidden="true"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
+<span id="cb244-6"><a href="10-diagnostics-and-transformations.html#cb244-6" aria-hidden="true"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
+<span id="cb244-7"><a href="10-diagnostics-and-transformations.html#cb244-7" aria-hidden="true"></a><span class="co"># </span></span>
+<span id="cb244-8"><a href="10-diagnostics-and-transformations.html#cb244-8" aria-hidden="true"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
+<span id="cb244-9"><a href="10-diagnostics-and-transformations.html#cb244-9" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
 <p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
 <p>Thoughts on the Box-Cox transformation:</p>
@@ -684,36 +717,36 @@ In the case that <span class="math inline">\(\lambda\ne 0\)</span>, then a resea
 </ol>
 </div>
 </div>
-<div id="transforming-the-predictors" class="section level3">
+<div id="transforming-the-predictors" class="section level3" number="10.2.3">
 <h3><span class="header-section-number">10.2.3</span> Transforming the predictors</h3>
-<div id="polynomials-of-a-predictor" class="section level4">
+<div id="polynomials-of-a-predictor" class="section level4" number="10.2.3.1">
 <h4><span class="header-section-number">10.2.3.1</span> Polynomials of a predictor</h4>
 <p>Perhaps the most common transformation to make is to make a quadratic function in <span class="math inline">\(x\)</span>. Often the relationship between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> follows a curve and we want to fit a quadratic model
 <span class="math display">\[\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1}x+\hat{\beta}_{2}x^{2}\]</span>
 and we should note that this is still a linear model because <span class="math inline">\(\hat{y}\)</span> is a linear function of <span class="math inline">\(x\)</span> and <span class="math inline">\(x^{2}\)</span>. As we have already seen, it is easy to fit the model. Adding the column of <span class="math inline">\(x^{2}\)</span> values to the design matrix does the trick.</p>
 <p>The difficult part comes in the interpretation of the parameter values. No longer is <span class="math inline">\(\hat{\beta}_{1}\)</span> the increase in <span class="math inline">\(y\)</span> for every one unit increase in <span class="math inline">\(x\)</span>. Instead the three parameters in my model interact in a complicated fashion. For example, the peak of the parabola is at <span class="math inline">\(-\hat{\beta}_{1}/2\hat{\beta}_{2}\)</span> and whether the parabola is cup shaped vs dome shaped and its steepness is controlled by <span class="math inline">\(\hat{\beta}_{2}\)</span>. Because my geometric understanding of degree <span class="math inline">\(q\)</span> polynomials relies on have all factors of degree <span class="math inline">\(q\)</span> or lower, whenever I include a covariate raised to a power, I should include all the lower powers as well.</p>
 </div>
-<div id="log-and-square-root-of-a-predictor" class="section level4">
+<div id="log-and-square-root-of-a-predictor" class="section level4" number="10.2.3.2">
 <h4><span class="header-section-number">10.2.3.2</span> Log and Square Root of a predictor</h4>
 <p>Often the effect of a covariate is not linearly related to response, but rather some function of the covariate. For example the area of a circle is not linearly related to its radius, but it is linearly related to the radius squared.
 <span class="math display">\[Area=\pi r^{2}\]</span>
 Similar situations might arise in biological settings, such as the volume of conducting tissue being related to the square of the diameter. Or perhaps an animals metabolic requirements are related to some power of body length. In sociology, it is often seen that the utility of, say, $1000 drops off in a logarithmic fashion according to the person’s income. To a graduate student, $1K is a big deal, but to a corporate CEO, $1K is just another weekend at the track. Making a log transformation on any monetary covariate, might account for the non-linear nature of “utility”.</p>
 <p>Picking a good transformation for a covariate is quite difficult, but most fields of study have spent plenty of time thinking about these issues. When in doubt, look at scatter plots of the covariate vs the response and ask what transformation would make the data fall onto a line?</p>
 </div>
-<div id="examples-of-transformation-of-predictors" class="section level4">
+<div id="examples-of-transformation-of-predictors" class="section level4" number="10.2.3.3">
 <h4><span class="header-section-number">10.2.3.3</span> Examples of transformation of predictors</h4>
 <p>To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in <code>faraway</code>.</p>
-<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="10-diagnostics-and-transformations.html#cb245-1"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb245-2"><a href="10-diagnostics-and-transformations.html#cb245-2"></a><span class="co"># look at all the scatterplots</span></span>
-<span id="cb245-3"><a href="10-diagnostics-and-transformations.html#cb245-3"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb245-4"><a href="10-diagnostics-and-transformations.html#cb245-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
-<span id="cb245-5"><a href="10-diagnostics-and-transformations.html#cb245-5"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
-<span id="cb245-6"><a href="10-diagnostics-and-transformations.html#cb245-6"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="10-diagnostics-and-transformations.html#cb245-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb245-2"><a href="10-diagnostics-and-transformations.html#cb245-2" aria-hidden="true"></a><span class="co"># look at all the scatterplots</span></span>
+<span id="cb245-3"><a href="10-diagnostics-and-transformations.html#cb245-3" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb245-4"><a href="10-diagnostics-and-transformations.html#cb245-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
+<span id="cb245-5"><a href="10-diagnostics-and-transformations.html#cb245-5" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
+<span id="cb245-6"><a href="10-diagnostics-and-transformations.html#cb245-6" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
 <p>Looking at these graphs, I think I should definately transform <code>Area</code> and <code>Adjacent</code>, and I wouldn’t object to doing the same to <code>Elevation</code>, <code>Nearest</code> and <code>Scruz</code>. Given the high leverages, a log transformation should be a good idea. One problem is that <span class="math inline">\(\log(0) = -\infty\)</span>. A quick look at the data set summary:</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="10-diagnostics-and-transformations.html#cb246-1"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb246-2"><a href="10-diagnostics-and-transformations.html#cb246-2"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Species, Area, Elevation, Nearest,Scruz, Adjacent) <span class="op">%&gt;%</span></span>
-<span id="cb246-3"><a href="10-diagnostics-and-transformations.html#cb246-3"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="10-diagnostics-and-transformations.html#cb246-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb246-2"><a href="10-diagnostics-and-transformations.html#cb246-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Species, Area, Elevation, Nearest,Scruz, Adjacent) <span class="op">%&gt;%</span></span>
+<span id="cb246-3"><a href="10-diagnostics-and-transformations.html#cb246-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <pre><code>##     Species            Area            Elevation          Nearest     
 ##  Min.   :  2.00   Min.   :   0.010   Min.   :  25.00   Min.   : 0.20  
 ##  1st Qu.: 13.00   1st Qu.:   0.258   1st Qu.:  97.75   1st Qu.: 0.80  
@@ -729,15 +762,15 @@ Similar situations might arise in biological settings, such as the volume of con
 ##  3rd Qu.: 81.08   3rd Qu.:  59.24  
 ##  Max.   :290.20   Max.   :4669.32</code></pre>
 <p>reveals that <code>Scruz</code> has a zero value, and so a log transformation will result in a <span class="math inline">\(-\infty\)</span>. So, lets take the square root of <code>Scruz</code></p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="10-diagnostics-and-transformations.html#cb248-1"></a>gala <span class="op">%&gt;%</span></span>
-<span id="cb248-2"><a href="10-diagnostics-and-transformations.html#cb248-2"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species), <span class="dt">LogElevation=</span><span class="kw">log</span>(Elevation), <span class="dt">LogArea=</span><span class="kw">log</span>(Area), <span class="dt">LogNearest=</span><span class="kw">log</span>(Nearest),</span>
-<span id="cb248-3"><a href="10-diagnostics-and-transformations.html#cb248-3"></a>         <span class="dt">SqrtScruz=</span><span class="kw">sqrt</span>(Scruz), <span class="dt">LogAdjacent=</span><span class="kw">log</span>(Adjacent)) <span class="op">%&gt;%</span></span>
-<span id="cb248-4"><a href="10-diagnostics-and-transformations.html#cb248-4"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) <span class="op">%&gt;%</span></span>
-<span id="cb248-5"><a href="10-diagnostics-and-transformations.html#cb248-5"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="10-diagnostics-and-transformations.html#cb248-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span></span>
+<span id="cb248-2"><a href="10-diagnostics-and-transformations.html#cb248-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species), <span class="dt">LogElevation=</span><span class="kw">log</span>(Elevation), <span class="dt">LogArea=</span><span class="kw">log</span>(Area), <span class="dt">LogNearest=</span><span class="kw">log</span>(Nearest),</span>
+<span id="cb248-3"><a href="10-diagnostics-and-transformations.html#cb248-3" aria-hidden="true"></a>         <span class="dt">SqrtScruz=</span><span class="kw">sqrt</span>(Scruz), <span class="dt">LogAdjacent=</span><span class="kw">log</span>(Adjacent)) <span class="op">%&gt;%</span></span>
+<span id="cb248-4"><a href="10-diagnostics-and-transformations.html#cb248-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) <span class="op">%&gt;%</span></span>
+<span id="cb248-5"><a href="10-diagnostics-and-transformations.html#cb248-5" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
 <p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="10-diagnostics-and-transformations.html#cb249-1"></a>m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Nearest) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(Scruz) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</span>
-<span id="cb249-2"><a href="10-diagnostics-and-transformations.html#cb249-2"></a><span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="10-diagnostics-and-transformations.html#cb249-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Nearest) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(Scruz) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</span>
+<span id="cb249-2"><a href="10-diagnostics-and-transformations.html#cb249-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></span></code></pre></div>
 <pre><code>##               Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      3.285      0.275  11.960    0.000
 ## log(Area)        0.402      0.043   9.443    0.000
@@ -745,8 +778,8 @@ Similar situations might arise in biological settings, such as the volume of con
 ## sqrt(Scruz)     -0.049      0.045  -1.085    0.288
 ## log(Adjacent)   -0.024      0.046  -0.529    0.602</code></pre>
 <p>We will remove all the parameters that appear to be superfluous, and perform an F-test to confirm that the simple model is sufficient.</p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="10-diagnostics-and-transformations.html#cb251-1"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
-<span id="cb251-2"><a href="10-diagnostics-and-transformations.html#cb251-2"></a><span class="kw">anova</span>(m.s, m.c)</span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="10-diagnostics-and-transformations.html#cb251-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
+<span id="cb251-2"><a href="10-diagnostics-and-transformations.html#cb251-2" aria-hidden="true"></a><span class="kw">anova</span>(m.s, m.c)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: log(Species) ~ log(Area)
@@ -755,7 +788,7 @@ Similar situations might arise in biological settings, such as the volume of con
 ## 1     28 17.218                           
 ## 2     25 15.299  3    1.9196 1.0456 0.3897</code></pre>
 <p>Next we will look at the coefficients.</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="10-diagnostics-and-transformations.html#cb253-1"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="10-diagnostics-and-transformations.html#cb253-1" aria-hidden="true"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = log(Species) ~ log(Area), data = gala)
@@ -776,28 +809,28 @@ Similar situations might arise in biological settings, such as the volume of con
 ## F-statistic: 87.27 on 1 and 28 DF,  p-value: 4.23e-10</code></pre>
 <p>The slope coefficient (0.3886) is the increase in log(Species) for every 1 unit increase in log(Area). Unfortunately that is not particularly convenient to interpretation and we will address this in the next section of this chapter.</p>
 <p>Finally, we might be interested in creating a confidence interval for the expected number of tortoise species for an island with <code>Area=50</code>.</p>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="10-diagnostics-and-transformations.html#cb255-1"></a>x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">50</span>)</span>
-<span id="cb255-2"><a href="10-diagnostics-and-transformations.html#cb255-2"></a>log.Species.CI &lt;-<span class="st"> </span><span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</span>
-<span id="cb255-3"><a href="10-diagnostics-and-transformations.html#cb255-3"></a>log.Species.CI       <span class="co"># Log(Species) scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="10-diagnostics-and-transformations.html#cb255-1" aria-hidden="true"></a>x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">50</span>)</span>
+<span id="cb255-2"><a href="10-diagnostics-and-transformations.html#cb255-2" aria-hidden="true"></a>log.Species.CI &lt;-<span class="st"> </span><span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</span>
+<span id="cb255-3"><a href="10-diagnostics-and-transformations.html#cb255-3" aria-hidden="true"></a>log.Species.CI       <span class="co"># Log(Species) scale</span></span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 4.423903 4.068412 4.779394</code></pre>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="10-diagnostics-and-transformations.html#cb257-1"></a><span class="kw">exp</span>(log.Species.CI)  <span class="co"># Species scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="10-diagnostics-and-transformations.html#cb257-1" aria-hidden="true"></a><span class="kw">exp</span>(log.Species.CI)  <span class="co"># Species scale</span></span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 83.42122 58.46403 119.0322</code></pre>
 <p>Notice that on the species-scale, we see that the fitted value is not in the center of the confidence interval.</p>
 <p>To help us understand what the log transformations are doing, we can produce a plot with the island Area on the x-axis and the expected number of Species on the y-axis and hopefully that will help us understand the relationship between the two.</p>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="10-diagnostics-and-transformations.html#cb259-1"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb259-2"><a href="10-diagnostics-and-transformations.html#cb259-2"></a>pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span><span class="op">:</span><span class="dv">50</span>)</span>
-<span id="cb259-3"><a href="10-diagnostics-and-transformations.html#cb259-3"></a>pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb259-4"><a href="10-diagnostics-and-transformations.html#cb259-4"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
-<span id="cb259-5"><a href="10-diagnostics-and-transformations.html#cb259-5"></a><span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) <span class="op">+</span></span>
-<span id="cb259-6"><a href="10-diagnostics-and-transformations.html#cb259-6"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span></span>
-<span id="cb259-7"><a href="10-diagnostics-and-transformations.html#cb259-7"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
-<span id="cb259-8"><a href="10-diagnostics-and-transformations.html#cb259-8"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="10-diagnostics-and-transformations.html#cb259-1" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb259-2"><a href="10-diagnostics-and-transformations.html#cb259-2" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span><span class="op">:</span><span class="dv">50</span>)</span>
+<span id="cb259-3"><a href="10-diagnostics-and-transformations.html#cb259-3" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb259-4"><a href="10-diagnostics-and-transformations.html#cb259-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
+<span id="cb259-5"><a href="10-diagnostics-and-transformations.html#cb259-5" aria-hidden="true"></a><span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) <span class="op">+</span></span>
+<span id="cb259-6"><a href="10-diagnostics-and-transformations.html#cb259-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span></span>
+<span id="cb259-7"><a href="10-diagnostics-and-transformations.html#cb259-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb259-8"><a href="10-diagnostics-and-transformations.html#cb259-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
 </div>
 </div>
-<div id="interpretation-of-log-transformed-variables" class="section level3">
+<div id="interpretation-of-log-transformed-variables" class="section level3" number="10.2.4">
 <h3><span class="header-section-number">10.2.4</span> Interpretation of log transformed variables</h3>
 <p>One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Here we look at the interpretation of log transformed variables.</p>
 <p>To begin with, we need to remind ourselves of what the functions <span class="math inline">\(\log x\)</span> and <span class="math inline">\(e^{x}\)</span> look like.</p>
@@ -817,26 +850,26 @@ and the functions <span class="math inline">\(e^{x}\)</span> and <span class="ma
 <p>One final aspect of exponents that we will utilize is that
 <span class="math display">\[ e^{a+b} = e^a e^b\]</span></p>
 <p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="10-diagnostics-and-transformations.html#cb260-1"></a>file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span></span>
-<span id="cb260-2"><a href="10-diagnostics-and-transformations.html#cb260-2"></a>file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span></span>
-<span id="cb260-3"><a href="10-diagnostics-and-transformations.html#cb260-3"></a>scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)</span>
-<span id="cb260-4"><a href="10-diagnostics-and-transformations.html#cb260-4"></a>scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">gender =</span> female)</span>
-<span id="cb260-5"><a href="10-diagnostics-and-transformations.html#cb260-5"></a></span>
-<span id="cb260-6"><a href="10-diagnostics-and-transformations.html#cb260-6"></a>scores <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb260-7"><a href="10-diagnostics-and-transformations.html#cb260-7"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(write, read, math, gender) <span class="op">%&gt;%</span></span>
-<span id="cb260-8"><a href="10-diagnostics-and-transformations.html#cb260-8"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="kw">aes</span>(<span class="dt">color=</span>gender),</span>
-<span id="cb260-9"><a href="10-diagnostics-and-transformations.html#cb260-9"></a>    <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="10-diagnostics-and-transformations.html#cb260-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span></span>
+<span id="cb260-2"><a href="10-diagnostics-and-transformations.html#cb260-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span></span>
+<span id="cb260-3"><a href="10-diagnostics-and-transformations.html#cb260-3" aria-hidden="true"></a>scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)</span>
+<span id="cb260-4"><a href="10-diagnostics-and-transformations.html#cb260-4" aria-hidden="true"></a>scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">gender =</span> female)</span>
+<span id="cb260-5"><a href="10-diagnostics-and-transformations.html#cb260-5" aria-hidden="true"></a></span>
+<span id="cb260-6"><a href="10-diagnostics-and-transformations.html#cb260-6" aria-hidden="true"></a>scores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb260-7"><a href="10-diagnostics-and-transformations.html#cb260-7" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(write, read, math, gender) <span class="op">%&gt;%</span></span>
+<span id="cb260-8"><a href="10-diagnostics-and-transformations.html#cb260-8" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="kw">aes</span>(<span class="dt">color=</span>gender),</span>
+<span id="cb260-9"><a href="10-diagnostics-and-transformations.html#cb260-9" aria-hidden="true"></a>    <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
 <p>These data look pretty decent, and I’m not certain that I would do <em>any</em> transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a students’ writing score.</p>
-<div id="log-transformed-response-un-transformed-covariates" class="section level4">
+<div id="log-transformed-response-un-transformed-covariates" class="section level4" number="10.2.4.1">
 <h4><span class="header-section-number">10.2.4.1</span> Log-transformed response, un-transformed covariates</h4>
 <p>We consider the model where we have transformed the response variable and just an intercept term.
 <span class="math display">\[\log y=\beta_{0}+\epsilon\]</span></p>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="10-diagnostics-and-transformations.html#cb262-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)</span>
-<span id="cb262-2"><a href="10-diagnostics-and-transformations.html#cb262-2"></a><span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="10-diagnostics-and-transformations.html#cb262-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)</span>
+<span id="cb262-2"><a href="10-diagnostics-and-transformations.html#cb262-2" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.948      0.014 288.402        0</code></pre>
 <p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>.</p>
@@ -845,8 +878,8 @@ and the functions <span class="math inline">\(e^{x}\)</span> and <span class="ma
 \beta_{0}+\epsilon &amp; \;\;\textrm{if female}\\
 \beta_{0}+\beta_{1}+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="10-diagnostics-and-transformations.html#cb264-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>scores)</span>
-<span id="cb264-2"><a href="10-diagnostics-and-transformations.html#cb264-2"></a><span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="10-diagnostics-and-transformations.html#cb264-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>scores)</span>
+<span id="cb264-2"><a href="10-diagnostics-and-transformations.html#cb264-2" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coef <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.995      0.018 222.949        0
 ## gendermale    -0.103      0.027  -3.887        0</code></pre>
@@ -863,8 +896,8 @@ and the functions <span class="math inline">\(e^{x}\)</span> and <span class="ma
 \beta_{0}+\beta_{1}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
 <p>We will use the reading score read to predict the writing score. Then <span class="math inline">\(\hat{\beta}_{2}\)</span> is the predicted increase in <code>log(write)</code> for every 1-unit increase in read score. The interpretation of <span class="math inline">\(\hat{\beta}_{0}\)</span> is now <span class="math inline">\(\log\hat{y}\)</span> when <span class="math inline">\(x=0\)</span> and therefore <span class="math inline">\(\hat{y}=e^{\hat{\beta}_{0}}\)</span> when <span class="math inline">\(x=0\)</span>.</p>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="10-diagnostics-and-transformations.html#cb266-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span></span>
-<span id="cb266-2"><a href="10-diagnostics-and-transformations.html#cb266-2"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="10-diagnostics-and-transformations.html#cb266-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span></span>
+<span id="cb266-2"><a href="10-diagnostics-and-transformations.html#cb266-2" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    3.412      0.055  62.452        0
 ## gendermale    -0.116      0.021  -5.516        0
@@ -896,7 +929,7 @@ meaning there is an estimated <span class="math inline">\(1\%\)</span> increase 
 <li>A <span class="math inline">\(50\%\)</span> decrease in <span class="math inline">\(y\)</span> has a resulting value of <span class="math inline">\(\left(1-0.5\right)y=\left(0.5\right) x\)</span> and is a halving of <span class="math inline">\(y\)</span>.</li>
 </ul>
 </div>
-<div id="un-transformed-response-log-transformed-covariate" class="section level4">
+<div id="un-transformed-response-log-transformed-covariate" class="section level4" number="10.2.4.2">
 <h4><span class="header-section-number">10.2.4.2</span> Un-transformed response, log-transformed covariate</h4>
 <p>We consider the model
 <span class="math display">\[y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span>
@@ -908,23 +941,23 @@ and consider two different values of <span class="math inline">\(x\)</span> (whi
 	&amp; =	\hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
 	\end{aligned}\]</span></p>
 <p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 has the same effect on <span class="math inline">\(\hat{y}\)</span> as changing x from 50 to 100.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="10-diagnostics-and-transformations.html#cb268-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>( write <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
-<span id="cb268-2"><a href="10-diagnostics-and-transformations.html#cb268-2"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="10-diagnostics-and-transformations.html#cb268-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>( write <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
+<span id="cb268-2"><a href="10-diagnostics-and-transformations.html#cb268-2" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)  -59.076      9.948  -5.938        0
 ## gendermale    -5.431      1.013  -5.362        0
 ## log(read)     29.045      2.527  11.493        0</code></pre>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="10-diagnostics-and-transformations.html#cb270-1"></a><span class="co"># predict writing scores for three females, </span></span>
-<span id="cb270-2"><a href="10-diagnostics-and-transformations.html#cb270-2"></a><span class="co"># each with a reading score 50% larger than the other previous</span></span>
-<span id="cb270-3"><a href="10-diagnostics-and-transformations.html#cb270-3"></a><span class="kw">predict</span>(m, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),</span>
-<span id="cb270-4"><a href="10-diagnostics-and-transformations.html#cb270-4"></a>                              <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="10-diagnostics-and-transformations.html#cb270-1" aria-hidden="true"></a><span class="co"># predict writing scores for three females, </span></span>
+<span id="cb270-2"><a href="10-diagnostics-and-transformations.html#cb270-2" aria-hidden="true"></a><span class="co"># each with a reading score 50% larger than the other previous</span></span>
+<span id="cb270-3"><a href="10-diagnostics-and-transformations.html#cb270-3" aria-hidden="true"></a><span class="kw">predict</span>(m, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),</span>
+<span id="cb270-4"><a href="10-diagnostics-and-transformations.html#cb270-4" aria-hidden="true"></a>                              <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</span></code></pre></div>
 <pre><code>##        1        2        3 
 ## 48.06622 59.84279 71.61936</code></pre>
 <p>We should see a
 <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
 difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
 </div>
-<div id="log-transformed-response-log-transformed-covariate" class="section level4">
+<div id="log-transformed-response-log-transformed-covariate" class="section level4" number="10.2.4.3">
 <h4><span class="header-section-number">10.2.4.3</span> Log-transformed response, log-transformed covariate</h4>
 <p>This combines the interpretations in the previous two sections. We consider
 <span class="math display">\[\log y=\beta_{0}+\beta_{2}\log x+\epsilon\]</span>
@@ -936,16 +969,16 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 \frac{\hat{y}_{2}}{\hat{y}_{1}}	&amp;=	\left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}
 \end{aligned}\]</span></p>
 <p>This allows us to examine the effect of some arbitrary percentage increase in <span class="math inline">\(x\)</span> value as a percentage increase in <span class="math inline">\(y\)</span> value.</p>
-<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="10-diagnostics-and-transformations.html#cb272-1"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
-<span id="cb272-2"><a href="10-diagnostics-and-transformations.html#cb272-2"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="10-diagnostics-and-transformations.html#cb272-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
+<span id="cb272-2"><a href="10-diagnostics-and-transformations.html#cb272-2" aria-hidden="true"></a><span class="kw">summary</span>(m)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    1.714      0.205   8.358        0
 ## gendermale    -0.114      0.021  -5.483        0
 ## log(read)      0.581      0.052  11.148        0</code></pre>
 <p>which implies for a <span class="math inline">\(10\)</span>% increase in <code>read</code> score, we should see a <span class="math inline">\(1.10^{0.581}=1.05\)</span> multiplier in <code>write</code> score. That is to say, a <span class="math inline">\(10\%\)</span> increase in reading score results in a <span class="math inline">\(5\%\)</span> increase in writing score.</p>
 <p>For the Galapagos islands, we had</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="10-diagnostics-and-transformations.html#cb274-1"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
-<span id="cb274-2"><a href="10-diagnostics-and-transformations.html#cb274-2"></a><span class="kw">summary</span>(m.s)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb274-1"><a href="10-diagnostics-and-transformations.html#cb274-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
+<span id="cb274-2"><a href="10-diagnostics-and-transformations.html#cb274-2" aria-hidden="true"></a><span class="kw">summary</span>(m.s)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)    2.904      0.157  18.484        0
 ## log(Area)      0.389      0.042   9.342        0</code></pre>
@@ -1002,14 +1035,14 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 </div>
 </div>
 </div>
-<div id="Exercises_Diagnostics" class="section level2">
+<div id="Exercises_Diagnostics" class="section level2" number="10.3">
 <h2><span class="header-section-number">10.3</span> Exercises</h2>
 <ol style="list-style-type: decimal">
 <li>The dataset <code>infmort</code> in the <code>faraway</code> package has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using <code>?faraway::infmort</code>. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
 <ol style="list-style-type: lower-alpha">
 <li><p>Plot the relationship between income and mortality. This can be done using the command</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="10-diagnostics-and-transformations.html#cb276-1"></a><span class="kw">data</span>(<span class="st">&#39;infmort&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb276-2"><a href="10-diagnostics-and-transformations.html#cb276-2"></a><span class="kw">pairs</span>(mortality <span class="op">~</span>., <span class="dt">data=</span>infmort)</span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb276-1"><a href="10-diagnostics-and-transformations.html#cb276-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;infmort&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb276-2"><a href="10-diagnostics-and-transformations.html#cb276-2" aria-hidden="true"></a><span class="kw">pairs</span>(mortality <span class="op">~</span>., <span class="dt">data=</span>infmort)</span></code></pre></div>
 <p>What do you notice about the relationship between mortality and income?</p></li>
 <li><p>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</p></li>
 <li><p>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</p></li>
@@ -1031,13 +1064,13 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 <li>For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the <code>Time</code> taken polishing a newly manufactured dish versus the dish <code>Diameter</code> (in inches), <code>Type</code>, and <code>Price</code>.
 <ol style="list-style-type: lower-alpha">
 <li><p>The data live in a package I have on GitHub. The following code will download the data package:</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="10-diagnostics-and-transformations.html#cb277-1"></a><span class="kw">library</span>(devtools)   <span class="co"># You might need to load this package the usual way...</span></span>
-<span id="cb277-2"><a href="10-diagnostics-and-transformations.html#cb277-2"></a><span class="kw">install_github</span>(<span class="st">&#39;dereksonderegger/dsData&#39;</span>) <span class="co"># load an R package that lives on GitHub.</span></span></code></pre></div></li>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="10-diagnostics-and-transformations.html#cb277-1" aria-hidden="true"></a><span class="kw">library</span>(devtools)   <span class="co"># You might need to load this package the usual way...</span></span>
+<span id="cb277-2"><a href="10-diagnostics-and-transformations.html#cb277-2" aria-hidden="true"></a><span class="kw">install_github</span>(<span class="st">&#39;dereksonderegger/dsData&#39;</span>) <span class="co"># load an R package that lives on GitHub.</span></span></code></pre></div></li>
 <li><p>Load the data and examine it using the commands</p>
-<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="10-diagnostics-and-transformations.html#cb278-1"></a><span class="kw">library</span>(dsData)</span>
-<span id="cb278-2"><a href="10-diagnostics-and-transformations.html#cb278-2"></a><span class="kw">data</span>(<span class="st">&#39;Dishes&#39;</span>)</span>
-<span id="cb278-3"><a href="10-diagnostics-and-transformations.html#cb278-3"></a><span class="kw">str</span>(Dishes)</span>
-<span id="cb278-4"><a href="10-diagnostics-and-transformations.html#cb278-4"></a><span class="kw">pairs</span>(Time <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>Dishes)</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="10-diagnostics-and-transformations.html#cb278-1" aria-hidden="true"></a><span class="kw">library</span>(dsData)</span>
+<span id="cb278-2"><a href="10-diagnostics-and-transformations.html#cb278-2" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;Dishes&#39;</span>)</span>
+<span id="cb278-3"><a href="10-diagnostics-and-transformations.html#cb278-3" aria-hidden="true"></a><span class="kw">str</span>(Dishes)</span>
+<span id="cb278-4"><a href="10-diagnostics-and-transformations.html#cb278-4" aria-hidden="true"></a><span class="kw">pairs</span>(Time <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>Dishes)</span></code></pre></div>
 <p>Comment on the relationships and possible transformations to be made.</p></li>
 <li><p>Fit a linear model predicting <code>Time</code> as a function the main of <code>Diameter</code>, <code>Price</code>, and <code>Type</code>, but with no interaction.</p></li>
 <li><p>Examine the diagnostic plots. What stands out to you?</p></li>
