@@ -23,27 +23,6 @@ library(emmeans)     # pairwise contrasts stuff
 
 
 ## Review of 1-way ANOVA
-```{r, echo=FALSE}
-# Unattach any packages that happen to already be loaded. In general this is unecessary
-# but is important for the creation of the book to not have package namespaces
-# fighting unexpectedly.
-pkgs = names(sessionInfo()$otherPkgs)
-if( length(pkgs > 0)){
-  pkgs = paste('package:', pkgs, sep = "")
-  for( i in 1:length(pkgs)){
-    detach(pkgs[i], character.only = TRUE, force=TRUE)
-  }
-}
-
-# Set my default chunk options 
-knitr::opts_chunk$set( fig.height=3 )
-```
-```{r, warning=FALSE, message=FALSE}
-# Load the libraries I'll use
-library(tidyverse)   # dplyr, tidyr, ggplot2
-library(emmeans)     # all the pairwise contrasts stuff
-library(ggfortify)   # for the autoplot function on lm() objects
-```
 
 
 Given a categorical covariate (which I will call a factor) with $I$ levels, we are interested in fitting the model
@@ -92,43 +71,18 @@ which has 1 parameter that defines the expected value versus
 $$y_{ij}\sim\mu+\tau_{i}+\epsilon_{ij}$$
 where there really are only $4$ parameters that define the expected value because $\tau_{1}=0$. In general, the larger model is only adding $I-1$ terms to the model where $I$ is the number of levels of the factor of interest.
 
-### Diagnostics
-
-It is still important to check the diagnostics plots, but certain diagnostic plots will be useless. In particular, we need to be concerned about constant variance among the groups and normality of the residuals.
-
-```{r, fig.height=3}
-m <- lm(coag ~ diet, data=coagulation)
-autoplot(m, which=2)  #  QQ plot
-```
-
-
-The residual plots however, might need a little bit of extra work, because there are only four possible predicted values (actually $3$ because group $A$ and $D$ have the same predicted values). Note that we actually have $n=24$ observations, but I can only see 16 of them.
-
-```{r, fig.height=3}
-plot(m, which=1)  #  Residals vs fitted
-autoplot(m, which=1) + geom_point(aes(color=diet))
-```
-
-
-To remedy this, we will plot the residuals vs fitted by hand, and add a little bit of random noise to the fitted value, just so that we don't have points stack up on top of each other. Lets also add a different shape for each diet.
-
-```{r}
-coagulation$fitted <- predict(m)
-coagulation$resid <- resid(m)
-ggplot(coagulation, aes(x=fitted, y=resid, shape=diet, color=diet)) +
-  geom_point(position=position_jitter(w=0.3, h=0))
-```
-
 
 ### Pairwise Comparisons
 
-After detecting differences in the factor levels, we are often interested in which factor levels are different from which. Often we are interested in comparing the mean of level $i$ with the mean of level $j$. As usual we let the vector of parameter estimates be $\hat{\boldsymbol{\beta}}$ then the contrast of interested can be written as
+After detecting differences in the factor levels, we are often interested in which factor levels are different from which. Often we are interested in comparing the mean of level $i$ with the mean of level $j$. 
+
+As usual we let the vector of parameter estimates be $\hat{\boldsymbol{\beta}}$ then the contrast of interested can be written as
 $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm t_{n-p}^{1-\alpha/2}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}$$ for some vector $\boldsymbol{c}$.
 
 Unfortunately this interval does not take into account the multiple comparisons issue (i.e. we are making $I(I-1)/2$ contrasts if our factor has $I$ levels). To account for this, we will not use a quantile from a t-distribution, but from Tukey's studentized range distribution $q_{n,n-I}$ divided by $\sqrt{2}$. The intervals we will use are:
 $$\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\pm\frac{q_{n,n-I}^{1-\alpha/2}}{\sqrt{2}}\;\hat{\sigma}\sqrt{\boldsymbol{c}^{T}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{c}}$$
 
-There are several ways to make R calculate this interval (See the contrasts chapter for a more general treatment of this.), but the easiest is to use the `emmeans` package. This package computes the above intervals which are commonly known as Tukey's Honestly Significant Differences. 
+There are several ways to make R calculate this interval, but the easiest is to use the `emmeans` package. This package computes the above intervals which are commonly known as Tukey's Honestly Significant Differences. 
 
 ```{r}
 m <- lm(coag ~ diet, data=coagulation)   # use the lm() function as usual
@@ -138,11 +92,12 @@ emmeans(m, specs= pairwise~diet) %>%
 
 Here we see that diets $A$ and $D$ are similar to each other, but different than $B$ and $C$ and that $B$ and $C$ are not statistically different from each other at the $0.10$ level.
 
-Often I want to produce the "Compact Letter Display" which identifies which groups are significantly different. 
+Often I want to produce the "Compact Letter Display" which identifies which groups are significantly different. Unfortunately this leads to a somewhat binary decision of "is statistically significant" or "is NOT statistically significant", but we should at least know how to do this calculation.
 
 ```{r}
 LetterData <- emmeans(m, specs= ~ diet) %>%  # cld() will freak out if you have pairwise here...
   multcomp::cld(Letters=letters, level=0.95) %>%
+  mutate(.group = str_remove_all(.group, '\\s') ) %>%  # remove the spaces
   mutate( y = 73 )   # height to place the letters at. 
 LetterData
 ```
@@ -150,9 +105,9 @@ LetterData
 I can easily add these to my boxplot with the following:
 ```{r}
 ggplot(coagulation, aes(x=diet, y=coag)) + 
-	geom_boxplot() +
-	labs( x='Diet', y='Coagulation Time' ) +
-  geom_text( data=LetterData, aes(x=diet, y=y, label=.group), size=10 ) 
+  geom_boxplot() +
+  labs( x='Diet', y='Coagulation Time' ) +
+  geom_text( data=LetterData, aes(x=diet, y=y, label=.group), size=8 ) 
 ```
 
 
@@ -336,8 +291,8 @@ We might think that this is the same as fitting three nested models and running 
 m1 <- lm(Yield ~ 1, data=fruit)
 m2 <- lm(Yield ~ Var, data=fruit)
 m3 <- lm(Yield ~ Var + Pest, data=fruit)
-anova( m1, m2 )
-anova( m2, m3 )
+anova( m1, m2 )  # Notice the F-statistic here is different than previous
+anova( m2, m3 )  # This F-statistic matches what we saw previously
 ```
 
 ### Estimating Contrasts
@@ -423,7 +378,7 @@ This arrangement of the ANOVA table is referred to as “Type I” sum of square
 We next consider whether or not to include the interaction term to the fruit tree model. We fit the model with the interaction and then graph the results.
 
 ```{r, fig.height=3}
-# Create the Interaction Plot using emmeans
+# Create the Interaction Plot using emmeans package.  IP stands for interaction plot
 m4 <- lm(Yield ~ Var * Pest, data=fruit)
 emmip( m4, Var ~ Pest )  # color is LHS of the formula
 
@@ -431,8 +386,8 @@ emmip( m4, Var ~ Pest )  # color is LHS of the formula
 m4 <- lm(Yield ~ Var * Pest, data=fruit)
 fruit$y.hat <- predict(m4)
 ggplot(fruit, aes(x=Pest, color=Var, shape=Var, y=Yield)) + 
-	geom_point(size=5) +
-	geom_line(aes(y=y.hat, x=as.integer(Pest)))
+  geom_point(size=5) +
+  geom_line(aes(y=y.hat, x=as.integer(Pest)))
 ```
 
 All of the line segments are close to parallel so, we don't expect the interaction to be significant.
