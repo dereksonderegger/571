@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020) (preloaded format=xelatex 2020.9.2)  7 SEP 2020 17:16
+This is XeTeX, Version 3.14159265-2.6-0.999992 (TeX Live 2020) (preloaded format=xelatex 2020.9.2)  7 SEP 2020 17:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -2511,169 +2511,55 @@ Underfull \vbox (badness 2970) has occurred while \output is active []
 
 [267] [268] [269] [270]
 Chapter 17.
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10735--10735
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-[271
-
-]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-309-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-309-1.pdf>
-[272]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10759--10759
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
+[271
 
+]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-310-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-310-1.pdf>
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10775--10775
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+[272]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-311-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-311-1.pdf>
 [273]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10795--10795
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10795--10795
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-312-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-312-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [274]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10827--10827
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-[275]
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10827--10827
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-313-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-313-1.pdf>
-[276]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 10869--10869
-[]\TU/lmtt/m/n/10 ## []summarise()[] ungrouping output (override with [].groups
-[] argument)[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10877--10877
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10877--10877
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+[275]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-315-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-315-1.pdf>
 
-Underfull \vbox (badness 4927) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[277] [278]
-Overfull \hbox (17.25pt too wide) in paragraph at lines 10927--10927
-[]\TU/lmtt/m/n/10 ## []summarise()[] ungrouping output (override with [].groups
-[] argument)[] 
- []
-
-
-Overfull \hbox (6.75pt too wide) in paragraph at lines 10931--10931
-[]\TU/lmtt/m/n/10 ## Warning: Removed 1 row(s) containing missing values (geom_
-path).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10936--10936
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (6.75pt too wide) in paragraph at lines 10940--10940
-[]\TU/lmtt/m/n/10 ## Warning: Removed 1 row(s) containing missing values (geom_
-path).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 10945--10945
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+[276] [277]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-317-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-317-1.pdf>
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-[279] [280]
-Overfull \hbox (59.25pt too wide) in paragraph at lines 10994--10994
-[]\TU/lmtt/m/n/10 ## []summarise()[] regrouping output by []mu[] (override with
- [].groups[] argument)[] 
- []
-
-
-Overfull \hbox (48.75pt too wide) in paragraph at lines 10998--10998
-[]\TU/lmtt/m/n/10 ## Warning: Removed 35050 rows containing non-finite values (
-stat_contour).[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 11006--11006
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
-
-Overfull \hbox (27.75pt too wide) in paragraph at lines 11006--11006
-[]\TU/lmtt/m/n/10 ## Warning in is.na(x): is.na() applied to non-(list or vecto
-r) of type[] 
- []
-
+[278]
 File: Statsitical-Methods-II_files/figure-latex/unnamed-chunk-320-1.pdf Graphic
  file (type pdf)
 <use Statsitical-Methods-II_files/figure-latex/unnamed-chunk-320-1.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[281] [282] [283] [284] [285
+[279] [280] [281] [282] [283
 
 ]
 No file Statsitical-Methods-II.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11126.
-[286]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 11126.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 11029.
+[284]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 11029.
 (./Statsitical-Methods-II.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11126.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11126
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 11029.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 11029
 .
 Package rerunfilecheck Info: File `Statsitical-Methods-II.out' has not changed.
 
@@ -2681,7 +2567,7 @@ Package rerunfilecheck Info: File `Statsitical-Methods-II.out' has not changed.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11126.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 11029.
  ) 
 Here is how much of TeX's memory you used:
  17622 strings out of 481691
@@ -2692,4 +2578,4 @@ Here is how much of TeX's memory you used:
  14 hyphenation exceptions out of 8191
  52i,15n,118p,1089b,526s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on Statsitical-Methods-II.pdf (286 pages).
+Output written on Statsitical-Methods-II.pdf (284 pages).
