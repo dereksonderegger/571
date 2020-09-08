@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-07" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -386,7 +386,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>We could fit two lines to the data one for males and one for females but require that the lines be parallel (i.e. having the same slopes for income). This is accomplished by having a separate y-intercept for each gender. In effect, the line for the females would be offset by a constant amount from the male line.</p></li>
 <li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender. One way to remember that this is an interaction is because the effect of income on gambling rate is dependent on the gender of the individual.</p></li>
 </ol>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
 <p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 </div>
 <div id="ANCOVA_Additive" class="section level2" number="5.2">
@@ -528,7 +528,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <span id="cb88-24"><a href="5-ANCOVA-Chapter.html#cb88-24" aria-hidden="true"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>
 <span id="cb88-25"><a href="5-ANCOVA-Chapter.html#cb88-25" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></span>
 <span id="cb88-26"><a href="5-ANCOVA-Chapter.html#cb88-26" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="5-ANCOVA-Chapter.html#cb89-1" aria-hidden="true"></a><span class="co"># print the model summary</span></span>
 <span id="cb89-2"><a href="5-ANCOVA-Chapter.html#cb89-2" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
 <pre><code>## 
@@ -652,7 +652,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="5-ANCOVA-Chapter.html#cb102-1" aria-hidden="true"></a><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></span>
 <span id="cb102-2"><a href="5-ANCOVA-Chapter.html#cb102-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
 <p>We consider the sequence of building successively more complex models:</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="5-ANCOVA-Chapter.html#cb103-1" aria-hidden="true"></a><span class="co"># make virginica the reference group </span></span>
@@ -663,7 +663,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <span id="cb103-6"><a href="5-ANCOVA-Chapter.html#cb103-6" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></span>
 <span id="cb103-7"><a href="5-ANCOVA-Chapter.html#cb103-7" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></span></code></pre></div>
 <p>The three models we consider are the following:</p>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
 <p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="5-ANCOVA-Chapter.html#cb104-1" aria-hidden="true"></a>m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 5
@@ -757,14 +757,16 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 </ol></li>
 <li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to ascertain if the lot number makes any difference in clotting time.
 <ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number.</li>
+<li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number. <em>(We will discuss why we performed this transformation later in the course.)</em></li>
 <li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
 </ol></li>
-<li>In the <code>faraway</code> package, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. Guinea pigs were give vitamin C doses either via orange juice or ascorbic acid and the response of interest was a measure of tooth growth.
+<li>In the <code>faraway</code> package, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. The guinea pigs were given vitamin C doses either via orange juice or an ascorbic acid tablet. The response of interest was a measure of tooth growth where a higher growth is better.
 <ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function.</li>
+<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function. <em>(We will discuss why we performed this transformation later in the course.)</em></li>
 <li>Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).</li>
-<li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>? At this point we don’t know how to answer this question using appropriate statistical inference, but we will address this in the chapter on contrasts.</li>
+<li>Is there a statistically significant difference in slopes between the two delivery methods?</li>
+<li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>?</li>
+<li>Use <code>emmeans()</code> to test if there is a statistically significant difference at low dose levels <span class="math inline">\(\log(dose)=-0.7\)</span>. Furthermore, test if there is a statistically significant difference at high dose levels. Summarize your findings.</li>
 </ol></li>
 </ol>
 

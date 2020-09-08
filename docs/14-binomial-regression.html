@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-07" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -443,16 +443,16 @@ which I can rewrite more formally letting <span class="math inline">\(w_{i}\)</s
 ## 5 0.97002630         1
 ## 6 1.08037011         1</code></pre>
 <div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="14-binomial-regression.html#cb388-1" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-237-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-237-1.png" width="672" /></p>
 <p>If I just fit a regular linear model to this data, we fit the following:</p>
 <div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="14-binomial-regression.html#cb389-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )</span>
 <span id="cb389-2"><a href="14-binomial-regression.html#cb389-2" aria-hidden="true"></a>Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))</span>
 <span id="cb389-3"><a href="14-binomial-regression.html#cb389-3" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb389-4"><a href="14-binomial-regression.html#cb389-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb389-5"><a href="14-binomial-regression.html#cb389-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-238-1.png" width="672" /></p>
 <p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following:
-<img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-239-1.png" width="672" /></p>
 <p>We need a way to convert our covariate data <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X\beta}\)</span> from something that can take values from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span> to something that is constrained between 0 and 1 so that we can fit the model
 <span class="math display">\[w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)\]</span>
 There are several options for the link function <span class="math inline">\(g^{-1}\left(\cdot\right)\)</span> that are commonly used. We use the notation <span class="math inline">\(y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}\)</span> is unconstrained and can be in <span class="math inline">\(\left(-\infty, +\infty\right)\)</span> while <span class="math inline">\(p_{i}=g^{-1}\left(y_{i}\right)\)</span> is constrained to <span class="math inline">\(\left[0,1\right]\)</span>. When convenient, we will drop the <span class="math inline">\(i\)</span>
@@ -570,7 +570,7 @@ and we substituted that into the equation. Often times it is more numerically st
 <span id="cb404-4"><a href="14-binomial-regression.html#cb404-4" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span></span>
 <span id="cb404-5"><a href="14-binomial-regression.html#cb404-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span></span>
 <span id="cb404-6"><a href="14-binomial-regression.html#cb404-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-244-1.png" width="672" /></p>
 <p>Suppose that we were to give a predicted Presence/Absence class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
 <div class="sourceCode" id="cb405"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb405-1"><a href="14-binomial-regression.html#cb405-1" aria-hidden="true"></a>Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span></span>
 <span id="cb405-2"><a href="14-binomial-regression.html#cb405-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span></span>
@@ -655,7 +655,7 @@ but we know that this is not a good approximation because the the normal approxi
 -2\left[\log L\left(\beta_{0},\beta_{1}\right)-\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)\right]	&amp; \le \chi_{df=1,0.95}^{2} \\
 \log L\left(\beta_{0},\beta_{1}\right)	&amp;\ge	\left(\frac{-1}{2}\right)\chi_{1,0.95}^{2}+\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)
 \end{aligned}\]</span></p>
-<p><img src="Statsitical-Methods-II_files/figure-html/Profile_CI2-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/Profile_CI2-1.png" width="672" /></p>
 <p>Looking at just the <span class="math inline">\(\beta_{0}\)</span> axis, this translates into a confidence interval of <span class="math inline">\((1.63,\, 11.78)\)</span>. This method is commonly referred to as the “profile likelihood” interval because the interval is created by viewing the contour plot from the one axis. The physical analogy is to viewing a mountain range from afar and asking, “What parts of the mountain are higher than 8000 feet?”</p>
 <p>This type of confidence interval is more robust than the normal approximation and should be used whenever practical. In R, the profile likelihood confidence interval for <code>glm</code> objects is available in the <code>MASS</code> library.</p>
 <div class="sourceCode" id="cb419"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb419-1"><a href="14-binomial-regression.html#cb419-1" aria-hidden="true"></a><span class="kw">confint</span>(m1) <span class="co"># using defaults</span></span></code></pre></div>
@@ -966,7 +966,7 @@ We must then convert this to the <span class="math inline">\(\left[ 0,1 \right]\
 <span id="cb454-8"><a href="14-binomial-regression.html#cb454-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></span>
 <span id="cb454-9"><a href="14-binomial-regression.html#cb454-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span></span>
 <span id="cb454-10"><a href="14-binomial-regression.html#cb454-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
 <p>Alternatively, we might want to do this calculation via <code>emmeans</code>.</p>
 <div class="sourceCode" id="cb455"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb455-1"><a href="14-binomial-regression.html#cb455-1" aria-hidden="true"></a>emmeans<span class="op">::</span><span class="kw">emmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </span></code></pre></div>
 <pre><code>##  conc   prob     SE  df asymp.LCL asymp.UCL
@@ -1038,7 +1038,7 @@ but there are many cases where we might be interested in adding an additional va
 <span id="cb463-17"><a href="14-binomial-regression.html#cb463-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
 <span id="cb463-18"><a href="14-binomial-regression.html#cb463-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span></span>
 <span id="cb463-19"><a href="14-binomial-regression.html#cb463-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
 <p>We see that the sample variances fall neatly about the true variance of <span class="math inline">\(2.4\)</span> in the case where the data is distributed with a constant value for <span class="math inline">\(p\)</span>. However adding a small amount of random noise about the parameter <span class="math inline">\(p\)</span>, and we’d have more variance in the samples.</p>
 <p>The extra uncertainty of the probability of success results in extra variability in the responses.</p>
 <p>We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed
@@ -1082,7 +1082,7 @@ With the addition of the overdispersion parameter to the model, the differences 
 <div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb466-1"><a href="14-binomial-regression.html#cb466-1" aria-hidden="true"></a><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span></span>
 <span id="cb466-2"><a href="14-binomial-regression.html#cb466-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span></span>
 <span id="cb466-3"><a href="14-binomial-regression.html#cb466-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-269-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-269-1.png" width="672" /></p>
 <p>We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):</p>
 <div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb467-1"><a href="14-binomial-regression.html#cb467-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">*</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</span>
 <span id="cb467-2"><a href="14-binomial-regression.html#cb467-2" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
@@ -1530,11 +1530,11 @@ With the addition of the overdispersion parameter to the model, the differences 
 <pre><code>## Setting direction: controls &lt; cases</code></pre>
 <div class="sourceCode" id="cb509"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb509-1"><a href="14-binomial-regression.html#cb509-1" aria-hidden="true"></a><span class="co"># make a nice plot using ggplot2 and pROC::ggroc()</span></span>
 <span id="cb509-2"><a href="14-binomial-regression.html#cb509-2" aria-hidden="true"></a><span class="kw">ggroc</span>( myROC ) </span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
 <p>This looks pretty good and in an ideal classifier that makes prefect predictions, this would be a perfect right angle at the bend.</p>
 <p>Lets zoom in a little on the high specificity values (i.e. low false positive rates)</p>
 <div class="sourceCode" id="cb510"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb510-1"><a href="14-binomial-regression.html#cb510-1" aria-hidden="true"></a><span class="kw">ggroc</span>( myROC ) <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">1</span>, <span class="fl">.9</span>)</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
 <p>We see that if we want to correctly identify about 99% of maligant tumors, we will have a false positive rate of about 1-0.95 = 0.05. So about 5% of benign tumors would be incorrectly classified as malignant.</p>
 <p>It is a little challenging to read the graph to see what the Sensitivity is for a particular value of Specificity. To do this we’ll use another function because the authors would prefer you to also estimate the confidence intervals for the quantity. This is a case where bootstrap confidence intervals are quite effective.</p>
 <div class="sourceCode" id="cb511"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb511-1"><a href="14-binomial-regression.html#cb511-1" aria-hidden="true"></a><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;sp&#39;</span>, <span class="dt">sensitivities=</span>.<span class="dv">99</span>)</span></code></pre></div>

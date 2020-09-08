@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-07" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -460,7 +460,7 @@ defined model and the noise term which represents unknown actions effecting each
 that move the response variable. We don’t know what those unknown or unmeasured effects are,
 but we do know the sum of those effects results in a vertical shift from the signal part
 of the model.</p>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>This representation of the model implicitly assumes that our data set has <span class="math inline">\(n\)</span> observations
 and we could write the model using <em>all</em> the obsesrvations
 using matrices and vectors that correspond the the data and the parameters.</p>
@@ -832,7 +832,7 @@ of <span class="math inline">\(\hat{\beta}_{j}\)</span> (for any <span class="ma
 <span id="cb2-3"><a href="2-parameter-estimation.html#cb2-3" aria-hidden="true"></a>y &lt;-<span class="st"> </span><span class="dv">-3</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">sd=</span><span class="dv">2</span>)</span>
 <span id="cb2-4"><a href="2-parameter-estimation.html#cb2-4" aria-hidden="true"></a>my.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x=</span>x, <span class="dt">y=</span>y)</span>
 <span id="cb2-5"><a href="2-parameter-estimation.html#cb2-5" aria-hidden="true"></a><span class="kw">ggplot</span>(my.data) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>x,<span class="dt">y=</span>y))</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>First we must create the design matrix <span class="math inline">\(\boldsymbol{X}\)</span>. Recall
 <span class="math display">\[
 \boldsymbol{X}=\left[\begin{array}{cc}

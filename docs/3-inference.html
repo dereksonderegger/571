@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-07" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -468,7 +468,7 @@ where <span class="math inline">\(Q^*_{1-\alpha/2}\)</span> is the <span class="
 <p><span class="math display">\[F = \frac{\textrm{Signal}}{\textrm{Noise}} = \frac{RSS_{difference}/df_{diff}}{RSS_{complex}/df_{complex}}\]</span></p>
 <p>and we claimed that if the null hypothesis was true (i.e. the complex model is an unnecessary obfuscation of the simple), then this ratio follows an F-distribution with degrees of freedom <span class="math inline">\(df_{diff}\)</span> and <span class="math inline">\(df_{complex}\)</span>.</p>
 <p>The F-distribution is centered near one and we should reject the simple model (in favor of the complex model) if this F statistic is much larger than one. Therefore the p-value for the test is</p>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>This hypothesis test doesn’t require a particular difference in number of parameters in each model, while the single parameter t-test is stuck testing if just a single parameter is possibly zero. In the single parameter test case, the t-test and F-test give the same prior hypothesis test previous t-test. The a corresponding t-test and F-test will give the same p-value and therefore the same inference about if <span class="math inline">\(\beta_j\)</span> is possibly zero.</p>
 </div>
 </div>

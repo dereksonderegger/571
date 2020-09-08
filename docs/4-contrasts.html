@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-07" />
+<meta name="date" content="2020-09-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -467,7 +467,7 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 <span id="cb50-6"><a href="4-contrasts.html#cb50-6" aria-hidden="true"></a>)</span>
 <span id="cb50-7"><a href="4-contrasts.html#cb50-7" aria-hidden="true"></a></span>
 <span id="cb50-8"><a href="4-contrasts.html#cb50-8" aria-hidden="true"></a><span class="kw">ggplot</span>(data, <span class="kw">aes</span>(<span class="dt">x=</span>group, <span class="dt">y=</span>y)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 <p>We can fit the offset model and obtain the design matrix and estimate of <span class="math inline">\(\hat{\sigma}\)</span> via the following code.</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="4-contrasts.html#cb51-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>group, <span class="dt">data=</span>data)          <span class="co"># Fit the ANOVA model (offset representation)</span></span>
 <span id="cb51-2"><a href="4-contrasts.html#cb51-2" aria-hidden="true"></a><span class="kw">tidy</span>(m)                                <span class="co"># Show me beta.hat</span></span></code></pre></div>
@@ -584,7 +584,7 @@ StdErr\left(\boldsymbol{c}^{T}\hat{\boldsymbol{\beta}}\right)	=	\sqrt{\hat{\sigm
 <span id="cb66-7"><a href="4-contrasts.html#cb66-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb66-8"><a href="4-contrasts.html#cb66-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
 <span id="cb66-9"><a href="4-contrasts.html#cb66-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <p>Using the <code>summary()</code> function, we can test hypotheses about if
 the y-intercept or slope could be equal to zero, but we might be interested in confidence intervals for the regression line at girth values of 10 and 12.</p>
 <div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="4-contrasts.html#cb67-1" aria-hidden="true"></a><span class="co"># We could find the regression line heights and CI using </span></span>
@@ -650,7 +650,7 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <span id="cb77-7"><a href="4-contrasts.html#cb77-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb77-8"><a href="4-contrasts.html#cb77-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">alpha=</span>.<span class="dv">3</span> ) <span class="op">+</span></span>
 <span id="cb77-9"><a href="4-contrasts.html#cb77-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="kw">aes</span>(<span class="dt">y=</span>fit) )</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="4-contrasts.html#cb78-1" aria-hidden="true"></a><span class="kw">emtrends</span>( model, <span class="op">~</span><span class="st"> </span><span class="kw">poly</span>(Girth,<span class="dv">2</span>), <span class="st">&#39;Girth&#39;</span>,</span>
 <span id="cb78-2"><a href="4-contrasts.html#cb78-2" aria-hidden="true"></a>          <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Girth=</span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>)) )</span></code></pre></div>
 <pre><code>##  Girth Girth.trend    SE df lower.CL upper.CL
@@ -670,7 +670,7 @@ the y-intercept or slope could be equal to zero, but we might be interested in c
 <span id="cb80-5"><a href="4-contrasts.html#cb80-5" aria-hidden="true"></a>  <span class="dt">Method =</span> <span class="kw">c</span>( <span class="kw">rep</span>(<span class="st">&#39;M1&#39;</span>,<span class="dv">8</span>), <span class="kw">rep</span>(<span class="st">&#39;M2&#39;</span>,<span class="dv">7</span>), <span class="kw">rep</span>(<span class="st">&#39;M3&#39;</span>,<span class="dv">9</span>) ) )</span></code></pre></div>
 <div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="4-contrasts.html#cb81-1" aria-hidden="true"></a><span class="kw">ggplot</span>(Hostility, <span class="kw">aes</span>(<span class="dt">x=</span>Method, <span class="dt">y=</span>HLT)) <span class="op">+</span></span>
 <span id="cb81-2"><a href="4-contrasts.html#cb81-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>()</span></code></pre></div>
-<p><img src="Statsitical-Methods-II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <p>To use the <code>emmeans()</code>, we again will use the pairwise command where we specify that we want all the pairwise contrasts between Method levels.</p>
 <div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="4-contrasts.html#cb82-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( HLT <span class="op">~</span><span class="st"> </span>Method, <span class="dt">data=</span>Hostility )</span>
 <span id="cb82-2"><a href="4-contrasts.html#cb82-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="dt">specs =</span> pairwise<span class="op">~</span>Method, </span>
