@@ -177,7 +177,8 @@ teengamb <- teengamb %>% mutate( sex = ifelse( sex==1, 'Female', 'Male') )
 
 # Fit a linear model with the interaction of sex and income
 # Interactions can be specified useing a colon :
-m1 <- lm( gamble ~ sex + income + sex:income, data=teengamb )  
+m1 <- lm( gamble ~ 1 + sex + income + sex:income, data=teengamb )  
+m1 <- lm( gamble ~     sex + income + sex:income, data=teengamb )  
 
 # R allows a shortcut for the prior definition
 m1 <- lm( gamble ~ sex * income, data=teengamb )
@@ -350,7 +351,7 @@ The F-test concludes that there is sufficient decrease in the SSE to justify add
     b. Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does `lot` matter?
 
 
-3. In the `faraway` package, there is a data set `ToothGrowth` which is data from an experiment giving Vitamin C to guinea pigs. The guinea pigs were given vitamin C doses either via orange juice or an ascorbic acid tablet. The response of interest was a measure of tooth growth where a higher growth is better. 
+3. In base R, there is a data set `ToothGrowth` which is data from an experiment giving Vitamin C to guinea pigs. The guinea pigs were given vitamin C doses either via orange juice or an ascorbic acid tablet. The response of interest was a measure of tooth growth where a higher growth is better. 
     a. Log transform the `dose` and use that throughout this problem. Use $e$ as the base, which R does by default when you use the `log()` function. *(We will discuss why we performed this transformation later in the course.)*
     b. Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).
     c. Is there a statistically significant difference in slopes between the two delivery methods?

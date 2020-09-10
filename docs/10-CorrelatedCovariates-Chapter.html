@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Project Appendix | Statistical Methods II</title>
+  <title>Chapter 10 Correlated Covariates | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Project Appendix | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 10 Correlated Covariates | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Project Appendix | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 10 Correlated Covariates | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="17-maximum-likelihood-priciple.html"/>
-
+<link rel="prev" href="9-MultipleRegression-Chapter.html"/>
+<link rel="next" href="11-VariableSelection-Chapter.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -371,25 +371,127 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="project-appendix" class="section level1 unnumbered">
-<h1>Project Appendix</h1>
-<p>STA 571 Course Project Timeline
-This document presents a rough outline to the projects conducted in STA 571: Statistical Methods II. The outline gives when certain topics should be discussed, when decisions should be made on moving forward with projects, and what students need to be focused on. Proposal and final project rubrics will be provided in additional PDFs. As always, there is flexibility based on the way you run your course.</p>
-<div id="weeks-1-4-project-feasibility" class="section level2" number="17.6">
-<h2><span class="header-section-number">17.6</span> Weeks 1 – 4 (Project Feasibility)</h2>
-<p>Leading up to Exam 1, decisions will be made if the projects can be conducted effectively within the course. This requires students to determine what data set they want to analyze and what methods they think they would be interested in using.
-1. For students with thesis/dissertation work, the idea is to allow them to use their own data (likely data they have collected) to advance the project.
-2. Students that don’t have thesis/dissertation work, or for students who don’t yet have data from their own research should be engaged in looking into a source of data and determining what type of analysis can be completed. One very good source of datasets and problems is <a href="www.kaggle.com">kaggle</a>.</p>
-<div id="wibgis" class="section level3" number="17.6.1">
-<h3><span class="header-section-number">17.6.1</span> WIBGIs</h3>
-<p>Project ideas can be motivated through “Wouldn’t it be great if …” statements, or WIBGIs.</p>
-<p>Write out 3 - 5 ideas for a project to be done this semester. Think about what data you may have available or what data you may be interested in analyzing. If possible try to write a statement of this form:</p>
-<p>Wouldn’t it be great if what you want to analyze could be used to solve a problem using statistics/data science.</p>
-<p>Example: Wouldn’t it be great if plasma thermogram data could be used to classify lupus using logistic regression.</p>
-<p>The first four weeks should include students trying to create as many WIBGIs as possible. At the end of each homework assignment, I added an additional optional section entitle “Project Development” where I reminded the students they need to produce at minimum 3 WIBGI statements.</p>
-<p>The main concept here is to encourage exploration and broad thinking. It is okay if students write statements that are not feasible. It is also okay if they write statements that don’t conform to the example statement. The goal here is creativity. The idea is to begin generating ideas and determining sources of data; we are trying to encourage data exploration and thinking outside the box from their core studies.</p>
+<div id="CorrelatedCovariates_Chapter" class="section level1" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Correlated Covariates</h1>
+<div id="interpretation-with-correlated-covariates" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> Interpretation with Correlated Covariates</h2>
+<p>The standard interpretation of the slope parameter is that <span class="math inline">\(\beta_{j}\)</span> is the amount of increase in <span class="math inline">\(y\)</span> for a one unit increase in the <span class="math inline">\(j\)</span>th covariate, provided that all other covariates stayed the same.</p>
+<p>The difficulty with this interpretation is that covariates are often related, and the phrase “all other covariates stayed the same” is often not reasonable. For example, if we have a dataset that models the mean annual temperature of a location as a function of latitude, longitude, and elevation, then it is not physically possible to hold latitude, and longitude constant while changing elevation.</p>
+<p>One common issue that make interpretation difficult is that covariates can be highly correlated.</p>
+<p>Perch Example: We might be interested in estimating the weight of a fish based off of its length and width. The dataset we will consider is from fishes are caught from the same lake (Laengelmavesi) near Tampere in Finland. The following variables were observed:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Weight</code></td>
+<td>Weight (g)</td>
+</tr>
+<tr class="even">
+<td><code>Length.1</code></td>
+<td>Length from nose to beginning of Tail (cm)</td>
+</tr>
+<tr class="odd">
+<td><code>Length.2</code></td>
+<td>Length from nose to notch of Tail (cm)</td>
+</tr>
+<tr class="even">
+<td><code>Length.3</code></td>
+<td>Length from nose to tip of tail (cm)</td>
+</tr>
+<tr class="odd">
+<td><code>Height</code></td>
+<td>Maximal height as a percentage of <code>Length.3</code></td>
+</tr>
+<tr class="even">
+<td><code>Width</code></td>
+<td>Maximal width as a percentage of <code>Length.3</code></td>
+</tr>
+<tr class="odd">
+<td><code>Sex</code></td>
+<td>0=Female, 1=Male</td>
+</tr>
+<tr class="even">
+<td><code>Species</code></td>
+<td>Which species of perch (1-7)</td>
+</tr>
+</tbody>
+</table>
+<p>We first look at the data and observe the expected relationship between length and weight.</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="10-CorrelatedCovariates-Chapter.html#cb232-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
+<span id="cb232-2"><a href="10-CorrelatedCovariates-Chapter.html#cb232-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
+<span id="cb232-3"><a href="10-CorrelatedCovariates-Chapter.html#cb232-3" aria-hidden="true"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
+<span id="cb232-4"><a href="10-CorrelatedCovariates-Chapter.html#cb232-4" aria-hidden="true"></a></span>
+<span id="cb232-5"><a href="10-CorrelatedCovariates-Chapter.html#cb232-5" aria-hidden="true"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
+<span id="cb232-6"><a href="10-CorrelatedCovariates-Chapter.html#cb232-6" aria-hidden="true"></a><span class="co"># pairs(fish)</span></span>
+<span id="cb232-7"><a href="10-CorrelatedCovariates-Chapter.html#cb232-7" aria-hidden="true"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
+<span id="cb232-8"><a href="10-CorrelatedCovariates-Chapter.html#cb232-8" aria-hidden="true"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
+<span id="cb232-9"><a href="10-CorrelatedCovariates-Chapter.html#cb232-9" aria-hidden="true"></a></span>
+<span id="cb232-10"><a href="10-CorrelatedCovariates-Chapter.html#cb232-10" aria-hidden="true"></a>fish <span class="op">%&gt;%</span></span>
+<span id="cb232-11"><a href="10-CorrelatedCovariates-Chapter.html#cb232-11" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
+<span id="cb232-12"><a href="10-CorrelatedCovariates-Chapter.html#cb232-12" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
+<span id="cb232-13"><a href="10-CorrelatedCovariates-Chapter.html#cb232-13" aria-hidden="true"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
+<p>Naively, we might consider the linear model with all the length effects present.</p>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="10-CorrelatedCovariates-Chapter.html#cb233-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb233-2"><a href="10-CorrelatedCovariates-Chapter.html#cb233-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Height + 
+##     Width, data = fish)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -302.22  -79.72  -39.88   92.63  344.85 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -724.539     77.133  -9.393   &lt;2e-16 ***
+## Length.1      32.389     45.134   0.718   0.4741    
+## Length.2      -9.184     48.367  -0.190   0.8497    
+## Length.3       8.747     16.283   0.537   0.5919    
+## Height         4.947      2.768   1.787   0.0759 .  
+## Width          8.636      6.972   1.239   0.2174    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 132.9 on 152 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.8675,	Adjusted R-squared:  0.8631 
+## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
+<p>If we remove the highly correlated covariates then we see a much better behaved model</p>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="10-CorrelatedCovariates-Chapter.html#cb235-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb235-2"><a href="10-CorrelatedCovariates-Chapter.html#cb235-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -306.14  -75.11  -36.45   89.54  337.95 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -701.0750    71.0438  -9.868  &lt; 2e-16 ***
+## Length.2      30.4360     0.9841  30.926  &lt; 2e-16 ***
+## Height         5.5141     1.4311   3.853 0.000171 ***
+## Width          5.6513     5.2016   1.086 0.278974    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 132.3 on 154 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.8669,	Adjusted R-squared:  0.8643 
+## F-statistic: 334.2 on 3 and 154 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign.</p>
+<p>In this case the sum of the three length covariate estimates was approximately <span class="math inline">\(31\)</span> in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.</p>
+<p>In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.</p>
 
-</div>
 </div>
 </div>
             </section>
@@ -397,8 +499,8 @@ This document presents a rough outline to the projects conducted in STA 571: Sta
           </div>
         </div>
       </div>
-<a href="17-maximum-likelihood-priciple.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="9-MultipleRegression-Chapter.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="11-VariableSelection-Chapter.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -431,7 +533,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/blob/master/99_Project_Appendix.Rmd",
+"link": "https://github.com/dereksonderegger/571/blob/master/10_Correlated_Covariates.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -439,7 +541,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/dereksonderegger/571/raw/master/99_Project_Appendix.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/10_Correlated_Covariates.Rmd",
 "text": null
 },
 "download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
