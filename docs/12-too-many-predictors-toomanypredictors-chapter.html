@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 12 Too many Predictors {#TooManyPredictors_Chapter | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 12 Too many Predictors {#TooManyPredictors_Chapter | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-10" />
+<meta name="date" content="2020-09-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics and Transformations</a>
+<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a>
 <ul>
@@ -260,12 +260,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>7.2</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Transformations</a>
+<li class="chapter" data-level="8" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Data Transformations</a>
 <ul>
-<li class="chapter" data-level="8.0.1" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.0.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
-<li class="chapter" data-level="8.0.2" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.0.2</b> Transforming the Response</a></li>
-<li class="chapter" data-level="8.0.3" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.0.3</b> Transforming the predictors</a></li>
-<li class="chapter" data-level="8.0.4" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>8.0.4</b> Interpretation of log transformed variables</a></li>
+<li class="chapter" data-level="8.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="8.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>8.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>8.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log_10-and-log-transformed-variables"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="8.4.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-MultipleRegression-Chapter.html"><a href="9-MultipleRegression-Chapter.html"><i class="fa fa-check"></i><b>9</b> Multiple Regression</a></li>
 <li class="chapter" data-level="10" data-path="10-CorrelatedCovariates-Chapter.html"><a href="10-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>10</b> Correlated Covariates</a>
@@ -283,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="11.3.1" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>11.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="11.3.2" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>11.3.2</b> Adjusted <code>R-sq</code></a></li>
-<li class="chapter" data-level="11.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
+<li class="chapter" data-level="11.3.3" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>11.4</b> Exercises</a></li>
 </ul></li>
@@ -313,7 +327,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.2.1" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>14.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="14.2.2" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>14.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="14.3" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="14.4" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>14.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="14.5" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>14.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="14.6" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>14.6</b> Overdispersion</a></li>
@@ -322,16 +336,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="15" data-path="15-poisson-regression.html"><a href="15-poisson-regression.html"><i class="fa fa-check"></i><b>15</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
+<li class="chapter" data-level="16" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
-<li class="chapter" data-level="16.2" data-path="16-block-designs.html"><a href="16-block-designs.html"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
-<li class="chapter" data-level="16.3" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
+<li class="chapter" data-level="16.1" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="16.2" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#split-plot-designs"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="16.3" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>17</b> Maximum Likelihood Priciple</a>
 <ul>
-<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="17.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="17.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
 <li class="chapter" data-level="17.2" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>17.2</b> Distributions</a>
 <ul>
 <li class="chapter" data-level="17.2.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>17.2.1</b> Poisson</a></li>
@@ -345,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17.3.3" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>17.3.3</b> Normal</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>17.4</b> Discussion</a></li>
-<li class="chapter" data-level="17.5" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
+<li class="chapter" data-level="17.5" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
 <ul>

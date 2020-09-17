@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 7 Diagnostics and Transformations | Statistical Methods II</title>
+  <title>Chapter 7 Diagnostics | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 7 Diagnostics and Transformations | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 7 Diagnostics | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 7 Diagnostics and Transformations | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 7 Diagnostics | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-10" />
+<meta name="date" content="2020-09-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="6-two-way-anova.html"/>
-<link rel="next" href="8-Transformations-Chapter.html"/>
+<link rel="next" href="8-LogTransformations-Chapter.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -251,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics and Transformations</a>
+<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a>
 <ul>
@@ -260,12 +260,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>7.2</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Transformations</a>
+<li class="chapter" data-level="8" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Data Transformations</a>
 <ul>
-<li class="chapter" data-level="8.0.1" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.0.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
-<li class="chapter" data-level="8.0.2" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.0.2</b> Transforming the Response</a></li>
-<li class="chapter" data-level="8.0.3" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.0.3</b> Transforming the predictors</a></li>
-<li class="chapter" data-level="8.0.4" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>8.0.4</b> Interpretation of log transformed variables</a></li>
+<li class="chapter" data-level="8.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="8.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>8.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>8.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log_10-and-log-transformed-variables"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="8.4.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-MultipleRegression-Chapter.html"><a href="9-MultipleRegression-Chapter.html"><i class="fa fa-check"></i><b>9</b> Multiple Regression</a></li>
 <li class="chapter" data-level="10" data-path="10-CorrelatedCovariates-Chapter.html"><a href="10-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>10</b> Correlated Covariates</a>
@@ -283,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="11.3.1" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>11.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="11.3.2" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>11.3.2</b> Adjusted <code>R-sq</code></a></li>
-<li class="chapter" data-level="11.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
+<li class="chapter" data-level="11.3.3" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>11.4</b> Exercises</a></li>
 </ul></li>
@@ -313,7 +327,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.2.1" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>14.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="14.2.2" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>14.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="14.3" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="14.4" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>14.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="14.5" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>14.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="14.6" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>14.6</b> Overdispersion</a></li>
@@ -322,16 +336,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="15" data-path="15-poisson-regression.html"><a href="15-poisson-regression.html"><i class="fa fa-check"></i><b>15</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
+<li class="chapter" data-level="16" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
-<li class="chapter" data-level="16.2" data-path="16-block-designs.html"><a href="16-block-designs.html"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
-<li class="chapter" data-level="16.3" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
+<li class="chapter" data-level="16.1" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="16.2" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#split-plot-designs"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="16.3" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>17</b> Maximum Likelihood Priciple</a>
 <ul>
-<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="17.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="17.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
 <li class="chapter" data-level="17.2" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>17.2</b> Distributions</a>
 <ul>
 <li class="chapter" data-level="17.2.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>17.2.1</b> Poisson</a></li>
@@ -345,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17.3.3" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>17.3.3</b> Normal</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>17.4</b> Discussion</a></li>
-<li class="chapter" data-level="17.5" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
+<li class="chapter" data-level="17.5" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
 <ul>
@@ -372,7 +386,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
             <section class="normal" id="section-">
 <div id="Diagnostics_Chapter" class="section level1" number="7">
-<h1><span class="header-section-number">Chapter 7</span> Diagnostics and Transformations</h1>
+<h1><span class="header-section-number">Chapter 7</span> Diagnostics</h1>
 <div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="7-Diagnostics-Chapter.html#cb175-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
 <span id="cb175-2"><a href="7-Diagnostics-Chapter.html#cb175-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
 <span id="cb175-3"><a href="7-Diagnostics-Chapter.html#cb175-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
@@ -412,10 +426,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="standardized-residuals-aka-studentized" class="section level4" number="7.1.1.1">
 <h4><span class="header-section-number">7.1.1.1</span> Standardized Residuals (aka Studentized )</h4>
 <p>Recall that we have</p>
-<p><span class="math display">\[\begin{aligned}\hat{\boldsymbol{y}}	
-  &amp;=	\boldsymbol{X}\hat{\boldsymbol{\beta}}\\
-	&amp;=	\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
-	&amp;=	\boldsymbol{H}\boldsymbol{y}\\
+<p><span class="math display">\[\begin{aligned}\hat{\boldsymbol{y}}   
+  &amp;=    \boldsymbol{X}\hat{\boldsymbol{\beta}}\\
+    &amp;=  \boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\boldsymbol{y}\\
+    &amp;=  \boldsymbol{H}\boldsymbol{y}\\
 \end{aligned}\]</span></p>
 <p>where the “Hat Matrix” is <span class="math inline">\(\boldsymbol{H}=\boldsymbol{X}\left(\boldsymbol{X}^{T}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^{T}\)</span> because we have <span class="math inline">\(\hat{\boldsymbol{y}}=\boldsymbol{H}\boldsymbol{y}\)</span>. The elements of <span class="math inline">\(\boldsymbol{H}\)</span> can be quite useful in diagnostics. It can be shown that the variance of the <span class="math inline">\(i\)</span>the residual is
 <span class="math display">\[Var\left(\hat{\epsilon}_{i}\right)=\sigma^{2}\left(1-\boldsymbol{H}_{ii}\right)\]</span>
@@ -527,9 +541,9 @@ which expresses Cook’s distance in terms of the <span class="math inline">\(i\
 <p>In general I could write the quadratic model as
 <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}\]</span>
 and note that my model is still a linear model with respect to covariates <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^{2}\)</span> because I can still write the model as
-<span class="math display">\[\begin{aligned} \boldsymbol{y}	
-  &amp;=	\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon} \\
-	&amp;=	\left[\begin{array}{ccc}
+<span class="math display">\[\begin{aligned} \boldsymbol{y}    
+  &amp;=    \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\epsilon} \\
+    &amp;=  \left[\begin{array}{ccc}
       1 &amp; x_{1} &amp; x_{1}^{2}\\
       1 &amp; x_{2} &amp; x_{2}^{2}\\
       1 &amp; x_{3} &amp; x_{3}^{2}\\
@@ -614,7 +628,7 @@ and note that my model is still a linear model with respect to covariates <span 
 <p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
 <div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="7-Diagnostics-Chapter.html#cb192-1" aria-hidden="true"></a><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</span></code></pre></div>
 <pre><code>## 
-## 	Shapiro-Wilk normality test
+##  Shapiro-Wilk normality test
 ## 
 ## data:  rstandard(model)
 ## W = 0.9151, p-value = 2.819e-06</code></pre>
@@ -641,6 +655,14 @@ and note that my model is still a linear model with respect to covariates <span 
 <div id="Exercises_Diagnostics" class="section level2" number="7.2">
 <h2><span class="header-section-number">7.2</span> Exercises</h2>
 <ol style="list-style-type: decimal">
+<li>In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement).
+<ol style="list-style-type: lower-alpha">
+<li>Load the <code>ToothGrowth</code> data which is pre-loaded in base R.</li>
+<li>Plot the data with <code>dose</code> level on the x-axis and tooth length growth (<code>len</code>) on the y-axis. Color the points by supplement type (<code>supp</code>).</li>
+<li>Is the data evenly distributed along the x-axis? Comment on the wisdom of using this design.</li>
+<li>Fit a linear model to these data and examine the diagnostic plots. What stands out to you?</li>
+<li>Log-transform the dose variable and repeat parts (c) and (d). Comment on the effect of the log transformation.</li>
+</ol></li>
 <li>The dataset <code>infmort</code> in the <code>faraway</code> package has information about infant mortality from countries around the world. Be aware that this is a old data set and does not necessarily reflect current conditions. More information about the dataset can be found using <code>?faraway::infmort</code>. We will be interested in understanding how infant mortality is predicted by per capita income, world region, and oil export status.
 <ol style="list-style-type: lower-alpha">
 <li><p>Plot the relationship between income and mortality. This can be done using the command</p>
@@ -648,39 +670,18 @@ and note that my model is still a linear model with respect to covariates <span 
 <span id="cb196-2"><a href="7-Diagnostics-Chapter.html#cb196-2" aria-hidden="true"></a><span class="kw">pairs</span>(mortality <span class="op">~</span>., <span class="dt">data=</span>infmort)</span></code></pre></div>
 <p>What do you notice about the relationship between mortality and income?</p></li>
 <li><p>Fit a linear model without any interaction terms with all three covariates as predictors of infant mortality. Examine the diagnostic plots. What stands out?</p></li>
-<li><p>Use the <code>boxcox()</code> function in the library MASS to determine a what a good transformation to the mortality response variable.</p></li>
-<li><p>Make a log transformation to the mortality variable and refit the model without interactions. Use the log transformed mortality for all further questions.</p></li>
 <li><p>Examine the pairs plot with log(mortality), income, and log(income). Which should be used in our model, <code>income</code> or <code>log(income)</code>?</p></li>
-<li><p>Examine models that have all three main effects and either the <code>region:log(income)</code> or <code>oil:log(income)</code> interaction. Are either interaction significant vs the model with just the three main effects? What about a model that contains both interactions (and the three main effects)?</p></li>
-<li><p>Interpret the effects of income, world region, and oil exports on log infant mortality based on these data. For the non-oil producing countries, quantify the effect of doubling the countries income on infant mortality. <em>Hint: graph the data and the predicted values before doing anything else.</em></p></li>
 </ol></li>
-<li>Using the <code>pressure</code> data in the <code>datasets</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial.
+<li>Using the <code>pressure</code> data in the <code>datasets</code> package, fit a model with pressure as the response and temperature as the predictor using transformations to obtain a good fit. Feel free to experiment with what might be considered a ridiculously complicated model with a high degree polynomial. These models can most easily be fit using the <code>poly(x, degree=p)</code> function in the formula specification where you swap out the covariate <code>x</code> and polynomial degree <code>p</code>.
 <ol style="list-style-type: lower-alpha">
 <li>Document your process of building your final model. Do not show graphs or computer output that is not relevant to your decision or that you do not wish to comment on.</li>
-<li>Comment on the interpretability of your (possibly ridiculously complicated) model.</li>
+<li>Comment on the interpretability of your (possibly ridiculously complicated) model. Consider a situation where I’m designing a system where it is easy to measure temperature, but I am unable to measure pressure. Could we get by with just measuring temperature? What if I didn’t know the ideal gas law and I’m trying to better understand how temperature and pressure are related?</li>
 </ol></li>
-<li>Use transformations to find a good model for <code>volume</code> in terms of <code>girth</code> and <code>height</code> using the <code>trees</code> dataset in the <code>datasets</code> package.
+<li>We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
 <ol style="list-style-type: lower-alpha">
-<li>Document your process of building your final model. Again, only include output or graphs that are relevant to your decisions and include discussion about anything you include.</li>
-<li>Create a prediction interval for the volume of a tree with <code>girth=16</code> and <code>height=70</code>. Notice that if you have transformed your response variable in you model, you’ll have to back-transform to the original y-scale.</li>
-</ol></li>
-<li>For this problem, we will look at a manufacturing problem. We will investigate the relationship predicting the <code>Time</code> taken polishing a newly manufactured dish versus the dish <code>Diameter</code> (in inches), <code>Type</code>, and <code>Price</code>.
-<ol style="list-style-type: lower-alpha">
-<li><p>The data live in a package I have on GitHub. The following code will download the data package:</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="7-Diagnostics-Chapter.html#cb197-1" aria-hidden="true"></a><span class="kw">library</span>(devtools)   <span class="co"># You might need to load this package the usual way...</span></span>
-<span id="cb197-2"><a href="7-Diagnostics-Chapter.html#cb197-2" aria-hidden="true"></a><span class="kw">install_github</span>(<span class="st">&#39;dereksonderegger/dsData&#39;</span>) <span class="co"># load an R package that lives on GitHub.</span></span></code></pre></div></li>
-<li><p>Load the data and examine it using the commands</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="7-Diagnostics-Chapter.html#cb198-1" aria-hidden="true"></a><span class="kw">library</span>(dsData)</span>
-<span id="cb198-2"><a href="7-Diagnostics-Chapter.html#cb198-2" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;Dishes&#39;</span>)</span>
-<span id="cb198-3"><a href="7-Diagnostics-Chapter.html#cb198-3" aria-hidden="true"></a><span class="kw">str</span>(Dishes)</span>
-<span id="cb198-4"><a href="7-Diagnostics-Chapter.html#cb198-4" aria-hidden="true"></a><span class="kw">pairs</span>(Time <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>Dishes)</span></code></pre></div>
-<p>Comment on the relationships and possible transformations to be made.</p></li>
-<li><p>Fit a linear model predicting <code>Time</code> as a function the main of <code>Diameter</code>, <code>Price</code>, and <code>Type</code>, but with no interaction.</p></li>
-<li><p>Examine the diagnostic plots. What stands out to you?</p></li>
-<li><p>While most of the diagnostics look fine, there is weak evidence that there might be some heteroskedasticity. To address this (and provide an interesting model to interpret), refit your linear model but with a log-transformed Time and Price variables.</p></li>
-<li><p>Using your model from part (e), what is your interpretation of the parameter associated with the Diameter variable on the original scale of the Time variable? Does this make sense to you considering the <code>pairs()</code> plot?<br />
-</p></li>
-<li><p>How does a 20% increase in Price affect the polishing Time?</p></li>
+<li>Load the <code>EmployedACS</code> dataset from the <code>Lock5Data</code> package.</li>
+<li>Create a box plot showing the relationship between <code>Race</code> and <code>Income</code>.</li>
+<li>Fit an ANOVA model to this data and consider the diagnostic plots for the residuals. What do you notice?</li>
 </ol></li>
 </ol>
 
@@ -692,7 +693,7 @@ and note that my model is still a linear model with respect to covariates <span 
         </div>
       </div>
 <a href="6-two-way-anova.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="8-Transformations-Chapter.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="8-LogTransformations-Chapter.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

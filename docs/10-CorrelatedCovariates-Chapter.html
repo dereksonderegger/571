@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 10 Correlated Covariates | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 10 Correlated Covariates | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-10" />
+<meta name="date" content="2020-09-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics and Transformations</a>
+<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a>
 <ul>
@@ -260,12 +260,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>7.2</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Transformations</a>
+<li class="chapter" data-level="8" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Data Transformations</a>
 <ul>
-<li class="chapter" data-level="8.0.1" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.0.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
-<li class="chapter" data-level="8.0.2" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.0.2</b> Transforming the Response</a></li>
-<li class="chapter" data-level="8.0.3" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.0.3</b> Transforming the predictors</a></li>
-<li class="chapter" data-level="8.0.4" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>8.0.4</b> Interpretation of log transformed variables</a></li>
+<li class="chapter" data-level="8.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="8.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>8.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>8.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log_10-and-log-transformed-variables"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="8.4.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-MultipleRegression-Chapter.html"><a href="9-MultipleRegression-Chapter.html"><i class="fa fa-check"></i><b>9</b> Multiple Regression</a></li>
 <li class="chapter" data-level="10" data-path="10-CorrelatedCovariates-Chapter.html"><a href="10-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>10</b> Correlated Covariates</a>
@@ -283,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="11.3.1" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>11.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="11.3.2" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>11.3.2</b> Adjusted <code>R-sq</code></a></li>
-<li class="chapter" data-level="11.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
+<li class="chapter" data-level="11.3.3" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>11.4</b> Exercises</a></li>
 </ul></li>
@@ -313,7 +327,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.2.1" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>14.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="14.2.2" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>14.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="14.3" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="14.4" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>14.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="14.5" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>14.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="14.6" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>14.6</b> Overdispersion</a></li>
@@ -322,16 +336,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="15" data-path="15-poisson-regression.html"><a href="15-poisson-regression.html"><i class="fa fa-check"></i><b>15</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
+<li class="chapter" data-level="16" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
-<li class="chapter" data-level="16.2" data-path="16-block-designs.html"><a href="16-block-designs.html"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
-<li class="chapter" data-level="16.3" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
+<li class="chapter" data-level="16.1" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="16.2" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#split-plot-designs"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="16.3" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>17</b> Maximum Likelihood Priciple</a>
 <ul>
-<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="17.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="17.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
 <li class="chapter" data-level="17.2" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>17.2</b> Distributions</a>
 <ul>
 <li class="chapter" data-level="17.2.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>17.2.1</b> Poisson</a></li>
@@ -345,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17.3.3" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>17.3.3</b> Normal</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>17.4</b> Discussion</a></li>
-<li class="chapter" data-level="17.5" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
+<li class="chapter" data-level="17.5" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
 <ul>
@@ -422,23 +436,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>We first look at the data and observe the expected relationship between length and weight.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="10-CorrelatedCovariates-Chapter.html#cb232-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
-<span id="cb232-2"><a href="10-CorrelatedCovariates-Chapter.html#cb232-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
-<span id="cb232-3"><a href="10-CorrelatedCovariates-Chapter.html#cb232-3" aria-hidden="true"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
-<span id="cb232-4"><a href="10-CorrelatedCovariates-Chapter.html#cb232-4" aria-hidden="true"></a></span>
-<span id="cb232-5"><a href="10-CorrelatedCovariates-Chapter.html#cb232-5" aria-hidden="true"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
-<span id="cb232-6"><a href="10-CorrelatedCovariates-Chapter.html#cb232-6" aria-hidden="true"></a><span class="co"># pairs(fish)</span></span>
-<span id="cb232-7"><a href="10-CorrelatedCovariates-Chapter.html#cb232-7" aria-hidden="true"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
-<span id="cb232-8"><a href="10-CorrelatedCovariates-Chapter.html#cb232-8" aria-hidden="true"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
-<span id="cb232-9"><a href="10-CorrelatedCovariates-Chapter.html#cb232-9" aria-hidden="true"></a></span>
-<span id="cb232-10"><a href="10-CorrelatedCovariates-Chapter.html#cb232-10" aria-hidden="true"></a>fish <span class="op">%&gt;%</span></span>
-<span id="cb232-11"><a href="10-CorrelatedCovariates-Chapter.html#cb232-11" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
-<span id="cb232-12"><a href="10-CorrelatedCovariates-Chapter.html#cb232-12" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
-<span id="cb232-13"><a href="10-CorrelatedCovariates-Chapter.html#cb232-13" aria-hidden="true"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-146-1.png" width="672" /></p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="10-CorrelatedCovariates-Chapter.html#cb247-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
+<span id="cb247-2"><a href="10-CorrelatedCovariates-Chapter.html#cb247-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
+<span id="cb247-3"><a href="10-CorrelatedCovariates-Chapter.html#cb247-3" aria-hidden="true"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
+<span id="cb247-4"><a href="10-CorrelatedCovariates-Chapter.html#cb247-4" aria-hidden="true"></a></span>
+<span id="cb247-5"><a href="10-CorrelatedCovariates-Chapter.html#cb247-5" aria-hidden="true"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
+<span id="cb247-6"><a href="10-CorrelatedCovariates-Chapter.html#cb247-6" aria-hidden="true"></a><span class="co"># pairs(fish)</span></span>
+<span id="cb247-7"><a href="10-CorrelatedCovariates-Chapter.html#cb247-7" aria-hidden="true"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
+<span id="cb247-8"><a href="10-CorrelatedCovariates-Chapter.html#cb247-8" aria-hidden="true"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
+<span id="cb247-9"><a href="10-CorrelatedCovariates-Chapter.html#cb247-9" aria-hidden="true"></a></span>
+<span id="cb247-10"><a href="10-CorrelatedCovariates-Chapter.html#cb247-10" aria-hidden="true"></a>fish <span class="op">%&gt;%</span></span>
+<span id="cb247-11"><a href="10-CorrelatedCovariates-Chapter.html#cb247-11" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
+<span id="cb247-12"><a href="10-CorrelatedCovariates-Chapter.html#cb247-12" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
+<span id="cb247-13"><a href="10-CorrelatedCovariates-Chapter.html#cb247-13" aria-hidden="true"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="10-CorrelatedCovariates-Chapter.html#cb233-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
-<span id="cb233-2"><a href="10-CorrelatedCovariates-Chapter.html#cb233-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="10-CorrelatedCovariates-Chapter.html#cb248-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb248-2"><a href="10-CorrelatedCovariates-Chapter.html#cb248-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Height + 
@@ -461,12 +475,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Residual standard error: 132.9 on 152 degrees of freedom
 ##   (1 observation deleted due to missingness)
-## Multiple R-squared:  0.8675,	Adjusted R-squared:  0.8631 
+## Multiple R-squared:  0.8675, Adjusted R-squared:  0.8631 
 ## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
 <p>If we remove the highly correlated covariates then we see a much better behaved model</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="10-CorrelatedCovariates-Chapter.html#cb235-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
-<span id="cb235-2"><a href="10-CorrelatedCovariates-Chapter.html#cb235-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="10-CorrelatedCovariates-Chapter.html#cb250-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb250-2"><a href="10-CorrelatedCovariates-Chapter.html#cb250-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
@@ -486,7 +500,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## Residual standard error: 132.3 on 154 degrees of freedom
 ##   (1 observation deleted due to missingness)
-## Multiple R-squared:  0.8669,	Adjusted R-squared:  0.8643 
+## Multiple R-squared:  0.8669, Adjusted R-squared:  0.8643 
 ## F-statistic: 334.2 on 3 and 154 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>When you have two variables in a model that are highly positively correlated, you often find that one will have a positive coefficient and the other will be negative. Likewise, if two variables are highly negatively correlated, the two regression coefficients will often be the same sign.</p>
 <p>In this case the sum of the three length covariate estimates was approximately <span class="math inline">\(31\)</span> in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.</p>

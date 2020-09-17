@@ -1,5 +1,11 @@
 
-# Transformations {#Transformations_Chapter}
+# Data Transformations {#LogTransformations-Chapter}
+
+```{r, message=FALSE, warning=FALSE}
+library(ggfortify)   # for autoplot for lm objects
+library(emmeans)     # emmeans for pairwise constrasts.
+library(tidyverse)   # for dplyr, tidyr, ggplot2
+```
 
 Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms. 
 
@@ -12,9 +18,9 @@ $$y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i$$
 3. Errors are normally distributed
 4. The model contains all the appropriate covariates and no more.
 
-In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4.
+In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4. Because of the interpretability properties we will develop here, $\log()$ transformations are very popular, if they are useful.
 
-### A review of $\log(x)$ and $e^x$
+## A review of $\log(x)$ and $e^x$
 One of the most common transformations that is used on either the response $y$ or the covariates $x$ is the $\log()$ function.  In this next section we will consider $\log()$ with base $e$. However, if you prefer $\log_2()$ or $\log_{10}$ you may substitute $e$ with $2$ or $10$ everywhere. 
 
 In primary school you might have learned that the $\log()$ function looks like this:
@@ -55,7 +61,20 @@ Finally we have that $e^x$ and $log(x)$ are inverse functions of each other by t
 $$x = \log\left( e^x \right )$$ and
 $$x = e^{\log(x)} \;\;\; \textrm{ if } x >0$$
 
-The reason we like using a $\log()$ transformation is that it acts differentially on large values than small.  In particular for $x >1$ we have that $\log(x)$ makes all of the smaller, but the transformation on big values of $x$ is more extreme.  Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we'd like to reduce that.
+Also it is important to note that the $\log$ function has some interesting properties in that it makes operations “1-operation easier”.
+$$\begin{aligned} 
+\log\left(a^{b}\right)	      &=	b\log a  \\
+\log\left(\frac{a}{b}\right)	&=	\log a-\log b \\
+\log\left(ab\right)	          &=	\log a+\log b
+\end{aligned}$$
+
+
+One final aspect of exponents that we will utilize is that
+$$ e^{a+b} = e^a e^b$$
+
+
+
+The reason we like using a $\log()$ transformation is that it acts differently on large values than small.  In particular for $x >1$ we have that $\log(x)$ makes all of the smaller, but the transformation on big values of $x$ is more extreme.  Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we'd like to reduce that.
 
 ```{r, echo=FALSE, fig.height=3, warning=FALSE, message=FALSE}
 N <- 1000
@@ -70,7 +89,7 @@ Rmisc::multiplot(P1, P2, layout = matrix(1:2, nrow=1))
 ```
 
 
-### Transforming the Response
+## Transforming the Response
 
 When the normality or constant variance assumption is violated, sometimes it is possible to transform the response to satisfy the assumption. Often times count data is analyzed as `log(count)` and weights are analyzed after taking a square root or cube root transform. Statistics involving income or other monetary values are usually analyzed on the log scale so as to reduce the leverage of high income observations.
 
@@ -80,9 +99,9 @@ then we might want to give a prediction interval for an $x_{0}$ value. The predi
 $$\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}$$
 and we could calculate the appropriate predicted income as $\hat{y}_{0}=e^{log\left(\hat{y}_{0}\right)}$. Likewise if we had a confidence interval or prediction interval for $\log\left(\hat{y}_{0}\right)$ of the form $\left(l,u\right)$ then the appropriate interval for $\hat{y}_{0}$ is $\left(e^{l},e^{u}\right)$. Notice that while $\left(l,u\right)$ might be symmetric about $\log\left(\hat{y}_{0}\right)$, the back-transformed interval is not symmetric about $\hat{y}_{0}$.
 
-Unfortunately the interpretation of the regression coefficients $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ on the untransformed scale becomes more complicated. This is a very serious difficulty and might sway a researcher from transforming their data.
+Unfortunately the interpretation of the regression coefficients $\hat{\beta}_{0}$ and $\hat{\beta}_{1}$ on the un-transformed scale becomes more complicated. This is a very serious difficulty and might sway a researcher from transforming their data.
 
-#### Box-Cox Family of Transformations
+### Box-Cox Family of Transformations
 
 The Box-Cox method is a popular way of determining what transformation to make. It is intended for responses that are strictly positive (because $\log0=-\infty$ and the square root of a number gives complex numbers, which we don't know how to address in regression). The transformation is defined as $$g\left(y\right)=\begin{cases}
 \frac{y^{\lambda}-1}{\lambda} & \lambda\ne0\\
@@ -115,9 +134,9 @@ Thoughts on the Box-Cox transformation:
 3. If the range of the response $y$ is small, then the method is not as sensitive.
 4. These are not the only possible transformations. For example, for binary data, the `logit` and `probit` transformations are common. In classical non-parametric statistics, we take a rank transformation to the y-values.
 
-### Transforming the predictors
+## Transforming the predictors
 
-#### Polynomials of a predictor
+### Polynomials of a predictor
 
 Perhaps the most common transformation to make is to make a quadratic function in $x$. Often the relationship between $x$ and $y$ follows a curve and we want to fit a quadratic model
 $$\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1}x+\hat{\beta}_{2}x^{2}$$
@@ -125,7 +144,7 @@ and we should note that this is still a linear model because $\hat{y}$ is a line
 
 The difficult part comes in the interpretation of the parameter values. No longer is $\hat{\beta}_{1}$ the increase in $y$ for every one unit increase in $x$. Instead the three parameters in my model interact in a complicated fashion. For example, the peak of the parabola is at $-\hat{\beta}_{1}/2\hat{\beta}_{2}$ and whether the parabola is cup shaped vs dome shaped and its steepness is controlled by $\hat{\beta}_{2}$. Because my geometric understanding of degree $q$ polynomials relies on have all factors of degree $q$ or lower, whenever I include a covariate raised to a power, I should include all the lower powers as well.
 
-#### Log and Square Root of a predictor
+### Log and Square Root of a predictor
 
 Often the effect of a covariate is not linearly related to response, but rather some function of the covariate. For example the area of a circle is not linearly related to its radius, but it is linearly related to the radius squared.
 $$Area=\pi r^{2}$$
@@ -133,7 +152,7 @@ Similar situations might arise in biological settings, such as the volume of con
 
 Picking a good transformation for a covariate is quite difficult, but most fields of study have spent plenty of time thinking about these issues. When in doubt, look at scatter plots of the covariate vs the response and ask what transformation would make the data fall onto a line?
 
-#### Examples of transformation of predictors
+### Galapagos Example
 
 To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in `faraway`.
 
@@ -148,7 +167,7 @@ gala %>%
 ```
 
 
-Looking at these graphs, I think I should definately transform `Area` and `Adjacent`, and I wouldn't object to doing the same to `Elevation`, `Nearest` and `Scruz`. Given the high leverages, a log transformation should be a good idea. One problem is that $\log(0) = -\infty$.  A quick look at the data set summary:
+Looking at these graphs, I think I should definitely transform `Area` and `Adjacent`, and I wouldn't object to doing the same to `Elevation`, `Nearest` and `Scruz`. Given the high leverages, a log transformation should be a good idea. One problem is that $\log(0) = -\infty$.  A quick look at the data set summary:
 
 ```{r}
 gala %>% 
@@ -216,43 +235,9 @@ ggplot(pred.data, aes(x=Area)) +
 ```
 
 
-### Interpretation of log transformed variables
+## Interpretation of $\log_{10}$ and $\log$ transformed variables
 
-One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Here we look at the interpretation of log transformed variables.
-
-To begin with, we need to remind ourselves of what the functions $\log x$ and $e^{x}$ look like.
-
-```{r, echo=FALSE, fig.height=3}
-library(ggplot2)
-x <- seq(-4,5, length=1000) 
-data <- data.frame(x=x, y=exp(x), funct='exp(x)') 
-x <- seq(0,5, length=1000)[-1] 
-data <- rbind(data, data.frame(x=x, y=log(x), funct='log(x)')) 
-ggplot(data, aes(x=x, y=y, color=funct)) +
-  geom_line() + 
-  coord_cartesian(ylim = c(-4, 4), xlim=c(-3,4)) + 
-	labs(color="Function")
-```
-
-  
-In particular we notice that 
-$$e^{0}=1$$ 
-and 
-$$\log\left(1\right)=0$$ 
-and the functions $e^{x}$ and $\log x$ are inverse functions of each other. 
-  
-$$e^{\log x}=\log\left(e^{x}\right)=x$$
- 
-Also it is important to note that the $\log$ function has some interesting properties in that it makes operations “1-operation easier”.
-$$\begin{aligned} 
-\log\left(a^{b}\right)	      &=	b\log a  \\
-\log\left(\frac{a}{b}\right)	&=	\log a-\log b \\
-\log\left(ab\right)	          &=	\log a+\log b
-\end{aligned}$$
-
-
-One final aspect of exponents that we will utilize is that
-$$ e^{a+b} = e^a e^b$$
+One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Compared to taking the square root, $\log$ transformations are surprisingly interpretable on the original scale. Here we look at the interpretation of log transformed variables.
 
 To investigate the effects of a log transformation, we'll examine a dataset that predicts the writing scores of $n=200$ students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group. 
 
@@ -270,18 +255,24 @@ scores %>%
 
 These data look pretty decent, and I'm not certain that I would do *any* transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a students' writing score.
 
-#### Log-transformed response, un-transformed covariates
+### Log-transformed response, un-transformed covariates
 
 We consider the model where we have transformed the response variable and just an intercept term.
 $$\log y=\beta_{0}+\epsilon$$
 
 ```{r}
-m <- lm(log(write) ~ 1, data=scores)
-summary(m)$coef %>% round(digits=3)
+model <- lm(log(write) ~ 1, data=scores)
+broom::tidy(model)
 ```
 
 
-We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale $\hat{y} = e^{\hat{\beta}_{0}} = e^{3.948} = 51.83$ as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the *geometric mean*.
+We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale $\hat{y} = e^{\hat{\beta}_{0}} = e^{3.94835} = 51.85$ as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the *geometric mean*. Instead of calculating this by hand, we can have `emmeans()` do it for us.
+
+```{r}
+emmeans(model, ~1)                   # Return y-hat value on the log-scale
+emmeans(model, ~1, type='response')  # Return y-hat value on the original scale
+```
+
 
 Next we examine how to interpret the model when a categorical variable is added to the model.
 $$\log y=\begin{cases}
@@ -290,8 +281,8 @@ $$\log y=\begin{cases}
 \end{cases}$$
 
 ```{r}
-m <- lm(log(write) ~ gender, data=scores)
-summary(m)$coef %>% round(digits=3)
+model <- lm(log(write) ~ gender, data=scores)
+broom::tidy(model)
 ```
 
 
@@ -304,6 +295,14 @@ $$\begin{aligned}
 
 and therefore we see that males tend to have writing scores $e^{-0.103}=0.90=90\%$ of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.
 
+Hand calculating these is challenging to do it correctly, but as usual we can have `emmeans` calculate it for us.
+```{r}
+# I used reverse pairwise to get the ratio as male/female instead of female/male
+emmeans(model, revpairwise~gender, type='response') %>%
+  .[['contrasts']]
+```
+
+
 The model with a continuous covariate has a similar interpretation.
 $$\log y=\begin{cases}
 \beta_{0}+\beta_{2}x+\epsilon & \;\;\textrm{if female}\\
@@ -313,8 +312,8 @@ $$\log y=\begin{cases}
 We will use the reading score read to predict the writing score. Then $\hat{\beta}_{2}$ is the predicted increase in `log(write)` for every 1-unit increase in read score. The interpretation of $\hat{\beta}_{0}$ is now $\log\hat{y}$ when $x=0$ and therefore $\hat{y}=e^{\hat{\beta}_{0}}$ when $x=0$.
 
 ```{r}
-m <- lm(log(write) ~ gender + read, data=scores)  # main effects model
-summary(m)$coefficients %>% round(digits=3)
+model <- lm(log(write) ~ gender + read, data=scores)  # main effects model
+broom::tidy(model)
 ```
 
 For females, we consider the difference in $\log\hat{y}$ for a 1-unit increase in $x$ and will interpret this on the original write scale.
@@ -341,15 +340,24 @@ $$\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\be
  
 and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22$$ or a 22% increase in writing score for a 20-point increase in reading score.
 
+```{r}
+# to make emmeans calculate this, we must specify a 1-unit or 20-unit increase
+emmeans(model, pairwise ~ read, at=list(read=c(51,50)), type='response') %>% 
+  .[['contrasts']]
+emmeans(model, pairwise ~ read, at=list(read=c(70,50)), type='response') %>% 
+  .[['contrasts']]
+```
+
+
 In short, we can interpret $e^{\hat{\beta}_{i}}$ as the multiplicative increase/decrease in the non-transformed response variable. Some students get confused by what is meant by a $\%$ increase or decrease in $y$.
 
   * A $75\%$ decrease in $y$ has a resulting value of $\left(1-0.75\right)y=\left(0.25\right) y$
   * A $75\%$ increase in $y$ has a resulting value of $\left(1+0.75\right)y=\left(1.75\right) y$
-  * A $100\%$ increase in $y$ has a resulting value of $\left(1+1.00\right)y=2x$ and is a doubling of $y$.
-  * A $50\%$ decrease in $y$ has a resulting value of $\left(1-0.5\right)y=\left(0.5\right) x$ and is a halving of $y$.
+  * A $100\%$ increase in $y$ has a resulting value of $\left(1+1.00\right)y= 2y$ and is a doubling of $y$.
+  * A $50\%$ decrease in $y$ has a resulting value of $\left(1-0.5\right)y=\left(0.5\right) y$ and is a halving of $y$.
 
 
-#### Un-transformed response, log-transformed covariate
+### Un-transformed response, log-transformed covariate
 
 We consider the model
 $$y=\beta_{0}+\beta_{2}\log x+\epsilon$$
@@ -365,22 +373,26 @@ $$\begin{aligned}
 This means that so long as the ratio between the two x-values is constant, then the change in $\hat{y}$ is the same. So doubling the value of $x$ from 1 to 2 has the same effect on $\hat{y}$ as changing x from 50 to 100. 
 
 ```{r}
-m <- lm( write ~ gender + log(read), data=scores)
-summary(m)$coefficients %>% round(digits=3)
+model <- lm( write ~ gender + log(read), data=scores)
+broom::tidy(model)
 ```
 
 ```{r}
 # predict writing scores for three females, 
 # each with a reading score 50% larger than the other previous
-predict(m, newdata=data.frame(gender=rep('female',3),
-                              read=c(40, 60, 90)))
+predict(model, newdata=data.frame(gender=rep('female',3),
+                                  read=c(40, 60, 90)))
 ```
 
 We should see a 
 $$29.045 \; \log \left( 1.5 \right) = 11.78$$  
 difference in $\hat{y}$ values for the first and second students and the second and third.
 
-#### Log-transformed response, log-transformed covariate
+```{r}
+emmeans(model, pairwise~log(read), at=list(read=c(60,40)))
+```
+
+### Log-transformed response, log-transformed covariate
 
 This combines the interpretations in the previous two sections. We consider
 $$\log y=\beta_{0}+\beta_{2}\log x+\epsilon$$ 
@@ -395,16 +407,24 @@ $$\begin{aligned}
 This allows us to examine the effect of some arbitrary percentage increase in $x$ value as a percentage increase in $y$ value. 
 
 ```{r}
-m <- lm(log(write) ~ gender + log(read), data=scores)
-summary(m)$coefficients %>% round(digits=3)
+model <- lm(log(write) ~ gender + log(read), data=scores)
+broom::tidy(model)
 ```
 
-which implies for a $10$% increase in `read` score, we should see a $1.10^{0.581}=1.05$ multiplier in `write` score. That is to say, a $10\%$ increase in reading score results in a $5\%$ increase in writing score. 
+which implies for a $10$% increase in `read` score, we should see a $1.10^{0.581}=1.056$ multiplier in `write` score. That is to say, a $10\%$ increase in reading score results in a $5\%$ increase in writing score. 
+
+```{r}
+emmeans(model, pairwise~log(read), at=list(read=c(55,50)),
+         var='log(read)', type='response')
+```
+
 
 For the Galapagos islands, we had
 ```{r}
 m.s <- lm(log(Species) ~ log(Area), data=gala)
-summary(m.s)$coefficients %>% round(digits=3)
+broom::tidy(m.s)
+
+emmeans(m.s, pairwise~Area, at=list(Area=c(400, 200)), type='response')
 ```
 
 and therefore doubling of Area (i.e. the ratio of the $Area_{2} / Area_{1} = 2$) results in a $2^{0.389}=1.31$ multiplier of the `Species` value. That is to say doubling the island area increases the number of species by $31\%$.
@@ -418,3 +438,25 @@ In the table below $\beta$ represents the group offset value, or the slope value
 | $\log(y)$     |   Continuous $x$      |   $\left(e^\beta\right)^\delta$   | A $\delta$-unit change in $x$ results in this *multiplicative* change on $y$. |
 |   $y$         |  Continuous $\log(x)$ |   $\beta \, \log\left(\frac{x_2}{x_1}\right)$ | The proportional change in $x$ results in an *additive* change on $y$. |
 | $\log(y)$     |  Continuous $\log(x)$ |   $\left(\frac{x_2}{x_1}\right)^\beta$  | The proportional change in $x$ results in the *multiplicative* change on $y$. |
+
+
+
+
+## Exercises {#Transformation-Exercises}
+
+1. In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement). 
+    a. Load the `ToothGrowth` data which is pre-loaded in base R and calculate the $\log_{10}$ dose level.
+    b. Plot the data with log dose level on the x-axis and tooth length growth on the y-axis. Color the points by supplement type.
+    c. Fit a linear model using the log transformed dose.
+    d. Interpret the effect of doubling the dose (NOT LOG DOSE!) on tooth growth for the OJ and VC supplement groups.
+
+2. We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
+    a. Load the `EmployedACS` dataset from the `Lock5Data` package.
+    b. Create a box plot showing the relationship between `Race` and `Income`.
+    c. Consider the boxcox family of transformations of `Income`. What transformation seems appropriate.
+    d. Using your transformed `Income` variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. *Importantly, we haven't accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.*
+
+3. ANOVA with log(y) response where there is a significant difference.
+
+4. ANCOVA with log(y) and log(x) 
+

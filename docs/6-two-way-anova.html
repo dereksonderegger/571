@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Two-way ANOVA | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Two-way ANOVA | Statistical Methods II" />
   <meta property="og:type" content="book" />
@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-10" />
+<meta name="date" content="2020-09-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -251,7 +251,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics and Transformations</a>
+<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a>
 <ul>
@@ -260,12 +260,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="7.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>7.2</b> Exercises</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Transformations</a>
+<li class="chapter" data-level="8" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Data Transformations</a>
 <ul>
-<li class="chapter" data-level="8.0.1" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.0.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
-<li class="chapter" data-level="8.0.2" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.0.2</b> Transforming the Response</a></li>
-<li class="chapter" data-level="8.0.3" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.0.3</b> Transforming the predictors</a></li>
-<li class="chapter" data-level="8.0.4" data-path="8-Transformations-Chapter.html"><a href="8-Transformations-Chapter.html#interpretation-of-log-transformed-variables"><i class="fa fa-check"></i><b>8.0.4</b> Interpretation of log transformed variables</a></li>
+<li class="chapter" data-level="8.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="8.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>8.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>8.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log_10-and-log-transformed-variables"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="8.4.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-MultipleRegression-Chapter.html"><a href="9-MultipleRegression-Chapter.html"><i class="fa fa-check"></i><b>9</b> Multiple Regression</a></li>
 <li class="chapter" data-level="10" data-path="10-CorrelatedCovariates-Chapter.html"><a href="10-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>10</b> Correlated Covariates</a>
@@ -283,7 +297,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="11.3.1" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>11.3.1</b> Information Criterions</a></li>
 <li class="chapter" data-level="11.3.2" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>11.3.2</b> Adjusted <code>R-sq</code></a></li>
-<li class="chapter" data-level="11.3.3" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
+<li class="chapter" data-level="11.3.3" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>11.3.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="11-VariableSelection-Chapter.html"><a href="11-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>11.4</b> Exercises</a></li>
 </ul></li>
@@ -313,7 +327,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.2.1" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>14.2.1</b> Deviance</a></li>
 <li class="chapter" data-level="14.2.2" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>14.2.2</b> Goodness of Fit</a></li>
 </ul></li>
-<li class="chapter" data-level="14.3" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="14.3" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>14.3</b> Confidence Intervals</a></li>
 <li class="chapter" data-level="14.4" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>14.4</b> Interpreting model coefficients</a></li>
 <li class="chapter" data-level="14.5" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>14.5</b> Prediction and Effective Dose Levels</a></li>
 <li class="chapter" data-level="14.6" data-path="14-binomial-regression.html"><a href="14-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>14.6</b> Overdispersion</a></li>
@@ -322,16 +336,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="15" data-path="15-poisson-regression.html"><a href="15-poisson-regression.html"><i class="fa fa-check"></i><b>15</b> Poisson Regression</a></li>
 <li class="part"><span><b>Appendix</b></span></li>
-<li class="chapter" data-level="16" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
+<li class="chapter" data-level="16" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html"><i class="fa fa-check"></i><b>16</b> Block Designs</a>
 <ul>
-<li class="chapter" data-level="16.1" data-path="13-mixed-effects-models.html"><a href="13-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
-<li class="chapter" data-level="16.2" data-path="16-block-designs.html"><a href="16-block-designs.html"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
-<li class="chapter" data-level="16.3" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
+<li class="chapter" data-level="16.1" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>16.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="16.2" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#split-plot-designs"><i class="fa fa-check"></i><b>16.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="16.3" data-path="16-block-designs-1.html"><a href="16-block-designs-1.html#exercises"><i class="fa fa-check"></i><b>16.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="17" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>17</b> Maximum Likelihood Priciple</a>
 <ul>
-<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
-<li class="chapter" data-level="17.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
+<li class="chapter" data-level="" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="17.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>17.1</b> Introduction</a></li>
 <li class="chapter" data-level="17.2" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>17.2</b> Distributions</a>
 <ul>
 <li class="chapter" data-level="17.2.1" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>17.2.1</b> Poisson</a></li>
@@ -345,7 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="17.3.3" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>17.3.3</b> Normal</a></li>
 </ul></li>
 <li class="chapter" data-level="17.4" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>17.4</b> Discussion</a></li>
-<li class="chapter" data-level="17.5" data-path="16-block-designs.html"><a href="16-block-designs.html#exercises"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
+<li class="chapter" data-level="17.5" data-path="17-maximum-likelihood-priciple.html"><a href="17-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>17.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
 <ul>
@@ -388,16 +402,16 @@ where <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sig
 </ol>
 <p>We will be interested in testing the null and alternative hypotheses
 <span class="math display">\[\begin{aligned}
-H_{0}:\;\;y_{ij}	&amp;=	\mu+\epsilon_{ij}              \\
-H_{a}:\;\;y_{ij}	&amp;=	\mu+\alpha_{i}+\epsilon_{ij}
+H_{0}:\;\;y_{ij}    &amp;=  \mu+\epsilon_{ij}              \\
+H_{a}:\;\;y_{ij}    &amp;=  \mu+\alpha_{i}+\epsilon_{ij}
 \end{aligned}\]</span></p>
 <div id="an-example" class="section level3" number="6.1.1">
 <h3><span class="header-section-number">6.1.1</span> An Example</h3>
 <p>We look at a dataset that comes from the study of blood coagulation times: 24 animals were randomly assigned to four different diets and the samples were taken in a random order. The diets are denoted as <span class="math inline">\(A\)</span>,<span class="math inline">\(B\)</span>,<span class="math inline">\(C\)</span>,and <span class="math inline">\(D\)</span> and the response of interest is the amount of time it takes for the blood to coagulate.</p>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="6-two-way-anova.html#cb114-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;coagulation&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
 <span id="cb114-2"><a href="6-two-way-anova.html#cb114-2" aria-hidden="true"></a><span class="kw">ggplot</span>(coagulation, <span class="kw">aes</span>(<span class="dt">x=</span>diet, <span class="dt">y=</span>coag)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb114-3"><a href="6-two-way-anova.html#cb114-3" aria-hidden="true"></a>	<span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
-<span id="cb114-4"><a href="6-two-way-anova.html#cb114-4" aria-hidden="true"></a>	<span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> )</span></code></pre></div>
+<span id="cb114-3"><a href="6-two-way-anova.html#cb114-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb114-4"><a href="6-two-way-anova.html#cb114-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">labs</span>( <span class="dt">x=</span><span class="st">&#39;Diet&#39;</span>, <span class="dt">y=</span><span class="st">&#39;Coagulation Time&#39;</span> )</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
 <p>Just by looking at the graph, we expect to see that diets <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> are similar while <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> are different from <span class="math inline">\(A\)</span> and <span class="math inline">\(D\)</span> and possibly from each other, too. We first fit the offset model.</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="6-two-way-anova.html#cb115-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(coag <span class="op">~</span><span class="st"> </span>diet, <span class="dt">data=</span>coagulation)</span>
@@ -420,7 +434,7 @@ H_{a}:\;\;y_{ij}	&amp;=	\mu+\alpha_{i}+\epsilon_{ij}
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 2.366 on 20 degrees of freedom
-## Multiple R-squared:  0.6706,	Adjusted R-squared:  0.6212 
+## Multiple R-squared:  0.6706, Adjusted R-squared:  0.6212 
 ## F-statistic: 13.57 on 3 and 20 DF,  p-value: 4.658e-05</code></pre>
 <p>Notice that diet <span class="math inline">\(A\)</span> is the reference level and it has a mean of <span class="math inline">\(61\)</span>. Diet <span class="math inline">\(B\)</span> has an offset from <span class="math inline">\(A\)</span> of <span class="math inline">\(5\)</span>, etc. From the very small F-statistic, we conclude that simple model
 <span class="math display">\[y_{ij}=\mu+\epsilon_{ij}\]</span>
@@ -703,7 +717,7 @@ adds <span class="math inline">\((I-1)+(J-1)\)</span> parameters to the model be
 <span id="cb122-5"><a href="6-two-way-anova.html#cb122-5" aria-hidden="true"></a>fruit<span class="op">$</span>Yield &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">49</span>,<span class="dv">39</span>,<span class="dv">50</span>,<span class="dv">55</span>,<span class="dv">43</span>,<span class="dv">38</span>,<span class="dv">53</span>,<span class="dv">48</span>,<span class="dv">55</span>,<span class="dv">41</span>,<span class="dv">67</span>,<span class="dv">58</span>,<span class="dv">53</span>,<span class="dv">42</span>,<span class="dv">85</span>,<span class="dv">73</span>,<span class="dv">66</span>,<span class="dv">68</span>,<span class="dv">85</span>,<span class="dv">92</span>,<span class="dv">69</span>,<span class="dv">62</span>,<span class="dv">85</span>,<span class="dv">99</span>)</span></code></pre></div>
 <p>The first thing to do (as always) is to look at our data</p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="6-two-way-anova.html#cb123-1" aria-hidden="true"></a><span class="kw">ggplot</span>(fruit, <span class="kw">aes</span>(<span class="dt">x=</span>Pest, <span class="dt">color=</span>Var, <span class="dt">y=</span>Yield, <span class="dt">shape=</span>Var)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb123-2"><a href="6-two-way-anova.html#cb123-2" aria-hidden="true"></a>	<span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) </span></code></pre></div>
+<span id="cb123-2"><a href="6-two-way-anova.html#cb123-2" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) </span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
 <p>The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don’t expect that the interaction effect will be significant. We next fit a linear model and look at the diagnostic plots.</p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="6-two-way-anova.html#cb124-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Yield <span class="op">~</span><span class="st"> </span>Var <span class="op">+</span><span class="st"> </span>Pest, <span class="dt">data=</span>fruit)</span>
@@ -905,13 +919,13 @@ adds <span class="math inline">\((I-1)+(J-1)\)</span> parameters to the model be
 <span class="math display">\[y_{ijk}=\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}+\epsilon_{ijk}\]</span></p>
 <p>Interpreting effects effects can be very tricky. Under the interaction, the effect of changing from factor 1 level 1 to factor 1 level <span class="math inline">\(i\)</span> depends on what level of factor 2 is. In essence, we are fitting a model that allows each of the <span class="math inline">\(I\times J\)</span> cells in my model to vary independently. As such, the model has a total of <span class="math inline">\(I\times J\)</span> parameters but because the model without interactions had <span class="math inline">\(1+(I-1)+(J-1)\)</span> terms in it, the interaction is adding <span class="math inline">\(df_{AB}\)</span> parameters. We can solve for this via:
 <span class="math display">\[\begin{aligned}
-I\times J	&amp;=	1+(I-1)+(J-1)+df_{AB} \\
-I\times J	&amp;=	I+J-1+df_{AB} \\
-IJ-I-J	  &amp;=	-1+df_{AB} \\
-I(J-1)-J	&amp;=	-1+df_{AB} \\
-I(J-1)-J+1	&amp;=	df_{AB}  \\
-I(J-1)-(J-1)	&amp;=	df_{AB} \\
-(I-1)(J-1)	&amp;=	df_{AB} 
+I\times J   &amp;=  1+(I-1)+(J-1)+df_{AB} \\
+I\times J   &amp;=  I+J-1+df_{AB} \\
+IJ-I-J    &amp;=    -1+df_{AB} \\
+I(J-1)-J    &amp;=  -1+df_{AB} \\
+I(J-1)-J+1  &amp;=  df_{AB}  \\
+I(J-1)-(J-1)    &amp;=  df_{AB} \\
+(I-1)(J-1)  &amp;=  df_{AB} 
 \end{aligned}\]</span></p>
 <p>This makes sense because the first factor added <span class="math inline">\((I-1)\)</span> columns to the design matrix and an interaction with a continuous covariate just multiplied the columns of the factor by the single column of the continuous covariate. Creating an interaction of two factors multiplies each column of the first factor by all the columns defined by the second factor.</p>
 <p>The expected value of the <span class="math inline">\(ij\)</span> combination is <span class="math inline">\(\mu+\alpha_{i}+\beta_{j}+\left(\alpha\beta\right)_{ij}\)</span>. Returning to our fungus example, the expected means for each treatment under the model with main effects and the interaction is</p>
@@ -1125,12 +1139,12 @@ I(J-1)-(J-1)	&amp;=	df_{AB} \\
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## Residual standard error: 0.374 on 48 degrees of freedom
-## Multiple R-squared:  0.3363,	Adjusted R-squared:  0.2672 
+## Multiple R-squared:  0.3363, Adjusted R-squared:  0.2672 
 ## F-statistic: 4.864 on 5 and 48 DF,  p-value: 0.001116</code></pre>
 <p>To test if there is a statistically significant difference between medium and high tensions for wool type B, we really need to test the following hypothesis:
 <span class="math display">\[\begin{aligned}
-H_{0}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right)	&amp; =	  0 \\
-H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right)	&amp;\ne	0
+H_{0}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right) &amp; =   0 \\
+H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\left(\mu+\alpha_{3}+\beta_{2}+\left(\alpha\beta\right)_{32}\right) &amp;\ne    0
 \end{aligned}\]</span></p>
 <p>This test reduces to testing if <span class="math inline">\(\alpha_{2}-\alpha_{3}+\left(\alpha\beta\right)_{22}-\left(\alpha\beta\right)_{23}=0\)</span>. Calculating this difference from the estimated values of the summery table we have <span class="math inline">\(-.6012+.6003+.6281-.2221=0.4051\)</span>, we don’t know if that is significantly different than zero.</p>
 <p>In the main effects model, we were able to read off the necessary test using <code>emmeans</code>. Fortunately, we can do the same thing here. In this case, we’ll look at the interactions piece of the <code>emmeans</code> command. In this case, we find the test H:B - M:B in the last row of the interactions.</p>
