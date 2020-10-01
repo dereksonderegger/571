@@ -130,7 +130,7 @@ This leverage idea only picks out the *potential* for a specific value of $x$ to
 
 To attempt to measure the actual influence of an observation $\left\{ y_{i},\boldsymbol{x}_{i}^{T}\right\}$ on the linear model, we consider the effect on the regression if we removed the observation and fit the same model. Let $$\hat{\boldsymbol{y}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}$$
 be the vector of predicted values, where $\hat{\boldsymbol{\beta}}$ is created using all of the data, and $\hat{\boldsymbol{y}}_{(i)}=\boldsymbol{X}\hat{\boldsymbol{\beta}}_{(i)}$ be the vector of predicted values where $\hat{\boldsymbol{\beta}}_{(i)}$ was estimated using all of the data except the $i$th observation. Letting $p$ be the number of $\beta_{j}$ parameters as usual we define Cook's distance of the $i$th observation as 
-$$ D_{i} = \frac{\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)^{T}\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)}{p\hat{\sigma}^{2}}$$
+$$ D_{i} = \frac{\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)^{T}\left(\hat{\boldsymbol{y}}-\hat{\boldsymbol{y}}_{(i)}\right)}{p\hat{\sigma}^{2}} = \frac{\sum_{j=1}^n(\hat{y}_{j}-(\hat{y}_{(i)})_j)^2}{p\hat{\sigma}^2}$$
 which boils down to saying if the predicted values have large changes when the $i$th element is removed, then the distance is big. It can be shown that this formula can be simplified to
 $$D_{i}=\frac{\hat{\epsilon}_{i}^{*}\boldsymbol{H}_{ii}}{p\left(1-H_{ii}\right)}$$
 which expresses Cook's distance in terms of the $i$th studentized residual and the $i$th leverage.
@@ -189,15 +189,13 @@ Looking at the data, it seems that we are violating the assumption that a linear
 
 ```{r, fig.height=3}
 model <- lm( clutch.size ~ carapace, data=Eggs )
-plot(model, which=1)      # which=1 tells R to only make the first plot
+# plot(model, which=1)      # Base R Function: which=1 tells R to only make the first plot
+# lindia::gg_diagnose(model)                        # using lindia package
+# lindia::gg_diagnose(model, plot.all=FALSE)[[3]]   # using lindia package
+autoplot(model, which=1)  # same plot using ggplot2 and ggfortify package
 ```
 
-```{r, fig.height=3, message=FALSE, warning=FALSE}
-library(ggfortify)        # need the ggfortify library for autoplot.lm() to work
-autoplot(model, which=1)  # same plot using ggplot2
-```
-
-The red/blue lines going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in `carapace length`. We will create a new covariate, `carapace.2`, which is the square of the carapace length and add it to the model.
+The blue curves going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in `carapace length`. We will create a new covariate, `carapace.2`, which is the square of the carapace length and add it to the model.
 
 In general I could write the quadratic model as
 $$y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}$$
@@ -233,7 +231,7 @@ model <- lm( clutch.size ~ carapace + carapace.2,    data=Eggs2 )
 # make R do it inside the formula... convenient
 model <- lm( clutch.size ~ carapace + I(carapace^2), data=Eggs )
 
-# Fit an arbitrary degree polynomial
+# Fit an arbitrary degree polynomial, I recommend this method for fitting the model!
 model <- lm( clutch.size ~ poly(carapace, 2),        data=Eggs )
 
 # If you use poly() in the formula, you must use 'data=' here, 

@@ -404,7 +404,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-308-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-307-1.png" width="672" /></p>
 <p>There is a general increasing trend in the response (i.e. the <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> term) and then some un-explainable noise (the <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> part).</p>
 <p>This model contains three parameters <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span> but it certainly isn’t clear how to estimate these three values. In this chapter, we’ll develop a mechanism for taking observed data sampled from some distribution parameterized by some <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\sigma\)</span>, or <span class="math inline">\(\theta\)</span> and then estimating those parameters.</p>
 </div>
@@ -418,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span class="math display">\[f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}\]</span></p>
 <pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-309-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-308-1.png" width="672" /></p>
 <p>The notation <span class="math inline">\(f(x|\lambda)\)</span> read as “f <em>given</em> <span class="math inline">\(\lambda\)</span>” and is used to denote that this is a function that describes what values of the data <span class="math inline">\(X\)</span> are most probable and that the function depends on the parameter value. This is emphasizing that if we were to change the parameter value (to say <span class="math inline">\(\lambda = 10\)</span>), then a different set of data values would be more probable. In the above example with <span class="math inline">\(\lambda = 3.5\)</span>, the most probable outcome is <span class="math inline">\(3\)</span> but we aren’t surprised if we were to observe a value of <span class="math inline">\(x=1,2,\)</span> or <span class="math inline">\(4\)</span>. However, from this graph, we see that <span class="math inline">\(x=10\)</span> or <span class="math inline">\(x=15\)</span> would be highly improbable.</p>
 </div>
 <div id="exponential" class="section level3" number="17.2.2">
@@ -427,7 +427,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><span class="math display">\[f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x &gt; 0\]</span></p>
 <pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-310-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-309-1.png" width="672" /></p>
 <p>In this distribution, the region near zero is the most probable outcome, and larger observations are less probable.</p>
 </div>
 <div id="normal" class="section level3" number="17.2.3">
@@ -440,7 +440,7 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 
 ## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-311-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-310-1.png" width="672" /></p>
 <p>All of these distributions (and there are many, many more distributions commonly used) have some mathematical function that defines the how probable a region of response values is and that function depends on the parameters. Importantly <span class="math inline">\(X\)</span> regions with the highest <span class="math inline">\(f(x|\theta)\)</span> are the most probable data values.</p>
 <p>There are many additional mathematical details that go into these density functions but the important aspect is that they tell us what data values are most probable given some parameter values <span class="math inline">\(\theta\)</span>.</p>
 </div>
@@ -461,7 +461,7 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 
 ## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-312-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-311-1.png" width="672" /></p>
 <p>Our best estimate for <span class="math inline">\(\lambda\)</span> is the value that maximizes <span class="math inline">\(\mathcal{L}(\lambda|x)\)</span>. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by taking the log of the Likelihood function. Because the log function is monotonic, maximizing the Likelihood function is equivalent to maximizing the log-Likelihood function. Second, if taking the derivative is impossible, we could just use a numerical solving algorithm to find the value of <span class="math inline">\(\lambda\)</span> that maximizes the log-likelihood function. Numerical solvers are convenient, but are only accurate to machine tolerance you specify. In this case where <span class="math inline">\(x=4\)</span>, the actual maximum likelihood value is <span class="math inline">\(\hat{\lambda}=4\)</span>.</p>
 <div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="17-maximum-likelihood-priciple.html#cb568-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
 <span id="cb568-2"><a href="17-maximum-likelihood-priciple.html#cb568-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
@@ -492,7 +492,7 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 
 ## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-313-1.png" width="672" /></p>
 <p>If we are using the log-Likelihood, then the multiplication is equivalent to summing and we’ll define and subsequently optimize our log-Likelihood function like this:</p>
 <div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="17-maximum-likelihood-priciple.html#cb572-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
 <span id="cb572-2"><a href="17-maximum-likelihood-priciple.html#cb572-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
@@ -524,7 +524,7 @@ which is maximized at <span class="math inline">\(\hat{\mu} = \bar{x} = 8.62\)</
 <pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
 <pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
 <div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="17-maximum-likelihood-priciple.html#cb582-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">7.2</span>, <span class="fl">6.1</span>, <span class="fl">9.0</span>, <span class="dv">12</span>, <span class="fl">8.8</span>)</span>
 <span id="cb582-2"><a href="17-maximum-likelihood-priciple.html#cb582-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
 <span id="cb582-3"><a href="17-maximum-likelihood-priciple.html#cb582-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
@@ -558,7 +558,7 @@ which is somewhat unexpected because the typical estimator we use has a <span cl
 
 ## Warning in is.na(x): is.na() applied to non-(list or vector) of type
 ## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-319-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-318-1.png" width="672" /></p>
 <div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb588-1"><a href="17-maximum-likelihood-priciple.html#cb588-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
 <span id="cb588-2"><a href="17-maximum-likelihood-priciple.html#cb588-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
 <span id="cb588-3"><a href="17-maximum-likelihood-priciple.html#cb588-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
