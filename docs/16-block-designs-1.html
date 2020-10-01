@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-17" />
+<meta name="date" content="2020-09-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -437,7 +437,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb534-2"><a href="16-block-designs-1.html#cb534-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb534-3"><a href="16-block-designs-1.html#cb534-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span></span>
 <span id="cb534-4"><a href="16-block-designs-1.html#cb534-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-290-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-291-1.png" width="672" /></p>
 <p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because
 <span class="math display">\[\begin{aligned}
   df_\epsilon   &amp;=  n-p \\
@@ -471,7 +471,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb538-7"><a href="16-block-designs-1.html#cb538-7" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></span>
 <span id="cb538-8"><a href="16-block-designs-1.html#cb538-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
 <span id="cb538-9"><a href="16-block-designs-1.html#cb538-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-292-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-293-1.png" width="672" /></p>
 <p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
 <div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="16-block-designs-1.html#cb539-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)</span>
 <span id="cb539-2"><a href="16-block-designs-1.html#cb539-2" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
@@ -502,7 +502,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 1     4       High       Low         21.0
 ## 5 2     1       Low        Low         23.2
 ## 6 2     2       High       Low         26.5</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-295-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-296-1.png" width="672" /></p>
 <p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
 <p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
 <p>We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.</p>
@@ -592,7 +592,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb554-3"><a href="16-block-designs-1.html#cb554-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span></span>
 <span id="cb554-4"><a href="16-block-designs-1.html#cb554-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb554-5"><a href="16-block-designs-1.html#cb554-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-302-1.png" width="672" /></p>
 <p>This graph also makes me think that variety doesn’t matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check.</p>
 <div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="16-block-designs-1.html#cb555-1" aria-hidden="true"></a><span class="co">#  What makes sense to me</span></span>
 <span id="cb555-2"><a href="16-block-designs-1.html#cb555-2" aria-hidden="true"></a><span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></span></code></pre></div>

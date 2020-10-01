@@ -237,15 +237,7 @@ ggplot(fruit, aes(x=Pest, color=Var, y=Yield, shape=Var)) +
 	geom_point(size=5) 
 ```
 
-The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don't expect that the interaction effect will be significant. We next fit a linear model and look at the diagnostic plots.
-
-```{r, fig.height=3}
-m3 <- lm(Yield ~ Var + Pest, data=fruit)
-autoplot(m3, which=1:2)
-```
-
-
-There might be a little curvature in the fitted vs residuals, but because we can't fit a polynomial to a categorical variable, and the QQ-plot looks good, we'll ignore it for now and eventually consider an interaction term. Just for fun, we can examine the smaller models with just Variety or Pesticide.
+The first thing we notice is that pesticides B and D seem to be better than the others and that variety 3 seems to be the best producer. The effect of pesticide treatment seems consistent between varieties, so we don't expect that the interaction effect will be significant. 
 
 ```{r}
 m1 <- lm(Yield ~ Var, data=fruit)
@@ -257,6 +249,7 @@ summary(m3)$coef  %>% round(digits=3)
 ```
 
 Notice that the affects for Variety and Pesticide are the same *whether or not the other is in the model*. This is due to the orthogonal design of the experiment and makes it much easier to interpret the main effects of Variety and Pesticide.
+
 
 ### ANOVA Table
 
@@ -513,7 +506,12 @@ In the unbalanced case taking the average of the cell means produces a different
 ## Exercises {#Exercises_TwoWayANOVA}
 1. In the `faraway` package, the data set `rats` has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective. 
     a. Consider the interaction model which allows for a different effect of treatment for each poison type. Fit this model and examine the diagnostic plots. What stands out?
-    b. Perform a Box-Cox analysis and perform the recommended transformation (with the realm of "common" transformations). Call the transformed variable `speed`.
+    b. Perform a Box-Cox analysis and perform the recommended transformation (with the realm of "common" transformations). Transform the response variable Call the transformed variable `speed`.
+        ```{r, eval=FALSE}
+        model <- lm( time ~ poison * treat, data=rats)
+        MASS::boxcox(model)
+        rats <- rats %>% mutate( speed = time^(-1) )
+        ```
     c. Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.
     d. Perform an appropriate statistical test to see if the interaction is statistically significant.
     e. What do you conclude about the poisons and treatment (application) types?
@@ -525,8 +523,7 @@ In the unbalanced case taking the average of the cell means produces a different
 
 3. In the `faraway` package, the dataset `alfalfa` has information from a study that examined the effect of seed innoculum, irrigation, and shade on alfalfa yield. This data has $n=24$ observations.
     a. Graph the data. 
-    b. Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment. Consider a Box-Cox transformation to your response (you might need to use `lambda = seq(-2,6, by=.01)` to see the whole curve). Make any transformation you feel is justified.
+    b. Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment.
     c. Consider the model with `shade` and `inoculum` and the interaction between the two. Examine the anova table.  Why does R complain that the fit is perfect? *Hint: Think about the degrees of freedom of the model compared to the sample size.*
     d. Discuss your findings and the limitations of your investigation based on data.
-    
 

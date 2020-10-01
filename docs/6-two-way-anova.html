@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-17" />
+<meta name="date" content="2020-09-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1255,11 +1255,14 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 <ol style="list-style-type: decimal">
 <li>In the <code>faraway</code> package, the data set <code>rats</code> has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective.
 <ol style="list-style-type: lower-alpha">
-<li>Consider the interaction model which allows for a different effect of treatment for each poison type. Fit this model and examine the diagnostic plots. What stands out?</li>
-<li>Perform a Box-Cox analysis and perform the recommended transformation (with the realm of “common” transformations). Call the transformed variable <code>speed</code>.</li>
-<li>Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.</li>
-<li>Perform an appropriate statistical test to see if the interaction is statistically significant.</li>
-<li>What do you conclude about the poisons and treatment (application) types?</li>
+<li><p>Consider the interaction model which allows for a different effect of treatment for each poison type. Fit this model and examine the diagnostic plots. What stands out?</p></li>
+<li><p>Perform a Box-Cox analysis and perform the recommended transformation (with the realm of “common” transformations). Transform the response variable Call the transformed variable <code>speed</code>.</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="6-two-way-anova.html#cb175-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( time <span class="op">~</span><span class="st"> </span>poison <span class="op">*</span><span class="st"> </span>treat, <span class="dt">data=</span>rats)</span>
+<span id="cb175-2"><a href="6-two-way-anova.html#cb175-2" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>(model)</span>
+<span id="cb175-3"><a href="6-two-way-anova.html#cb175-3" aria-hidden="true"></a>rats &lt;-<span class="st"> </span>rats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">speed =</span> time<span class="op">^</span>(<span class="op">-</span><span class="dv">1</span>) )</span></code></pre></div></li>
+<li><p>Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.</p></li>
+<li><p>Perform an appropriate statistical test to see if the interaction is statistically significant.</p></li>
+<li><p>What do you conclude about the poisons and treatment (application) types?</p></li>
 </ol></li>
 <li>In the <code>faraway</code> package, the dataset <code>butterfat</code> has information about the the percent of the milk was butterfat (more is better) taken from <span class="math inline">\(n=100\)</span> cows. There are <span class="math inline">\(5\)</span> different breeds of cows and <span class="math inline">\(2\)</span> different ages. We are interested in assessing if <code>Age</code> and <code>Breed</code> affect the butterfat content
 <ol style="list-style-type: lower-alpha">
@@ -1270,7 +1273,7 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 <li>In the <code>faraway</code> package, the dataset <code>alfalfa</code> has information from a study that examined the effect of seed innoculum, irrigation, and shade on alfalfa yield. This data has <span class="math inline">\(n=24\)</span> observations.
 <ol style="list-style-type: lower-alpha">
 <li>Graph the data.</li>
-<li>Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment. Consider a Box-Cox transformation to your response (you might need to use <code>lambda = seq(-2,6, by=.01)</code> to see the whole curve). Make any transformation you feel is justified.</li>
+<li>Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment.</li>
 <li>Consider the model with <code>shade</code> and <code>inoculum</code> and the interaction between the two. Examine the anova table. Why does R complain that the fit is perfect? <em>Hint: Think about the degrees of freedom of the model compared to the sample size.</em></li>
 <li>Discuss your findings and the limitations of your investigation based on data.</li>
 </ol></li>

@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-09-17" />
+<meta name="date" content="2020-09-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -387,9 +387,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="LogTransformations-Chapter" class="section level1" number="8">
 <h1><span class="header-section-number">Chapter 8</span> Data Transformations</h1>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="8-LogTransformations-Chapter.html#cb197-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
-<span id="cb197-2"><a href="8-LogTransformations-Chapter.html#cb197-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
-<span id="cb197-3"><a href="8-LogTransformations-Chapter.html#cb197-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="8-LogTransformations-Chapter.html#cb198-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
+<span id="cb198-2"><a href="8-LogTransformations-Chapter.html#cb198-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
+<span id="cb198-3"><a href="8-LogTransformations-Chapter.html#cb198-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
 <p>Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms.</p>
 <p>Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
 <span class="math display">\[y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i\]</span>
@@ -405,7 +405,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <h2><span class="header-section-number">8.1</span> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></h2>
 <p>One of the most common transformations that is used on either the response <span class="math inline">\(y\)</span> or the covariates <span class="math inline">\(x\)</span> is the <span class="math inline">\(\log()\)</span> function. In this next section we will consider <span class="math inline">\(\log()\)</span> with base <span class="math inline">\(e\)</span>. However, if you prefer <span class="math inline">\(\log_2()\)</span> or <span class="math inline">\(\log_{10}\)</span> you may substitute <span class="math inline">\(e\)</span> with <span class="math inline">\(2\)</span> or <span class="math inline">\(10\)</span> everywhere.</p>
 <p>In primary school you might have learned that the <span class="math inline">\(\log()\)</span> function looks like this:
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 <p>Critical aspects to notice about <span class="math inline">\(\log(x)\)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>As <span class="math inline">\(x \to 0\)</span>, <span class="math inline">\(\log(x) \to -\infty\)</span>.</li>
@@ -414,7 +414,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <li>Even though <span class="math inline">\(log(x)\)</span> is only defined for <span class="math inline">\(x&gt;0\)</span>, the result can take on any real value, positive or negative.</li>
 </ol>
 <p>The inverse function of <span class="math inline">\(\log(x)\)</span> is <span class="math inline">\(e^x = \exp(x)\)</span>, where <span class="math inline">\(e=2.71828\dots\)</span> which looks like this:
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <p>Critical aspects to notice about <span class="math inline">\(e^x\)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>as <span class="math inline">\(x \to -\infty\)</span>, <span class="math inline">\(e^x \to 0\)</span>.</li>
@@ -434,7 +434,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <p>One final aspect of exponents that we will utilize is that
 <span class="math display">\[ e^{a+b} = e^a e^b\]</span></p>
 <p>The reason we like using a <span class="math inline">\(\log()\)</span> transformation is that it acts differently on large values than small. In particular for <span class="math inline">\(x &gt;1\)</span> we have that <span class="math inline">\(\log(x)\)</span> makes all of the smaller, but the transformation on big values of <span class="math inline">\(x\)</span> is more extreme. Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we’d like to reduce that.</p>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 </div>
 <div id="transforming-the-response" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Transforming the Response</h2>
@@ -454,16 +454,16 @@ and we could calculate the appropriate predicted income as <span class="math inl
 This transformation is a smooth family of transformations because <span class="math display">\[\lim_{\lambda\to0}\frac{y^{\lambda}-1}{\lambda}=\log y\]</span>
 In the case that <span class="math inline">\(\lambda\ne 0\)</span>, then a researcher will usually use the simpler transformation <span class="math inline">\(y^{\lambda}\)</span> because the subtraction and division does not change anything in a non-linear fashion. Thus for purposes of addressing the assumption violations, all we care about is the <span class="math inline">\(y^{\lambda}\)</span> and prefer the simpler (i.e. more interpretable) transformation.</p>
 <p>Finding the best transformation can be done by adding the <span class="math inline">\(\lambda\)</span> parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don’t have to do this by hand, as the function <code>boxcox()</code> in the <code>MASS</code> library will do all the heavy calculation for us.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="8-LogTransformations-Chapter.html#cb198-1" aria-hidden="true"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb198-2"><a href="8-LogTransformations-Chapter.html#cb198-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
-<span id="cb198-3"><a href="8-LogTransformations-Chapter.html#cb198-3" aria-hidden="true"></a></span>
-<span id="cb198-4"><a href="8-LogTransformations-Chapter.html#cb198-4" aria-hidden="true"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
-<span id="cb198-5"><a href="8-LogTransformations-Chapter.html#cb198-5" aria-hidden="true"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
-<span id="cb198-6"><a href="8-LogTransformations-Chapter.html#cb198-6" aria-hidden="true"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
-<span id="cb198-7"><a href="8-LogTransformations-Chapter.html#cb198-7" aria-hidden="true"></a><span class="co"># </span></span>
-<span id="cb198-8"><a href="8-LogTransformations-Chapter.html#cb198-8" aria-hidden="true"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
-<span id="cb198-9"><a href="8-LogTransformations-Chapter.html#cb198-9" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="8-LogTransformations-Chapter.html#cb199-1" aria-hidden="true"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb199-2"><a href="8-LogTransformations-Chapter.html#cb199-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb199-3"><a href="8-LogTransformations-Chapter.html#cb199-3" aria-hidden="true"></a></span>
+<span id="cb199-4"><a href="8-LogTransformations-Chapter.html#cb199-4" aria-hidden="true"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
+<span id="cb199-5"><a href="8-LogTransformations-Chapter.html#cb199-5" aria-hidden="true"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
+<span id="cb199-6"><a href="8-LogTransformations-Chapter.html#cb199-6" aria-hidden="true"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
+<span id="cb199-7"><a href="8-LogTransformations-Chapter.html#cb199-7" aria-hidden="true"></a><span class="co"># </span></span>
+<span id="cb199-8"><a href="8-LogTransformations-Chapter.html#cb199-8" aria-hidden="true"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
+<span id="cb199-9"><a href="8-LogTransformations-Chapter.html#cb199-9" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
 <p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
 <p>Thoughts on the Box-Cox transformation:</p>
 <ol style="list-style-type: decimal">
@@ -493,16 +493,13 @@ Similar situations might arise in biological settings, such as the volume of con
 <div id="galapagos-example" class="section level3" number="8.3.3">
 <h3><span class="header-section-number">8.3.3</span> Galapagos Example</h3>
 <p>To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in <code>faraway</code>.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="8-LogTransformations-Chapter.html#cb199-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb199-2"><a href="8-LogTransformations-Chapter.html#cb199-2" aria-hidden="true"></a><span class="co"># look at all the scatterplots</span></span>
-<span id="cb199-3"><a href="8-LogTransformations-Chapter.html#cb199-3" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb199-4"><a href="8-LogTransformations-Chapter.html#cb199-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
-<span id="cb199-5"><a href="8-LogTransformations-Chapter.html#cb199-5" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
-<span id="cb199-6"><a href="8-LogTransformations-Chapter.html#cb199-6" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
-##   method from   
-##   +.gg   ggplot2</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="8-LogTransformations-Chapter.html#cb200-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb200-2"><a href="8-LogTransformations-Chapter.html#cb200-2" aria-hidden="true"></a><span class="co"># look at all the scatterplots</span></span>
+<span id="cb200-3"><a href="8-LogTransformations-Chapter.html#cb200-3" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb200-4"><a href="8-LogTransformations-Chapter.html#cb200-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
+<span id="cb200-5"><a href="8-LogTransformations-Chapter.html#cb200-5" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
+<span id="cb200-6"><a href="8-LogTransformations-Chapter.html#cb200-6" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-129-1.png" width="672" /></p>
 <p>Looking at these graphs, I think I should definitely transform <code>Area</code> and <code>Adjacent</code>, and I wouldn’t object to doing the same to <code>Elevation</code>, <code>Nearest</code> and <code>Scruz</code>. Given the high leverages, a log transformation should be a good idea. One problem is that <span class="math inline">\(\log(0) = -\infty\)</span>. A quick look at the data set summary:</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="8-LogTransformations-Chapter.html#cb201-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb201-2"><a href="8-LogTransformations-Chapter.html#cb201-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Species, Area, Elevation, Nearest,Scruz, Adjacent) <span class="op">%&gt;%</span></span>
@@ -527,7 +524,7 @@ Similar situations might arise in biological settings, such as the volume of con
 <span id="cb203-3"><a href="8-LogTransformations-Chapter.html#cb203-3" aria-hidden="true"></a>         <span class="dt">SqrtScruz=</span><span class="kw">sqrt</span>(Scruz), <span class="dt">LogAdjacent=</span><span class="kw">log</span>(Adjacent)) <span class="op">%&gt;%</span></span>
 <span id="cb203-4"><a href="8-LogTransformations-Chapter.html#cb203-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) <span class="op">%&gt;%</span></span>
 <span id="cb203-5"><a href="8-LogTransformations-Chapter.html#cb203-5" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-131-1.png" width="672" /></p>
 <p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="8-LogTransformations-Chapter.html#cb204-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Nearest) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(Scruz) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</span>
 <span id="cb204-2"><a href="8-LogTransformations-Chapter.html#cb204-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></span></code></pre></div>
@@ -587,7 +584,7 @@ Similar situations might arise in biological settings, such as the volume of con
 <span id="cb214-6"><a href="8-LogTransformations-Chapter.html#cb214-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span></span>
 <span id="cb214-7"><a href="8-LogTransformations-Chapter.html#cb214-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
 <span id="cb214-8"><a href="8-LogTransformations-Chapter.html#cb214-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
 </div>
 </div>
 <div id="interpretation-of-log_10-and-log-transformed-variables" class="section level2" number="8.4">
@@ -606,7 +603,7 @@ Similar situations might arise in biological settings, such as the volume of con
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-137-1.png" width="672" /></p>
 <p>These data look pretty decent, and I’m not certain that I would do <em>any</em> transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a students’ writing score.</p>
 <div id="log-transformed-response-un-transformed-covariates" class="section level3" number="8.4.1">
 <h3><span class="header-section-number">8.4.1</span> Log-transformed response, un-transformed covariates</h3>

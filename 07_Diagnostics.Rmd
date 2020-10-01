@@ -161,7 +161,7 @@ In the package `ggfortify` there is a function that will calculate the diagnosti
 ```{r}
 Set1 <- Anscombe %>% filter(set == 'Set 1')
 model <- lm( y ~ x, data=Set1)
-Set1 <- fortify(model)  # add dignostic measures to the dataset
+Set1 <- fortify(model)  # add diagnostic measures to the dataset
 Set1 %>% round(digits=3) # show the dataset nicely
 ```
 
@@ -248,7 +248,7 @@ Now our residual plot versus fitted values does not show any trend, suggesting t
 ```{r}
 # add the fitted and CI lwr/upr columns to my dataset 
 Eggs <- Eggs %>% 
-  dplyr::do(if(!is.null(.$fit)){dplyr::select(-fit,-upr,-lwr )}else{.}) %>%   
+  select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(model, interval='confidence') )
 
 ggplot(Eggs, aes(x=carapace)) +
@@ -266,11 +266,12 @@ To illustrate this, we turn to another dataset in the Faraway book. The dataset 
 
 We first graph all pairs of variables in the dataset.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 data(airquality)
-pairs(~ Ozone + Solar.R + Wind + Temp, data=airquality)
+# pairs(~ Ozone + Solar.R + Wind + Temp, data=airquality)
+airquality %>% select( Solar.R, Wind, Temp, Ozone) %>%
+  GGally::ggpairs()
 ```
-
 
 and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don't know if those trends will remain after fitting the model, because there is some covariance among the predictors.
 
@@ -350,7 +351,6 @@ This plot lets the user examine the which observations have a high potential for
 
 Returning to Anscombe's third set of data, we see
 
-<<>>=
 ```{r}
 model3 <- lm(y ~ x, data=Set3)
 autoplot(model3, which=5)
