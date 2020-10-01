@@ -387,7 +387,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="VariableSelection_Chapter" class="section level1" number="11">
 <h1><span class="header-section-number">Chapter 11</span> Variable Selection</h1>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="11-VariableSelection-Chapter.html#cb253-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)    <span class="co"># dplyr, tidyr, ggplot2, etc</span></span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="11-VariableSelection-Chapter.html#cb251-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)    <span class="co"># dplyr, tidyr, ggplot2, etc</span></span></code></pre></div>
 <p>Given a set of data, we are interested in selecting the best subset of predictors for the following reasons:</p>
 <ol style="list-style-type: decimal">
 <li><p>Occam’s Razor tells us that from a list of plausible model or explanations, the simplest is usually the best. In the statistics sense, I want the smallest model that adequately explains the observed data patterns.</p></li>
@@ -416,11 +416,11 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 <div id="example---u.s.-life-expectancy" class="section level3" number="11.2.1">
 <h3><span class="header-section-number">11.2.1</span> Example - U.S. Life Expectancy</h3>
 <p>Using data from the Census Bureau we can look at the life expectancy as a response to a number of predictors. One R function that is often convenient to use is the update() function that takes a <code>lm()</code> object and adds or removes things from the formula. The notation <code>. ~ .</code> means to leave the response and all the predictors alone, while <code>. ~ . + vnew</code> will add the main effect of <code>vnew</code> to the model.</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="11-VariableSelection-Chapter.html#cb254-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;state&#39;</span>)  <span class="co"># loads a matrix state.x77 and a vector of stat abbreviations</span></span>
-<span id="cb254-2"><a href="11-VariableSelection-Chapter.html#cb254-2" aria-hidden="true"></a></span>
-<span id="cb254-3"><a href="11-VariableSelection-Chapter.html#cb254-3" aria-hidden="true"></a><span class="co"># Convert from a matrix to a data frame with state abbreviations</span></span>
-<span id="cb254-4"><a href="11-VariableSelection-Chapter.html#cb254-4" aria-hidden="true"></a>state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)</span>
-<span id="cb254-5"><a href="11-VariableSelection-Chapter.html#cb254-5" aria-hidden="true"></a><span class="kw">str</span>(state.data)</span></code></pre></div>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="11-VariableSelection-Chapter.html#cb252-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;state&#39;</span>)  <span class="co"># loads a matrix state.x77 and a vector of stat abbreviations</span></span>
+<span id="cb252-2"><a href="11-VariableSelection-Chapter.html#cb252-2" aria-hidden="true"></a></span>
+<span id="cb252-3"><a href="11-VariableSelection-Chapter.html#cb252-3" aria-hidden="true"></a><span class="co"># Convert from a matrix to a data frame with state abbreviations</span></span>
+<span id="cb252-4"><a href="11-VariableSelection-Chapter.html#cb252-4" aria-hidden="true"></a>state.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(state.x77, <span class="dt">row.names=</span>state.abb)</span>
+<span id="cb252-5"><a href="11-VariableSelection-Chapter.html#cb252-5" aria-hidden="true"></a><span class="kw">str</span>(state.data)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    50 obs. of  8 variables:
 ##  $ Population: num  3615 365 2212 2110 21198 ...
 ##  $ Income    : num  3624 6315 4530 3378 5114 ...
@@ -431,26 +431,26 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ##  $ Frost     : num  20 152 15 65 20 166 139 103 11 60 ...
 ##  $ Area      : num  50708 566432 113417 51945 156361 ...</code></pre>
 <p>We should first look at the</p>
-<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="11-VariableSelection-Chapter.html#cb256-1" aria-hidden="true"></a>state.data <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb256-2"><a href="11-VariableSelection-Chapter.html#cb256-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span></span>
-<span id="cb256-3"><a href="11-VariableSelection-Chapter.html#cb256-3" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="11-VariableSelection-Chapter.html#cb254-1" aria-hidden="true"></a>state.data <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb254-2"><a href="11-VariableSelection-Chapter.html#cb254-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span></span>
+<span id="cb254-3"><a href="11-VariableSelection-Chapter.html#cb254-3" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. Also, we see that <code>Population</code> and <code>Area</code> seem to have some high skew to their distributions, so a log transformation might help. We’ll modify the data and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="11-VariableSelection-Chapter.html#cb257-1" aria-hidden="true"></a>state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span></span>
-<span id="cb257-2"><a href="11-VariableSelection-Chapter.html#cb257-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb257-3"><a href="11-VariableSelection-Chapter.html#cb257-3" aria-hidden="true"></a>          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
-<span id="cb257-4"><a href="11-VariableSelection-Chapter.html#cb257-4" aria-hidden="true"></a>          <span class="dt">Log.Population =</span> <span class="kw">log</span>(Population),</span>
-<span id="cb257-5"><a href="11-VariableSelection-Chapter.html#cb257-5" aria-hidden="true"></a>          <span class="dt">Log.Area =</span> <span class="kw">log</span>(Area)) <span class="op">%&gt;%</span></span>
-<span id="cb257-6"><a href="11-VariableSelection-Chapter.html#cb257-6" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span>Population, <span class="op">-</span>Area )   <span class="co"># remove the original Population and Area covariates</span></span>
-<span id="cb257-7"><a href="11-VariableSelection-Chapter.html#cb257-7" aria-hidden="true"></a></span>
-<span id="cb257-8"><a href="11-VariableSelection-Chapter.html#cb257-8" aria-hidden="true"></a><span class="co"># explicitly define my starting model</span></span>
-<span id="cb257-9"><a href="11-VariableSelection-Chapter.html#cb257-9" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></span>
-<span id="cb257-10"><a href="11-VariableSelection-Chapter.html#cb257-10" aria-hidden="true"></a><span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span> <span class="op">+</span><span class="st">  </span>Log.Area, <span class="dt">data=</span>state.data)</span>
-<span id="cb257-11"><a href="11-VariableSelection-Chapter.html#cb257-11" aria-hidden="true"></a><span class="co">#</span></span>
-<span id="cb257-12"><a href="11-VariableSelection-Chapter.html#cb257-12" aria-hidden="true"></a><span class="co"># Define the same model, but using shorthand</span></span>
-<span id="cb257-13"><a href="11-VariableSelection-Chapter.html#cb257-13" aria-hidden="true"></a><span class="co"># The &#39;.&#39; means everything else in the data frame</span></span>
-<span id="cb257-14"><a href="11-VariableSelection-Chapter.html#cb257-14" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)</span>
-<span id="cb257-15"><a href="11-VariableSelection-Chapter.html#cb257-15" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="11-VariableSelection-Chapter.html#cb255-1" aria-hidden="true"></a>state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span></span>
+<span id="cb255-2"><a href="11-VariableSelection-Chapter.html#cb255-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb255-3"><a href="11-VariableSelection-Chapter.html#cb255-3" aria-hidden="true"></a>          <span class="dt">Income.2  =</span> Income  <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
+<span id="cb255-4"><a href="11-VariableSelection-Chapter.html#cb255-4" aria-hidden="true"></a>          <span class="dt">Log.Population =</span> <span class="kw">log</span>(Population),</span>
+<span id="cb255-5"><a href="11-VariableSelection-Chapter.html#cb255-5" aria-hidden="true"></a>          <span class="dt">Log.Area =</span> <span class="kw">log</span>(Area)) <span class="op">%&gt;%</span></span>
+<span id="cb255-6"><a href="11-VariableSelection-Chapter.html#cb255-6" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span>Population, <span class="op">-</span>Area )   <span class="co"># remove the original Population and Area covariates</span></span>
+<span id="cb255-7"><a href="11-VariableSelection-Chapter.html#cb255-7" aria-hidden="true"></a></span>
+<span id="cb255-8"><a href="11-VariableSelection-Chapter.html#cb255-8" aria-hidden="true"></a><span class="co"># explicitly define my starting model</span></span>
+<span id="cb255-9"><a href="11-VariableSelection-Chapter.html#cb255-9" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></span>
+<span id="cb255-10"><a href="11-VariableSelection-Chapter.html#cb255-10" aria-hidden="true"></a><span class="st">                    </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span> <span class="op">+</span><span class="st">  </span>Log.Area, <span class="dt">data=</span>state.data)</span>
+<span id="cb255-11"><a href="11-VariableSelection-Chapter.html#cb255-11" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb255-12"><a href="11-VariableSelection-Chapter.html#cb255-12" aria-hidden="true"></a><span class="co"># Define the same model, but using shorthand</span></span>
+<span id="cb255-13"><a href="11-VariableSelection-Chapter.html#cb255-13" aria-hidden="true"></a><span class="co"># The &#39;.&#39; means everything else in the data frame</span></span>
+<span id="cb255-14"><a href="11-VariableSelection-Chapter.html#cb255-14" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Life.Exp <span class="op">~</span><span class="st"> </span>., <span class="dt">data=</span>state.data)</span>
+<span id="cb255-15"><a href="11-VariableSelection-Chapter.html#cb255-15" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      61.174      6.984   8.759    0.000
 ## Income            0.004      0.003   1.517    0.137
@@ -463,9 +463,9 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ## Log.Population    0.191      0.150   1.273    0.211
 ## Log.Area          0.100      0.113   0.885    0.382</code></pre>
 <p>The signs make reasonable sense (higher murder rates decrease life expectancy) but covariates like <code>Income</code> are not significant, which is surprising. The largest p-value is <code>HS.Grad</code>. However, I don’t want to remove the lower-order graduation term and keep the squared-term. So instead I will remove both of them since they are the highest p-values. Notice that <code>HS.Grad</code> is correlated with <code>Income</code> and <code>Illiteracy</code>.</p>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="11-VariableSelection-Chapter.html#cb259-1" aria-hidden="true"></a><span class="co"># Remove Graduation Rate from the model from the model</span></span>
-<span id="cb259-2"><a href="11-VariableSelection-Chapter.html#cb259-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad<span class="fl">.2</span>)</span>
-<span id="cb259-3"><a href="11-VariableSelection-Chapter.html#cb259-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="11-VariableSelection-Chapter.html#cb257-1" aria-hidden="true"></a><span class="co"># Remove Graduation Rate from the model from the model</span></span>
+<span id="cb257-2"><a href="11-VariableSelection-Chapter.html#cb257-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>HS.Grad <span class="op">-</span><span class="st"> </span>HS.Grad<span class="fl">.2</span>)</span>
+<span id="cb257-3"><a href="11-VariableSelection-Chapter.html#cb257-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      60.894      6.100   9.983    0.000
 ## Income            0.004      0.002   1.711    0.094
@@ -475,9 +475,9 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ## Income.2          0.000      0.000  -1.581    0.121
 ## Log.Population    0.041      0.132   0.309    0.759
 ## Log.Area          0.206      0.103   1.995    0.053</code></pre>
-<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="11-VariableSelection-Chapter.html#cb261-1" aria-hidden="true"></a><span class="co"># Next remove Illiteracy</span></span>
-<span id="cb261-2"><a href="11-VariableSelection-Chapter.html#cb261-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)</span>
-<span id="cb261-3"><a href="11-VariableSelection-Chapter.html#cb261-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="11-VariableSelection-Chapter.html#cb259-1" aria-hidden="true"></a><span class="co"># Next remove Illiteracy</span></span>
+<span id="cb259-2"><a href="11-VariableSelection-Chapter.html#cb259-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Illiteracy)</span>
+<span id="cb259-3"><a href="11-VariableSelection-Chapter.html#cb259-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##                Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      61.779      4.717  13.098    0.000
 ## Income            0.004      0.002   1.872    0.068
@@ -486,9 +486,9 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ## Income.2          0.000      0.000  -1.699    0.097
 ## Log.Population    0.041      0.130   0.314    0.755
 ## Log.Area          0.198      0.097   2.048    0.047</code></pre>
-<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="11-VariableSelection-Chapter.html#cb263-1" aria-hidden="true"></a><span class="co"># And Log.Population...</span></span>
-<span id="cb263-2"><a href="11-VariableSelection-Chapter.html#cb263-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Log.Population)</span>
-<span id="cb263-3"><a href="11-VariableSelection-Chapter.html#cb263-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="11-VariableSelection-Chapter.html#cb261-1" aria-hidden="true"></a><span class="co"># And Log.Population...</span></span>
+<span id="cb261-2"><a href="11-VariableSelection-Chapter.html#cb261-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">update</span>(m1, .<span class="op">~</span>. <span class="op">-</span><span class="st"> </span>Log.Population)</span>
+<span id="cb261-3"><a href="11-VariableSelection-Chapter.html#cb261-3" aria-hidden="true"></a><span class="kw">summary</span>(m1)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>)</span></code></pre></div>
 <pre><code>##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)   61.413      4.523  13.577    0.000
 ## Income         0.004      0.002   2.257    0.029
@@ -497,7 +497,7 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ## Income.2       0.000      0.000  -2.044    0.047
 ## Log.Area       0.200      0.096   2.091    0.042</code></pre>
 <p>The removal of <code>Income.2</code> is a tough decision because the p-value is very close to <span class="math inline">\(\alpha=0.05\)</span> and might be left in if it makes model interpretation easier or if the researcher feels a quadratic effect in income is appropriate (perhaps rich people are too stressed?).</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="11-VariableSelection-Chapter.html#cb265-1" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="11-VariableSelection-Chapter.html#cb263-1" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Life.Exp ~ Income + Murder + Frost + Income.2 + 
@@ -522,8 +522,8 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 ## Multiple R-squared:  0.7309, Adjusted R-squared:  0.7003 
 ## F-statistic:  23.9 on 5 and 44 DF,  p-value: 1.549e-11</code></pre>
 <p>We are left with a model that adequately explains <code>Life.Exp</code> but we should be careful to note that just because a covariate was removed from the model does not imply that it isn’t related to the response. For example, being a high school graduate is highly correlated with not being illiterate as is <code>Income</code> and thus replacing <code>Illiteracy</code> shows that illiteracy is associated with lower life expectancy, but it is not as predictive as <code>Income</code>.</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="11-VariableSelection-Chapter.html#cb267-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)</span>
-<span id="cb267-2"><a href="11-VariableSelection-Chapter.html#cb267-2" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="11-VariableSelection-Chapter.html#cb265-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Illiteracy<span class="op">+</span>Murder<span class="op">+</span>Frost, <span class="dt">data=</span>state.data)</span>
+<span id="cb265-2"><a href="11-VariableSelection-Chapter.html#cb265-2" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Life.Exp ~ Illiteracy + Murder + Frost, data = state.data)
@@ -581,9 +581,9 @@ and we could re-write this as
 <p><span class="math display">\[BIC=-2\,\log L\left(\hat{\boldsymbol{\beta}},\hat{\sigma}|\,\textrm{data}\,\right)+p\log n\]</span></p>
 <p>and this criterion punishes large models more than AIC does (because <span class="math inline">\(\log n&gt;2\)</span> for <span class="math inline">\(n\ge8\)</span>)</p>
 <p>The AIC value of a linear model can be found using the AIC() on a <code>lm()</code>() object.</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="11-VariableSelection-Chapter.html#cb269-1" aria-hidden="true"></a><span class="kw">AIC</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="11-VariableSelection-Chapter.html#cb267-1" aria-hidden="true"></a><span class="kw">AIC</span>(m1)</span></code></pre></div>
 <pre><code>## [1] 118.6942</code></pre>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="11-VariableSelection-Chapter.html#cb271-1" aria-hidden="true"></a><span class="kw">AIC</span>(m2)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="11-VariableSelection-Chapter.html#cb269-1" aria-hidden="true"></a><span class="kw">AIC</span>(m2)</span></code></pre></div>
 <pre><code>## [1] 124.2947</code></pre>
 <p>Because the AIC value for the first model is lower, we would prefer the first model that includes both <code>Income</code> and <code>Income.2</code> compared to model 2, which was <code>Life.Exp ~ Illiteracy+Murder+Frost</code>.</p>
 </div>
@@ -598,14 +598,14 @@ With this adjusted definition, adding a variable to the model that has no predic
 <div id="example-1" class="section level3" number="11.3.3">
 <h3><span class="header-section-number">11.3.3</span> Example</h3>
 <p>Returning to the life expectancy data, we could start with a simple model add covariates to the model that have the lowest AIC values. R makes this easy with the function <code>add1()</code> which will take a linear model (which includes the data frame that originally defined it) and will sequentially add all of the possible terms that are not currently in the model and report the AIC values for each model.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="11-VariableSelection-Chapter.html#cb273-1" aria-hidden="true"></a><span class="co"># Define the biggest model I wish to consider</span></span>
-<span id="cb273-2"><a href="11-VariableSelection-Chapter.html#cb273-2" aria-hidden="true"></a>biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span></span>
-<span id="cb273-3"><a href="11-VariableSelection-Chapter.html#cb273-3" aria-hidden="true"></a><span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></span>
-<span id="cb273-4"><a href="11-VariableSelection-Chapter.html#cb273-4" aria-hidden="true"></a></span>
-<span id="cb273-5"><a href="11-VariableSelection-Chapter.html#cb273-5" aria-hidden="true"></a><span class="co"># Define the model I wish to start with</span></span>
-<span id="cb273-6"><a href="11-VariableSelection-Chapter.html#cb273-6" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)</span>
-<span id="cb273-7"><a href="11-VariableSelection-Chapter.html#cb273-7" aria-hidden="true"></a></span>
-<span id="cb273-8"><a href="11-VariableSelection-Chapter.html#cb273-8" aria-hidden="true"></a><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="11-VariableSelection-Chapter.html#cb271-1" aria-hidden="true"></a><span class="co"># Define the biggest model I wish to consider</span></span>
+<span id="cb271-2"><a href="11-VariableSelection-Chapter.html#cb271-2" aria-hidden="true"></a>biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span></span>
+<span id="cb271-3"><a href="11-VariableSelection-Chapter.html#cb271-3" aria-hidden="true"></a><span class="st">                      </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></span>
+<span id="cb271-4"><a href="11-VariableSelection-Chapter.html#cb271-4" aria-hidden="true"></a></span>
+<span id="cb271-5"><a href="11-VariableSelection-Chapter.html#cb271-5" aria-hidden="true"></a><span class="co"># Define the model I wish to start with</span></span>
+<span id="cb271-6"><a href="11-VariableSelection-Chapter.html#cb271-6" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>state.data)</span>
+<span id="cb271-7"><a href="11-VariableSelection-Chapter.html#cb271-7" aria-hidden="true"></a></span>
+<span id="cb271-8"><a href="11-VariableSelection-Chapter.html#cb271-8" aria-hidden="true"></a><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)  <span class="co"># what is the best addition to make?</span></span></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -622,8 +622,8 @@ With this adjusted definition, adding a variable to the model that has no predic
 ## HS.Grad.2       1    27.414 60.885  13.848
 ## Income.2        1     7.464 80.835  28.020</code></pre>
 <p>Clearly the addition of <code>Murder</code> to the model results in the lowest AIC value, so we will add <code>Murder</code> to the model. Notice the <code>&lt;none&gt;</code> row corresponds to the model m which we started with and it has a <code>RSS=88.299</code>. For each model considered, R will calculate the <code>RSS_{C}</code> for the new model and will calculate the difference between the starting model and the more complicated model and display this in the Sum of Squares column.</p>
-<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="11-VariableSelection-Chapter.html#cb275-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span></span>
-<span id="cb275-2"><a href="11-VariableSelection-Chapter.html#cb275-2" aria-hidden="true"></a><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></span></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="11-VariableSelection-Chapter.html#cb273-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">update</span>(m, . <span class="op">~</span><span class="st"> </span>. <span class="op">+</span><span class="st"> </span>Murder)  <span class="co"># add murder to the model</span></span>
+<span id="cb273-2"><a href="11-VariableSelection-Chapter.html#cb273-2" aria-hidden="true"></a><span class="kw">add1</span>(m, <span class="dt">scope=</span>biggest)          <span class="co"># what should I add next?</span></span></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -640,11 +640,11 @@ With this adjusted definition, adding a variable to the model that has no predic
 ## Income.2        1    1.8972 32.564 -15.441</code></pre>
 <p>There is a companion function to <code>add1()</code> that finds the best term to drop. It is conveniently named <code>drop1()</code> but here the <code>scope</code> parameter defines the smallest model to be considered.</p>
 <p>It would be nice if all of this work was automated. Again, R makes our life easy and the function <code>step()</code> does exactly this. The set of models searched is determined by the scope argument which can be a <em>list</em> of two formulas with components upper and lower or it can be a single formula, or it can be blank. The right-hand-side of its lower component defines the smallest model to be considered and the right-hand-side of the upper component defines the largest model to be considered. If <code>scope</code> is a single formula, it specifies the upper component, and the lower model taken to be the intercept-only model. If scope is missing, the initial model is used as the upper model.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="11-VariableSelection-Chapter.html#cb277-1" aria-hidden="true"></a>smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb277-2"><a href="11-VariableSelection-Chapter.html#cb277-2" aria-hidden="true"></a>biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></span>
-<span id="cb277-3"><a href="11-VariableSelection-Chapter.html#cb277-3" aria-hidden="true"></a><span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></span>
-<span id="cb277-4"><a href="11-VariableSelection-Chapter.html#cb277-4" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)</span>
-<span id="cb277-5"><a href="11-VariableSelection-Chapter.html#cb277-5" aria-hidden="true"></a>stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="11-VariableSelection-Chapter.html#cb275-1" aria-hidden="true"></a>smallest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span><span class="dv">1</span></span>
+<span id="cb275-2"><a href="11-VariableSelection-Chapter.html#cb275-2" aria-hidden="true"></a>biggest &lt;-<span class="st"> </span>Life.Exp <span class="op">~</span><span class="st"> </span>Log.Population <span class="op">+</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Illiteracy <span class="op">+</span><span class="st"> </span></span>
+<span id="cb275-3"><a href="11-VariableSelection-Chapter.html#cb275-3" aria-hidden="true"></a><span class="st">                      </span>Murder <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Log.Area <span class="op">+</span><span class="st"> </span>HS.Grad<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span></span>
+<span id="cb275-4"><a href="11-VariableSelection-Chapter.html#cb275-4" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income, <span class="dt">data=</span>state.data)</span>
+<span id="cb275-5"><a href="11-VariableSelection-Chapter.html#cb275-5" aria-hidden="true"></a>stats<span class="op">::</span><span class="kw">step</span>(m, <span class="dt">scope=</span><span class="kw">list</span>(<span class="dt">lower=</span>smallest, <span class="dt">upper=</span>biggest))</span></code></pre></div>
 <pre><code>## Start:  AIC=26.28
 ## Life.Exp ~ Income
 ## 
@@ -744,20 +744,20 @@ With this adjusted definition, adding a variable to the model that has no predic
 ##      68.720810       -0.290016       -0.005174        0.054550        0.246836</code></pre>
 <p>Notice that our model selected by <code>step()</code> is not the same model we obtained when we started with the biggest model and removed things based on p-values.</p>
 <p>The log-likelihood is only defined up to an additive constant, and there are different conventional constants used. This is more annoying than anything because all we care about for model selection is the difference between AIC values of two models and the additive constant cancels. The only time it matters is when you have two different ways of extracting the AIC values. Recall the model we fit using the top-down approach was</p>
-<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="11-VariableSelection-Chapter.html#cb280-1" aria-hidden="true"></a><span class="co"># m1 was</span></span>
-<span id="cb280-2"><a href="11-VariableSelection-Chapter.html#cb280-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data =</span> state.data)</span>
-<span id="cb280-3"><a href="11-VariableSelection-Chapter.html#cb280-3" aria-hidden="true"></a><span class="kw">AIC</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="11-VariableSelection-Chapter.html#cb278-1" aria-hidden="true"></a><span class="co"># m1 was</span></span>
+<span id="cb278-2"><a href="11-VariableSelection-Chapter.html#cb278-2" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Income <span class="op">+</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>Income<span class="fl">.2</span>, <span class="dt">data =</span> state.data)</span>
+<span id="cb278-3"><a href="11-VariableSelection-Chapter.html#cb278-3" aria-hidden="true"></a><span class="kw">AIC</span>(m1)</span></code></pre></div>
 <pre><code>## [1] 121.4293</code></pre>
 <p>and the model selected by the stepwise algorithm was</p>
-<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="11-VariableSelection-Chapter.html#cb282-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Log.Population, <span class="dt">data =</span> state.data)</span>
-<span id="cb282-2"><a href="11-VariableSelection-Chapter.html#cb282-2" aria-hidden="true"></a><span class="kw">AIC</span>(m3)</span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb280-1"><a href="11-VariableSelection-Chapter.html#cb280-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>(Life.Exp <span class="op">~</span><span class="st"> </span>Murder <span class="op">+</span><span class="st"> </span>Frost <span class="op">+</span><span class="st"> </span>HS.Grad <span class="op">+</span><span class="st"> </span>Log.Population, <span class="dt">data =</span> state.data)</span>
+<span id="cb280-2"><a href="11-VariableSelection-Chapter.html#cb280-2" aria-hidden="true"></a><span class="kw">AIC</span>(m3)</span></code></pre></div>
 <pre><code>## [1] 114.8959</code></pre>
 <p>Because <code>step()</code> and <code>AIC()</code> are following different conventions the absolute value of the AICs are different, but the difference between the two is constant no matter which function we use.</p>
 <p>First we calculate the difference using the AIC() function:</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="11-VariableSelection-Chapter.html#cb284-1" aria-hidden="true"></a><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb282-1"><a href="11-VariableSelection-Chapter.html#cb282-1" aria-hidden="true"></a><span class="kw">AIC</span>(m1) <span class="op">-</span><span class="st"> </span><span class="kw">AIC</span>(m3)</span></code></pre></div>
 <pre><code>## [1] 6.533434</code></pre>
 <p>and next we use <code>add1()</code> on both models to see what the AIC values for each.</p>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="11-VariableSelection-Chapter.html#cb286-1" aria-hidden="true"></a><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</span></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb284-1"><a href="11-VariableSelection-Chapter.html#cb284-1" aria-hidden="true"></a><span class="kw">add1</span>(m1, <span class="dt">scope=</span>biggest)</span></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
@@ -769,7 +769,7 @@ With this adjusted definition, adding a variable to the model that has no predic
 ## HS.Grad         1   2.79527 23.326 -26.124
 ## Log.Area        1   2.36019 23.761 -25.200
 ## HS.Grad.2       1   2.79698 23.324 -26.127</code></pre>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="11-VariableSelection-Chapter.html#cb288-1" aria-hidden="true"></a><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</span></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="11-VariableSelection-Chapter.html#cb286-1" aria-hidden="true"></a><span class="kw">add1</span>(m3, <span class="dt">scope=</span>biggest)</span></code></pre></div>
 <pre><code>## Single term additions
 ## 
 ## Model:
