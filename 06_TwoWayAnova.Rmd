@@ -505,16 +505,24 @@ In the unbalanced case taking the average of the cell means produces a different
 
 ## Exercises {#Exercises_TwoWayANOVA}
 1. In the `faraway` package, the data set `rats` has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective. 
-    a. Consider the interaction model which allows for a different effect of treatment for each poison type. Fit this model and examine the diagnostic plots. What stands out?
-    b. Perform a Box-Cox analysis and perform the recommended transformation (with the realm of "common" transformations). Transform the response variable Call the transformed variable `speed`.
-        ```{r, eval=FALSE}
+    a. The response variable `time` needs to be transformed. To see this, we'll examine the diagnostic plots from the interaction model and there is clearly a problem with non-constant variance. We'll look at the Box-Cox family of transformations and see  that $y^{-1}$ is a reasonable transformation.
+        ```{r, fig.height=2.5, eval=FALSE}
+        data('rats', package='faraway')
         model <- lm( time ~ poison * treat, data=rats)
-        MASS::boxcox(model)
+        # lindia::gg_diagnose(model)  # All the plots...
+        lindia::gg_diagnose(model, plot.all=FALSE)[[4]]   # just resid vs fitted
+        lindia::gg_boxcox(model)
         rats <- rats %>% mutate( speed = time^(-1) )
         ```
-    c. Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.
-    d. Perform an appropriate statistical test to see if the interaction is statistically significant.
-    e. What do you conclude about the poisons and treatment (application) types?
+    b. Fit the interaction model using the transformed response. Create a graph of data and the predicted values. Visually assess if you think the interaction is significant.
+
+    c. Perform an appropriate statistical test to see if the interaction is statistically significant.
+        ```{r}
+        anova(model)
+        ```
+        *As expected, the interaction is not statistically significant and we can remove it*
+        
+    d. What do you conclude about the poisons and treatment (application) types?
     
 2. In the `faraway` package, the dataset `butterfat` has information about the the percent of the milk was butterfat (more is better) taken from $n=100$ cows. There are $5$ different breeds of cows and $2$ different ages.  We are interested in assessing if `Age` and `Breed` affect the butterfat content
     a. Graph the data. Do you think an interaction model is justified?
