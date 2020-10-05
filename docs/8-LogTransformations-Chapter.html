@@ -387,9 +387,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="LogTransformations-Chapter" class="section level1" number="8">
 <h1><span class="header-section-number">Chapter 8</span> Data Transformations</h1>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="8-LogTransformations-Chapter.html#cb197-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
-<span id="cb197-2"><a href="8-LogTransformations-Chapter.html#cb197-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
-<span id="cb197-3"><a href="8-LogTransformations-Chapter.html#cb197-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="8-LogTransformations-Chapter.html#cb204-1" aria-hidden="true"></a><span class="kw">library</span>(ggfortify)   <span class="co"># for autoplot for lm objects</span></span>
+<span id="cb204-2"><a href="8-LogTransformations-Chapter.html#cb204-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># emmeans for pairwise constrasts.</span></span>
+<span id="cb204-3"><a href="8-LogTransformations-Chapter.html#cb204-3" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># for dplyr, tidyr, ggplot2</span></span></code></pre></div>
 <p>Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms.</p>
 <p>Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
 <span class="math display">\[y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i\]</span>
@@ -405,7 +405,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <h2><span class="header-section-number">8.1</span> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></h2>
 <p>One of the most common transformations that is used on either the response <span class="math inline">\(y\)</span> or the covariates <span class="math inline">\(x\)</span> is the <span class="math inline">\(\log()\)</span> function. In this next section we will consider <span class="math inline">\(\log()\)</span> with base <span class="math inline">\(e\)</span>. However, if you prefer <span class="math inline">\(\log_2()\)</span> or <span class="math inline">\(\log_{10}\)</span> you may substitute <span class="math inline">\(e\)</span> with <span class="math inline">\(2\)</span> or <span class="math inline">\(10\)</span> everywhere.</p>
 <p>In primary school you might have learned that the <span class="math inline">\(\log()\)</span> function looks like this:
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
 <p>Critical aspects to notice about <span class="math inline">\(\log(x)\)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>As <span class="math inline">\(x \to 0\)</span>, <span class="math inline">\(\log(x) \to -\infty\)</span>.</li>
@@ -414,7 +414,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <li>Even though <span class="math inline">\(log(x)\)</span> is only defined for <span class="math inline">\(x&gt;0\)</span>, the result can take on any real value, positive or negative.</li>
 </ol>
 <p>The inverse function of <span class="math inline">\(\log(x)\)</span> is <span class="math inline">\(e^x = \exp(x)\)</span>, where <span class="math inline">\(e=2.71828\dots\)</span> which looks like this:
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 <p>Critical aspects to notice about <span class="math inline">\(e^x\)</span>:</p>
 <ol style="list-style-type: decimal">
 <li>as <span class="math inline">\(x \to -\infty\)</span>, <span class="math inline">\(e^x \to 0\)</span>.</li>
@@ -434,7 +434,7 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <p>One final aspect of exponents that we will utilize is that
 <span class="math display">\[ e^{a+b} = e^a e^b\]</span></p>
 <p>The reason we like using a <span class="math inline">\(\log()\)</span> transformation is that it acts differently on large values than small. In particular for <span class="math inline">\(x &gt;1\)</span> we have that <span class="math inline">\(\log(x)\)</span> makes all of the smaller, but the transformation on big values of <span class="math inline">\(x\)</span> is more extreme. Consider the following, where most of the x-values are small, but we have a few that are quite large. Those large values will have extremely high leverage and we’d like to reduce that.</p>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 </div>
 <div id="transforming-the-response" class="section level2" number="8.2">
 <h2><span class="header-section-number">8.2</span> Transforming the Response</h2>
@@ -454,16 +454,16 @@ and we could calculate the appropriate predicted income as <span class="math inl
 This transformation is a smooth family of transformations because <span class="math display">\[\lim_{\lambda\to0}\frac{y^{\lambda}-1}{\lambda}=\log y\]</span>
 In the case that <span class="math inline">\(\lambda\ne 0\)</span>, then a researcher will usually use the simpler transformation <span class="math inline">\(y^{\lambda}\)</span> because the subtraction and division does not change anything in a non-linear fashion. Thus for purposes of addressing the assumption violations, all we care about is the <span class="math inline">\(y^{\lambda}\)</span> and prefer the simpler (i.e. more interpretable) transformation.</p>
 <p>Finding the best transformation can be done by adding the <span class="math inline">\(\lambda\)</span> parameter to the model and finding the value that maximizes the log-likelihood function. Fortunately, we don’t have to do this by hand, as the function <code>boxcox()</code> in the <code>MASS</code> library will do all the heavy calculation for us.</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="8-LogTransformations-Chapter.html#cb198-1" aria-hidden="true"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb198-2"><a href="8-LogTransformations-Chapter.html#cb198-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
-<span id="cb198-3"><a href="8-LogTransformations-Chapter.html#cb198-3" aria-hidden="true"></a></span>
-<span id="cb198-4"><a href="8-LogTransformations-Chapter.html#cb198-4" aria-hidden="true"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
-<span id="cb198-5"><a href="8-LogTransformations-Chapter.html#cb198-5" aria-hidden="true"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
-<span id="cb198-6"><a href="8-LogTransformations-Chapter.html#cb198-6" aria-hidden="true"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
-<span id="cb198-7"><a href="8-LogTransformations-Chapter.html#cb198-7" aria-hidden="true"></a><span class="co"># </span></span>
-<span id="cb198-8"><a href="8-LogTransformations-Chapter.html#cb198-8" aria-hidden="true"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
-<span id="cb198-9"><a href="8-LogTransformations-Chapter.html#cb198-9" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="8-LogTransformations-Chapter.html#cb205-1" aria-hidden="true"></a><span class="kw">data</span>(gala, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb205-2"><a href="8-LogTransformations-Chapter.html#cb205-2" aria-hidden="true"></a>g &lt;-<span class="st"> </span><span class="kw">lm</span>(Species <span class="op">~</span><span class="st"> </span>Area <span class="op">+</span><span class="st"> </span>Elevation <span class="op">+</span><span class="st"> </span>Nearest <span class="op">+</span><span class="st"> </span>Scruz <span class="op">+</span><span class="st"> </span>Adjacent, <span class="dt">data=</span>gala)</span>
+<span id="cb205-3"><a href="8-LogTransformations-Chapter.html#cb205-3" aria-hidden="true"></a></span>
+<span id="cb205-4"><a href="8-LogTransformations-Chapter.html#cb205-4" aria-hidden="true"></a><span class="co"># I don&#39;t like loading the MASS package because it includes a select() function</span></span>
+<span id="cb205-5"><a href="8-LogTransformations-Chapter.html#cb205-5" aria-hidden="true"></a><span class="co"># that fights with dplyr::select(), so whenever I use a function in the MASS</span></span>
+<span id="cb205-6"><a href="8-LogTransformations-Chapter.html#cb205-6" aria-hidden="true"></a><span class="co"># package, I just call it using the package::function() naming.</span></span>
+<span id="cb205-7"><a href="8-LogTransformations-Chapter.html#cb205-7" aria-hidden="true"></a><span class="co"># </span></span>
+<span id="cb205-8"><a href="8-LogTransformations-Chapter.html#cb205-8" aria-hidden="true"></a><span class="co"># #MASS::boxcox(g, lambda=seq(-2,2, by=.1))  # Set lambda range manually...</span></span>
+<span id="cb205-9"><a href="8-LogTransformations-Chapter.html#cb205-9" aria-hidden="true"></a>MASS<span class="op">::</span><span class="kw">boxcox</span>( g )   <span class="co"># With default lambda range.</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 <p>The optimal transformation for these data would be <span class="math inline">\(y^{1/4}=\sqrt[4]{y}\)</span> but that is an extremely uncommon transformation. Instead we should pick the nearest “standard” transformation which would suggest that we should use either the <span class="math inline">\(\log y\)</span> or <span class="math inline">\(\sqrt{y}\)</span> transformation.</p>
 <p>Thoughts on the Box-Cox transformation:</p>
 <ol style="list-style-type: decimal">
@@ -493,17 +493,17 @@ Similar situations might arise in biological settings, such as the volume of con
 <div id="galapagos-example" class="section level3" number="8.3.3">
 <h3><span class="header-section-number">8.3.3</span> Galapagos Example</h3>
 <p>To illustrate how to add a transformation of a predictor to a linear model in R, we will consider the Galapagos data in <code>faraway</code>.</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="8-LogTransformations-Chapter.html#cb199-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb199-2"><a href="8-LogTransformations-Chapter.html#cb199-2" aria-hidden="true"></a><span class="co"># look at all the scatterplots</span></span>
-<span id="cb199-3"><a href="8-LogTransformations-Chapter.html#cb199-3" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb199-4"><a href="8-LogTransformations-Chapter.html#cb199-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
-<span id="cb199-5"><a href="8-LogTransformations-Chapter.html#cb199-5" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
-<span id="cb199-6"><a href="8-LogTransformations-Chapter.html#cb199-6" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="8-LogTransformations-Chapter.html#cb206-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;gala&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb206-2"><a href="8-LogTransformations-Chapter.html#cb206-2" aria-hidden="true"></a><span class="co"># look at all the scatterplots</span></span>
+<span id="cb206-3"><a href="8-LogTransformations-Chapter.html#cb206-3" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb206-4"><a href="8-LogTransformations-Chapter.html#cb206-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species)) <span class="op">%&gt;%</span></span>
+<span id="cb206-5"><a href="8-LogTransformations-Chapter.html#cb206-5" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, Area, Elevation, Nearest, Scruz, Adjacent) <span class="op">%&gt;%</span></span>
+<span id="cb206-6"><a href="8-LogTransformations-Chapter.html#cb206-6" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
 <p>Looking at these graphs, I think I should definitely transform <code>Area</code> and <code>Adjacent</code>, and I wouldn’t object to doing the same to <code>Elevation</code>, <code>Nearest</code> and <code>Scruz</code>. Given the high leverages, a log transformation should be a good idea. One problem is that <span class="math inline">\(\log(0) = -\infty\)</span>. A quick look at the data set summary:</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="8-LogTransformations-Chapter.html#cb200-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb200-2"><a href="8-LogTransformations-Chapter.html#cb200-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Species, Area, Elevation, Nearest,Scruz, Adjacent) <span class="op">%&gt;%</span></span>
-<span id="cb200-3"><a href="8-LogTransformations-Chapter.html#cb200-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="8-LogTransformations-Chapter.html#cb207-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb207-2"><a href="8-LogTransformations-Chapter.html#cb207-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Species, Area, Elevation, Nearest,Scruz, Adjacent) <span class="op">%&gt;%</span></span>
+<span id="cb207-3"><a href="8-LogTransformations-Chapter.html#cb207-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">summary</span>()</span></code></pre></div>
 <pre><code>##     Species            Area            Elevation          Nearest     
 ##  Min.   :  2.00   Min.   :   0.010   Min.   :  25.00   Min.   : 0.20  
 ##  1st Qu.: 13.00   1st Qu.:   0.258   1st Qu.:  97.75   1st Qu.: 0.80  
@@ -519,15 +519,15 @@ Similar situations might arise in biological settings, such as the volume of con
 ##  3rd Qu.: 81.08   3rd Qu.:  59.24  
 ##  Max.   :290.20   Max.   :4669.32</code></pre>
 <p>reveals that <code>Scruz</code> has a zero value, and so a log transformation will result in a <span class="math inline">\(-\infty\)</span>. So, lets take the square root of <code>Scruz</code></p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="8-LogTransformations-Chapter.html#cb202-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span></span>
-<span id="cb202-2"><a href="8-LogTransformations-Chapter.html#cb202-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species), <span class="dt">LogElevation=</span><span class="kw">log</span>(Elevation), <span class="dt">LogArea=</span><span class="kw">log</span>(Area), <span class="dt">LogNearest=</span><span class="kw">log</span>(Nearest),</span>
-<span id="cb202-3"><a href="8-LogTransformations-Chapter.html#cb202-3" aria-hidden="true"></a>         <span class="dt">SqrtScruz=</span><span class="kw">sqrt</span>(Scruz), <span class="dt">LogAdjacent=</span><span class="kw">log</span>(Adjacent)) <span class="op">%&gt;%</span></span>
-<span id="cb202-4"><a href="8-LogTransformations-Chapter.html#cb202-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) <span class="op">%&gt;%</span></span>
-<span id="cb202-5"><a href="8-LogTransformations-Chapter.html#cb202-5" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-129-1.png" width="672" /></p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="8-LogTransformations-Chapter.html#cb209-1" aria-hidden="true"></a>gala <span class="op">%&gt;%</span></span>
+<span id="cb209-2"><a href="8-LogTransformations-Chapter.html#cb209-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LogSpecies =</span> <span class="kw">log</span>(Species), <span class="dt">LogElevation=</span><span class="kw">log</span>(Elevation), <span class="dt">LogArea=</span><span class="kw">log</span>(Area), <span class="dt">LogNearest=</span><span class="kw">log</span>(Nearest),</span>
+<span id="cb209-3"><a href="8-LogTransformations-Chapter.html#cb209-3" aria-hidden="true"></a>         <span class="dt">SqrtScruz=</span><span class="kw">sqrt</span>(Scruz), <span class="dt">LogAdjacent=</span><span class="kw">log</span>(Adjacent)) <span class="op">%&gt;%</span></span>
+<span id="cb209-4"><a href="8-LogTransformations-Chapter.html#cb209-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(LogSpecies, LogElevation, LogArea, LogNearest, SqrtScruz, LogAdjacent) <span class="op">%&gt;%</span></span>
+<span id="cb209-5"><a href="8-LogTransformations-Chapter.html#cb209-5" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
 <p>Looking at these graphs, it is clear that <code>log(Elevation)</code> and <code>log(Area)</code> are highly correlated and we should probably have one or the other, but not both in the model.</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="8-LogTransformations-Chapter.html#cb203-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Nearest) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(Scruz) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</span>
-<span id="cb203-2"><a href="8-LogTransformations-Chapter.html#cb203-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="8-LogTransformations-Chapter.html#cb210-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st">  </span><span class="kw">log</span>(Area) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Nearest) <span class="op">+</span><span class="st"> </span><span class="kw">sqrt</span>(Scruz) <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(Adjacent), <span class="dt">data=</span>gala)</span>
+<span id="cb210-2"><a href="8-LogTransformations-Chapter.html#cb210-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)<span class="op">$</span>coefficients <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">round</span>(<span class="dt">digits=</span><span class="dv">3</span>) <span class="co"># more readable...</span></span></code></pre></div>
 <pre><code>##               Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept)      3.285      0.275  11.960    0.000
 ## log(Area)        0.402      0.043   9.443    0.000
@@ -535,8 +535,8 @@ Similar situations might arise in biological settings, such as the volume of con
 ## sqrt(Scruz)     -0.049      0.045  -1.085    0.288
 ## log(Adjacent)   -0.024      0.046  -0.529    0.602</code></pre>
 <p>We will remove all the parameters that appear to be superfluous, and perform an F-test to confirm that the simple model is sufficient.</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="8-LogTransformations-Chapter.html#cb205-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
-<span id="cb205-2"><a href="8-LogTransformations-Chapter.html#cb205-2" aria-hidden="true"></a><span class="kw">anova</span>(m.s, m.c)</span></code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="8-LogTransformations-Chapter.html#cb212-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
+<span id="cb212-2"><a href="8-LogTransformations-Chapter.html#cb212-2" aria-hidden="true"></a><span class="kw">anova</span>(m.s, m.c)</span></code></pre></div>
 <pre><code>## Analysis of Variance Table
 ## 
 ## Model 1: log(Species) ~ log(Area)
@@ -545,7 +545,7 @@ Similar situations might arise in biological settings, such as the volume of con
 ## 1     28 17.218                           
 ## 2     25 15.299  3    1.9196 1.0456 0.3897</code></pre>
 <p>Next we will look at the coefficients.</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="8-LogTransformations-Chapter.html#cb207-1" aria-hidden="true"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="8-LogTransformations-Chapter.html#cb214-1" aria-hidden="true"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = log(Species) ~ log(Area), data = gala)
@@ -566,63 +566,63 @@ Similar situations might arise in biological settings, such as the volume of con
 ## F-statistic: 87.27 on 1 and 28 DF,  p-value: 4.23e-10</code></pre>
 <p>The slope coefficient (0.3886) is the increase in log(Species) for every 1 unit increase in log(Area). Unfortunately that is not particularly convenient to interpretation and we will address this in the next section of this chapter.</p>
 <p>Finally, we might be interested in creating a confidence interval for the expected number of tortoise species for an island with <code>Area=50</code>.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="8-LogTransformations-Chapter.html#cb209-1" aria-hidden="true"></a>x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">50</span>)</span>
-<span id="cb209-2"><a href="8-LogTransformations-Chapter.html#cb209-2" aria-hidden="true"></a>log.Species.CI &lt;-<span class="st"> </span><span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</span>
-<span id="cb209-3"><a href="8-LogTransformations-Chapter.html#cb209-3" aria-hidden="true"></a>log.Species.CI       <span class="co"># Log(Species) scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="8-LogTransformations-Chapter.html#cb216-1" aria-hidden="true"></a>x0 &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">50</span>)</span>
+<span id="cb216-2"><a href="8-LogTransformations-Chapter.html#cb216-2" aria-hidden="true"></a>log.Species.CI &lt;-<span class="st"> </span><span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>x0, <span class="dt">interval=</span><span class="st">&#39;confidence&#39;</span>)</span>
+<span id="cb216-3"><a href="8-LogTransformations-Chapter.html#cb216-3" aria-hidden="true"></a>log.Species.CI       <span class="co"># Log(Species) scale</span></span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 4.423903 4.068412 4.779394</code></pre>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="8-LogTransformations-Chapter.html#cb211-1" aria-hidden="true"></a><span class="kw">exp</span>(log.Species.CI)  <span class="co"># Species scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="8-LogTransformations-Chapter.html#cb218-1" aria-hidden="true"></a><span class="kw">exp</span>(log.Species.CI)  <span class="co"># Species scale</span></span></code></pre></div>
 <pre><code>##        fit      lwr      upr
 ## 1 83.42122 58.46403 119.0322</code></pre>
 <p>Notice that on the species-scale, we see that the fitted value is not in the center of the confidence interval.</p>
 <p>To help us understand what the log transformations are doing, we can produce a plot with the island Area on the x-axis and the expected number of Species on the y-axis and hopefully that will help us understand the relationship between the two.</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="8-LogTransformations-Chapter.html#cb213-1" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
-<span id="cb213-2"><a href="8-LogTransformations-Chapter.html#cb213-2" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span><span class="op">:</span><span class="dv">50</span>)</span>
-<span id="cb213-3"><a href="8-LogTransformations-Chapter.html#cb213-3" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb213-4"><a href="8-LogTransformations-Chapter.html#cb213-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
-<span id="cb213-5"><a href="8-LogTransformations-Chapter.html#cb213-5" aria-hidden="true"></a><span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) <span class="op">+</span></span>
-<span id="cb213-6"><a href="8-LogTransformations-Chapter.html#cb213-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span></span>
-<span id="cb213-7"><a href="8-LogTransformations-Chapter.html#cb213-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
-<span id="cb213-8"><a href="8-LogTransformations-Chapter.html#cb213-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-134-1.png" width="672" /></p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="8-LogTransformations-Chapter.html#cb220-1" aria-hidden="true"></a><span class="kw">library</span>(ggplot2)</span>
+<span id="cb220-2"><a href="8-LogTransformations-Chapter.html#cb220-2" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Area=</span><span class="dv">1</span><span class="op">:</span><span class="dv">50</span>)</span>
+<span id="cb220-3"><a href="8-LogTransformations-Chapter.html#cb220-3" aria-hidden="true"></a>pred.data &lt;-<span class="st"> </span>pred.data <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb220-4"><a href="8-LogTransformations-Chapter.html#cb220-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m.s, <span class="dt">newdata=</span>pred.data, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>))</span>
+<span id="cb220-5"><a href="8-LogTransformations-Chapter.html#cb220-5" aria-hidden="true"></a><span class="kw">ggplot</span>(pred.data, <span class="kw">aes</span>(<span class="dt">x=</span>Area)) <span class="op">+</span></span>
+<span id="cb220-6"><a href="8-LogTransformations-Chapter.html#cb220-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span><span class="kw">exp</span>(fit))) <span class="op">+</span></span>
+<span id="cb220-7"><a href="8-LogTransformations-Chapter.html#cb220-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span><span class="kw">exp</span>(lwr), <span class="dt">ymax=</span><span class="kw">exp</span>(upr)), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb220-8"><a href="8-LogTransformations-Chapter.html#cb220-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Number of Species&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
 </div>
 </div>
 <div id="interpretation-of-log_10-and-log-transformed-variables" class="section level2" number="8.4">
 <h2><span class="header-section-number">8.4</span> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</h2>
 <p>One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Compared to taking the square root, <span class="math inline">\(\log\)</span> transformations are surprisingly interpretable on the original scale. Here we look at the interpretation of log transformed variables.</p>
 <p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="8-LogTransformations-Chapter.html#cb214-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span></span>
-<span id="cb214-2"><a href="8-LogTransformations-Chapter.html#cb214-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span></span>
-<span id="cb214-3"><a href="8-LogTransformations-Chapter.html#cb214-3" aria-hidden="true"></a>scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)</span>
-<span id="cb214-4"><a href="8-LogTransformations-Chapter.html#cb214-4" aria-hidden="true"></a>scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">gender =</span> female)</span>
-<span id="cb214-5"><a href="8-LogTransformations-Chapter.html#cb214-5" aria-hidden="true"></a></span>
-<span id="cb214-6"><a href="8-LogTransformations-Chapter.html#cb214-6" aria-hidden="true"></a>scores <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb214-7"><a href="8-LogTransformations-Chapter.html#cb214-7" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(write, read, math, gender) <span class="op">%&gt;%</span></span>
-<span id="cb214-8"><a href="8-LogTransformations-Chapter.html#cb214-8" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="kw">aes</span>(<span class="dt">color=</span>gender),</span>
-<span id="cb214-9"><a href="8-LogTransformations-Chapter.html#cb214-9" aria-hidden="true"></a>    <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="8-LogTransformations-Chapter.html#cb221-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span></span>
+<span id="cb221-2"><a href="8-LogTransformations-Chapter.html#cb221-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;data-raw/lgtrans.csv&#39;</span>                                                <span class="co"># on my laptop</span></span>
+<span id="cb221-3"><a href="8-LogTransformations-Chapter.html#cb221-3" aria-hidden="true"></a>scores &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="dt">file=</span>file)</span>
+<span id="cb221-4"><a href="8-LogTransformations-Chapter.html#cb221-4" aria-hidden="true"></a>scores &lt;-<span class="st"> </span>scores <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">gender =</span> female)</span>
+<span id="cb221-5"><a href="8-LogTransformations-Chapter.html#cb221-5" aria-hidden="true"></a></span>
+<span id="cb221-6"><a href="8-LogTransformations-Chapter.html#cb221-6" aria-hidden="true"></a>scores <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb221-7"><a href="8-LogTransformations-Chapter.html#cb221-7" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(write, read, math, gender) <span class="op">%&gt;%</span></span>
+<span id="cb221-8"><a href="8-LogTransformations-Chapter.html#cb221-8" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="kw">aes</span>(<span class="dt">color=</span>gender),</span>
+<span id="cb221-9"><a href="8-LogTransformations-Chapter.html#cb221-9" aria-hidden="true"></a>    <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-135-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-136-1.png" width="672" /></p>
 <p>These data look pretty decent, and I’m not certain that I would do <em>any</em> transformation, but for the sake of having a concrete example that has both continuous and categorical covariates, we will interpret effects on a students’ writing score.</p>
 <div id="log-transformed-response-un-transformed-covariates" class="section level3" number="8.4.1">
 <h3><span class="header-section-number">8.4.1</span> Log-transformed response, un-transformed covariates</h3>
 <p>We consider the model where we have transformed the response variable and just an intercept term.
 <span class="math display">\[\log y=\beta_{0}+\epsilon\]</span></p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="8-LogTransformations-Chapter.html#cb216-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)</span>
-<span id="cb216-2"><a href="8-LogTransformations-Chapter.html#cb216-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="8-LogTransformations-Chapter.html#cb223-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>scores)</span>
+<span id="cb223-2"><a href="8-LogTransformations-Chapter.html#cb223-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 5
 ##   term        estimate std.error statistic   p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
 ## 1 (Intercept)     3.95    0.0137      288. 7.01e-263</code></pre>
 <p>We interpret the intercept as the mean of the log-transformed response values. We could back transform this to the original scale <span class="math inline">\(\hat{y} = e^{\hat{\beta}_{0}} = e^{3.94835} = 51.85\)</span> as a typical value of write. To distinguish this from the usually defined mean of the write values, we will call this as the <em>geometric mean</em>. Instead of calculating this by hand, we can have <code>emmeans()</code> do it for us.</p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="8-LogTransformations-Chapter.html#cb218-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="op">~</span><span class="dv">1</span>)                   <span class="co"># Return y-hat value on the log-scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="8-LogTransformations-Chapter.html#cb225-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="op">~</span><span class="dv">1</span>)                   <span class="co"># Return y-hat value on the log-scale</span></span></code></pre></div>
 <pre><code>##  1       emmean     SE  df lower.CL upper.CL
 ##  overall   3.95 0.0137 199     3.92     3.98
 ## 
 ## Results are given on the log (not the response) scale. 
 ## Confidence level used: 0.95</code></pre>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="8-LogTransformations-Chapter.html#cb220-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="op">~</span><span class="dv">1</span>, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)  <span class="co"># Return y-hat value on the original scale</span></span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="8-LogTransformations-Chapter.html#cb227-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, <span class="op">~</span><span class="dv">1</span>, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)  <span class="co"># Return y-hat value on the original scale</span></span></code></pre></div>
 <pre><code>##  1       response   SE  df lower.CL upper.CL
 ##  overall     51.8 0.71 199     50.5     53.3
 ## 
@@ -633,8 +633,8 @@ Similar situations might arise in biological settings, such as the volume of con
 \beta_{0}+\epsilon &amp; \;\;\textrm{if female}\\
 \beta_{0}+\beta_{1}+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="8-LogTransformations-Chapter.html#cb222-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>scores)</span>
-<span id="cb222-2"><a href="8-LogTransformations-Chapter.html#cb222-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="8-LogTransformations-Chapter.html#cb229-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender, <span class="dt">data=</span>scores)</span>
+<span id="cb229-2"><a href="8-LogTransformations-Chapter.html#cb229-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 5
 ##   term        estimate std.error statistic   p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -648,9 +648,9 @@ Similar situations might arise in biological settings, such as the volume of con
 \end{aligned}\]</span></p>
 <p>and therefore we see that males tend to have writing scores <span class="math inline">\(e^{-0.103}=0.90=90\%\)</span> of the females. Typically this sort of result would be reported as the males have a 10% lower writing score than the females.</p>
 <p>Hand calculating these is challenging to do it correctly, but as usual we can have <code>emmeans</code> calculate it for us.</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="8-LogTransformations-Chapter.html#cb224-1" aria-hidden="true"></a><span class="co"># I used reverse pairwise to get the ratio as male/female instead of female/male</span></span>
-<span id="cb224-2"><a href="8-LogTransformations-Chapter.html#cb224-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, revpairwise<span class="op">~</span>gender, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb224-3"><a href="8-LogTransformations-Chapter.html#cb224-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="8-LogTransformations-Chapter.html#cb231-1" aria-hidden="true"></a><span class="co"># I used reverse pairwise to get the ratio as male/female instead of female/male</span></span>
+<span id="cb231-2"><a href="8-LogTransformations-Chapter.html#cb231-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, revpairwise<span class="op">~</span>gender, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb231-3"><a href="8-LogTransformations-Chapter.html#cb231-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
 <pre><code>##  contrast      ratio    SE  df t.ratio p.value
 ##  male / female 0.902 0.024 198 -3.887  0.0001 
 ## 
@@ -661,8 +661,8 @@ Similar situations might arise in biological settings, such as the volume of con
 \beta_{0}+\beta_{1}+\beta_{2}x+\epsilon &amp; \;\;\textrm{if male}
 \end{cases}\]</span></p>
 <p>We will use the reading score read to predict the writing score. Then <span class="math inline">\(\hat{\beta}_{2}\)</span> is the predicted increase in <code>log(write)</code> for every 1-unit increase in read score. The interpretation of <span class="math inline">\(\hat{\beta}_{0}\)</span> is now <span class="math inline">\(\log\hat{y}\)</span> when <span class="math inline">\(x=0\)</span> and therefore <span class="math inline">\(\hat{y}=e^{\hat{\beta}_{0}}\)</span> when <span class="math inline">\(x=0\)</span>.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="8-LogTransformations-Chapter.html#cb226-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span></span>
-<span id="cb226-2"><a href="8-LogTransformations-Chapter.html#cb226-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="8-LogTransformations-Chapter.html#cb233-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span>read, <span class="dt">data=</span>scores)  <span class="co"># main effects model</span></span>
+<span id="cb233-2"><a href="8-LogTransformations-Chapter.html#cb233-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic   p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
@@ -688,16 +688,16 @@ meaning there is an estimated <span class="math inline">\(1\%\)</span> increase 
  =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
  = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}\]</span></p>
 <p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="8-LogTransformations-Chapter.html#cb228-1" aria-hidden="true"></a><span class="co"># to make emmeans calculate this, we must specify a 1-unit or 20-unit increase</span></span>
-<span id="cb228-2"><a href="8-LogTransformations-Chapter.html#cb228-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">51</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb228-3"><a href="8-LogTransformations-Chapter.html#cb228-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="8-LogTransformations-Chapter.html#cb235-1" aria-hidden="true"></a><span class="co"># to make emmeans calculate this, we must specify a 1-unit or 20-unit increase</span></span>
+<span id="cb235-2"><a href="8-LogTransformations-Chapter.html#cb235-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">51</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb235-3"><a href="8-LogTransformations-Chapter.html#cb235-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
 <pre><code>##  contrast ratio       SE  df t.ratio p.value
 ##  51 / 50  1.011 0.001032 197 11.057  &lt;.0001 
 ## 
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="8-LogTransformations-Chapter.html#cb230-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">70</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb230-2"><a href="8-LogTransformations-Chapter.html#cb230-2" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="8-LogTransformations-Chapter.html#cb237-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">70</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb237-2"><a href="8-LogTransformations-Chapter.html#cb237-2" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
 <pre><code>##  contrast ratio     SE  df t.ratio p.value
 ##  70 / 50   1.25 0.0256 197 11.057  &lt;.0001 
 ## 
@@ -723,24 +723,24 @@ and consider two different values of <span class="math inline">\(x\)</span> (whi
     &amp; = \hat{\beta}_{2}\log\left[\frac{x_{2}}{x_{1}}\right]
     \end{aligned}\]</span></p>
 <p>This means that so long as the ratio between the two x-values is constant, then the change in <span class="math inline">\(\hat{y}\)</span> is the same. So doubling the value of <span class="math inline">\(x\)</span> from 1 to 2 has the same effect on <span class="math inline">\(\hat{y}\)</span> as changing x from 50 to 100.</p>
-<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="8-LogTransformations-Chapter.html#cb232-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( write <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
-<span id="cb232-2"><a href="8-LogTransformations-Chapter.html#cb232-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="8-LogTransformations-Chapter.html#cb239-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( write <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
+<span id="cb239-2"><a href="8-LogTransformations-Chapter.html#cb239-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)   -59.1       9.95     -5.94 1.28e- 8
 ## 2 gendermale     -5.43      1.01     -5.36 2.29e- 7
 ## 3 log(read)      29.0       2.53     11.5  9.98e-24</code></pre>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="8-LogTransformations-Chapter.html#cb234-1" aria-hidden="true"></a><span class="co"># predict writing scores for three females, </span></span>
-<span id="cb234-2"><a href="8-LogTransformations-Chapter.html#cb234-2" aria-hidden="true"></a><span class="co"># each with a reading score 50% larger than the other previous</span></span>
-<span id="cb234-3"><a href="8-LogTransformations-Chapter.html#cb234-3" aria-hidden="true"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),</span>
-<span id="cb234-4"><a href="8-LogTransformations-Chapter.html#cb234-4" aria-hidden="true"></a>                                  <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="8-LogTransformations-Chapter.html#cb241-1" aria-hidden="true"></a><span class="co"># predict writing scores for three females, </span></span>
+<span id="cb241-2"><a href="8-LogTransformations-Chapter.html#cb241-2" aria-hidden="true"></a><span class="co"># each with a reading score 50% larger than the other previous</span></span>
+<span id="cb241-3"><a href="8-LogTransformations-Chapter.html#cb241-3" aria-hidden="true"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span><span class="kw">data.frame</span>(<span class="dt">gender=</span><span class="kw">rep</span>(<span class="st">&#39;female&#39;</span>,<span class="dv">3</span>),</span>
+<span id="cb241-4"><a href="8-LogTransformations-Chapter.html#cb241-4" aria-hidden="true"></a>                                  <span class="dt">read=</span><span class="kw">c</span>(<span class="dv">40</span>, <span class="dv">60</span>, <span class="dv">90</span>)))</span></code></pre></div>
 <pre><code>##        1        2        3 
 ## 48.06622 59.84279 71.61936</code></pre>
 <p>We should see a
 <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
 difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="8-LogTransformations-Chapter.html#cb236-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">60</span>,<span class="dv">40</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="8-LogTransformations-Chapter.html#cb243-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">60</span>,<span class="dv">40</span>)))</span></code></pre></div>
 <pre><code>## $emmeans
 ##  read emmean    SE  df lower.CL upper.CL
 ##    60   57.1 0.643 197     55.9     58.4
@@ -767,8 +767,8 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 \frac{\hat{y}_{2}}{\hat{y}_{1}} &amp;=  \left(\frac{x_{2}}{x_{1}}\right)^{\hat{\beta}_{2}}
 \end{aligned}\]</span></p>
 <p>This allows us to examine the effect of some arbitrary percentage increase in <span class="math inline">\(x\)</span> value as a percentage increase in <span class="math inline">\(y\)</span> value.</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="8-LogTransformations-Chapter.html#cb238-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
-<span id="cb238-2"><a href="8-LogTransformations-Chapter.html#cb238-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="8-LogTransformations-Chapter.html#cb245-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(write) <span class="op">~</span><span class="st"> </span>gender <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(read), <span class="dt">data=</span>scores)</span>
+<span id="cb245-2"><a href="8-LogTransformations-Chapter.html#cb245-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(model)</span></code></pre></div>
 <pre><code>## # A tibble: 3 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -776,8 +776,8 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 ## 2 gendermale    -0.114    0.0209     -5.48 1.27e- 7
 ## 3 log(read)      0.581    0.0521     11.1  1.08e-22</code></pre>
 <p>which implies for a <span class="math inline">\(10\)</span>% increase in <code>read</code> score, we should see a <span class="math inline">\(1.10^{0.581}=1.056\)</span> multiplier in <code>write</code> score. That is to say, a <span class="math inline">\(10\%\)</span> increase in reading score results in a <span class="math inline">\(5\%\)</span> increase in writing score.</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="8-LogTransformations-Chapter.html#cb240-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">55</span>,<span class="dv">50</span>)),</span>
-<span id="cb240-2"><a href="8-LogTransformations-Chapter.html#cb240-2" aria-hidden="true"></a>         <span class="dt">var=</span><span class="st">&#39;log(read)&#39;</span>, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="8-LogTransformations-Chapter.html#cb247-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">55</span>,<span class="dv">50</span>)),</span>
+<span id="cb247-2"><a href="8-LogTransformations-Chapter.html#cb247-2" aria-hidden="true"></a>         <span class="dt">var=</span><span class="st">&#39;log(read)&#39;</span>, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</span></code></pre></div>
 <pre><code>## $emmeans
 ##  read response    SE  df lower.CL upper.CL
 ##    55     53.8 0.594 197     52.6     54.9
@@ -794,14 +794,14 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
 <p>For the Galapagos islands, we had</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="8-LogTransformations-Chapter.html#cb242-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
-<span id="cb242-2"><a href="8-LogTransformations-Chapter.html#cb242-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(m.s)</span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="8-LogTransformations-Chapter.html#cb249-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(Species) <span class="op">~</span><span class="st"> </span><span class="kw">log</span>(Area), <span class="dt">data=</span>gala)</span>
+<span id="cb249-2"><a href="8-LogTransformations-Chapter.html#cb249-2" aria-hidden="true"></a>broom<span class="op">::</span><span class="kw">tidy</span>(m.s)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 5
 ##   term        estimate std.error statistic  p.value
 ##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 ## 1 (Intercept)    2.90     0.157      18.5  3.17e-17
 ## 2 log(Area)      0.389    0.0416      9.34 4.23e-10</code></pre>
-<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="8-LogTransformations-Chapter.html#cb244-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m.s, pairwise<span class="op">~</span>Area, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Area=</span><span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">200</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="8-LogTransformations-Chapter.html#cb251-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m.s, pairwise<span class="op">~</span>Area, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">Area=</span><span class="kw">c</span>(<span class="dv">400</span>, <span class="dv">200</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</span></code></pre></div>
 <pre><code>## $emmeans
 ##  Area response   SE df lower.CL upper.CL
 ##   400      187 43.7 28    116.0      302

@@ -107,8 +107,6 @@ The extremely large standardized residual suggests that this data point is impor
 One way to quantify this is to look at the elements of $\boldsymbol{H}$. Because $$\hat{y}_{i}=\sum_{j=1}^{n}\boldsymbol{H}_{ij}y_{j}$$
 then the $i$th row of $\boldsymbol{H}$ is a vector of weights that tell us how influential a point $y_{j}$ is for calculating the predicted value $\hat{y}_{i}$. If I look at just the main diagonal of $\boldsymbol{H}$, these are how much weight a point has on its predicted value. As such, I can think of the $\boldsymbol{H}_{ii}$ as the amount of leverage a particular data point has on the regression line. It can be shown that the leverages must be $0 \le \boldsymbol{H}_{ii} \le 1$ and that $\sum \boldsymbol{H}_{ii} = p$.
 
-Fortunately there is already a function `hatvalues()` to compute these $\boldsymbol{H}_{ii}$ values for me. We will compare the leverages from Anscombe's set 3 versus set 4.
-
 ```{r}
 Set3 <- Anscombe %>% filter( set == 'Set 3')
 Set4 <- Anscombe %>% filter( set == 'Set 4')
@@ -116,6 +114,17 @@ Set4 <- Anscombe %>% filter( set == 'Set 4')
 model3 <- lm(y ~ x, data = Set3 )
 model4 <- lm(y ~ x, data = Set4 )
 
+X <- model.matrix(model3)
+H <- X %*% solve( t(X) %*% X) %*% t(X)
+
+round(H, digits=2) 
+```
+
+
+
+Fortunately there is already a function `hatvalues()` to compute these $\boldsymbol{H}_{ii}$ values for me. We will compare the leverages from Anscombe's set 3 versus set 4.
+
+```{r}
 Set3 <- Set3 %>% mutate(leverage = hatvalues(model3))  # add leverage columns
 Set4 <- Set4 %>% mutate(leverage = hatvalues(model4))
 
@@ -189,9 +198,9 @@ Looking at the data, it seems that we are violating the assumption that a linear
 
 ```{r, fig.height=3}
 model <- lm( clutch.size ~ carapace, data=Eggs )
-# plot(model, which=1)      # Base R Function: which=1 tells R to only make the first plot
-# lindia::gg_diagnose(model)                        # using lindia package
-# lindia::gg_diagnose(model, plot.all=FALSE)[[3]]   # using lindia package
+ plot(model, which=1)      # Base R Function: which=1 tells R to only make the first plot
+ lindia::gg_diagnose(model)                        # using lindia package
+ lindia::gg_diagnose(model, plot.all=FALSE)[[3]]   # using lindia package
 autoplot(model, which=1)  # same plot using ggplot2 and ggfortify package
 ```
 
