@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-01" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -547,23 +547,18 @@ which expresses Cook’s distance in terms of the <span class="math inline">\(i\
 <span id="cb185-7"><a href="7-Diagnostics-Chapter.html#cb185-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-110-1.png" width="672" /></p>
 <p>Looking at the data, it seems that we are violating the assumption that a linear model is appropriate, but we will fit the model anyway and look at the residual graph.</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="7-Diagnostics-Chapter.html#cb186-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )</span>
-<span id="cb186-2"><a href="7-Diagnostics-Chapter.html#cb186-2" aria-hidden="true"></a> <span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># Base R Function: which=1 tells R to only make the first plot</span></span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-111-1.png" width="672" /></p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="7-Diagnostics-Chapter.html#cb187-1" aria-hidden="true"></a> lindia<span class="op">::</span><span class="kw">gg_diagnose</span>(model)                        <span class="co"># using lindia package</span></span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="7-Diagnostics-Chapter.html#cb186-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( clutch.size <span class="op">~</span><span class="st"> </span>carapace, <span class="dt">data=</span>Eggs )</span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="7-Diagnostics-Chapter.html#cb187-1" aria-hidden="true"></a><span class="kw">plot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)      <span class="co"># Base R Function: which=1 tells R to only make the first plot</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="7-Diagnostics-Chapter.html#cb188-1" aria-hidden="true"></a>lindia<span class="op">::</span><span class="kw">gg_diagnose</span>(model)                        <span class="co"># using lindia package</span></span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
 ## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-111-2.png" width="672" /></p>
-<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="7-Diagnostics-Chapter.html#cb190-1" aria-hidden="true"></a> lindia<span class="op">::</span><span class="kw">gg_diagnose</span>(model, <span class="dt">plot.all=</span><span class="ot">FALSE</span>)[[<span class="dv">3</span>]]   <span class="co"># using lindia package</span></span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-111-3.png" width="672" /></p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="7-Diagnostics-Chapter.html#cb191-1" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2 and ggfortify package</span></span></code></pre></div>
-<pre><code>## Warning: `arrange_()` is deprecated as of dplyr 0.7.0.
-## Please use `arrange()` instead.
-## See vignette(&#39;programming&#39;) for more help
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-111-4.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="7-Diagnostics-Chapter.html#cb191-1" aria-hidden="true"></a>lindia<span class="op">::</span><span class="kw">gg_diagnose</span>(model, <span class="dt">plot.all=</span><span class="ot">FALSE</span>)[[<span class="dv">3</span>]]   <span class="co"># using lindia package</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="7-Diagnostics-Chapter.html#cb192-1" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>)  <span class="co"># same plot using ggplot2 and ggfortify package</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>The blue curves going through the plot is a smoother of the residuals. Ideally this should be a flat line and I should see no trend in this plot. Clearly there is a quadratic trend as larger tortoises have larger clutch sizes until some point where the extremely large tortoises start laying fewer (perhaps the extremely large tortoises are extremely old as well). To correct for this, we should fit a model that is quadratic in <code>carapace length</code>. We will create a new covariate, <code>carapace.2</code>, which is the square of the carapace length and add it to the model.</p>
 <p>In general I could write the quadratic model as
 <span class="math display">\[y_{i}=\beta_{0}+\beta_{1}x_{i}+\beta_{2}x_{i}^{2}+\epsilon_{i}\]</span>
@@ -602,7 +597,7 @@ and note that my model is still a linear model with respect to covariates <span 
 <span id="cb193-11"><a href="7-Diagnostics-Chapter.html#cb193-11" aria-hidden="true"></a><span class="co"># If you use poly() in the formula, you must use &#39;data=&#39; here, </span></span>
 <span id="cb193-12"><a href="7-Diagnostics-Chapter.html#cb193-12" aria-hidden="true"></a><span class="co"># otherwise you can skip it and R will do the right thing.</span></span>
 <span id="cb193-13"><a href="7-Diagnostics-Chapter.html#cb193-13" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>, <span class="dt">data=</span>Eggs)  </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
 <p>Now our residual plot versus fitted values does not show any trend, suggesting that the quadratic model is fitting the data well. Graphing the original data along with the predicted values confirms this.</p>
 <div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="7-Diagnostics-Chapter.html#cb194-1" aria-hidden="true"></a><span class="co"># add the fitted and CI lwr/upr columns to my dataset </span></span>
 <span id="cb194-2"><a href="7-Diagnostics-Chapter.html#cb194-2" aria-hidden="true"></a>Eggs &lt;-<span class="st"> </span>Eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -613,7 +608,7 @@ and note that my model is still a linear model with respect to covariates <span 
 <span id="cb194-7"><a href="7-Diagnostics-Chapter.html#cb194-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>( <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></span>
 <span id="cb194-8"><a href="7-Diagnostics-Chapter.html#cb194-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
 <span id="cb194-9"><a href="7-Diagnostics-Chapter.html#cb194-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>clutch.size)) </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
 </div>
 <div id="heteroskedasticity" class="section level5" number="7.1.2.1.2">
 <h5><span class="header-section-number">7.1.2.1.2</span> Heteroskedasticity</h5>
@@ -624,11 +619,11 @@ and note that my model is still a linear model with respect to covariates <span 
 <span id="cb195-2"><a href="7-Diagnostics-Chapter.html#cb195-2" aria-hidden="true"></a><span class="co"># pairs(~ Ozone + Solar.R + Wind + Temp, data=airquality)</span></span>
 <span id="cb195-3"><a href="7-Diagnostics-Chapter.html#cb195-3" aria-hidden="true"></a>airquality <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>( Solar.R, Wind, Temp, Ozone) <span class="op">%&gt;%</span></span>
 <span id="cb195-4"><a href="7-Diagnostics-Chapter.html#cb195-4" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>()</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 <p>and notice that ozone levels are positively correlated with solar radiation and temperature, and negatively correlated with wind speed. A linear relationship with wind might be suspect as is the increasing variability in the response to high temperature. However, we don’t know if those trends will remain after fitting the model, because there is some covariance among the predictors.</p>
 <div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="7-Diagnostics-Chapter.html#cb196-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
 <span id="cb196-2"><a href="7-Diagnostics-Chapter.html#cb196-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">1</span>) </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
 <p>As we feared, we have both a non-constant variance and a non-linear relationship. A transformation of the <span class="math inline">\(y\)</span> variable might be able to fix our problem.</p>
 </div>
 </div>
@@ -636,7 +631,7 @@ and note that my model is still a linear model with respect to covariates <span 
 <h4><span class="header-section-number">7.1.2.2</span> QQplots</h4>
 <p>If we are taking a sample of size <span class="math inline">\(n=10\)</span> from a standard normal distribution, then I should expect that the smallest observation will be negative. Intuitively, you would expect the smallest observation to be near the <span class="math inline">\(10\)</span>th percentile of the standard normal, and likewise the second smallest should be near the <span class="math inline">\(20\)</span>th percentile.</p>
 <p>This idea needs a little modification because the largest observation cannot be near the <span class="math inline">\(100\)</span>th percentile (because that is <span class="math inline">\(\infty\)</span>). So we’ll adjust the estimates to still be spaced at <span class="math inline">\((1/n)\)</span> quantile increments, but starting at the <span class="math inline">\(0.5/n\)</span> quantile instead of the <span class="math inline">\(1/n\)</span> quantile. So the smallest observation should be near the <span class="math inline">\(0.05\)</span> quantile, the second smallest should be near the <span class="math inline">\(0.15\)</span> quantile, and the largest observation should be near the <span class="math inline">\(0.95\)</span> quantile. I will refer to these as the <em>theoretical quantiles</em>.</p>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
 <p>I can then graph the theoretical quantiles vs my observed values and if they lie on the 1-to-1 line, then my data comes from a standard normal distribution.</p>
 <div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="7-Diagnostics-Chapter.html#cb197-1" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">93516</span>)  <span class="co"># make random sample in the next code chunk consistant run-to-run</span></span>
 <span id="cb197-2"><a href="7-Diagnostics-Chapter.html#cb197-2" aria-hidden="true"></a></span>
@@ -649,11 +644,11 @@ and note that my model is still a linear model with respect to covariates <span 
 <span id="cb197-9"><a href="7-Diagnostics-Chapter.html#cb197-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
 <span id="cb197-10"><a href="7-Diagnostics-Chapter.html#cb197-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_abline</span>( <span class="dt">intercept=</span><span class="dv">0</span>, <span class="dt">slope=</span><span class="dv">1</span>,  <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span>.<span class="dv">7</span>) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb197-11"><a href="7-Diagnostics-Chapter.html#cb197-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">main=</span><span class="st">&#39;Q-Q Plot: Observed vs Normal Distribution&#39;</span>)</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-117-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
 <p>In the context of a regression model, we wish to look at the residuals and see if there are obvious departures from normality. Returning to the air quality example, R will calculate the qqplot for us.</p>
 <div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="7-Diagnostics-Chapter.html#cb198-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Ozone <span class="op">~</span><span class="st"> </span>Solar.R <span class="op">+</span><span class="st"> </span>Wind <span class="op">+</span><span class="st"> </span>Temp, <span class="dt">data=</span>airquality)</span>
 <span id="cb198-2"><a href="7-Diagnostics-Chapter.html#cb198-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model, <span class="dt">which=</span><span class="dv">2</span>) </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <p>In this case, we have a large number of residuals that are bigger than I would expect them to be based on them being from a normal distribution. We could further test this using the Shapiro-Wilks test and compare the standardized residuals against a <span class="math inline">\(N\left(0,1\right)\)</span> distribution.</p>
 <div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="7-Diagnostics-Chapter.html#cb199-1" aria-hidden="true"></a><span class="kw">shapiro.test</span>( <span class="kw">rstandard</span>(model) )</span></code></pre></div>
 <pre><code>## 
@@ -673,10 +668,10 @@ and note that my model is still a linear model with respect to covariates <span 
 <p>Returning to Anscombe’s third set of data, we see</p>
 <div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="7-Diagnostics-Chapter.html#cb201-1" aria-hidden="true"></a>model3 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x, <span class="dt">data=</span>Set3)</span>
 <span id="cb201-2"><a href="7-Diagnostics-Chapter.html#cb201-2" aria-hidden="true"></a><span class="kw">autoplot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-120-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-124-1.png" width="672" /></p>
 <p>that one data point (observation 10) has an extremely large standardized residual. This is one plot where I prefer what the base graphics in R does compared to the <code>ggfortify</code> version. The base version of R adds some contour lines that mark where the contours of where Cook’s distance is 1/2 and 1.</p>
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="7-Diagnostics-Chapter.html#cb202-1" aria-hidden="true"></a><span class="kw">plot</span>(model3, <span class="dt">which=</span><span class="dv">5</span>)</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-121-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-125-1.png" width="672" /></p>
 </div>
 </div>
 </div>

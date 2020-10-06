@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-01" />
+<meta name="date" content="2020-10-06" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -434,7 +434,7 @@ where <span class="math inline">\(\epsilon\sim N\left(0,\sigma^{2}\right)\)</spa
 <div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="11-VariableSelection-Chapter.html#cb261-1" aria-hidden="true"></a>state.data <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb261-2"><a href="11-VariableSelection-Chapter.html#cb261-2" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( Life.Exp, Population<span class="op">:</span>Area ) <span class="op">%&gt;%</span></span>
 <span id="cb261-3"><a href="11-VariableSelection-Chapter.html#cb261-3" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>( <span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>), <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>) )</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
 <p>I want to add a quadratic effect for <code>HS.Grad</code> rate and for <code>Income</code>. Also, we see that <code>Population</code> and <code>Area</code> seem to have some high skew to their distributions, so a log transformation might help. We’ll modify the data and then perform the backward elimination method starting with the model with all predictors as main effects.</p>
 <div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="11-VariableSelection-Chapter.html#cb262-1" aria-hidden="true"></a>state.data &lt;-<span class="st"> </span>state.data <span class="op">%&gt;%</span></span>
 <span id="cb262-2"><a href="11-VariableSelection-Chapter.html#cb262-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">HS.Grad.2 =</span> HS.Grad <span class="op">^</span><span class="st"> </span><span class="dv">2</span>,</span>
