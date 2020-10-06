@@ -198,11 +198,9 @@ Looking at the data, it seems that we are violating the assumption that a linear
 
 ```{r, fig.height=3}
 model <- lm( clutch.size ~ carapace, data=Eggs )
-```
-```{r, fig.height=2.5}
 plot(model, which=1)      # Base R Function: which=1 tells R to only make the first plot
 ```
-```{r, fig.height=5}
+```{r, fig.height=5, warning=FALSE, message=FALSE}
 lindia::gg_diagnose(model)                        # using lindia package
 ```
 ```{r, fig.height=2.5}
