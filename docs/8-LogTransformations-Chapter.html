@@ -393,12 +393,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Transformations of the response variable and/or the predictor variables can drastically improve the model fit and can correct violations of the model assumptions. We might also create new predictor variables that are functions of existing variables. These include quadratic and higher order polynomial terms and interaction terms.</p>
 <p>Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
 <span class="math display">\[y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i\]</span>
-where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)\)</span>, the necessary assumptions are:</p>
+where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)\)</span>, the necessary assumptions are (in order of importance):</p>
 <ol style="list-style-type: decimal">
-<li>Independent errors</li>
+<li>The model contains all the appropriate covariates and no more.</li>
+<li>Independent errors. <em>(Hard to check this one!)</em></li>
 <li>Errors have constant variance, no matter what the x-value (or equivalently the fitted value)</li>
 <li>Errors are normally distributed</li>
-<li>The model contains all the appropriate covariates and no more.</li>
 </ol>
 <p>In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4. Because of the interpretability properties we will develop here, <span class="math inline">\(\log()\)</span> transformations are very popular, if they are useful.</p>
 <div id="a-review-of-logx-and-ex" class="section level2" number="8.1">

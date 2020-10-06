@@ -11,12 +11,12 @@ Transformations of the response variable and/or the predictor variables can dras
 
 Often we are presented with data and we would like to fit a linear model to the data. Unfortunately the data might not satisfy all of the assumptions of a linear model. For the simple linear model
 $$y_i=\beta_{0}+\beta_{1}x_i+\epsilon_i$$
- where $\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)$, the necessary assumptions are:
+ where $\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigma^{2}\right)$, the necessary assumptions are (in order of importance):
 
-1. Independent errors
-2. Errors have constant variance, no matter what the x-value (or equivalently the fitted value)
-3. Errors are normally distributed
-4. The model contains all the appropriate covariates and no more.
+1. The model contains all the appropriate covariates and no more.
+2. Independent errors. _(Hard to check this one!)_
+3. Errors have constant variance, no matter what the x-value (or equivalently the fitted value)
+4. Errors are normally distributed
 
 In general, a transformation of the response variable can be used to address the 2nd and 3rd assumptions, and adding new covariates to the model will be how to address deficiencies of assumption 4. Because of the interpretability properties we will develop here, $\log()$ transformations are very popular, if they are useful.
 
