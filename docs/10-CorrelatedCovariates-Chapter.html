@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-06" />
+<meta name="date" content="2020-10-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -436,23 +436,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>We first look at the data and observe the expected relationship between length and weight.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="10-CorrelatedCovariates-Chapter.html#cb250-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
-<span id="cb250-2"><a href="10-CorrelatedCovariates-Chapter.html#cb250-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
-<span id="cb250-3"><a href="10-CorrelatedCovariates-Chapter.html#cb250-3" aria-hidden="true"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
-<span id="cb250-4"><a href="10-CorrelatedCovariates-Chapter.html#cb250-4" aria-hidden="true"></a></span>
-<span id="cb250-5"><a href="10-CorrelatedCovariates-Chapter.html#cb250-5" aria-hidden="true"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
-<span id="cb250-6"><a href="10-CorrelatedCovariates-Chapter.html#cb250-6" aria-hidden="true"></a><span class="co"># pairs(fish)</span></span>
-<span id="cb250-7"><a href="10-CorrelatedCovariates-Chapter.html#cb250-7" aria-hidden="true"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
-<span id="cb250-8"><a href="10-CorrelatedCovariates-Chapter.html#cb250-8" aria-hidden="true"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
-<span id="cb250-9"><a href="10-CorrelatedCovariates-Chapter.html#cb250-9" aria-hidden="true"></a></span>
-<span id="cb250-10"><a href="10-CorrelatedCovariates-Chapter.html#cb250-10" aria-hidden="true"></a>fish <span class="op">%&gt;%</span></span>
-<span id="cb250-11"><a href="10-CorrelatedCovariates-Chapter.html#cb250-11" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
-<span id="cb250-12"><a href="10-CorrelatedCovariates-Chapter.html#cb250-12" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
-<span id="cb250-13"><a href="10-CorrelatedCovariates-Chapter.html#cb250-13" aria-hidden="true"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="10-CorrelatedCovariates-Chapter.html#cb252-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv&#39;</span>  <span class="co"># online</span></span>
+<span id="cb252-2"><a href="10-CorrelatedCovariates-Chapter.html#cb252-2" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;~/github/571/data-raw/Fish.csv&#39;</span>                                                   <span class="co"># on my computer</span></span>
+<span id="cb252-3"><a href="10-CorrelatedCovariates-Chapter.html#cb252-3" aria-hidden="true"></a>fish &lt;-<span class="st"> </span><span class="kw">read.table</span>(file, <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">skip=</span><span class="dv">111</span>, <span class="dt">sep=</span><span class="st">&#39;,&#39;</span>)</span>
+<span id="cb252-4"><a href="10-CorrelatedCovariates-Chapter.html#cb252-4" aria-hidden="true"></a></span>
+<span id="cb252-5"><a href="10-CorrelatedCovariates-Chapter.html#cb252-5" aria-hidden="true"></a><span class="co">### generate a pairs plot in a couple of different ways...</span></span>
+<span id="cb252-6"><a href="10-CorrelatedCovariates-Chapter.html#cb252-6" aria-hidden="true"></a><span class="co"># pairs(fish)</span></span>
+<span id="cb252-7"><a href="10-CorrelatedCovariates-Chapter.html#cb252-7" aria-hidden="true"></a><span class="co"># pairs( Weight ~ Length.1 + Length.2 + Length.3 + Height + Width, data=fish )</span></span>
+<span id="cb252-8"><a href="10-CorrelatedCovariates-Chapter.html#cb252-8" aria-hidden="true"></a><span class="co"># pairs( Weight ~ ., data=fish )</span></span>
+<span id="cb252-9"><a href="10-CorrelatedCovariates-Chapter.html#cb252-9" aria-hidden="true"></a></span>
+<span id="cb252-10"><a href="10-CorrelatedCovariates-Chapter.html#cb252-10" aria-hidden="true"></a>fish <span class="op">%&gt;%</span></span>
+<span id="cb252-11"><a href="10-CorrelatedCovariates-Chapter.html#cb252-11" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Weight, Length<span class="fl">.1</span>, Length<span class="fl">.2</span>, Length<span class="fl">.3</span>, Height, Width) <span class="op">%&gt;%</span></span>
+<span id="cb252-12"><a href="10-CorrelatedCovariates-Chapter.html#cb252-12" aria-hidden="true"></a><span class="st">  </span>GGally<span class="op">::</span><span class="kw">ggpairs</span>(<span class="dt">upper=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;points&#39;</span>),</span>
+<span id="cb252-13"><a href="10-CorrelatedCovariates-Chapter.html#cb252-13" aria-hidden="true"></a>                  <span class="dt">lower=</span><span class="kw">list</span>(<span class="dt">continuous=</span><span class="st">&#39;cor&#39;</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
 <p>Naively, we might consider the linear model with all the length effects present.</p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="10-CorrelatedCovariates-Chapter.html#cb251-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
-<span id="cb251-2"><a href="10-CorrelatedCovariates-Chapter.html#cb251-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="10-CorrelatedCovariates-Chapter.html#cb253-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.1</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Length<span class="fl">.3</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb253-2"><a href="10-CorrelatedCovariates-Chapter.html#cb253-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.1 + Length.2 + Length.3 + Height + 
@@ -479,8 +479,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## F-statistic:   199 on 5 and 152 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>This is crazy. There is a negative relationship between <code>Length.2</code> and <code>Weight</code>. That does not make any sense unless you realize that this is the effect of <code>Length.2</code> assuming the other covariates are in the model and can be held constant while changing the value of <code>Length.2</code>, which is obviously ridiculous.</p>
 <p>If we remove the highly correlated covariates then we see a much better behaved model</p>
-<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="10-CorrelatedCovariates-Chapter.html#cb253-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
-<span id="cb253-2"><a href="10-CorrelatedCovariates-Chapter.html#cb253-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="10-CorrelatedCovariates-Chapter.html#cb255-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>(Weight <span class="op">~</span><span class="st"> </span>Length<span class="fl">.2</span> <span class="op">+</span><span class="st"> </span>Height <span class="op">+</span><span class="st"> </span>Width, <span class="dt">data=</span>fish)</span>
+<span id="cb255-2"><a href="10-CorrelatedCovariates-Chapter.html#cb255-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Weight ~ Length.2 + Height + Width, data = fish)
