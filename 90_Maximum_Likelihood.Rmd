@@ -30,7 +30,7 @@ library(tidyverse)  # dplyr, tidyr, ggplot2
 The goal of statistical modeling is to take data that has some general trend along with some un-explainable variability, and say something intelligent about the trend. For example, the simple regression model
 
 $$y_i = \beta_0 + \beta_1 x_i + \epsilon_i \;\;\;\;\;\; \textrm{where} \;\; \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$$
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 n = 35
 data <- tibble(x=runif(n, 0,1)) %>%
   mutate( Ey = 1 + 2*x,
@@ -44,7 +44,10 @@ ggplot(data, aes(x=x, y=y)) +
            label=latex2exp::TeX('$y_i = \\beta_0 + \\beta_1 x_i + \\epsilon_i$') )
 ```
 
-There is a general increasing trend in the response (i.e. the $\beta_0 + \beta_1 x_i$ term) and then some un-explainable noise (the $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$ part).
+There is a general increasing trend in the response (i.e. the $\beta_0 + \beta_1 x_i$ term) and then some un-explainable noise (the $\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)$ part). 
+
+While it has been convenient to write the model in this form, it is also possible to write the simple regression model as
+$$y_i \stackrel{ind}{\sim} N(\, \beta_0 + \beta_1x_i,\; \sigma^2 \,)$$
 
 This model contains three parameters $\beta_0, \beta_1$, and $\sigma$ but it certainly isn't clear how to estimate these three values. In this chapter, we'll develop a mechanism for taking observed data sampled from some distribution parameterized by some $\beta$, $\lambda$, $\sigma$, or $\theta$ and then estimating those parameters.
 
@@ -99,7 +102,7 @@ In this distribution, the region near zero is the most probable outcome, and lar
 ### Normal
 The Normal distribution is extremely commonly used in statistics and can be used to modeled continuous variables and is parameterized by the center $\mu$ and spread $\sigma$ parameters.
 
-$$f(x|\mu,\sigma) = \frac{1}{\sqrt{2\pi}\sigma} \exp \left[ -\frac{1}{2}\frac{(x-\mu)^2}{\sigma^2} \right]$$
+$$f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]$$
 where $\exp [w] = e^w$ is just a notational convenience. 
 
 ```{r, echo=FALSE}
@@ -247,7 +250,8 @@ P1 <-
   ggplot(data, aes(x=beta, y=L)) +
   geom_line() +
   annotate('path', x=c(8.62,8.62), y=c(1.415e-7, 0), color='blue') +
-  annotate('text', x=8.62, y=1.45e-7, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
+  annotate('text', x=8.62, y=1.52e-7, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
+  scale_y_continuous(limits=c(0,1.55e-7)) +
   labs( x = latex2exp::TeX('$\\beta$'), 
         y = latex2exp::TeX('$L(\\, \\beta \\,|\\, \\textbf{x} \\,)$'),
         title = latex2exp::TeX('Exponential Likelihood given $\\textbf{x}$') )
@@ -255,9 +259,9 @@ P2 <-
   ggplot(data, aes(x=beta, y=log(L) )) +
   geom_line() +
   annotate('path', x=c(8.62,8.62), y=c(-15.8, -30), color='blue') +
-  annotate('text', x=8.62, y=-15.3, label=latex2exp::TeX('$\\hat{\\lambda}$'), color='blue') +
-  scale_y_continuous(limits=c(-30,-15)) +
-  labs( x = latex2exp::TeX('$\\lambda$'), 
+  annotate('text', x=8.62, y=-14.8, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
+  scale_y_continuous(limits=c(-30,-14.5)) +
+  labs( x = latex2exp::TeX('$\\beta$'), 
         y = latex2exp::TeX('$logL(\\, \\lambda \\,|\\, \\textbf{x} \\,)$'),
         title = latex2exp::TeX('Exponential log-Likelihood given $\\textbf{x}$') )
 
@@ -339,7 +343,7 @@ optim(c(5,2), neglogL )
 ```
 
 ## Discussion
-1. How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and $\ge 0$ for all $x$. *While knowing the derivative function $f'(x)$ would allow us to be much more clever, lets think about how to do the maximization by just evaluating $f(x)$ for different values of $x$.
+1. How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and $\ge 0$ for all $x$. *While knowing the derivative function $f'(x)$ would allow us to be much more clever, lets think about how to do the maximization by just evaluating $f(x)$ for different values of $x$.*
 
 2. Convince yourself that if $x_0$ is the maximizer of $f(x)$, then it is also the maximizer of $log( f( x ) )$. This will rest on the idea that $log()$ is a strictly increasing function. 
 

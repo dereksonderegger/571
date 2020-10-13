@@ -109,14 +109,14 @@ Rmisc::multiplot(P1, P2, cols = 2)
 
 Clearly the model fit to the log transformed y-variable is a much better regression model. However, I would like to take the regression line and confidence interval back to the original y-scale. This is allowed by doing the inverse function $e^{\log(\hat{y})}$.
 
+For example if we fit a linear model for income ($y$) based on the amount of schooling the individual has received ($x$). In this case, I don't really want to make predictions on the $\log(y)$ scale, because (almost) nobody will understand magnitude difference between predicting 5 vs 6.
 
-
-While we may want to transform the response in order to satisfy the statistical assumptions, it is often necessary to back-transform to the original scale. For example if we fit a linear model for income ($y$) based on the amount of schooling the individual has received ($x$) 
+Suppose the model is 
 $$\log y=\beta_{0}+\beta_{1}x+\epsilon$$
 then we might want to give a prediction interval for an $x_{0}$ value. The predicted $log(income)$ value is 
-$$\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}$$
+$$\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}$$
 and we could calculate the appropriate predicted income as 
-$$\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}} = e^{log\left(\hat{y}_{0}\right)}$$ 
+$$\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}} = e^{log\left(\hat{y}_{0}\right)}$$ 
 Likewise if we had a confidence interval or prediction interval for $\log\left(\hat{y}_{0}\right)$ of the form $\left(l,u\right)$ then the appropriate interval for $\hat{y}_{0}$ is $\left(e^{l},e^{u}\right)$. Notice that while $\left(l,u\right)$ might be symmetric about $\log\left(\hat{y}_{0}\right)$, the back-transformed interval is not symmetric about $\hat{y}_{0}$.
 
 ```{r, fig.height=3}

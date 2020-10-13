@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-08" />
+<meta name="date" content="2020-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1248,6 +1248,7 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 </div>
 <div id="Exercises_TwoWayANOVA" class="section level2" number="6.6">
 <h2><span class="header-section-number">6.6</span> Exercises</h2>
+<p>As we have developed much of the necessary theory, we are moving into exercises that emphasize modeling decisions and interpretation. As such, grading of exercises will move to emphasizing interpretation and justification of why modeling decisions were made. For any R output produced, be certain to discuss what is important. Feel free to not show exploratory work, but please comment that you considered. Furthermore, as students progress, necessary analysis steps will not be listed and students will be expected to appropriately perform the necessary work and comment as appropriate. These are leading to, at the end of the course, students being given a dataset and, with no prompts as to what is an appropriate analysis, told to model the data appropriately.</p>
 <ol style="list-style-type: decimal">
 <li>In the <code>faraway</code> package, the data set <code>rats</code> has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective.
 <ol style="list-style-type: lower-alpha">
@@ -1268,10 +1269,10 @@ H_{a}:\;\left(\mu+\alpha_{2}+\beta_{2}+\left(\alpha\beta\right)_{22}\right)-\lef
 <li>Perform an appropriate set of tests to select a model for predicting <code>Butterfat</code>.</li>
 <li>Discuss your findings.</li>
 </ol></li>
-<li>In the <code>faraway</code> package, the dataset <code>alfalfa</code> has information from a study that examined the effect of seed innoculum, irrigation, and shade on alfalfa yield. This data has <span class="math inline">\(n=24\)</span> observations.
+<li>In the <code>faraway</code> package, the dataset <code>alfalfa</code> has information from a study that examined the effect of seed inoculum, irrigation, and shade on alfalfa yield. This data has <span class="math inline">\(n=25\)</span> observations.
 <ol style="list-style-type: lower-alpha">
-<li>Graph the data.</li>
-<li>Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment.</li>
+<li>Examine the help file for this dataset. Graph the data. What effects seem significant?</li>
+<li>Consider the main effects model with all three predictor variables. Which effects are significant? <em>Using the model you ultimately select, examine the diagnostic plots. These all look fine, but it is useful to see examples where everything is ok.</em></li>
 <li>Consider the model with <code>shade</code> and <code>inoculum</code> and the interaction between the two. Examine the anova table. Why does R complain that the fit is perfect? <em>Hint: Think about the degrees of freedom of the model compared to the sample size.</em></li>
 <li>Discuss your findings and the limitations of your investigation based on data.</li>
 </ol></li>

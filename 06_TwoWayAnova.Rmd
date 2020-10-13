@@ -504,6 +504,8 @@ warpbreaks %>%
 In the unbalanced case taking the average of the cell means produces a different answer than taking the average of the data. The `emmeans` package chooses to take the average of the cell means.
 
 ## Exercises {#Exercises_TwoWayANOVA}
+As we have developed much of the necessary theory, we are moving into exercises that emphasize modeling decisions and interpretation. As such, grading of exercises will move to emphasizing interpretation and justification of why modeling decisions were made. For any R output produced, be certain to discuss what is important. Feel free to not show exploratory work, but please comment that you considered. Furthermore, as students progress, necessary analysis steps will not be listed and students will be expected to appropriately perform the necessary work and comment as appropriate. These are leading to, at the end of the course, students being given a dataset and, with no prompts as to what is an appropriate analysis, told to model the data appropriately.
+
 1. In the `faraway` package, the data set `rats` has data on a gruesome experiment that examined the time till death of 48 rats when they were subjected to three different types of poison administered in four different manners (which they called treatments). We are interested in assessing which poison works the fastest as well as which administration method is most effective. 
     a. The response variable `time` needs to be transformed. To see this, we'll examine the diagnostic plots from the interaction model and there is clearly a problem with non-constant variance. We'll look at the Box-Cox family of transformations and see  that $y^{-1}$ is a reasonable transformation.
         ```{r, fig.height=2.5, eval=FALSE}
@@ -523,9 +525,9 @@ In the unbalanced case taking the average of the cell means produces a different
     b. Perform an appropriate set of tests to select a model for predicting `Butterfat`.
     c. Discuss your findings.
 
-3. In the `faraway` package, the dataset `alfalfa` has information from a study that examined the effect of seed innoculum, irrigation, and shade on alfalfa yield. This data has $n=24$ observations.
-    a. Graph the data. 
-    b. Consider the main effects model with all three predictor variables. Examine the diagnostic plots and comment.
+3. In the `faraway` package, the dataset `alfalfa` has information from a study that examined the effect of seed inoculum, irrigation, and shade on alfalfa yield. This data has $n=25$ observations.
+    a. Examine the help file for this dataset. Graph the data. What effects seem significant? 
+    b. Consider the main effects model with all three predictor variables. Which effects are significant? *Using the model you ultimately select, examine the diagnostic plots. These all look fine, but it is useful to see examples where everything is ok.*
     c. Consider the model with `shade` and `inoculum` and the interaction between the two. Examine the anova table.  Why does R complain that the fit is perfect? *Hint: Think about the degrees of freedom of the model compared to the sample size.*
     d. Discuss your findings and the limitations of your investigation based on data.
 

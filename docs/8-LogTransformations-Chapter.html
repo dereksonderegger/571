@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-08" />
+<meta name="date" content="2020-10-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -441,12 +441,13 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <p>When the normality or constant variance assumption is violated, sometimes it is possible to transform the response to satisfy the assumption. Often times count data is analyzed as <code>log(count)</code> and weights are analyzed after taking a square root or cube root transform. Statistics involving income or other monetary values are usually analyzed on the log scale so as to reduce the leverage of high income observations.</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
 <p>Clearly the model fit to the log transformed y-variable is a much better regression model. However, I would like to take the regression line and confidence interval back to the original y-scale. This is allowed by doing the inverse function <span class="math inline">\(e^{\log(\hat{y})}\)</span>.</p>
-<p>While we may want to transform the response in order to satisfy the statistical assumptions, it is often necessary to back-transform to the original scale. For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>)
+<p>For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>). In this case, I don’t really want to make predictions on the <span class="math inline">\(\log(y)\)</span> scale, because (almost) nobody will understand magnitude difference between predicting 5 vs 6.</p>
+<p>Suppose the model is
 <span class="math display">\[\log y=\beta_{0}+\beta_{1}x+\epsilon\]</span>
 then we might want to give a prediction interval for an <span class="math inline">\(x_{0}\)</span> value. The predicted <span class="math inline">\(log(income)\)</span> value is
-<span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}\]</span>
+<span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}\]</span>
 and we could calculate the appropriate predicted income as
-<span class="math display">\[\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}} = e^{log\left(\hat{y}_{0}\right)}\]</span>
+<span class="math display">\[\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}} = e^{log\left(\hat{y}_{0}\right)}\]</span>
 Likewise if we had a confidence interval or prediction interval for <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span> of the form <span class="math inline">\(\left(l,u\right)\)</span> then the appropriate interval for <span class="math inline">\(\hat{y}_{0}\)</span> is <span class="math inline">\(\left(e^{l},e^{u}\right)\)</span>. Notice that while <span class="math inline">\(\left(l,u\right)\)</span> might be symmetric about <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span>, the back-transformed interval is not symmetric about <span class="math inline">\(\hat{y}_{0}\)</span>.</p>
 <div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="8-LogTransformations-Chapter.html#cb202-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log</span>(y) <span class="op">~</span><span class="st"> </span>x, data)</span>
 <span id="cb202-2"><a href="8-LogTransformations-Chapter.html#cb202-2" aria-hidden="true"></a>data &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></span>
