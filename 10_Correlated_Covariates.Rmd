@@ -1,5 +1,8 @@
 # Correlated Covariates {#CorrelatedCovariates_Chapter}
 
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
 
 ## Interpretation with Correlated Covariates
 
@@ -27,9 +30,12 @@ Perch Example: We might be interested in estimating the weight of a fish based o
 We first look at the data and observe the expected relationship between length and weight.
 
 ```{r, warning=FALSE, message=FALSE}
-file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'  # online
-file <- '~/github/571/data-raw/Fish.csv'                                                   # on my computer
-fish <- read.table(file, header=TRUE, skip=111, sep=',')
+# File location on the internet or on my local computer.
+file <- 'https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv'
+file <- '~/github/571/data-raw/Fish.csv'    
+
+fish <- read.table(file, header=TRUE, skip=111, sep=',') %>%
+  filter( !is.na(Weight) ) 
 
 ### generate a pairs plot in a couple of different ways...
 # pairs(fish)
@@ -62,4 +68,27 @@ When you have two variables in a model that are highly positively correlated, yo
 
 In this case the sum of the three length covariate estimates was approximately $31$ in both cases, but with three length variables, the second could be negative the third be positive with approximately the same magnitude and we get approximately the same model as with both the second and third length variables missing from the model.
 
-In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. We will talk about how to recognize these situations and what to do about them later in the course.
+$$ y_i = \beta_0 + \beta_1 L_1 + \beta_2 L_2 + \beta_3 L_3 + \epsilon_i$$
+but if the covariates are highly correlated, then approximately $L_1 = L_2 = L_3 = L$ and this equation could be written:
+
+$$ y_i = \beta_0 + (\beta_1 + \beta_2 + \beta_3) L_3 + \epsilon_i$$
+$$ y_i = \beta_0 + \left[(\beta_1-10) + \beta_2 + (\beta_3+10)\right] L_3 + \epsilon_i$$
+
+
+In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. 
+
+## Solutions
+
+In general you have three ways to deal with correlated covariates.
+
+1. Select one of the correlated covariates to include in the model. You could either select the covariate with the highest correlation with the response. Alternatively you could use your scientific judgment as to which covariate is most appropriate.
+
+2. You could create an _index_ variable that combines the correlated covariates into a single amalgamation variable. For example, we could create $L = (L_1 + L_2 + L_3)/3$ to be the average of the three length measurements.
+
+3. We could use some multivariate method such as _Principle Components Analysis_ to inform us on how to make the index variable. We won't address this in this here, though.
+
+4. Just not worry about it. Remember, the only problem is with the _interpretation_ of the parameters. If we only care about making accurate predictions within the scope of our data, then including highly correlated variables doesn't matter. However, if you are making predictions away from the data, the flipped signs might be a big deal. 
+
+## Exercises
+
+
