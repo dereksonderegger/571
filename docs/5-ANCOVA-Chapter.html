@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-15" />
+<meta name="date" content="2020-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -401,6 +401,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender. One way to remember that this is an interaction is because the effect of income on gambling rate is dependent on the gender of the individual.</p></li>
 </ol>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p>*It should be noted here, that the constant variance assumption is being violated and we really ought to do a transformation. I would recommend performing a <span class="math inline">\(\sqrt{\cdot}\)</span> transformation on both the <code>gamble</code> and <code>income</code> covariates, but we’ll leave them as is for now.</p>
 <p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 </div>
 <div id="ANCOVA_Additive" class="section level2" number="5.2">
@@ -537,7 +538,7 @@ where the new fourth column is the what I would get if I multiplied the <span cl
 <span id="cb88-19"><a href="5-ANCOVA-Chapter.html#cb88-19" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
 <span id="cb88-20"><a href="5-ANCOVA-Chapter.html#cb88-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
 <span id="cb88-21"><a href="5-ANCOVA-Chapter.html#cb88-21" aria-hidden="true"></a></span>
-<span id="cb88-22"><a href="5-ANCOVA-Chapter.html#cb88-22" aria-hidden="true"></a><span class="co"># Make a nice plot that includes the regreesion line.</span></span>
+<span id="cb88-22"><a href="5-ANCOVA-Chapter.html#cb88-22" aria-hidden="true"></a><span class="co"># Make a nice plot that includes the regression line.</span></span>
 <span id="cb88-23"><a href="5-ANCOVA-Chapter.html#cb88-23" aria-hidden="true"></a><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb88-24"><a href="5-ANCOVA-Chapter.html#cb88-24" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</span>
 <span id="cb88-25"><a href="5-ANCOVA-Chapter.html#cb88-25" aria-hidden="true"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>

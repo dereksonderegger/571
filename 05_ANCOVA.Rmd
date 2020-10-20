@@ -49,6 +49,8 @@ ggplot(temp, aes(x=income, col=sex)) +
       facet_wrap(~ method) 
 ```
 
+*It should be noted here, that the constant variance assumption is being violated and we really ought to do a transformation. I would recommend performing a $\sqrt{\cdot}$ transformation on both the `gamble` and `income` covariates, but we'll leave them as is for now.
+
 We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix $\boldsymbol{X}$.
 
 ## Offset parallel Lines (aka additive models) {#ANCOVA_Additive}
@@ -190,7 +192,7 @@ teengamb <- teengamb %>%
   dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
   cbind( predict(m1, interval='conf') )
 
-# Make a nice plot that includes the regreesion line.
+# Make a nice plot that includes the regression line.
 ggplot(teengamb, aes(x=income, col=sex, fill=sex)) + 
       geom_ribbon(aes(ymin=lwr, ymax=upr),
                   alpha=.3) +   # how solid the layer is

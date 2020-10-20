@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-15" />
+<meta name="date" content="2020-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -417,6 +417,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The Poisson distribution is used to model the number of events that happen in some unit of time or space. This distribution is often used to model events that can only be positive integers. This distribution is parameterized by <span class="math inline">\(\lambda\)</span>, which represents the expected number of events that happen (as defined as the average over an infinitely large number of draws). Because <span class="math inline">\(\lambda\)</span> represents the average number of events, the <span class="math inline">\(\lambda\)</span> parameter must be greater than or equal to 0.</p>
 <p>The function that defines the relationship between the parameter <span class="math inline">\(\lambda\)</span> and what values are most probable is called the <em>probability mass function</em> when talking about discrete random variables and <em>probability density functions</em> in the continuous case. Either way, these functions are traditionally notated using <span class="math inline">\(f(x)\)</span>.
 <span class="math display">\[f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}\]</span></p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
 <p>The notation <span class="math inline">\(f(x|\lambda)\)</span> read as “f <em>given</em> <span class="math inline">\(\lambda\)</span>” and is used to denote that this is a function that describes what values of the data <span class="math inline">\(X\)</span> are most probable and that the function depends on the parameter value. This is emphasizing that if we were to change the parameter value (to say <span class="math inline">\(\lambda = 10\)</span>), then a different set of data values would be more probable. In the above example with <span class="math inline">\(\lambda = 3.5\)</span>, the most probable outcome is <span class="math inline">\(3\)</span> but we aren’t surprised if we were to observe a value of <span class="math inline">\(x=1,2,\)</span> or <span class="math inline">\(4\)</span>. However, from this graph, we see that <span class="math inline">\(x=10\)</span> or <span class="math inline">\(x=15\)</span> would be highly improbable.</p>
 </div>
@@ -424,6 +426,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">17.2.2</span> Exponential</h3>
 <p>The Exponential distribution can be used to model events that take on a positive real value and the distribution of values has some skewness. We will parameterize this distribution using <span class="math inline">\(\beta\)</span> as the mean of the distribution.</p>
 <p><span class="math display">\[f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x &gt; 0\]</span></p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
 <p>In this distribution, the region near zero is the most probable outcome, and larger observations are less probable.</p>
 </div>
@@ -432,6 +436,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The Normal distribution is extremely commonly used in statistics and can be used to modeled continuous variables and is parameterized by the center <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span> parameters.</p>
 <p><span class="math display">\[f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]\]</span>
 where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational convenience.</p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
 <p>All of these distributions (and there are many, many more distributions commonly used) have some mathematical function that defines the how probable a region of response values is and that function depends on the parameters. Importantly <span class="math inline">\(X\)</span> regions with the highest <span class="math inline">\(f(x|\theta)\)</span> are the most probable data values.</p>
 <p>There are many additional mathematical details that go into these density functions but the important aspect is that they tell us what data values are most probable given some parameter values <span class="math inline">\(\theta\)</span>.</p>
@@ -447,22 +456,27 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 <p><span class="math display">\[\begin{aligned}
 \mathcal{L}(\lambda|x) = f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!}
 \end{aligned}\]</span></p>
-<p>If we have observed <span class="math inline">\(x=4\)</span>, then <span class="math inline">\(\mathcal{L}(\lambda|x=4)\)</span> is the following function
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-317-1.png" width="672" /></p>
+<p>If we have observed <span class="math inline">\(x=4\)</span>, then <span class="math inline">\(\mathcal{L}(\lambda|x=4)\)</span> is the following function</p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-317-1.png" width="672" /></p>
 <p>Our best estimate for <span class="math inline">\(\lambda\)</span> is the value that maximizes <span class="math inline">\(\mathcal{L}(\lambda|x)\)</span>. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by taking the log of the Likelihood function. Because the log function is monotonic, maximizing the Likelihood function is equivalent to maximizing the log-Likelihood function. Second, if taking the derivative is impossible, we could just use a numerical solving algorithm to find the value of <span class="math inline">\(\lambda\)</span> that maximizes the log-likelihood function. Numerical solvers are convenient, but are only accurate to machine tolerance you specify. In this case where <span class="math inline">\(x=4\)</span>, the actual maximum likelihood value is <span class="math inline">\(\hat{\lambda}=4\)</span>.</p>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="17-maximum-likelihood-priciple.html#cb567-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
-<span id="cb567-2"><a href="17-maximum-likelihood-priciple.html#cb567-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb567-3"><a href="17-maximum-likelihood-priciple.html#cb567-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
-<span id="cb567-4"><a href="17-maximum-likelihood-priciple.html#cb567-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># take the log</span></span>
-<span id="cb567-5"><a href="17-maximum-likelihood-priciple.html#cb567-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># multiply by -1</span></span>
-<span id="cb567-6"><a href="17-maximum-likelihood-priciple.html#cb567-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()      </span>
-<span id="cb567-7"><a href="17-maximum-likelihood-priciple.html#cb567-7" aria-hidden="true"></a>}</span>
-<span id="cb567-8"><a href="17-maximum-likelihood-priciple.html#cb567-8" aria-hidden="true"></a></span>
-<span id="cb567-9"><a href="17-maximum-likelihood-priciple.html#cb567-9" aria-hidden="true"></a><span class="co"># Optimize function will find the maximum of the Likelihood function</span></span>
-<span id="cb567-10"><a href="17-maximum-likelihood-priciple.html#cb567-10" aria-hidden="true"></a><span class="co"># over the range of lambda values [0, 20]. By default, the optimize function</span></span>
-<span id="cb567-11"><a href="17-maximum-likelihood-priciple.html#cb567-11" aria-hidden="true"></a><span class="co"># finds the minimum, but has an option to find the maximum. Alternatively</span></span>
-<span id="cb567-12"><a href="17-maximum-likelihood-priciple.html#cb567-12" aria-hidden="true"></a><span class="co"># we could find the minimum of the -logL function.</span></span>
-<span id="cb567-13"><a href="17-maximum-likelihood-priciple.html#cb567-13" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="17-maximum-likelihood-priciple.html#cb571-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb571-2"><a href="17-maximum-likelihood-priciple.html#cb571-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb571-3"><a href="17-maximum-likelihood-priciple.html#cb571-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb571-4"><a href="17-maximum-likelihood-priciple.html#cb571-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># take the log</span></span>
+<span id="cb571-5"><a href="17-maximum-likelihood-priciple.html#cb571-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># multiply by -1</span></span>
+<span id="cb571-6"><a href="17-maximum-likelihood-priciple.html#cb571-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()      </span>
+<span id="cb571-7"><a href="17-maximum-likelihood-priciple.html#cb571-7" aria-hidden="true"></a>}</span>
+<span id="cb571-8"><a href="17-maximum-likelihood-priciple.html#cb571-8" aria-hidden="true"></a></span>
+<span id="cb571-9"><a href="17-maximum-likelihood-priciple.html#cb571-9" aria-hidden="true"></a><span class="co"># Optimize function will find the maximum of the Likelihood function</span></span>
+<span id="cb571-10"><a href="17-maximum-likelihood-priciple.html#cb571-10" aria-hidden="true"></a><span class="co"># over the range of lambda values [0, 20]. By default, the optimize function</span></span>
+<span id="cb571-11"><a href="17-maximum-likelihood-priciple.html#cb571-11" aria-hidden="true"></a><span class="co"># finds the minimum, but has an option to find the maximum. Alternatively</span></span>
+<span id="cb571-12"><a href="17-maximum-likelihood-priciple.html#cb571-12" aria-hidden="true"></a><span class="co"># we could find the minimum of the -logL function.</span></span>
+<span id="cb571-13"><a href="17-maximum-likelihood-priciple.html#cb571-13" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
 <pre><code>## $minimum
 ## [1] 3.999993
 ## 
@@ -473,15 +487,21 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 \mathcal{L}(\lambda|\textbf{x}) = \prod_{i=1}^{n}f(x_i|\lambda) = \prod_{i=1}^n\frac{e^{-\lambda} \lambda^x_i}{x_i!}
 \end{aligned}\]</span></p>
 <p>So, suppose we have observed <span class="math inline">\(\textbf{x} = \{4,6,3,3,2,4,3,2\}\)</span>. We could maximize this function and discover that the maximum occurs at <span class="math inline">\(\hat{\lambda} = \bar{x} = 3.375\)</span>.</p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-319-1.png" width="672" /></p>
 <p>If we are using the log-Likelihood, then the multiplication is equivalent to summing and we’ll define and subsequently optimize our log-Likelihood function like this:</p>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="17-maximum-likelihood-priciple.html#cb569-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
-<span id="cb569-2"><a href="17-maximum-likelihood-priciple.html#cb569-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb569-3"><a href="17-maximum-likelihood-priciple.html#cb569-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
-<span id="cb569-4"><a href="17-maximum-likelihood-priciple.html#cb569-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb569-5"><a href="17-maximum-likelihood-priciple.html#cb569-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb569-6"><a href="17-maximum-likelihood-priciple.html#cb569-6" aria-hidden="true"></a>}</span>
-<span id="cb569-7"><a href="17-maximum-likelihood-priciple.html#cb569-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="17-maximum-likelihood-priciple.html#cb575-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb575-2"><a href="17-maximum-likelihood-priciple.html#cb575-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb575-3"><a href="17-maximum-likelihood-priciple.html#cb575-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb575-4"><a href="17-maximum-likelihood-priciple.html#cb575-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb575-5"><a href="17-maximum-likelihood-priciple.html#cb575-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb575-6"><a href="17-maximum-likelihood-priciple.html#cb575-6" aria-hidden="true"></a>}</span>
+<span id="cb575-7"><a href="17-maximum-likelihood-priciple.html#cb575-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
 <pre><code>## $minimum
 ## [1] 3.37499
 ## 
@@ -494,14 +514,25 @@ where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational c
 <p><span class="math display">\[\mathcal{L}(\mu, \sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \beta e^{\beta x_i}\]</span>
 which is maximized at <span class="math inline">\(\hat{\mu} = \bar{x} = 8.62\)</span>. We can numerically see this following the same process as previously seen.</p>
 <pre><code>## [1] 8.62</code></pre>
+<pre><code>## Warning: Problem with `mutate()` input `L`.
+## ℹ NaNs produced
+## ℹ Input `L` is `dexp(.$x, rate = 1/.$beta)`.</code></pre>
+<pre><code>## Warning in dexp(.$x, rate = 1/.$beta): NaNs produced</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-321-1.png" width="672" /></p>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="17-maximum-likelihood-priciple.html#cb572-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">7.2</span>, <span class="fl">6.1</span>, <span class="fl">9.0</span>, <span class="dv">12</span>, <span class="fl">8.8</span>)</span>
-<span id="cb572-2"><a href="17-maximum-likelihood-priciple.html#cb572-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb572-3"><a href="17-maximum-likelihood-priciple.html#cb572-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
-<span id="cb572-4"><a href="17-maximum-likelihood-priciple.html#cb572-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb572-5"><a href="17-maximum-likelihood-priciple.html#cb572-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb572-6"><a href="17-maximum-likelihood-priciple.html#cb572-6" aria-hidden="true"></a>}</span>
-<span id="cb572-7"><a href="17-maximum-likelihood-priciple.html#cb572-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>) )</span></code></pre></div>
+<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="17-maximum-likelihood-priciple.html#cb585-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">7.2</span>, <span class="fl">6.1</span>, <span class="fl">9.0</span>, <span class="dv">12</span>, <span class="fl">8.8</span>)</span>
+<span id="cb585-2"><a href="17-maximum-likelihood-priciple.html#cb585-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb585-3"><a href="17-maximum-likelihood-priciple.html#cb585-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
+<span id="cb585-4"><a href="17-maximum-likelihood-priciple.html#cb585-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb585-5"><a href="17-maximum-likelihood-priciple.html#cb585-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb585-6"><a href="17-maximum-likelihood-priciple.html#cb585-6" aria-hidden="true"></a>}</span>
+<span id="cb585-7"><a href="17-maximum-likelihood-priciple.html#cb585-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>) )</span></code></pre></div>
 <pre><code>## $minimum
 ## [1] 8.61999
 ## 
@@ -517,23 +548,30 @@ which is maximized at <span class="math inline">\(\hat{\mu} = \bar{x} = 8.62\)</
 <span class="math display">\[\hat{\mu} = \bar{x} = 8.16666\]</span>
 <span class="math display">\[\hat{\sigma}_{mle} = \sqrt{ \frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2 } = 1.8634\]</span>
 which is somewhat unexpected because the typical estimator we use has a <span class="math inline">\(\frac{1}{n-1}\)</span> multiplier.</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="17-maximum-likelihood-priciple.html#cb574-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
-<span id="cb574-2"><a href="17-maximum-likelihood-priciple.html#cb574-2" aria-hidden="true"></a>xbar &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
-<span id="cb574-3"><a href="17-maximum-likelihood-priciple.html#cb574-3" aria-hidden="true"></a>s2 &lt;-<span class="st"> </span><span class="kw">sum</span>( (x <span class="op">-</span><span class="st"> </span>xbar)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span> )</span>
-<span id="cb574-4"><a href="17-maximum-likelihood-priciple.html#cb574-4" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s2)</span></code></pre></div>
+<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="17-maximum-likelihood-priciple.html#cb587-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb587-2"><a href="17-maximum-likelihood-priciple.html#cb587-2" aria-hidden="true"></a>xbar &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb587-3"><a href="17-maximum-likelihood-priciple.html#cb587-3" aria-hidden="true"></a>s2 &lt;-<span class="st"> </span><span class="kw">sum</span>( (x <span class="op">-</span><span class="st"> </span>xbar)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span> )</span>
+<span id="cb587-4"><a href="17-maximum-likelihood-priciple.html#cb587-4" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s2)</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;mu&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## Warning: Removed 35050 rows containing non-finite values (stat_contour).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-324-1.png" width="672" /></p>
-<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="17-maximum-likelihood-priciple.html#cb575-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
-<span id="cb575-2"><a href="17-maximum-likelihood-priciple.html#cb575-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb575-3"><a href="17-maximum-likelihood-priciple.html#cb575-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb575-4"><a href="17-maximum-likelihood-priciple.html#cb575-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb575-5"><a href="17-maximum-likelihood-priciple.html#cb575-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb575-6"><a href="17-maximum-likelihood-priciple.html#cb575-6" aria-hidden="true"></a>}</span>
-<span id="cb575-7"><a href="17-maximum-likelihood-priciple.html#cb575-7" aria-hidden="true"></a></span>
-<span id="cb575-8"><a href="17-maximum-likelihood-priciple.html#cb575-8" aria-hidden="true"></a><span class="co"># Bivariate optimization uses the optim function that only can search</span></span>
-<span id="cb575-9"><a href="17-maximum-likelihood-priciple.html#cb575-9" aria-hidden="true"></a><span class="co"># for a minimum. The first argument is an initial guess to start the algorithm.</span></span>
-<span id="cb575-10"><a href="17-maximum-likelihood-priciple.html#cb575-10" aria-hidden="true"></a><span class="co"># So long as the start point isn&#39;t totally insane, the numerical algorithm should</span></span>
-<span id="cb575-11"><a href="17-maximum-likelihood-priciple.html#cb575-11" aria-hidden="true"></a><span class="co"># be fine.</span></span>
-<span id="cb575-12"><a href="17-maximum-likelihood-priciple.html#cb575-12" aria-hidden="true"></a><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>), neglogL )  </span></code></pre></div>
+<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="17-maximum-likelihood-priciple.html#cb591-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb591-2"><a href="17-maximum-likelihood-priciple.html#cb591-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb591-3"><a href="17-maximum-likelihood-priciple.html#cb591-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
+<span id="cb591-4"><a href="17-maximum-likelihood-priciple.html#cb591-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb591-5"><a href="17-maximum-likelihood-priciple.html#cb591-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb591-6"><a href="17-maximum-likelihood-priciple.html#cb591-6" aria-hidden="true"></a>}</span>
+<span id="cb591-7"><a href="17-maximum-likelihood-priciple.html#cb591-7" aria-hidden="true"></a></span>
+<span id="cb591-8"><a href="17-maximum-likelihood-priciple.html#cb591-8" aria-hidden="true"></a><span class="co"># Bivariate optimization uses the optim function that only can search</span></span>
+<span id="cb591-9"><a href="17-maximum-likelihood-priciple.html#cb591-9" aria-hidden="true"></a><span class="co"># for a minimum. The first argument is an initial guess to start the algorithm.</span></span>
+<span id="cb591-10"><a href="17-maximum-likelihood-priciple.html#cb591-10" aria-hidden="true"></a><span class="co"># So long as the start point isn&#39;t totally insane, the numerical algorithm should</span></span>
+<span id="cb591-11"><a href="17-maximum-likelihood-priciple.html#cb591-11" aria-hidden="true"></a><span class="co"># be fine.</span></span>
+<span id="cb591-12"><a href="17-maximum-likelihood-priciple.html#cb591-12" aria-hidden="true"></a><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>), neglogL )  </span></code></pre></div>
 <pre><code>## $par
 ## [1] 8.166924 1.863391
 ## 

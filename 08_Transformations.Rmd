@@ -492,10 +492,12 @@ In the table below $\beta$ represents the group offset value, or the slope value
 2. We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
     a. Load the `EmployedACS` dataset from the `Lock5Data` package.
     b. Create a box plot showing the relationship between `Race` and `Income`.
-    c. Consider the boxcox family of transformations of `Income`. What transformation seems appropriate.
-    d. Using your transformed `Income` variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. *Importantly, we haven't accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.*
+    c. Consider the boxcox family of transformations of `Income`. What transformation seems appropriate? *Because there are people with zero income, we have to do something. We could either use a transformation like $\sqrt{y}$, remove all the zero observations, or to add a small value to the zero observations. We'll add 0.05 to the zero values, which represents the zero income people receiving $\$50$.*
+    d. Using your log-transformed `Income` variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. Provide (and interpret) the point estimates for the ratios, even though they aren't statistically significant. *Importantly, we haven't accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.*
 
-3. ANOVA with log(y) response where there is a significant difference.
+3. The dataset `Lock5Data::HomesForSale` has a random sample of home prices in 4 different states. Consider a regression model predicting the `Price` as a function of `Size`.
+    a) Examine a scatterplot of `Price` and `Size` and justify a log transformation to both.
+    b) Calculate and interpret the estimated effect of a $10\%$ increase in home size on the price. 
+    c) Calculate and interpret the difference between California and Pennsylvania in terms of average house price.
 
-4. ANCOVA with log(y) and log(x) 
 
