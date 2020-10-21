@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-10-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -273,7 +273,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
 <li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
 </ul></li>
-<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log_10-and-log-transformed-variables"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</a>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log-transformed-variable-coefficients"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log\)</span> transformed variable coefficients</a>
 <ul>
 <li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
 <li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
@@ -613,8 +613,8 @@ Similar situations might arise in biological settings, such as the volume of con
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-140-1.png" width="672" /></p>
 </div>
 </div>
-<div id="interpretation-of-log_10-and-log-transformed-variables" class="section level2" number="8.4">
-<h2><span class="header-section-number">8.4</span> Interpretation of <span class="math inline">\(\log_{10}\)</span> and <span class="math inline">\(\log\)</span> transformed variables</h2>
+<div id="interpretation-of-log-transformed-variable-coefficients" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> Interpretation of <span class="math inline">\(\log\)</span> transformed variable coefficients</h2>
 <p>One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Compared to taking the square root, <span class="math inline">\(\log\)</span> transformations are surprisingly interpretable on the original scale. Here we look at the interpretation of log transformed variables.</p>
 <p>To investigate the effects of a log transformation, we’ll examine a dataset that predicts the writing scores of <span class="math inline">\(n=200\)</span> students using the gender, reading and math scores. This example was taken from the UCLA Statistical Consulting Group.</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="8-LogTransformations-Chapter.html#cb220-1" aria-hidden="true"></a>file &lt;-<span class="st"> &#39;https://stats.idre.ucla.edu/wp-content/uploads/2016/02/lgtrans.csv&#39;</span>  <span class="co"># on the web</span></span>
@@ -707,13 +707,13 @@ therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> a
   = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
   = e^{\hat{\beta}_{2}}
 \]</span></p>
-<p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.011}=1.01\)</span>
+<p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.0113}=1.011\)</span>
 meaning there is an estimated <span class="math inline">\(1\%\)</span> increase in <code>write</code> score for every 1-point increase in <code>read</code> score.</p>
 <p>If we are interested in, say, a 20-unit increase in <span class="math inline">\(x\)</span>, then that would result in an increase of</p>
 <p><span class="math display">\[\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\beta}_{0}+\hat{\beta}_{2} \, x}}
  =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
  = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}\]</span></p>
-<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
+<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.0113^{20} = 1.25\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="8-LogTransformations-Chapter.html#cb234-1" aria-hidden="true"></a><span class="co"># to make emmeans calculate this, we must specify a 1-unit or 20-unit increase</span></span>
 <span id="cb234-2"><a href="8-LogTransformations-Chapter.html#cb234-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">51</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb234-3"><a href="8-LogTransformations-Chapter.html#cb234-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
@@ -722,10 +722,10 @@ meaning there is an estimated <span class="math inline">\(1\%\)</span> increase 
 ## 
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="8-LogTransformations-Chapter.html#cb236-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">70</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="8-LogTransformations-Chapter.html#cb236-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">70</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb236-2"><a href="8-LogTransformations-Chapter.html#cb236-2" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
 <pre><code>##  contrast ratio     SE  df t.ratio p.value
-##  70 / 50   1.25 0.0256 197 11.057  &lt;.0001 
+##  90 / 70   1.25 0.0256 197 11.057  &lt;.0001 
 ## 
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
@@ -766,20 +766,24 @@ and consider two different values of <span class="math inline">\(x\)</span> (whi
 <p>We should see a
 <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
 difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="8-LogTransformations-Chapter.html#cb242-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">60</span>,<span class="dv">40</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="8-LogTransformations-Chapter.html#cb242-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, revpairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">8</span>)))</span></code></pre></div>
 <pre><code>## $emmeans
-##  read emmean    SE  df lower.CL upper.CL
-##    60   57.1 0.643 197     55.9     58.4
-##    40   45.4 0.806 197     43.8     46.9
+##  read emmean   SE  df lower.CL upper.CL
+##     2 -41.66 8.21 197    -57.9   -25.46
+##     4 -21.53 6.47 197    -34.3    -8.78
+##     8  -1.39 4.72 197    -10.7     7.92
 ## 
 ## Results are averaged over the levels of: gender 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast estimate   SE  df t.ratio p.value
-##  60 - 40      11.8 1.02 197 11.493  &lt;.0001 
+##  4 - 2        20.1 1.75 197 11.493  &lt;.0001 
+##  8 - 2        40.3 3.50 197 11.493  &lt;.0001 
+##  8 - 4        20.1 1.75 197 11.493  &lt;.0001 
 ## 
-## Results are averaged over the levels of: gender</code></pre>
+## Results are averaged over the levels of: gender 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 <div id="log-transformed-response-log-transformed-covariate" class="section level3" number="8.4.3">
 <h3><span class="header-section-number">8.4.3</span> Log-transformed response, log-transformed covariate</h3>

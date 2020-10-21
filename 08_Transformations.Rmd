@@ -274,7 +274,7 @@ ggplot(pred.data, aes(x=Area)) +
 ```
 
 
-## Interpretation of $\log_{10}$ and $\log$ transformed variables
+## Interpretation of $\log$ transformed variable coefficients
 
 One of the most difficult issues surrounding transformed variables is that the interpretation is difficult. Compared to taking the square root, $\log$ transformations are surprisingly interpretable on the original scale. Here we look at the interpretation of log transformed variables.
 
@@ -368,7 +368,7 @@ $$
   = e^{\hat{\beta}_{2}}
 $$
 
-For our writing scores example we have that $e^{\hat{\beta}_{2}}=e^{0.011}=1.01$
+For our writing scores example we have that $e^{\hat{\beta}_{2}}=e^{0.0113}=1.011$
 meaning there is an estimated $1\%$ increase in `write` score for every 1-point increase in `read` score. 
 
 If we are interested in, say, a 20-unit increase in $x$, then that would result in an increase of 
@@ -377,13 +377,13 @@ $$\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\be
  =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
  = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}$$
  
-and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22$$ or a 22% increase in writing score for a 20-point increase in reading score.
+and for the writing scores we have $$e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.0113^{20} = 1.25$$ or a 22% increase in writing score for a 20-point increase in reading score.
 
 ```{r}
 # to make emmeans calculate this, we must specify a 1-unit or 20-unit increase
 emmeans(model, pairwise ~ read, at=list(read=c(51,50)), type='response') %>% 
   .[['contrasts']]
-emmeans(model, pairwise ~ read, at=list(read=c(70,50)), type='response') %>% 
+emmeans(model, pairwise ~ read, at=list(read=c(90,70)), type='response') %>% 
   .[['contrasts']]
 ```
 
@@ -428,7 +428,7 @@ $$29.045 \; \log \left( 1.5 \right) = 11.78$$
 difference in $\hat{y}$ values for the first and second students and the second and third.
 
 ```{r}
-emmeans(model, pairwise~log(read), at=list(read=c(60,40)))
+emmeans(model, revpairwise~log(read), at=list(read=c(2,4,8)))
 ```
 
 ### Log-transformed response, log-transformed covariate

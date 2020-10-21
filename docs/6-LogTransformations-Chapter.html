@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-08" />
+<meta name="date" content="2020-10-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -283,6 +283,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8" data-path="8-CorrelatedCovariates-Chapter.html"><a href="8-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>8</b> Correlated Covariates</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="8-CorrelatedCovariates-Chapter.html"><a href="8-CorrelatedCovariates-Chapter.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>8.1</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="8.2" data-path="8-CorrelatedCovariates-Chapter.html"><a href="8-CorrelatedCovariates-Chapter.html#solutions"><i class="fa fa-check"></i><b>8.2</b> Solutions</a></li>
+<li class="chapter" data-level="8.3" data-path="8-CorrelatedCovariates-Chapter.html"><a href="8-CorrelatedCovariates-Chapter.html#exercises"><i class="fa fa-check"></i><b>8.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="9" data-path="9-VariableSelection-Chapter.html"><a href="9-VariableSelection-Chapter.html"><i class="fa fa-check"></i><b>9</b> Variable Selection</a>
 <ul>
@@ -337,7 +339,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="13.1" data-path="13-poisson-regression.html"><a href="13-poisson-regression.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>13.1</b> Randomized Complete Block Design (RCBD)</a></li>
 <li class="chapter" data-level="13.2" data-path="13-poisson-regression.html"><a href="13-poisson-regression.html#split-plot-designs"><i class="fa fa-check"></i><b>13.2</b> Split-plot designs</a></li>
-<li class="chapter" data-level="13.3" data-path="13-poisson-regression.html"><a href="13-poisson-regression.html#exercises"><i class="fa fa-check"></i><b>13.3</b> Exercises</a></li>
+<li class="chapter" data-level="13.3" data-path="13-poisson-regression.html"><a href="13-poisson-regression.html#exercises-1"><i class="fa fa-check"></i><b>13.3</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="14" data-path="14-maximum-likelihood-priciple.html"><a href="14-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>14</b> Maximum Likelihood Priciple</a>
 <ul>
@@ -356,7 +358,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.3.3" data-path="14-maximum-likelihood-priciple.html"><a href="14-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>14.3.3</b> Normal</a></li>
 </ul></li>
 <li class="chapter" data-level="14.4" data-path="14-maximum-likelihood-priciple.html"><a href="14-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>14.4</b> Discussion</a></li>
-<li class="chapter" data-level="14.5" data-path="14-maximum-likelihood-priciple.html"><a href="14-maximum-likelihood-priciple.html#exercises-1"><i class="fa fa-check"></i><b>14.5</b> Exercises</a></li>
+<li class="chapter" data-level="14.5" data-path="14-maximum-likelihood-priciple.html"><a href="14-maximum-likelihood-priciple.html#exercises-2"><i class="fa fa-check"></i><b>14.5</b> Exercises</a></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
 <ul>
@@ -438,12 +440,13 @@ where <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N\left(0,\sigm
 <p>When the normality or constant variance assumption is violated, sometimes it is possible to transform the response to satisfy the assumption. Often times count data is analyzed as <code>log(count)</code> and weights are analyzed after taking a square root or cube root transform. Statistics involving income or other monetary values are usually analyzed on the log scale so as to reduce the leverage of high income observations.</p>
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Clearly the model fit to the log transformed y-variable is a much better regression model. However, I would like to take the regression line and confidence interval back to the original y-scale. This is allowed by doing the inverse function <span class="math inline">\(e^{\log(\hat{y})}\)</span>.</p>
-<p>While we may want to transform the response in order to satisfy the statistical assumptions, it is often necessary to back-transform to the original scale. For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>)
+<p>For example if we fit a linear model for income (<span class="math inline">\(y\)</span>) based on the amount of schooling the individual has received (<span class="math inline">\(x\)</span>). In this case, I don’t really want to make predictions on the <span class="math inline">\(\log(y)\)</span> scale, because (almost) nobody will understand magnitude difference between predicting 5 vs 6.</p>
+<p>Suppose the model is
 <span class="math display">\[\log y=\beta_{0}+\beta_{1}x+\epsilon\]</span>
 then we might want to give a prediction interval for an <span class="math inline">\(x_{0}\)</span> value. The predicted <span class="math inline">\(log(income)\)</span> value is
-<span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}\]</span>
+<span class="math display">\[\log\left(\hat{y}_{0}\right)=\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}\]</span>
 and we could calculate the appropriate predicted income as
-<span class="math display">\[\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{x}x_{0}} = e^{log\left(\hat{y}_{0}\right)}\]</span>
+<span class="math display">\[\hat{y}_{0}= e^{\hat{\beta}_{0}+\hat{\beta}_{1}x_{0}} = e^{log\left(\hat{y}_{0}\right)}\]</span>
 Likewise if we had a confidence interval or prediction interval for <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span> of the form <span class="math inline">\(\left(l,u\right)\)</span> then the appropriate interval for <span class="math inline">\(\hat{y}_{0}\)</span> is <span class="math inline">\(\left(e^{l},e^{u}\right)\)</span>. Notice that while <span class="math inline">\(\left(l,u\right)\)</span> might be symmetric about <span class="math inline">\(\log\left(\hat{y}_{0}\right)\)</span>, the back-transformed interval is not symmetric about <span class="math inline">\(\hat{y}_{0}\)</span>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="6-LogTransformations-Chapter.html#cb2-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log</span>(y) <span class="op">~</span><span class="st"> </span>x, data)</span>
 <span id="cb2-2"><a href="6-LogTransformations-Chapter.html#cb2-2" aria-hidden="true"></a>data &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></span>
@@ -701,13 +704,13 @@ therefore we consider <span class="math inline">\(e^{\hat{\beta}_{2}}\)</span> a
   = \frac{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}e^{\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}}e^{\hat{\beta}_{2}\,x}} 
   = e^{\hat{\beta}_{2}}
 \]</span></p>
-<p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.011}=1.01\)</span>
+<p>For our writing scores example we have that <span class="math inline">\(e^{\hat{\beta}_{2}}=e^{0.0113}=1.011\)</span>
 meaning there is an estimated <span class="math inline">\(1\%\)</span> increase in <code>write</code> score for every 1-point increase in <code>read</code> score.</p>
 <p>If we are interested in, say, a 20-unit increase in <span class="math inline">\(x\)</span>, then that would result in an increase of</p>
 <p><span class="math display">\[\frac{e^{\hat{\beta}_{0} + \hat{\beta}_{2} \, \left(x+20\right)}} {e^{\hat{\beta}_{0}+\hat{\beta}_{2} \, x}}
  =\frac{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2}\,x} e^{20\hat{\beta}_{2}}}{e^{\hat{\beta}_{0}} e^{\hat{\beta}_{2} \, x}}
  = e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}\]</span></p>
-<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.01^{20} = 1.22\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
+<p>and for the writing scores we have <span class="math display">\[e^{20\hat{\beta}_{2}} = \left( e^{\hat{\beta}_{2}} \right)^{20}=1.0113^{20} = 1.25\]</span> or a 22% increase in writing score for a 20-point increase in reading score.</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="6-LogTransformations-Chapter.html#cb34-1" aria-hidden="true"></a><span class="co"># to make emmeans calculate this, we must specify a 1-unit or 20-unit increase</span></span>
 <span id="cb34-2"><a href="6-LogTransformations-Chapter.html#cb34-2" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">51</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb34-3"><a href="6-LogTransformations-Chapter.html#cb34-3" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
@@ -716,10 +719,10 @@ meaning there is an estimated <span class="math inline">\(1\%\)</span> increase 
 ## 
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="6-LogTransformations-Chapter.html#cb36-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">70</span>,<span class="dv">50</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="6-LogTransformations-Chapter.html#cb36-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise <span class="op">~</span><span class="st"> </span>read, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">90</span>,<span class="dv">70</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb36-2"><a href="6-LogTransformations-Chapter.html#cb36-2" aria-hidden="true"></a><span class="st">  </span>.[[<span class="st">&#39;contrasts&#39;</span>]]</span></code></pre></div>
 <pre><code>##  contrast ratio     SE  df t.ratio p.value
-##  70 / 50   1.25 0.0256 197 11.057  &lt;.0001 
+##  90 / 70   1.25 0.0256 197 11.057  &lt;.0001 
 ## 
 ## Results are averaged over the levels of: gender 
 ## Tests are performed on the log scale</code></pre>
@@ -760,20 +763,24 @@ and consider two different values of <span class="math inline">\(x\)</span> (whi
 <p>We should see a
 <span class="math display">\[29.045 \; \log \left( 1.5 \right) = 11.78\]</span><br />
 difference in <span class="math inline">\(\hat{y}\)</span> values for the first and second students and the second and third.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="6-LogTransformations-Chapter.html#cb42-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, pairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">60</span>,<span class="dv">40</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="6-LogTransformations-Chapter.html#cb42-1" aria-hidden="true"></a><span class="kw">emmeans</span>(model, revpairwise<span class="op">~</span><span class="kw">log</span>(read), <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">read=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">8</span>)))</span></code></pre></div>
 <pre><code>## $emmeans
-##  read emmean    SE  df lower.CL upper.CL
-##    60   57.1 0.643 197     55.9     58.4
-##    40   45.4 0.806 197     43.8     46.9
+##  read emmean   SE  df lower.CL upper.CL
+##     2 -41.66 8.21 197    -57.9   -25.46
+##     4 -21.53 6.47 197    -34.3    -8.78
+##     8  -1.39 4.72 197    -10.7     7.92
 ## 
 ## Results are averaged over the levels of: gender 
 ## Confidence level used: 0.95 
 ## 
 ## $contrasts
 ##  contrast estimate   SE  df t.ratio p.value
-##  60 - 40      11.8 1.02 197 11.493  &lt;.0001 
+##  4 - 2        20.1 1.75 197 11.493  &lt;.0001 
+##  8 - 2        40.3 3.50 197 11.493  &lt;.0001 
+##  8 - 4        20.1 1.75 197 11.493  &lt;.0001 
 ## 
-## Results are averaged over the levels of: gender</code></pre>
+## Results are averaged over the levels of: gender 
+## P value adjustment: tukey method for comparing a family of 3 estimates</code></pre>
 </div>
 <div id="log-transformed-response-log-transformed-covariate" class="section level3" number="6.4.3">
 <h3><span class="header-section-number">6.4.3</span> Log-transformed response, log-transformed covariate</h3>
@@ -890,22 +897,26 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 <div id="Transformation-Exercises" class="section level2" number="6.5">
 <h2><span class="header-section-number">6.5</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li><p>In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement).</p>
+<li>In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement).
 <ol style="list-style-type: lower-alpha">
 <li>Load the <code>ToothGrowth</code> data which is pre-loaded in base R and calculate the <span class="math inline">\(\log_{10}\)</span> dose level.</li>
 <li>Plot the data with log dose level on the x-axis and tooth length growth on the y-axis. Color the points by supplement type.</li>
 <li>Fit a linear model using the log transformed dose.</li>
 <li>Interpret the effect of doubling the dose (NOT LOG DOSE!) on tooth growth for the OJ and VC supplement groups.</li>
 </ol></li>
-<li><p>We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.</p>
+<li>We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
 <ol style="list-style-type: lower-alpha">
 <li>Load the <code>EmployedACS</code> dataset from the <code>Lock5Data</code> package.</li>
 <li>Create a box plot showing the relationship between <code>Race</code> and <code>Income</code>.</li>
-<li>Consider the boxcox family of transformations of <code>Income</code>. What transformation seems appropriate.</li>
-<li>Using your transformed <code>Income</code> variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. <em>Importantly, we haven’t accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.</em></li>
+<li>Consider the boxcox family of transformations of <code>Income</code>. What transformation seems appropriate? <em>Because there are people with zero income, we have to do something. We could either use a transformation like <span class="math inline">\(\sqrt{y}\)</span>, remove all the zero observations, or to add a small value to the zero observations. We’ll add 0.05 to the zero values, which represents the zero income people receiving <span class="math inline">\(\$50\)</span>.</em></li>
+<li>Using your log-transformed <code>Income</code> variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. Provide (and interpret) the point estimates for the ratios, even though they aren’t statistically significant. <em>Importantly, we haven’t accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.</em></li>
 </ol></li>
-<li><p>ANOVA with log(y) response where there is a significant difference.</p></li>
-<li><p>ANCOVA with log(y) and log(x)</p></li>
+<li>The dataset <code>Lock5Data::HomesForSale</code> has a random sample of home prices in 4 different states. Consider a regression model predicting the <code>Price</code> as a function of <code>Size</code>.
+<ol style="list-style-type: lower-alpha">
+<li>Examine a scatterplot of <code>Price</code> and <code>Size</code> and justify a log transformation to both.</li>
+<li>Calculate and interpret the estimated effect of a <span class="math inline">\(10\%\)</span> increase in home size on the price.</li>
+<li>Calculate and interpret the difference between California and Pennsylvania in terms of average house price.</li>
+</ol></li>
 </ol>
 
 </div>
