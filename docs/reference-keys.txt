@@ -103,7 +103,6 @@ log-transformed-response-un-transformed-covariates
 un-transformed-response-log-transformed-covariate
 log-transformed-response-log-transformed-covariate
 Transformation-Exercises
-MultipleRegression_Chapter
 CorrelatedCovariates_Chapter
 interpretation-with-correlated-covariates
 solutions
@@ -117,7 +116,6 @@ information-criterions
 adjusted-r-sq
 example-1
 Exercises_VariableSelection
-too-many-predictors-toomanypredictors_chapter
 mixed-effects-models
 block-designs
 randomized-complete-block-design-rcbd

@@ -27,7 +27,7 @@ Perch Example: We might be interested in estimating the weight of a fish based o
  
  
  
-We first look at the data and observe the expected relationship between length and weight.
+We first look at the [data](https://raw.githubusercontent.com/dereksonderegger/571/master/data-raw/Fish.csv) and observe the expected relationship between length and weight.
 
 ```{r, warning=FALSE, message=FALSE}
 # File location on the internet or on my local computer.

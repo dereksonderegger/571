@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II</title>
+  <title>Chapter 15 Maximum Likelihood Priciple | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 15 Maximum Likelihood Priciple | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Analysis of Covariance (ANCOVA) | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 15 Maximum Likelihood Priciple | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="4-contrasts.html"/>
-<link rel="next" href="6-two-way-anova.html"/>
+<link rel="prev" href="14-block-designs-1.html"/>
+<link rel="next" href="project-appendix.html"/>
 <script src="libs/header-attrs-2.3/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -385,402 +385,232 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="ANCOVA_Chapter" class="section level1" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Analysis of Covariance (ANCOVA)</h1>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="5-ANCOVA-Chapter.html#cb87-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># ggplot2, tidyr, dplyr</span></span>
-<span id="cb87-2"><a href="5-ANCOVA-Chapter.html#cb87-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)   </span></code></pre></div>
-<div id="ANCOVA_Introduction" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Introduction</h2>
-<p>One way that we could extend the ANOVA and regression models is to have both categorical and continuous predictor variables. For historical reasons going back to pre “computer in your pocket” days, statisticians call this the <em>Analysis of Covariance</em> (ANCOVA) model. Because it is just another example of a <span class="math inline">\(\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon}\)</span> linear model, I prefer to think of it as simply having both continuous and categorical variables in my model. None of the cookbook calculations change, but the interpretation of the parameters gets much more interesting.</p>
-<p>The dataset <code>teengamb</code> in the package <code>faraway</code> has data regarding the rates of gambling among teenagers in Britain and their gender and socioeconomic status. One question we might be interested in is how gender and income relate to how much a person gambles. But what should be the effect of gender be?</p>
-<p>There are two possible ways that gender could enter the model. Either:</p>
+<div id="maximum-likelihood-priciple" class="section level1" number="15">
+<h1><span class="header-section-number">Chapter 15</span> Maximum Likelihood Priciple</h1>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="15-maximum-likelihood-priciple.html#cb566-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div id="learning-outcomes-1" class="section level3 unnumbered">
+<h3>Learning Outcomes</h3>
+<ul>
+<li>Explain how the probability mass/density function <span class="math inline">\(f(x|\theta)\)</span> indicates what data regions are more probable.</li>
+<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is defined if we know the probability function.</li>
+<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is used to find the maximum likelihood estimate of <span class="math inline">\(\theta\)</span>.</li>
+<li>For a given sample of data drawn from a distribution, find the maximum likelihood estimate for the distribution parameters using R.</li>
+</ul>
+</div>
+<div id="introduction-1" class="section level2" number="15.1">
+<h2><span class="header-section-number">15.1</span> Introduction</h2>
+<p>The goal of statistical modeling is to take data that has some general trend along with some un-explainable variability, and say something intelligent about the trend. For example, the simple regression model</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \epsilon_i \;\;\;\;\;\; \textrm{where} \;\; \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\]</span>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-313-1.png" width="672" /></p>
+<p>There is a general increasing trend in the response (i.e. the <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> term) and then some un-explainable noise (the <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> part).</p>
+<p>While it has been convenient to write the model in this form, it is also possible to write the simple regression model as
+<span class="math display">\[y_i \stackrel{ind}{\sim} N(\, \beta_0 + \beta_1x_i,\; \sigma^2 \,)\]</span></p>
+<p>This model contains three parameters <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span> but it certainly isn’t clear how to estimate these three values. In this chapter, we’ll develop a mechanism for taking observed data sampled from some distribution parameterized by some <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\sigma\)</span>, or <span class="math inline">\(\theta\)</span> and then estimating those parameters.</p>
+</div>
+<div id="distributions" class="section level2" number="15.2">
+<h2><span class="header-section-number">15.2</span> Distributions</h2>
+<p>Depending on what values the data can take on (integers, positive values) and the shape of the distribution of values, we might chose to model the data using one of several different distributions. Next we’ll quickly introduce the mathematical relationship between the parameter and probable data values of several distributions.</p>
+<div id="poisson" class="section level3" number="15.2.1">
+<h3><span class="header-section-number">15.2.1</span> Poisson</h3>
+<p>The Poisson distribution is used to model the number of events that happen in some unit of time or space. This distribution is often used to model events that can only be positive integers. This distribution is parameterized by <span class="math inline">\(\lambda\)</span>, which represents the expected number of events that happen (as defined as the average over an infinitely large number of draws). Because <span class="math inline">\(\lambda\)</span> represents the average number of events, the <span class="math inline">\(\lambda\)</span> parameter must be greater than or equal to 0.</p>
+<p>The function that defines the relationship between the parameter <span class="math inline">\(\lambda\)</span> and what values are most probable is called the <em>probability mass function</em> when talking about discrete random variables and <em>probability density functions</em> in the continuous case. Either way, these functions are traditionally notated using <span class="math inline">\(f(x)\)</span>.
+<span class="math display">\[f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}\]</span></p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
+<p>The notation <span class="math inline">\(f(x|\lambda)\)</span> read as “f <em>given</em> <span class="math inline">\(\lambda\)</span>” and is used to denote that this is a function that describes what values of the data <span class="math inline">\(X\)</span> are most probable and that the function depends on the parameter value. This is emphasizing that if we were to change the parameter value (to say <span class="math inline">\(\lambda = 10\)</span>), then a different set of data values would be more probable. In the above example with <span class="math inline">\(\lambda = 3.5\)</span>, the most probable outcome is <span class="math inline">\(3\)</span> but we aren’t surprised if we were to observe a value of <span class="math inline">\(x=1,2,\)</span> or <span class="math inline">\(4\)</span>. However, from this graph, we see that <span class="math inline">\(x=10\)</span> or <span class="math inline">\(x=15\)</span> would be highly improbable.</p>
+</div>
+<div id="exponential" class="section level3" number="15.2.2">
+<h3><span class="header-section-number">15.2.2</span> Exponential</h3>
+<p>The Exponential distribution can be used to model events that take on a positive real value and the distribution of values has some skewness. We will parameterize this distribution using <span class="math inline">\(\beta\)</span> as the mean of the distribution.</p>
+<p><span class="math display">\[f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x &gt; 0\]</span></p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
+<p>In this distribution, the region near zero is the most probable outcome, and larger observations are less probable.</p>
+</div>
+<div id="normal" class="section level3" number="15.2.3">
+<h3><span class="header-section-number">15.2.3</span> Normal</h3>
+<p>The Normal distribution is extremely commonly used in statistics and can be used to modeled continuous variables and is parameterized by the center <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span> parameters.</p>
+<p><span class="math display">\[f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]\]</span>
+where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational convenience.</p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
+<p>All of these distributions (and there are many, many more distributions commonly used) have some mathematical function that defines the how probable a region of response values is and that function depends on the parameters. Importantly <span class="math inline">\(X\)</span> regions with the highest <span class="math inline">\(f(x|\theta)\)</span> are the most probable data values.</p>
+<p>There are many additional mathematical details that go into these density functions but the important aspect is that they tell us what data values are most probable given some parameter values <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div id="likelihood-function" class="section level2" number="15.3">
+<h2><span class="header-section-number">15.3</span> Likelihood Function</h2>
+<p>As a researcher, I am not particularly interested in saying "If <span class="math inline">\(\mu=3\)</span> and <span class="math inline">\(\sigma=2\)</span> then I’m likely to observe approximately 95% of my data between <span class="math inline">\(-1\)</span> and <span class="math inline">\(7\)</span>. Instead, I want to make an inference about what values for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the most concordant with observed data that I’ve collected. However, the probability density function <span class="math inline">\(f(x|\mu,\sigma)\)</span> is still the mathematical link between the data and parameter and we will continue to use that function, but we’ll re-interpret which is <em>known</em>.</p>
+<p>The <em>Likelihood</em> function is just the probability density (or mass) function <span class="math inline">\(f(x|\theta)\)</span> re-interpreted to be a function where the data is the known quantity and we are looking to see what parameter values are consistent with the data.</p>
+<div id="poisson-1" class="section level3" number="15.3.1">
+<h3><span class="header-section-number">15.3.1</span> Poisson</h3>
+<p>Suppose that we have observed a single data point drawn from a Poisson(<span class="math inline">\(\lambda\)</span>) and we don’t know what <span class="math inline">\(\lambda\)</span> is. We first write down the likelihood function</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}(\lambda|x) = f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!}
+\end{aligned}\]</span></p>
+<p>If we have observed <span class="math inline">\(x=4\)</span>, then <span class="math inline">\(\mathcal{L}(\lambda|x=4)\)</span> is the following function</p>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-317-1.png" width="672" /></p>
+<p>Our best estimate for <span class="math inline">\(\lambda\)</span> is the value that maximizes <span class="math inline">\(\mathcal{L}(\lambda|x)\)</span>. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by taking the log of the Likelihood function. Because the log function is monotonic, maximizing the Likelihood function is equivalent to maximizing the log-Likelihood function. Second, if taking the derivative is impossible, we could just use a numerical solving algorithm to find the value of <span class="math inline">\(\lambda\)</span> that maximizes the log-likelihood function. Numerical solvers are convenient, but are only accurate to machine tolerance you specify. In this case where <span class="math inline">\(x=4\)</span>, the actual maximum likelihood value is <span class="math inline">\(\hat{\lambda}=4\)</span>.</p>
+<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb571-1"><a href="15-maximum-likelihood-priciple.html#cb571-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb571-2"><a href="15-maximum-likelihood-priciple.html#cb571-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb571-3"><a href="15-maximum-likelihood-priciple.html#cb571-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb571-4"><a href="15-maximum-likelihood-priciple.html#cb571-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># take the log</span></span>
+<span id="cb571-5"><a href="15-maximum-likelihood-priciple.html#cb571-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># multiply by -1</span></span>
+<span id="cb571-6"><a href="15-maximum-likelihood-priciple.html#cb571-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()      </span>
+<span id="cb571-7"><a href="15-maximum-likelihood-priciple.html#cb571-7" aria-hidden="true"></a>}</span>
+<span id="cb571-8"><a href="15-maximum-likelihood-priciple.html#cb571-8" aria-hidden="true"></a></span>
+<span id="cb571-9"><a href="15-maximum-likelihood-priciple.html#cb571-9" aria-hidden="true"></a><span class="co"># Optimize function will find the maximum of the Likelihood function</span></span>
+<span id="cb571-10"><a href="15-maximum-likelihood-priciple.html#cb571-10" aria-hidden="true"></a><span class="co"># over the range of lambda values [0, 20]. By default, the optimize function</span></span>
+<span id="cb571-11"><a href="15-maximum-likelihood-priciple.html#cb571-11" aria-hidden="true"></a><span class="co"># finds the minimum, but has an option to find the maximum. Alternatively</span></span>
+<span id="cb571-12"><a href="15-maximum-likelihood-priciple.html#cb571-12" aria-hidden="true"></a><span class="co"># we could find the minimum of the -logL function.</span></span>
+<span id="cb571-13"><a href="15-maximum-likelihood-priciple.html#cb571-13" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 3.999993
+## 
+## $objective
+## [1] 1.632876</code></pre>
+<p>But what if we have multiple observations from this Poisson distribution? If the observations are <em>independent</em>, then the probability mass or probability density functions <span class="math inline">\(f(x_i|\theta)\)</span> can just be multiplied together.</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}(\lambda|\textbf{x}) = \prod_{i=1}^{n}f(x_i|\lambda) = \prod_{i=1}^n\frac{e^{-\lambda} \lambda^x_i}{x_i!}
+\end{aligned}\]</span></p>
+<p>So, suppose we have observed <span class="math inline">\(\textbf{x} = \{4,6,3,3,2,4,3,2\}\)</span>. We could maximize this function and discover that the maximum occurs at <span class="math inline">\(\hat{\lambda} = \bar{x} = 3.375\)</span>.</p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-319-1.png" width="672" /></p>
+<p>If we are using the log-Likelihood, then the multiplication is equivalent to summing and we’ll define and subsequently optimize our log-Likelihood function like this:</p>
+<div class="sourceCode" id="cb575"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb575-1"><a href="15-maximum-likelihood-priciple.html#cb575-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb575-2"><a href="15-maximum-likelihood-priciple.html#cb575-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb575-3"><a href="15-maximum-likelihood-priciple.html#cb575-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb575-4"><a href="15-maximum-likelihood-priciple.html#cb575-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb575-5"><a href="15-maximum-likelihood-priciple.html#cb575-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb575-6"><a href="15-maximum-likelihood-priciple.html#cb575-6" aria-hidden="true"></a>}</span>
+<span id="cb575-7"><a href="15-maximum-likelihood-priciple.html#cb575-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 3.37499
+## 
+## $objective
+## [1] 13.85426</code></pre>
+</div>
+<div id="exponential-example" class="section level3" number="15.3.2">
+<h3><span class="header-section-number">15.3.2</span> Exponential Example</h3>
+<p>We next consider data sampled from the exponential distribution. For this example, suppose that we had observed <span class="math inline">\(\textbf{x}=\{7.2, 6.1, 9.0, 12, 8.8\}\)</span></p>
+<p><span class="math display">\[\mathcal{L}(\mu, \sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \beta e^{\beta x_i}\]</span>
+which is maximized at <span class="math inline">\(\hat{\mu} = \bar{x} = 8.62\)</span>. We can numerically see this following the same process as previously seen.</p>
+<pre><code>## [1] 8.62</code></pre>
+<pre><code>## Warning: Problem with `mutate()` input `L`.
+## ℹ NaNs produced
+## ℹ Input `L` is `dexp(.$x, rate = 1/.$beta)`.</code></pre>
+<pre><code>## Warning in dexp(.$x, rate = 1/.$beta): NaNs produced</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-321-1.png" width="672" /></p>
+<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="15-maximum-likelihood-priciple.html#cb585-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">7.2</span>, <span class="fl">6.1</span>, <span class="fl">9.0</span>, <span class="dv">12</span>, <span class="fl">8.8</span>)</span>
+<span id="cb585-2"><a href="15-maximum-likelihood-priciple.html#cb585-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb585-3"><a href="15-maximum-likelihood-priciple.html#cb585-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
+<span id="cb585-4"><a href="15-maximum-likelihood-priciple.html#cb585-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb585-5"><a href="15-maximum-likelihood-priciple.html#cb585-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb585-6"><a href="15-maximum-likelihood-priciple.html#cb585-6" aria-hidden="true"></a>}</span>
+<span id="cb585-7"><a href="15-maximum-likelihood-priciple.html#cb585-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 8.61999
+## 
+## $objective
+## [1] 15.77043</code></pre>
+</div>
+<div id="normal-1" class="section level3" number="15.3.3">
+<h3><span class="header-section-number">15.3.3</span> Normal</h3>
+<p>We finally consider the case where we have observation coming from a distribution that has multiple parameters. The normal distribution is parameterized by a mean <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span>. Suppose that we had observed <span class="math inline">\(x_i \stackrel{iid}{\sim} N(\mu, \sigma^2)\)</span> and saw <span class="math inline">\(\textbf{x} = \{5, 8, 9, 7, 11, 9\}\)</span>.</p>
+<p>As usual we can calculate the likelihood function</p>
+<p><span class="math display">\[\mathcal{L}(\mu,\sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma} \exp \left[ -\frac{1}{2}\frac{(x_i-\mu)^2}{\sigma^2} \right]\]</span></p>
+<p>It turns out the maximum likelihood estimators in this model are
+<span class="math display">\[\hat{\mu} = \bar{x} = 8.16666\]</span>
+<span class="math display">\[\hat{\sigma}_{mle} = \sqrt{ \frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2 } = 1.8634\]</span>
+which is somewhat unexpected because the typical estimator we use has a <span class="math inline">\(\frac{1}{n-1}\)</span> multiplier.</p>
+<div class="sourceCode" id="cb587"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb587-1"><a href="15-maximum-likelihood-priciple.html#cb587-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb587-2"><a href="15-maximum-likelihood-priciple.html#cb587-2" aria-hidden="true"></a>xbar &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb587-3"><a href="15-maximum-likelihood-priciple.html#cb587-3" aria-hidden="true"></a>s2 &lt;-<span class="st"> </span><span class="kw">sum</span>( (x <span class="op">-</span><span class="st"> </span>xbar)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span> )</span>
+<span id="cb587-4"><a href="15-maximum-likelihood-priciple.html#cb587-4" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s2)</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;mu&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## Warning: Removed 35050 rows containing non-finite values (stat_contour).</code></pre>
+<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;
+
+## Warning in is.na(x): is.na() applied to non-(list or vector) of type
+## &#39;expression&#39;</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-324-1.png" width="672" /></p>
+<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb591-1"><a href="15-maximum-likelihood-priciple.html#cb591-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb591-2"><a href="15-maximum-likelihood-priciple.html#cb591-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb591-3"><a href="15-maximum-likelihood-priciple.html#cb591-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
+<span id="cb591-4"><a href="15-maximum-likelihood-priciple.html#cb591-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb591-5"><a href="15-maximum-likelihood-priciple.html#cb591-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb591-6"><a href="15-maximum-likelihood-priciple.html#cb591-6" aria-hidden="true"></a>}</span>
+<span id="cb591-7"><a href="15-maximum-likelihood-priciple.html#cb591-7" aria-hidden="true"></a></span>
+<span id="cb591-8"><a href="15-maximum-likelihood-priciple.html#cb591-8" aria-hidden="true"></a><span class="co"># Bivariate optimization uses the optim function that only can search</span></span>
+<span id="cb591-9"><a href="15-maximum-likelihood-priciple.html#cb591-9" aria-hidden="true"></a><span class="co"># for a minimum. The first argument is an initial guess to start the algorithm.</span></span>
+<span id="cb591-10"><a href="15-maximum-likelihood-priciple.html#cb591-10" aria-hidden="true"></a><span class="co"># So long as the start point isn&#39;t totally insane, the numerical algorithm should</span></span>
+<span id="cb591-11"><a href="15-maximum-likelihood-priciple.html#cb591-11" aria-hidden="true"></a><span class="co"># be fine.</span></span>
+<span id="cb591-12"><a href="15-maximum-likelihood-priciple.html#cb591-12" aria-hidden="true"></a><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>), neglogL )  </span></code></pre></div>
+<pre><code>## $par
+## [1] 8.166924 1.863391
+## 
+## $value
+## [1] 12.24802
+## 
+## $counts
+## function gradient 
+##       71       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+</div>
+</div>
+<div id="discussion" class="section level2" number="15.4">
+<h2><span class="header-section-number">15.4</span> Discussion</h2>
 <ol style="list-style-type: decimal">
-<li><p>We could fit two lines to the data one for males and one for females but require that the lines be parallel (i.e. having the same slopes for income). This is accomplished by having a separate y-intercept for each gender. In effect, the line for the females would be offset by a constant amount from the male line.</p></li>
-<li><p>We could fit two lines but but allow the slopes to differ as well as the y-intercept. This is referred to as an “interaction” between income and gender. One way to remember that this is an interaction is because the effect of income on gambling rate is dependent on the gender of the individual.</p></li>
+<li><p>How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and <span class="math inline">\(\ge 0\)</span> for all <span class="math inline">\(x\)</span>. <em>While knowing the derivative function <span class="math inline">\(f&#39;(x)\)</span> would allow us to be much more clever, lets think about how to do the maximization by just evaluating <span class="math inline">\(f(x)\)</span> for different values of <span class="math inline">\(x\)</span>.</em></p></li>
+<li><p>Convince yourself that if <span class="math inline">\(x_0\)</span> is the maximizer of <span class="math inline">\(f(x)\)</span>, then it is also the maximizer of <span class="math inline">\(log( f( x ) )\)</span>. This will rest on the idea that <span class="math inline">\(log()\)</span> is a strictly increasing function.</p></li>
 </ol>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
-<p>*It should be noted here, that the constant variance assumption is being violated and we really ought to do a transformation. I would recommend performing a <span class="math inline">\(\sqrt{\cdot}\)</span> transformation on both the <code>gamble</code> and <code>income</code> covariates, but we’ll leave them as is for now.</p>
-<p>We will now see how to go about fitting these two models. As might be imagined, these can be fit in the same fashion we have been solving the linear models, but require a little finesse in defining the appropriate design matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 </div>
-<div id="ANCOVA_Additive" class="section level2" number="5.2">
-<h2><span class="header-section-number">5.2</span> Offset parallel Lines (aka additive models)</h2>
-<p>In order to get offset parallel lines, we want to write a model
-<span class="math display">\[y_{i}=\begin{cases}
-\beta_{0}+\beta_{1}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
-\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
-\end{cases}\]</span>
-where <span class="math inline">\(\beta_{1}\)</span> is the vertical offset of the female group regression line to the reference group, which is the males regression line. Because the first <span class="math inline">\(19\)</span> observations are female, we can this in in matrix form as
-<span class="math display">\[\left[\begin{array}{c}
-y_{1}\\
-\vdots\\
-y_{19}\\
-y_{20}\\
-\vdots\\
-y_{47}
-\end{array}\right]=\left[\begin{array}{ccc}
-1 &amp; 1 &amp; x_{1}\\
-\vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 1 &amp; x_{19}\\
-1 &amp; 0 &amp; x_{20}\\
-\vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 0 &amp; x_{47}
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1}\\
-\vdots\\
-\epsilon_{19}\\
-\epsilon_{20}\\
-\vdots\\
-\epsilon_{47}
-\end{array}\right]\]</span></p>
-<p>I like this representation where <span class="math inline">\(\beta_{1}\)</span> is the offset from the male regression line because it makes it very convenient to test if the offset is equal to zero. The second column of the design matrix referred to as a “dummy variable” or “indicator variable” that codes for the female gender. Notice that even though I have two genders, I only had to add one additional variable to my model because we already had a y-intercept <span class="math inline">\(\beta_{0}\)</span> and we only added one indicator variable for females.</p>
-<p>What if we had a third group? Then we would fit another column of indicator variable for the third group. The new beta coefficient in the model would be the offset of the new group to the reference group. For example we consider <span class="math inline">\(n=9\)</span> observations with <span class="math inline">\(n_i=3\)</span> observations per group where <span class="math inline">\(y_{i,j}\)</span>is the <span class="math inline">\(j\)</span> th replication of the <span class="math inline">\(i\)</span>th group.
-<span class="math display">\[\left[\begin{array}{c}
-y_{1,1}\\
-y_{1,2}\\
-y_{1,3}\\
-y_{2,1}\\
-y_{2,2}\\
-y_{2,3}\\
-y_{3,1}\\
-y_{3,2}\\
-y_{3,3}
-\end{array}\right]=\left[\begin{array}{cccc}
-1 &amp; 0 &amp; 0 &amp; x_{1,1}\\
-1 &amp; 0 &amp; 0 &amp; x_{1,2}\\
-1 &amp; 0 &amp; 0 &amp; x_{1,3}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,1}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,2}\\
-1 &amp; 1 &amp; 0 &amp; x_{2,3}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,1}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,2}\\
-1 &amp; 0 &amp; 1 &amp; x_{3,3}
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}\\
-\beta_{3}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1,1}\\
-\epsilon_{1,2}\\
-\epsilon_{1,3}\\
-\epsilon_{2,1}\\
-\epsilon_{2,2}\\
-\epsilon_{2,3}\\
-\epsilon_{3,3}\\
-\epsilon_{3,2}\\
-\epsilon_{3,3}
-\end{array}\right]
-\]</span></p>
-<p>In this model, <span class="math inline">\(\beta_0\)</span> is the y-intercept for group <span class="math inline">\(1\)</span>. The parameter <span class="math inline">\(\beta_1\)</span> is the vertical offset from the reference group (group <span class="math inline">\(1\)</span>) for the second group. Similarly <span class="math inline">\(\beta_2\)</span> is the vertical offset for group <span class="math inline">\(3\)</span>. All groups will share the same slope, <span class="math inline">\(\beta_4\)</span>.</p>
-</div>
-<div id="ANCOVA_Interaction" class="section level2" number="5.3">
-<h2><span class="header-section-number">5.3</span> Lines with different slopes (aka Interaction model)</h2>
-<p>We can now include a discrete random variable and create regression lines that are parallel, but often that is inappropriate, such as in the teenage gambling dataset. We want to be able to fit a model that has different slopes.
-<span class="math display">\[y_{i}=\begin{cases}
-\left(\beta_{0}+\beta_{1}\right)+\left(\beta_{2}+\beta_{3}\right)x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if female}\\
-\beta_{0}+\beta_{2}x_{i}+\epsilon_{i} &amp; \;\;\;\textrm{if male}
-\end{cases}
-\]</span>
-Where <span class="math inline">\(\beta_{1}\)</span> is the offset in y-intercept of the female group from the male group, and <span class="math inline">\(\beta_{3}\)</span> is the offset in slope. Now our matrix formula looks like</p>
-<p><span class="math display">\[\left[\begin{array}{c}
-y_{1}\\
-\vdots\\
-y_{19}\\
-y_{20}\\
-\vdots\\
-y_{47}
-\end{array}\right]=\left[\begin{array}{cccc}
-1 &amp; 1 &amp; x_{1} &amp; x_{1}\\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 1 &amp; x_{19} &amp; x_{19}\\
-1 &amp; 0 &amp; x_{20} &amp; 0\\
-\vdots &amp; \vdots &amp; \vdots &amp; \vdots\\
-1 &amp; 0 &amp; x_{47} &amp; 0
-\end{array}\right]\left[\begin{array}{c}
-\beta_{0}\\
-\beta_{1}\\
-\beta_{2}\\
-\beta_{3}
-\end{array}\right]+\left[\begin{array}{c}
-\epsilon_{1}\\
-\vdots\\
-\epsilon_{19}\\
-\epsilon_{20}\\
-\vdots\\
-\epsilon_{47}
-\end{array}\right]
-\]</span>
-where the new fourth column is the what I would get if I multiplied the <span class="math inline">\(\boldsymbol{x}\)</span> column element-wise with the dummy-variable column. To fit this model in R we have</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="5-ANCOVA-Chapter.html#cb88-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;teengamb&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
-<span id="cb88-2"><a href="5-ANCOVA-Chapter.html#cb88-2" aria-hidden="true"></a></span>
-<span id="cb88-3"><a href="5-ANCOVA-Chapter.html#cb88-3" aria-hidden="true"></a><span class="co"># Forces R to recognize that 0, 1 are categorical, also</span></span>
-<span id="cb88-4"><a href="5-ANCOVA-Chapter.html#cb88-4" aria-hidden="true"></a><span class="co"># relabels the levels to something I understand.</span></span>
-<span id="cb88-5"><a href="5-ANCOVA-Chapter.html#cb88-5" aria-hidden="true"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">sex =</span> <span class="kw">ifelse</span>( sex<span class="op">==</span><span class="dv">1</span>, <span class="st">&#39;Female&#39;</span>, <span class="st">&#39;Male&#39;</span>) )</span>
-<span id="cb88-6"><a href="5-ANCOVA-Chapter.html#cb88-6" aria-hidden="true"></a></span>
-<span id="cb88-7"><a href="5-ANCOVA-Chapter.html#cb88-7" aria-hidden="true"></a><span class="co"># Fit a linear model with the interaction of sex and income</span></span>
-<span id="cb88-8"><a href="5-ANCOVA-Chapter.html#cb88-8" aria-hidden="true"></a><span class="co"># Interactions can be specified useing a colon :</span></span>
-<span id="cb88-9"><a href="5-ANCOVA-Chapter.html#cb88-9" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </span>
-<span id="cb88-10"><a href="5-ANCOVA-Chapter.html#cb88-10" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st">     </span>sex <span class="op">+</span><span class="st"> </span>income <span class="op">+</span><span class="st"> </span>sex<span class="op">:</span>income, <span class="dt">data=</span>teengamb )  </span>
-<span id="cb88-11"><a href="5-ANCOVA-Chapter.html#cb88-11" aria-hidden="true"></a></span>
-<span id="cb88-12"><a href="5-ANCOVA-Chapter.html#cb88-12" aria-hidden="true"></a><span class="co"># R allows a shortcut for the prior definition</span></span>
-<span id="cb88-13"><a href="5-ANCOVA-Chapter.html#cb88-13" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( gamble <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>income, <span class="dt">data=</span>teengamb )</span>
-<span id="cb88-14"><a href="5-ANCOVA-Chapter.html#cb88-14" aria-hidden="true"></a></span>
-<span id="cb88-15"><a href="5-ANCOVA-Chapter.html#cb88-15" aria-hidden="true"></a><span class="co"># save the fit, lwr, upr values for each observation</span></span>
-<span id="cb88-16"><a href="5-ANCOVA-Chapter.html#cb88-16" aria-hidden="true"></a><span class="co"># these are the yhat and CI </span></span>
-<span id="cb88-17"><a href="5-ANCOVA-Chapter.html#cb88-17" aria-hidden="true"></a><span class="co"># If columns for fit, upr, lwr are already present, remove them</span></span>
-<span id="cb88-18"><a href="5-ANCOVA-Chapter.html#cb88-18" aria-hidden="true"></a>teengamb &lt;-<span class="st"> </span>teengamb <span class="op">%&gt;%</span></span>
-<span id="cb88-19"><a href="5-ANCOVA-Chapter.html#cb88-19" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>( <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;fit&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;lwr&#39;</span>), <span class="op">-</span><span class="kw">matches</span>(<span class="st">&#39;upr&#39;</span>) ) <span class="op">%&gt;%</span></span>
-<span id="cb88-20"><a href="5-ANCOVA-Chapter.html#cb88-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">cbind</span>( <span class="kw">predict</span>(m1, <span class="dt">interval=</span><span class="st">&#39;conf&#39;</span>) )</span>
-<span id="cb88-21"><a href="5-ANCOVA-Chapter.html#cb88-21" aria-hidden="true"></a></span>
-<span id="cb88-22"><a href="5-ANCOVA-Chapter.html#cb88-22" aria-hidden="true"></a><span class="co"># Make a nice plot that includes the regression line.</span></span>
-<span id="cb88-23"><a href="5-ANCOVA-Chapter.html#cb88-23" aria-hidden="true"></a><span class="kw">ggplot</span>(teengamb, <span class="kw">aes</span>(<span class="dt">x=</span>income, <span class="dt">col=</span>sex, <span class="dt">fill=</span>sex)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb88-24"><a href="5-ANCOVA-Chapter.html#cb88-24" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr),</span>
-<span id="cb88-25"><a href="5-ANCOVA-Chapter.html#cb88-25" aria-hidden="true"></a>                  <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span><span class="st">   </span><span class="co"># how solid the layer is</span></span>
-<span id="cb88-26"><a href="5-ANCOVA-Chapter.html#cb88-26" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>gamble)) <span class="op">+</span></span>
-<span id="cb88-27"><a href="5-ANCOVA-Chapter.html#cb88-27" aria-hidden="true"></a><span class="st">      </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>fit)) </span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="5-ANCOVA-Chapter.html#cb89-1" aria-hidden="true"></a><span class="co"># print the model summary</span></span>
-<span id="cb89-2"><a href="5-ANCOVA-Chapter.html#cb89-2" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
-<pre><code>## 
-## Call:
-## lm(formula = gamble ~ sex * income, data = teengamb)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -56.522  -4.860  -1.790   6.273  93.478 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)   
-## (Intercept)      3.1400     9.2492   0.339  0.73590   
-## sexMale         -5.7996    11.2003  -0.518  0.60724   
-## income           0.1749     1.9034   0.092  0.92721   
-## sexMale:income   6.3432     2.1446   2.958  0.00502 **
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 20.98 on 43 degrees of freedom
-## Multiple R-squared:  0.5857, Adjusted R-squared:  0.5568 
-## F-statistic: 20.26 on 3 and 43 DF,  p-value: 2.451e-08</code></pre>
-<p>To interpret the terms, we have</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Coefficients</th>
-<th align="left">Interpretation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>(Intercept)</code></td>
-<td align="left">y-intercept for the females</td>
-</tr>
-<tr class="even">
-<td align="left"><code>sexMale</code></td>
-<td align="left">The difference in y-intercept for Males</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>income</code></td>
-<td align="left">Slope of the female regression line</td>
-</tr>
-<tr class="even">
-<td align="left"><code>sexMale:income</code></td>
-<td align="left">The offset in slopes for the Males</td>
-</tr>
-</tbody>
-</table>
-<p>So looking at the summary, we see the interaction term <code>sexMale:income</code> is statistically significant indicating that we prefer the more complicated model with different slopes for each gender.</p>
-<p>To calculate the differences between the predicted values at an <code>income</code> levels of 5 and 10, we could use <code>multcomp::glht()</code> and figure out the appropriate contrast vector, but we’ll use the easy version with <code>emmeans()</code></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="5-ANCOVA-Chapter.html#cb91-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, <span class="dt">specs =</span> <span class="op">~</span><span class="st"> </span>income <span class="op">*</span><span class="st"> </span>sex, </span>
-<span id="cb91-2"><a href="5-ANCOVA-Chapter.html#cb91-2" aria-hidden="true"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>), <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
-<pre><code>##  income sex    emmean    SE df lower.CL upper.CL
-##       5 Male    29.93  3.97 43    21.93     37.9
-##      10 Male    62.52  6.35 43    49.71     75.3
-##       5 Female   4.01  5.08 43    -6.23     14.3
-##      10 Female   4.89 12.13 43   -19.58     29.4
-## 
-## Confidence level used: 0.95</code></pre>
-<p>If we are interested in the differences we can just do a <code>pairwise</code> in the <code>specs</code> argument, but I also want to just calculate the differences at each income level.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="5-ANCOVA-Chapter.html#cb93-1" aria-hidden="true"></a><span class="co"># The pipe in the formula is essentially a group_by </span></span>
-<span id="cb93-2"><a href="5-ANCOVA-Chapter.html#cb93-2" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, <span class="dt">specs =</span> pairwise <span class="op">~</span><span class="st"> </span>sex <span class="op">|</span><span class="st"> </span>income, </span>
-<span id="cb93-3"><a href="5-ANCOVA-Chapter.html#cb93-3" aria-hidden="true"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">10</span>), </span>
-<span id="cb93-4"><a href="5-ANCOVA-Chapter.html#cb93-4" aria-hidden="true"></a>                <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
-<pre><code>## $emmeans
-## income =  5:
-##  sex    emmean    SE df lower.CL upper.CL
-##  Male    29.93  3.97 43    21.93     37.9
-##  Female   4.01  5.08 43    -6.23     14.3
-## 
-## income = 10:
-##  sex    emmean    SE df lower.CL upper.CL
-##  Male    62.52  6.35 43    49.71     75.3
-##  Female   4.89 12.13 43   -19.58     29.4
-## 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-## income =  5:
-##  contrast      estimate    SE df t.ratio p.value
-##  Male - Female     25.9  6.44 43 4.022   0.0002 
-## 
-## income = 10:
-##  contrast      estimate    SE df t.ratio p.value
-##  Male - Female     57.6 13.69 43 4.208   0.0001</code></pre>
-<p>If we want the slopes as well as the difference in slopes, we would use the <code>emtrends()</code> function.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="5-ANCOVA-Chapter.html#cb95-1" aria-hidden="true"></a><span class="kw">emtrends</span>(m1, pairwise <span class="op">~</span><span class="st"> </span>income <span class="op">*</span><span class="st"> </span>sex, <span class="dt">var =</span> <span class="st">&quot;income&quot;</span>, </span>
-<span id="cb95-2"><a href="5-ANCOVA-Chapter.html#cb95-2" aria-hidden="true"></a>        <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="dv">10</span>, <span class="dt">sex=</span><span class="kw">c</span>(<span class="st">&#39;Male&#39;</span>,<span class="st">&#39;Female&#39;</span>)))</span></code></pre></div>
-<pre><code>## $emtrends
-##  income sex    income.trend    SE df lower.CL upper.CL
-##      10 Male          6.518 0.988 43     4.53     8.51
-##      10 Female        0.175 1.903 43    -3.66     4.01
-## 
-## Confidence level used: 0.95 
-## 
-## $contrasts
-##  contrast            estimate   SE df t.ratio p.value
-##  10 Male - 10 Female     6.34 2.14 43 2.958   0.0050</code></pre>
-<p>While I specified to calculate the slope at the x-value of <code>income=10</code>, that doesn’t matter because the slopes are the same at all x-values</p>
-<p>Somewhat less interestingly, we could calculate the average of the Male and Female slopes.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="5-ANCOVA-Chapter.html#cb97-1" aria-hidden="true"></a><span class="co"># when specs doesn&#39;t include a variable that was used </span></span>
-<span id="cb97-2"><a href="5-ANCOVA-Chapter.html#cb97-2" aria-hidden="true"></a><span class="co"># in the model, this will either</span></span>
-<span id="cb97-3"><a href="5-ANCOVA-Chapter.html#cb97-3" aria-hidden="true"></a><span class="co">#   a) average over the missing levels (categorical)</span></span>
-<span id="cb97-4"><a href="5-ANCOVA-Chapter.html#cb97-4" aria-hidden="true"></a><span class="co">#   b) use the average value of the variable (quantitative)</span></span>
-<span id="cb97-5"><a href="5-ANCOVA-Chapter.html#cb97-5" aria-hidden="true"></a><span class="kw">emtrends</span>(m1, <span class="dt">specs =</span> <span class="op">~</span><span class="st"> </span>income, <span class="dt">var =</span> <span class="st">&#39;income&#39;</span>,</span>
-<span id="cb97-6"><a href="5-ANCOVA-Chapter.html#cb97-6" aria-hidden="true"></a>         <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">income=</span><span class="dv">10</span>))</span></code></pre></div>
-<pre><code>## NOTE: Results may be misleading due to involvement in interactions</code></pre>
-<pre><code>##  income income.trend   SE df lower.CL upper.CL
-##      10         3.35 1.07 43     1.18     5.51
-## 
-## Results are averaged over the levels of: sex 
-## Confidence level used: 0.95</code></pre>
-</div>
-<div id="ANCOVA_Iris_Example" class="section level2" number="5.4">
-<h2><span class="header-section-number">5.4</span> Iris Example</h2>
-<p>For a second example, we will explore the relationship between sepal length and sepal width for three species of irises. This data set is available in R as <code>iris</code>.</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="5-ANCOVA-Chapter.html#cb100-1" aria-hidden="true"></a><span class="kw">data</span>(iris)            <span class="co"># read in the iris dataset</span></span>
-<span id="cb100-2"><a href="5-ANCOVA-Chapter.html#cb100-2" aria-hidden="true"></a><span class="kw">levels</span>(iris<span class="op">$</span>Species)  <span class="co"># notice the order of levels of Species</span></span></code></pre></div>
-<pre><code>## [1] &quot;setosa&quot;     &quot;versicolor&quot; &quot;virginica&quot;</code></pre>
-<p>The very first thing we should do when encountering a dataset is to do some sort of graphical summary to get an idea of what model seems appropriate.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="5-ANCOVA-Chapter.html#cb102-1" aria-hidden="true"></a><span class="kw">ggplot</span>(iris, <span class="kw">aes</span>(<span class="dt">x=</span>Sepal.Length, <span class="dt">y=</span>Sepal.Width, <span class="dt">color=</span>Species)) <span class="op">+</span></span>
-<span id="cb102-2"><a href="5-ANCOVA-Chapter.html#cb102-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>()</span></code></pre></div>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
-<p>Looking at this graph, it seems that I will likely have a model with different y-intercepts for each species, but it isn’t clear to me if we need different slopes.</p>
-<p>We consider the sequence of building successively more complex models:</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="5-ANCOVA-Chapter.html#cb103-1" aria-hidden="true"></a><span class="co"># make virginica the reference group </span></span>
-<span id="cb103-2"><a href="5-ANCOVA-Chapter.html#cb103-2" aria-hidden="true"></a>iris &lt;-<span class="st"> </span>iris <span class="op">%&gt;%</span></span>
-<span id="cb103-3"><a href="5-ANCOVA-Chapter.html#cb103-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Species =</span> forcats<span class="op">::</span><span class="kw">fct_relevel</span>(Species, <span class="st">&#39;virginica&#39;</span>) )</span>
-<span id="cb103-4"><a href="5-ANCOVA-Chapter.html#cb103-4" aria-hidden="true"></a></span>
-<span id="cb103-5"><a href="5-ANCOVA-Chapter.html#cb103-5" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data=</span>iris )            <span class="co"># One line</span></span>
-<span id="cb103-6"><a href="5-ANCOVA-Chapter.html#cb103-6" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">+</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Parallel Lines</span></span>
-<span id="cb103-7"><a href="5-ANCOVA-Chapter.html#cb103-7" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lm</span>( Sepal.Width <span class="op">~</span><span class="st"> </span>Sepal.Length <span class="op">*</span><span class="st"> </span>Species, <span class="dt">data=</span>iris )  <span class="co"># Non-parallel Lines</span></span></code></pre></div>
-<p>The three models we consider are the following:</p>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
-<p>Looking at these, it seems obvious that the simplest model where we ignore Species is horrible. The other two models seem decent, and I am not sure about the parallel lines model vs the differing slopes model.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="5-ANCOVA-Chapter.html#cb104-1" aria-hidden="true"></a>m1 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
-<pre><code>## # A tibble: 2 x 5
-##   term         estimate std.error statistic p.value
-##   &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 (Intercept)     3.42      0.254     13.5    0    
-## 2 Sepal.Length   -0.062     0.043     -1.44   0.152</code></pre>
-<p>For the simplest model, there is so much unexplained noise that the slope variable isn’t significant.</p>
-<p>Moving onto the next most complicated model, where each species has their own y-intercept, but they share a slope, we have</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="5-ANCOVA-Chapter.html#cb106-1" aria-hidden="true"></a>m2 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
-<pre><code>## # A tibble: 4 x 5
-##   term              estimate std.error statistic p.value
-##   &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 (Intercept)          0.669     0.308      2.17   0.031
-## 2 Sepal.Length         0.35      0.046      7.56   0    
-## 3 Speciessetosa        1.01      0.093     10.8    0    
-## 4 Speciesversicolor    0.024     0.065      0.37   0.712</code></pre>
-<p>The first two lines are the y-intercept and slope associated with the reference group and the last two lines are the y-intercept offsets from the reference group to <em>Setosa</em> and <em>Versicolor</em>, respectively. We have that the slope associated with increasing Sepal Length is significant and that <em>Setosa</em> has a statistically different y-intercept than the reference group <em>Virginica</em> and that <em>Versicolor</em> does not have a statistically different y-intercept than the reference group.</p>
-<p>Finally we consider the most complicated model that includes two more slope parameters</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="5-ANCOVA-Chapter.html#cb108-1" aria-hidden="true"></a>m3 <span class="op">%&gt;%</span><span class="st"> </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate_if</span>( is.numeric, round, <span class="dt">digits=</span><span class="dv">3</span> )</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 5
-##   term                           estimate std.error statistic p.value
-##   &lt;chr&gt;                             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 (Intercept)                       1.45      0.405     3.57    0    
-## 2 Sepal.Length                      0.232     0.061     3.79    0    
-## 3 Speciessetosa                    -2.02      0.686    -2.94    0.004
-## 4 Speciesversicolor                -0.574     0.605    -0.95    0.344
-## 5 Sepal.Length:Speciessetosa        0.567     0.126     4.49    0    
-## 6 Sepal.Length:Speciesversicolor    0.088     0.097     0.905   0.367</code></pre>
-<p>These parameters are:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Meaning</th>
-<th>R-label</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><em>Reference group y-intercept </em></td>
-<td>(Intercept)</td>
-</tr>
-<tr class="even">
-<td><em>Reference group slope </em></td>
-<td>Sepal.Length</td>
-</tr>
-<tr class="odd">
-<td><em>offset to y-intercept for Setosa</em></td>
-<td>Speciessetosa</td>
-</tr>
-<tr class="even">
-<td><em>offset to y-intercept for Versicolor</em></td>
-<td>Speciesversicolor</td>
-</tr>
-<tr class="odd">
-<td><em>offset to slope for Setosa</em></td>
-<td>Sepal.Length:Speciessetosa</td>
-</tr>
-<tr class="even">
-<td><em>offset to slope for Versicolor</em></td>
-<td>Sepal.Length:Speciesversicolor</td>
-</tr>
-</tbody>
-</table>
-<p>It appears that slope for <em>Setosa</em> is different from the reference group <em>Virginica</em>. However because we’ve added <span class="math inline">\(2\)</span> parameters to the model, testing Model2 vs Model3 is not equivalent to just looking at the p-value for that one slope. Instead we need to look at the F-test comparing the two models which will evaluate if the decrease in SSE is sufficient to justify the addition of two parameters.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="5-ANCOVA-Chapter.html#cb110-1" aria-hidden="true"></a><span class="kw">anova</span>(m2, m3)</span></code></pre></div>
-<pre><code>## Analysis of Variance Table
-## 
-## Model 1: Sepal.Width ~ Sepal.Length + Species
-## Model 2: Sepal.Width ~ Sepal.Length * Species
-##   Res.Df    RSS Df Sum of Sq      F   Pr(&gt;F)    
-## 1    146 12.193                                 
-## 2    144 10.680  2    1.5132 10.201 7.19e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>The F-test concludes that there is sufficient decrease in the SSE to justify adding two additional parameters to the model.</p>
-</div>
-<div id="ANCOVA_Exercises" class="section level2" number="5.5">
-<h2><span class="header-section-number">5.5</span> Exercises</h2>
+<div id="exercises-2" class="section level2" number="15.5">
+<h2><span class="header-section-number">15.5</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li>The in the <code>faraway</code> package, there is a dataset named <code>phbirths</code> that gives babies birth weights along with their gestational time in utero along with the mother’s smoking status.
+<li>The <span class="math inline">\(\chi^2\)</span> distribution is parameterized by its degrees of freedom parameter <span class="math inline">\(\nu\)</span> which corresponds to the mean of the distribution (<span class="math inline">\(\nu\)</span> must be <span class="math inline">\(&gt;0\)</span>). The density function <span class="math inline">\(f(x|\nu)\)</span> can be accessed R using the <code>dchisq(x, df=nu)</code>.
 <ol style="list-style-type: lower-alpha">
-<li><p>Load and inspect the dataset using</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="5-ANCOVA-Chapter.html#cb112-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;phbirths&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)   <span class="co"># load the data within the package</span></span>
-<span id="cb112-2"><a href="5-ANCOVA-Chapter.html#cb112-2" aria-hidden="true"></a>?faraway<span class="op">::</span>phbirths                    <span class="co"># Look at the help file</span></span></code></pre></div></li>
-<li><p>Create a plot of the birth weight vs the gestational age. Color code the points based on the mother’s smoking status. Does it appear that smoking matters?</p></li>
-<li><p>Fit the simple model (one regression line) along with both the main effects (parallel lines) and interaction (non-parallel lines) ANCOVA model to these data. Which model is preferred?</p></li>
-<li><p>Using whichever model you selected in the previous section, create a graph of the data along with the confidence region for the regression line(s).</p></li>
-<li><p>Now consider only the “full term babies” which are babies with gestational age at birth <span class="math inline">\(\ge 36\)</span> weeks. With this reduced dataset, repeat parts c,d.</p></li>
-<li><p>Interpret the relationship between gestational length and mother’s smoking status on birth weight.</p></li>
+<li>For different values of <span class="math inline">\(\nu\)</span>, plot the distribution function of <span class="math inline">\(f(x|\nu)\)</span>. You might consider <span class="math inline">\(\nu = 5, 10,\)</span> and <span class="math inline">\(20\)</span>. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,\infty)\)</span> so select the</li>
+<li>Suppose that we’ve observed <span class="math inline">\(x = \{9,7,7,6,10,7,9)\)</span>. Calculate the sample mean and standard deviation.</li>
+<li>Graphically show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span>.</li>
+<li>Show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span> using a numerical maximization function.</li>
 </ol></li>
-<li>The in the <code>faraway</code> package, there is a dataset named <code>clot</code> that gives information about the time for blood to clot verses the blood dilution concentration when the blood was diluted with prothrombin-free plasma. Unfortunately the researchers had to order the plasma in two different lots (could think of this as two different sources) and need to ascertain if the lot number makes any difference in clotting time.
+<li>The Beta distribution is often used when dealing with data that are proportions. It is parameterized by <em>two</em> parameters, usually called <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> (both of which must be greater than zero). The mean of this distribution is by <span class="math display">\[E[X]=\frac{\alpha}{\alpha+\beta}\]</span>
+while the spread of the distribution is inversely related to the magnitude of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. The density function <span class="math inline">\(f(x|\alpha,\beta)\)</span> can be accessed in R using the <code>dbeta(x, alpha, beta)</code> function.
 <ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>time</code> and <code>conc</code> variable and plot the log-transformed data with color of the data point indicating the lot number. <em>(We will discuss why we performed this transformation later in the course.)</em></li>
-<li>Ignoring the slight remaining curvature in the data, perform the appropriate analysis using transformed variables. Does <code>lot</code> matter?</li>
-</ol></li>
-<li>In base R, there is a data set <code>ToothGrowth</code> which is data from an experiment giving Vitamin C to guinea pigs. The guinea pigs were given vitamin C doses either via orange juice or an ascorbic acid tablet. The response of interest was a measure of tooth growth where a higher growth is better.
-<ol style="list-style-type: lower-alpha">
-<li>Log transform the <code>dose</code> and use that throughout this problem. Use <span class="math inline">\(e\)</span> as the base, which R does by default when you use the <code>log()</code> function. <em>(We will discuss why we performed this transformation later in the course.)</em></li>
-<li>Graph the data, fit appropriate ANCOVA models, and describe the relationship between the delivery method, log(dose) level, and tooth growth. Produce a graph with the data and the regression line(s) along with the confidence region for the line(s).</li>
-<li>Is there a statistically significant difference in slopes between the two delivery methods?</li>
-<li>Just using your graphs and visual inspection, at low dose levels, say <span class="math inline">\(\log(dose)=-0.7\)</span>, is there a difference in delivery method? What about at high dose levels, say <span class="math inline">\(\log(dose)=0.7\)</span>?</li>
-<li>Use <code>emmeans()</code> to test if there is a statistically significant difference at low dose levels <span class="math inline">\(\log(dose)=-0.7\)</span>. Furthermore, test if there is a statistically significant difference at high dose levels. Summarize your findings.</li>
+<li>For different values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, plot the distribution function <span class="math inline">\(f(x|\alpha, \beta)\)</span>. You might consider keeping the ratio between <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> constant and just increase their magnitude. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,1]\)</span>.</li>
+<li>Suppose that we’ve observed <span class="math inline">\(x = \{0.25, 0.42, 0.45, 0.50, 0.55\}\)</span>. Calculate the sample mean and standard deviation.</li>
+<li>Graphically show that the maximum likelihood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
+<li>Show that the maximum likelihhood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
 </ol></li>
 </ol>
 
@@ -791,8 +621,8 @@ where the new fourth column is the what I would get if I multiplied the <span cl
           </div>
         </div>
       </div>
-<a href="4-contrasts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="6-two-way-anova.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="14-block-designs-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="project-appendix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -825,7 +655,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/blob/master/05_ANCOVA.Rmd",
+"link": "https://github.com/dereksonderegger/571/blob/master/90_Maximum_Likelihood.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -833,7 +663,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/dereksonderegger/571/raw/master/05_ANCOVA.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/90_Maximum_Likelihood.Rmd",
 "text": null
 },
 "download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],

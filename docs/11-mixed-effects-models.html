@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 11 Mixed Effects Models | Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 11 Mixed Effects Models | Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 11 Mixed Effects Models | Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger" />
+
+
+<meta name="date" content="2020-10-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="10-VariableSelection-Chapter.html"/>
+<link rel="next" href="12-binomial-regression.html"/>
+<script src="libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="part"><span><b>Statistical Theory</b></span></li>
+<li class="chapter" data-level="1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html"><i class="fa fa-check"></i><b>1</b> Matrix Manipulation</a>
+<ul>
+<li class="chapter" data-level="" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#MatrixTheory_Introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#types-of-matrices"><i class="fa fa-check"></i><b>1.2</b> Types of Matrices</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalars"><i class="fa fa-check"></i><b>1.2.1</b> Scalars</a></li>
+<li class="chapter" data-level="1.2.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vectors"><i class="fa fa-check"></i><b>1.2.2</b> Vectors</a></li>
+<li class="chapter" data-level="1.2.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix"><i class="fa fa-check"></i><b>1.2.3</b> Matrix</a></li>
+<li class="chapter" data-level="1.2.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#square-matrices"><i class="fa fa-check"></i><b>1.2.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="1.2.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#symmetric-matrices"><i class="fa fa-check"></i><b>1.2.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="1.2.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#diagonal-matrices"><i class="fa fa-check"></i><b>1.2.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="1.2.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#identity-matrices"><i class="fa fa-check"></i><b>1.2.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#operations-on-matrices"><i class="fa fa-check"></i><b>1.3</b> Operations on Matrices</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#transpose"><i class="fa fa-check"></i><b>1.3.1</b> Transpose</a></li>
+<li class="chapter" data-level="1.3.2" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#addition-and-subtraction"><i class="fa fa-check"></i><b>1.3.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="1.3.3" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#multiplication"><i class="fa fa-check"></i><b>1.3.3</b> Multiplication</a></li>
+<li class="chapter" data-level="1.3.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#vector-multiplication"><i class="fa fa-check"></i><b>1.3.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="1.3.5" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#matrix-multiplication"><i class="fa fa-check"></i><b>1.3.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="1.3.6" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>1.3.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="1.3.7" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#determinant"><i class="fa fa-check"></i><b>1.3.7</b> Determinant</a></li>
+<li class="chapter" data-level="1.3.8" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#inverse"><i class="fa fa-check"></i><b>1.3.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="1-matrix-manipulation.html"><a href="1-matrix-manipulation.html#Exercises_MatrixTheory"><i class="fa fa-check"></i><b>1.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html"><i class="fa fa-check"></i><b>2</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>2.2</b> Model Specifications</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>2.2.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="2.2.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>2.2.2</b> ANOVA model</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>2.3</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>2.3.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="2.3.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>2.3.2</b> Estimation of Variance Parameter</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>2.4</b> Standard Errors</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>2.4.1</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="2.4.2" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>2.4.2</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="2.4.3" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>2.4.3</b> Summary of pertinent results</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>2.5</b> R example</a></li>
+<li class="chapter" data-level="2.6" data-path="2-parameter-estimation.html"><a href="2-parameter-estimation.html#Exercises_Estimation"><i class="fa fa-check"></i><b>2.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-inference.html"><a href="3-inference.html"><i class="fa fa-check"></i><b>3</b> Inference</a>
+<ul>
+<li class="chapter" data-level="" data-path="3-inference.html"><a href="3-inference.html#Inference_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="3-inference.html"><a href="3-inference.html#Inference_Introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="3-inference.html"><a href="3-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>3.2</b> Confidence Intervals and Hypothesis Tests</a></li>
+<li class="chapter" data-level="3.3" data-path="3-inference.html"><a href="3-inference.html#f-tests"><i class="fa fa-check"></i><b>3.3</b> F-tests</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="3-inference.html"><a href="3-inference.html#theory"><i class="fa fa-check"></i><b>3.3.1</b> Theory</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-inference.html"><a href="3-inference.html#example"><i class="fa fa-check"></i><b>3.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="3-inference.html"><a href="3-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>3.4.1</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="3.4.2" data-path="3-inference.html"><a href="3-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>3.4.2</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="3.4.3" data-path="3-inference.html"><a href="3-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>3.4.3</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="3-inference.html"><a href="3-inference.html#Inference_Exercises"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a>
+<ul>
+<li class="chapter" data-level="" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_Introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
+<li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>4.3.1</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>4.4</b> Using <code>emmeans</code> Package</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>4.4.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="4.4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>4.4.2</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="4-contrasts.html"><a href="4-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>4.5</b> Exercises</a></li>
+</ul></li>
+<li class="part"><span><b>Statistical Models</b></span></li>
+<li class="chapter" data-level="5" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html"><i class="fa fa-check"></i><b>5</b> Analysis of Covariance (ANCOVA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html#ANCOVA_Introduction"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html#ANCOVA_Additive"><i class="fa fa-check"></i><b>5.2</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="5.3" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html#ANCOVA_Interaction"><i class="fa fa-check"></i><b>5.3</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="5.4" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html#ANCOVA_Iris_Example"><i class="fa fa-check"></i><b>5.4</b> Iris Example</a></li>
+<li class="chapter" data-level="5.5" data-path="5-ANCOVA-Chapter.html"><a href="5-ANCOVA-Chapter.html#ANCOVA_Exercises"><i class="fa fa-check"></i><b>5.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html"><i class="fa fa-check"></i><b>6</b> Two-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>6.1</b> Review of 1-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>6.1.1</b> An Example</a></li>
+<li class="chapter" data-level="6.1.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>6.1.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="6.1.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>6.1.3</b> Pairwise Comparisons</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>6.2</b> Two-Way ANOVA</a></li>
+<li class="chapter" data-level="6.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>6.3</b> Orthogonality</a></li>
+<li class="chapter" data-level="6.4" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>6.4</b> Main Effects Model</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>6.4.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="6.4.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>6.4.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="6.4.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>6.4.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>6.5</b> Interaction Model</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>6.5.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="6.5.2" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>6.5.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="6.5.3" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>6.5.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="6-two-way-anova.html"><a href="6-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>6.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>7</b> Diagnostics</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>7.1</b> Detecting Assumption Violations</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#measures-of-influence"><i class="fa fa-check"></i><b>7.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="7.1.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#diagnostic-plots"><i class="fa fa-check"></i><b>7.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="7-Diagnostics-Chapter.html"><a href="7-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>7.2</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>8</b> Data Transformations</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>8.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="8.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>8.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>8.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>8.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>8.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>8.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>8.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#interpretation-of-log-transformed-variable-coefficients"><i class="fa fa-check"></i><b>8.4</b> Interpretation of <span class="math inline">\(\log\)</span> transformed variable coefficients</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>8.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="8.4.2" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="8.4.3" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>8.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="8-LogTransformations-Chapter.html"><a href="8-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-CorrelatedCovariates-Chapter.html"><a href="9-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>9</b> Correlated Covariates</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="9-CorrelatedCovariates-Chapter.html"><a href="9-CorrelatedCovariates-Chapter.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>9.1</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="9.2" data-path="9-CorrelatedCovariates-Chapter.html"><a href="9-CorrelatedCovariates-Chapter.html#solutions"><i class="fa fa-check"></i><b>9.2</b> Solutions</a></li>
+<li class="chapter" data-level="9.3" data-path="9-CorrelatedCovariates-Chapter.html"><a href="9-CorrelatedCovariates-Chapter.html#exercises"><i class="fa fa-check"></i><b>9.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html"><i class="fa fa-check"></i><b>10</b> Variable Selection</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#nested-models"><i class="fa fa-check"></i><b>10.1</b> Nested Models</a></li>
+<li class="chapter" data-level="10.2" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#testing-based-model-selection"><i class="fa fa-check"></i><b>10.2</b> Testing-Based Model Selection</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>10.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#criterion-based-procedures"><i class="fa fa-check"></i><b>10.3</b> Criterion Based Procedures</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>10.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="10.3.2" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>10.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="10.3.3" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>10.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="10-VariableSelection-Chapter.html"><a href="10-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>10.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html"><i class="fa fa-check"></i><b>11</b> Mixed Effects Models</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>11.1</b> Block Designs</a></li>
+<li class="chapter" data-level="11.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>11.2</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="11.3" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>11.3</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="11.4" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>11.4</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="11.5" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>11.5</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="11.6" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>11.6</b> Nested Effects</a></li>
+<li class="chapter" data-level="11.7" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>11.7</b> Crossed Effects</a></li>
+<li class="chapter" data-level="11.8" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>11.8</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="11.9" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>11.9</b> Confidence and Prediction Intervals</a>
+<ul>
+<li class="chapter" data-level="11.9.1" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>11.9.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="11.9.2" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>11.9.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="11.10" data-path="11-mixed-effects-models.html"><a href="11-mixed-effects-models.html#Exercises_RandomEffects"><i class="fa fa-check"></i><b>11.10</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html"><i class="fa fa-check"></i><b>12</b> Binomial Regression</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>12.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="12.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>12.2</b> Measures of Fit Quality</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>12.2.1</b> Deviance</a></li>
+<li class="chapter" data-level="12.2.2" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>12.2.2</b> Goodness of Fit</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>12.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="12.4" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>12.4</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="12.5" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>12.5</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="12.6" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>12.6</b> Overdispersion</a></li>
+<li class="chapter" data-level="12.7" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>12.7</b> ROC Curves</a></li>
+<li class="chapter" data-level="12.8" data-path="12-binomial-regression.html"><a href="12-binomial-regression.html#Exercises_BinomialRegression"><i class="fa fa-check"></i><b>12.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="13-poisson-regression.html"><a href="13-poisson-regression.html"><i class="fa fa-check"></i><b>13</b> Poisson Regression</a></li>
+<li class="part"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="14" data-path="14-block-designs-1.html"><a href="14-block-designs-1.html"><i class="fa fa-check"></i><b>14</b> Block Designs</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="14-block-designs-1.html"><a href="14-block-designs-1.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>14.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="14.2" data-path="14-block-designs-1.html"><a href="14-block-designs-1.html#split-plot-designs"><i class="fa fa-check"></i><b>14.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="14.3" data-path="14-block-designs-1.html"><a href="14-block-designs-1.html#exercises-1"><i class="fa fa-check"></i><b>14.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>15</b> Maximum Likelihood Priciple</a>
+<ul>
+<li class="chapter" data-level="" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="15.1" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>15.1</b> Introduction</a></li>
+<li class="chapter" data-level="15.2" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>15.2</b> Distributions</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>15.2.1</b> Poisson</a></li>
+<li class="chapter" data-level="15.2.2" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>15.2.2</b> Exponential</a></li>
+<li class="chapter" data-level="15.2.3" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>15.2.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>15.3</b> Likelihood Function</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>15.3.1</b> Poisson</a></li>
+<li class="chapter" data-level="15.3.2" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>15.3.2</b> Exponential Example</a></li>
+<li class="chapter" data-level="15.3.3" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>15.3.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="15.4" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>15.4</b> Discussion</a></li>
+<li class="chapter" data-level="15.5" data-path="15-maximum-likelihood-priciple.html"><a href="15-maximum-likelihood-priciple.html#exercises-2"><i class="fa fa-check"></i><b>15.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
+<ul>
+<li class="chapter" data-level="15.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>15.6</b> Weeks 1 – 4 (Project Feasibility)</a>
+<ul>
+<li class="chapter" data-level="15.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>15.6.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mixed-effects-models" class="section level1" number="11">
+<h1><span class="header-section-number">Chapter 11</span> Mixed Effects Models</h1>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="11-mixed-effects-models.html#cb295-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot</span></span>
+<span id="cb295-2"><a href="11-mixed-effects-models.html#cb295-2" aria-hidden="true"></a><span class="kw">library</span>(stringr)    <span class="co"># string manipulation stuff</span></span>
+<span id="cb295-3"><a href="11-mixed-effects-models.html#cb295-3" aria-hidden="true"></a><span class="kw">library</span>(latex2exp)  <span class="co"># for LaTeX mathematical notation</span></span>
+<span id="cb295-4"><a href="11-mixed-effects-models.html#cb295-4" aria-hidden="true"></a></span>
+<span id="cb295-5"><a href="11-mixed-effects-models.html#cb295-5" aria-hidden="true"></a><span class="kw">library</span>(lme4)        <span class="co"># Our primary analysis routine</span></span>
+<span id="cb295-6"><a href="11-mixed-effects-models.html#cb295-6" aria-hidden="true"></a><span class="kw">library</span>(lmerTest)    <span class="co"># A user friendly interface to lme4 that produces p-values</span></span>
+<span id="cb295-7"><a href="11-mixed-effects-models.html#cb295-7" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># For all of my pairwise contrasts</span></span>
+<span id="cb295-8"><a href="11-mixed-effects-models.html#cb295-8" aria-hidden="true"></a><span class="kw">library</span>(car)         <span class="co"># For bootstrap Confidence/Prediction Intervals</span></span>
+<span id="cb295-9"><a href="11-mixed-effects-models.html#cb295-9" aria-hidden="true"></a></span>
+<span id="cb295-10"><a href="11-mixed-effects-models.html#cb295-10" aria-hidden="true"></a><span class="co"># library(devtools)</span></span>
+<span id="cb295-11"><a href="11-mixed-effects-models.html#cb295-11" aria-hidden="true"></a><span class="co"># install_github(&#39;dereksonderegger/dsData&#39;)  # datasets I&#39;ve made; only install once...</span></span>
+<span id="cb295-12"><a href="11-mixed-effects-models.html#cb295-12" aria-hidden="true"></a><span class="kw">library</span>(dsData)</span></code></pre></div>
+<p>The assumption of independent observations is often not supported and dependent data arises in a wide variety of situations. The dependency structure could be very simple such as rabbits within a litter being correlated and the litters being independent. More complex hierarchies of correlation are possible. For example we might expect voters in a particular part of town (called a precinct) to vote similarly, and particular districts in a state tend to vote similarly as well, which might result in a precinct / district / state hierarchy of correlation.</p>
+<div id="block-designs" class="section level2" number="11.1">
+<h2><span class="header-section-number">11.1</span> Block Designs</h2>
+<p>Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large. For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.</p>
+<p>Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables. We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are <em>nested</em>.</p>
+<p>Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.</p>
+<table style="width:76%;">
+<colgroup>
+<col width="20%" />
+<col width="19%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Field 1</th>
+<th>Field 2</th>
+<th>Field 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Plot 1</strong></td>
+<td>Variety A</td>
+<td>Variety C</td>
+<td>Variety B</td>
+</tr>
+<tr class="even">
+<td><strong>Plot 2</strong></td>
+<td>Variety B</td>
+<td>Variety A</td>
+<td>Variety C</td>
+</tr>
+<tr class="odd">
+<td><strong>Plot 3</strong></td>
+<td>Variety C</td>
+<td>Variety B</td>
+<td>Variety A</td>
+</tr>
+</tbody>
+</table>
+<p>Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials’ use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren’t really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.</p>
+</div>
+<div id="randomized-complete-block-design-rcbd" class="section level2" number="11.2">
+<h2><span class="header-section-number">11.2</span> Randomized Complete Block Design (RCBD)</h2>
+<p>The dataset <code>oatvar</code> in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="11-mixed-effects-models.html#cb296-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb296-2"><a href="11-mixed-effects-models.html#cb296-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb296-3"><a href="11-mixed-effects-models.html#cb296-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb296-4"><a href="11-mixed-effects-models.html#cb296-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-178-1.png" width="672" /></p>
+<p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because
+<span class="math display">\[\begin{aligned}
+  df_\epsilon   &amp;=  n-p \\
+        &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
+        &amp;=  40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+        &amp;=  40-12 \\
+        &amp;=  28
+ \end{aligned}\]</span></p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="11-mixed-effects-models.html#cb297-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)</span>
+<span id="cb297-2"><a href="11-mixed-effects-models.html#cb297-2" aria-hidden="true"></a><span class="kw">anova</span>(m1)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## block      4  33396  8348.9  6.2449  0.001008 ** 
+## variety    7  77524 11074.8  8.2839 1.804e-05 ***
+## Residuals 28  37433  1336.9                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="11-mixed-effects-models.html#cb299-1" aria-hidden="true"></a><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></span></code></pre></div>
+<p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
+<p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
+<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do any statistical inference at the block scale!</p>
+<p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="11-mixed-effects-models.html#cb300-1" aria-hidden="true"></a><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span></span>
+<span id="cb300-2"><a href="11-mixed-effects-models.html#cb300-2" aria-hidden="true"></a>letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb300-3"><a href="11-mixed-effects-models.html#cb300-3" aria-hidden="true"></a><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb300-4"><a href="11-mixed-effects-models.html#cb300-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span></span>
+<span id="cb300-5"><a href="11-mixed-effects-models.html#cb300-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)</span>
+<span id="cb300-6"><a href="11-mixed-effects-models.html#cb300-6" aria-hidden="true"></a></span>
+<span id="cb300-7"><a href="11-mixed-effects-models.html#cb300-7" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></span>
+<span id="cb300-8"><a href="11-mixed-effects-models.html#cb300-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb300-9"><a href="11-mixed-effects-models.html#cb300-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-180-1.png" width="672" /></p>
+<p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="11-mixed-effects-models.html#cb301-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)</span>
+<span id="cb301-2"><a href="11-mixed-effects-models.html#cb301-2" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
+<pre><code>## 
+## Error: block
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  4  33396    8349               
+## 
+## Error: Within
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+## variety    7  77524   11075   8.284 1.8e-05 ***
+## Residuals 28  37433    1337                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don’t have any replication of the blocks. So our analysis respects that blocks are present, but does not attempt any statistical analyses on them.</p>
+<p>Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models. In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.</p>
+<p>Mixed effects models combine what we call “fixed” and “random” effects.</p>
+<table>
+<colgroup>
+<col width="27%" />
+<col width="72%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Fixed effects</strong></td>
+<td>Unknown constants that we wish to estimate from the
+model and could be similarly estimated in subsequent
+experimentation. The research is interested in these
+particular levels.</td>
+</tr>
+<tr class="even">
+<td><strong>Random effects</strong></td>
+<td>Random variables sampled from a population which
+cannot be observed in subsequent experimentation. The
+research is not interested in these particular levels,
+but rather how the levels vary from sample to sample.</td>
+</tr>
+</tbody>
+</table>
+<p>For example, in a rabbit study that examined the effect of diet on the growth of domestic rabbits and we had 10 litters of rabbits and used the 3 most similar from each litter to test 6 different diets. Here, the 6 different diets are fixed effects because they are not randomly selected from a population, these exact same diets can be further studied, and these are the diets we are interested it. The litters of rabbits and the individual rabbits are randomly selected from populations, cannot be exactly replicated in future studies, and we are not interested in the individual litters but rather what the variability is between individuals and between litters.</p>
+<p>Often random effects are not of primary interest to the researcher, but must be considered. Often blocking variables are random effects because the arise from a random sample of possible blocks that are potentially available to the researcher.</p>
+<p>Mixed effects models are models that have both fixed and random effects. We will first concentrate on understanding how to address a model with two sources error and then complicate the matter with fixed effects.</p>
+</div>
+<div id="review-of-maximum-likelihood-methods" class="section level2" number="11.3">
+<h2><span class="header-section-number">11.3</span> Review of Maximum Likelihood Methods</h2>
+<p>Recall that the likelihood function is the function links the model parameters to the data and is found by taking the probability density function and interpreting it as a function of the parameters instead of the a function of the data. Loosely, the probability function tells us what outcomes are most probable, with the height of the function telling us which values (or regions of values) are most probable given a set of parameter values. The higher the probability function, the higher the probability of seeing that value (or data in that region). The likelihood function turns that relationship around and tells us what parameter values are most likely to have generated the data we have, again with the parameter values with a higher likelihood value being more “likely”.</p>
+<p>The likelihood function for a sample <span class="math inline">\(y_i \stackrel{iid}{\sim} N\left( \mu, \sigma \right)\)</span> can be written as a function of our parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^{2}\)</span> then we have defined our likelihood function
+<span class="math display">\[L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]\]</span></p>
+<p>where the variance/covariance matrix is <span class="math inline">\(\boldsymbol{\Omega}=\sigma I_n\)</span>.</p>
+<p>We can use to this equation to find the maximum likelihood estimators by either taking the derivatives and setting them equal to zero and solving for the parameters or by using numerical methods. In the normal case, we can find the maximum likelihood estimators (MLEs) using the derivative trick and we find that <span class="math display">\[\hat{\mu}_{MLE}=\hat{y}=\bar{y}\]</span>
+and
+<span class="math display">\[\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}\left(y_{i}-\hat{y}\right)^{2}\]</span>
+and we notice that this is not our usual estimator <span class="math inline">\(\hat{\sigma}^{2}=s^{2}\)</span> where <span class="math inline">\(s^{2}\)</span> is the sample variance. It turns out that the MLE estimate of <span class="math inline">\(\sigma^{2}\)</span> is biased (the correction is to divide by <span class="math inline">\(n-1\)</span> instead of <span class="math inline">\(n\)</span>). This is normally not an issue if our sample size is large, but with a small sample, the bias is not insignificant.</p>
+<p>Notice if we happened to know that <span class="math inline">\(\mu=0\)</span>, then we could use <span class="math display">\[\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}y_{i}^{2}\]</span>
+and this would be unbiased for <span class="math inline">\(\sigma^{2}\)</span>.</p>
+<p>In general (a not just in the normal case above) the <em>Likelihood Ratio Test</em> (LRT) provides a way for us to compare two nested models. Given <span class="math inline">\(m_{0}\)</span> which is a simplification of <span class="math inline">\(m_{1}\)</span> then we could calculate the likelihoods functions of the two models <span class="math inline">\(L\left(\boldsymbol{\theta}_{0}\right)\)</span> and <span class="math inline">\(L\left(\boldsymbol{\theta}_{1}\right)\)</span> where <span class="math inline">\(\boldsymbol{\theta}_{0}\)</span> is a vector of parameters for the null model and <span class="math inline">\(\boldsymbol{\theta}_{1}\)</span> is a vector of parameter for the alternative. Let <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> be the maximum likelihood estimators for the null model and <span class="math inline">\(\hat{\boldsymbol{\theta}}_{1}\)</span> be the maximum likelihood estimators for the alternative. Finally we consider the value of
+<span class="math display">\[\begin{aligned}
+  D &amp;=  -2*\log\left[\frac{L\left(\hat{\boldsymbol{\theta}}_{0}\right)}{L\left(\hat{\boldsymbol{\theta}}_{1}\right)}\right] \\
+      &amp;=    -2\left[\log L\left(\hat{\boldsymbol{\theta}}_{0}\right)-\log L\left(\hat{\boldsymbol{\theta}}_{1}\right)\right]
+    \end{aligned}\]</span></p>
+<p>Under the null hypothesis that <span class="math inline">\(m_{0}\)</span> is the true model, the <span class="math inline">\(D\stackrel{\cdot}{\sim}\chi_{p_{1}-p_{0}}^{2}\)</span> where <span class="math inline">\(p_{1}-p_{0}\)</span> is the difference in number of parameters in the null and alternative models. That is to say that asymptotically <span class="math inline">\(D\)</span> has a Chi-squared distribution with degrees of freedom equal to the difference in degrees of freedom of the two models.</p>
+<p>We could think of <span class="math inline">\(L\left(\hat{\boldsymbol{\theta}}_{0}\right)\)</span> as the maximization of the likelihood when some parameters are held constant (at zero) and all the other parameters are vary. But we are not required to hold it constant at zero. We could chose any value of interest and perform a LRT.</p>
+<p>Because we often regard a confidence interval as the set of values that would not be rejected by a hypothesis test, we could consider a sequence of possible values for a parameter and figure out which would not be rejected by the LRT. In this fashion we can construct confidence intervals for parameter values.</p>
+<p>Unfortunately all of this hinges on the asymptotic distribution of <span class="math inline">\(D\)</span> and often this turns out to be a poor approximation. In simple cases more exact tests can be derived (for example the F-tests we have used prior) but sometimes nothing better is currently known. Another alternative is to use resampling methods for the creation of confidence intervals or p-values.</p>
+</div>
+<div id="way-anova-with-a-random-effect" class="section level2" number="11.4">
+<h2><span class="header-section-number">11.4</span> 1-way ANOVA with a random effect</h2>
+<p>We first consider the simplest model with two sources of variability, a 1-way ANOVA with a random factor covariate <span class="math display">\[y_{ij}=\mu+\gamma_{i}+\epsilon_{ij}\]</span>
+where <span class="math inline">\(\gamma_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{\gamma}^{2}\right)\)</span> and <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>. This model could occur, for example, when looking at the adult weight of domestic rabbits where the random effect is the effect of litter and we are interested in understanding how much variability there is between litters <span class="math inline">\(\left(\sigma_{\gamma}^{2}\right)\)</span> and how much variability there is within a litter <span class="math inline">\(\left(\sigma_{\epsilon}^{2}\right)\)</span>. Another example is the the creation of computer chips. Here a single wafer of silicon is used to create several chips and we might have wafer-to-wafer variability and then within a wafer, you have chip-to-chip variability.</p>
+<p>First we should think about what the variances and covariances are for any two observations.
+<span class="math display">\[\begin{aligned}
+  Var\left(y_{ij}\right)    
+   &amp;=   Var\left(\mu+\gamma_{i}+\epsilon_{ij}\right) \\
+     &amp;= Var\left(\mu\right)+Var\left(\gamma_{i}\right)+Var\left(\epsilon_{ij}\right) \\
+     &amp;= 0+\sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} 
+     \end{aligned}\]</span>
+and <span class="math inline">\(Cov\left(y_{ij},y_{ik}\right)=\sigma_{\gamma}^{2}\)</span> because the two observations share the same litter <span class="math inline">\(\gamma_{i}\)</span>. For two observations in different litters, the covariance is 0. These relationships induce a correlation on observations within the same litter of
+<span class="math display">\[\rho=\frac{\sigma_{\gamma}^{2}}{\sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2}}\]</span></p>
+<p>For example, suppose that we have <span class="math inline">\(I=3\)</span> litters and in each litter we have <span class="math inline">\(J=3\)</span> rabbits per litter. Then the variance-covariance matrix looks like
+<span class="math display">\[\boldsymbol{\Omega}   =   \left[\begin{array}{ccccccccc}
+\sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2} &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+\sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2} &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+\sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; . &amp; . &amp; . &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2} &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2} &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; . &amp; . &amp; .\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2} &amp; \sigma_{\gamma}^{2}\\
+. &amp; . &amp; . &amp; . &amp; . &amp; . &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2} &amp; \sigma_{\gamma}^{2}+\sigma_{\epsilon}^{2}
+\end{array}\right]\]</span></p>
+<p>Substituting this new variance-covariance matrix into our likelihood function, we now have a likelihood function which we can perform our usual MLE tricks with.</p>
+<p>In the more complicated situation where we have a full mixed effects model, we could write <span class="math display">\[\boldsymbol{y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{Z}\boldsymbol{\gamma}+\boldsymbol{\epsilon}\]</span>
+where <span class="math inline">\(\boldsymbol{X}\)</span> is the design matrix for the fixed effects, <span class="math inline">\(\boldsymbol{\beta}\)</span> is the vector of fixed effect coefficients, <span class="math inline">\(\boldsymbol{Z}\)</span> is the design matrix for random effects, <span class="math inline">\(\boldsymbol{\gamma}\)</span> is the vector of random effects such that <span class="math inline">\(\gamma_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{\gamma}^{2}\right)\)</span> and finally <span class="math inline">\(\boldsymbol{\epsilon}\)</span> is the vector of error terms such that <span class="math inline">\(\epsilon_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>. Notice in our rabbit case</p>
+<p><span class="math display">\[\boldsymbol{Z}=\left[\begin{array}{ccc}
+1 &amp; \cdot &amp; \cdot\\
+1 &amp; \cdot &amp; \cdot\\
+1 &amp; \cdot &amp; \cdot\\
+\cdot &amp; 1 &amp; \cdot\\
+\cdot &amp; 1 &amp; \cdot\\
+\cdot &amp; 1 &amp; \cdot\\
+\cdot &amp; \cdot &amp; 1\\
+\cdot &amp; \cdot &amp; 1\\
+\cdot &amp; \cdot &amp; 1
+\end{array}\right]\;\;\;\;ZZ^{T}=\left[\begin{array}{ccccccccc}
+1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot\\
+1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot\\
+1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot\\
+\cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot\\
+\cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot\\
+\cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1 &amp; \cdot &amp; \cdot &amp; \cdot\\
+\cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1\\
+\cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1\\
+\cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; \cdot &amp; 1 &amp; 1 &amp; 1
+\end{array}\right]\]</span></p>
+<p>which makes it easy to notice <span class="math display">\[\boldsymbol{\Omega}=\sigma_{\gamma}^{2}\boldsymbol{Z}\boldsymbol{Z}^{T}+\sigma_{\epsilon}^{2}\boldsymbol{I}\]</span></p>
+<p>In practice we tend to have relatively small numbers of block parameters and thus have a small number of observations in which to estimate <span class="math inline">\(\sigma_{\gamma}^{2}\)</span> which means that the biased nature of MLE estimates will be sub-optimal. If we knew that <span class="math inline">\(\boldsymbol{X}\boldsymbol{\beta}=\boldsymbol{0}\)</span> we could use that fact and have an unbiased estimate of our variance parameters. Because <span class="math inline">\(\boldsymbol{X}\)</span> is known, we can find linear functions <span class="math inline">\(\boldsymbol{k}\)</span> such that <span class="math inline">\(\boldsymbol{k}^{T}\boldsymbol{X}=0\)</span>. We can form a matrix <span class="math inline">\(\boldsymbol{K}\)</span> that represents all of these possible transformations and we notice that <span class="math display">\[\boldsymbol{K}^{T}\boldsymbol{y} \sim N \left( \boldsymbol{K}^{T}\boldsymbol{X\beta}, \, \boldsymbol{K}^{T}\boldsymbol{\Omega}\boldsymbol{K}\right) = N\left( \boldsymbol{0}, \boldsymbol{K}^{T}\boldsymbol{\Omega}\boldsymbol{K}\right)\]</span>
+and perform our maximization on this transformed set of data. Once we have our unbiased estimates of <span class="math inline">\(\sigma_{\gamma}^{2}\)</span> and <span class="math inline">\(\sigma_{\epsilon}^{2}\)</span>, we can substitute these back into the untransformed likelihood function and find the MLEs for <span class="math inline">\(\boldsymbol{\beta}\)</span>. This process is called Restricted Maximum Likelihood (REML) and is generally preferred over the variance component estimates found simply maximizing the regular likelihood function. As usual, if our experiment is balanced these complications aren’t necessary as the REML estimates of <span class="math inline">\(\boldsymbol{\beta}\)</span> are usually the same as the ML estimates.</p>
+<p>Our first example comes from an experiment to test the paper brightness as affected by the shift operator. The data has 20 observations with 4 different operators. Each operator had 5 different observations made. The data set is <code>pulp</code> in the package <code>faraway</code>. We will first analyze this using a fixed-effects one-way ANOVA, but we will use a different model representation. Instead of using the first operator as the reference level, we will use the sum-to-zero constraint (to make it easier to compare with the output of the random effects model).</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="11-mixed-effects-models.html#cb303-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;pulp&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb303-2"><a href="11-mixed-effects-models.html#cb303-2" aria-hidden="true"></a><span class="kw">ggplot</span>(pulp, <span class="kw">aes</span>(<span class="dt">x=</span>operator, <span class="dt">y=</span>bright)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="11-mixed-effects-models.html#cb304-1" aria-hidden="true"></a><span class="co"># set the contrasts to sum-to-zero constraint</span></span>
+<span id="cb304-2"><a href="11-mixed-effects-models.html#cb304-2" aria-hidden="true"></a>op &lt;-<span class="st"> </span><span class="kw">options</span>(<span class="dt">contrasts=</span><span class="kw">c</span>(<span class="st">&#39;contr.sum&#39;</span>, <span class="st">&#39;contr.poly&#39;</span>))</span>
+<span id="cb304-3"><a href="11-mixed-effects-models.html#cb304-3" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright <span class="op">~</span><span class="st"> </span>operator, <span class="dt">data=</span>pulp)</span>
+<span id="cb304-4"><a href="11-mixed-effects-models.html#cb304-4" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## operator     3   1.34  0.4467   4.204 0.0226 *
+## Residuals   16   1.70  0.1062                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="11-mixed-effects-models.html#cb306-1" aria-hidden="true"></a><span class="kw">coef</span>(m)</span></code></pre></div>
+<pre><code>## (Intercept)   operator1   operator2   operator3 
+##       60.40       -0.16       -0.34        0.22</code></pre>
+<p>The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28</p>
+<p>To fit the random effects model we will use the package <code>lmerTest</code> which is a nicer user interface to the package <code>lme4</code>. The reason we won’t use <code>lme4</code> directly is that the authors of <code>lme4</code> refuse to calculate p-values. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. There are other packages out there that recognize that we need approximate p-values and the package <code>lmerTest</code> provides reasonable answers that match was SAS calculates.</p>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="11-mixed-effects-models.html#cb308-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( bright <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>operator), <span class="dt">data=</span>pulp )</span>
+<span id="cb308-2"><a href="11-mixed-effects-models.html#cb308-2" aria-hidden="true"></a><span class="kw">summary</span>(m2)  <span class="co"># because there are no fixed effects, lmerTest bailed out to lme4.</span></span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: bright ~ 1 + (1 | operator)
+##    Data: pulp
+## 
+## REML criterion at convergence: 18.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.4666 -0.7595 -0.1244  0.6281  1.6012 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  operator (Intercept) 0.06808  0.2609  
+##  Residual             0.10625  0.3260  
+## Number of obs: 20, groups:  operator, 4
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)  60.4000     0.1494  3.0000   404.2 3.34e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that the estimate of the fixed effect (the overall mean) is the same in the fixed-effects ANOVA and in the mixed model. However the fixed effects ANOVA estimates the effect of each operator while the mixed model is interested in estimating the variance between operators. In the model statement the (1|operator) denotes the random effect and this notation tells us to fit a model with a random intercept term for each operator. Here the variance associated with the operators is <span class="math inline">\(\sigma_{\gamma}^{2}=0.068\)</span> while the “pure error” is <span class="math inline">\(\sigma_{\epsilon}^{2}=0.106\)</span>. The column for standard deviation is not the variability associated with our estimate, but is simply the square-root of the variance terms <span class="math inline">\(\sigma_{\gamma}\)</span> and <span class="math inline">\(\sigma_{\epsilon}\)</span>. This was fit using the REML method.</p>
+<p>We might be interested in the estimated effect of each operator</p>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="11-mixed-effects-models.html#cb310-1" aria-hidden="true"></a><span class="kw">ranef</span>(m2)</span></code></pre></div>
+<pre><code>## $operator
+##   (Intercept)
+## a  -0.1219403
+## b  -0.2591231
+## c   0.1676679
+## d   0.2133955
+## 
+## with conditional variances for &quot;operator&quot;</code></pre>
+<p>These effects are smaller than the values we estimated in the fixed effects model due to distributional assumption that penalizes large deviations from the mean. In general, the estimated random effects are of smaller magnitude than the effect size estimated using a fixed effect model.</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="11-mixed-effects-models.html#cb312-1" aria-hidden="true"></a><span class="co"># reset the contrasts to the default</span></span>
+<span id="cb312-2"><a href="11-mixed-effects-models.html#cb312-2" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">contrasts=</span><span class="kw">c</span>(<span class="st">&quot;contr.treatment&quot;</span>, <span class="st">&quot;contr.poly&quot;</span> ))</span></code></pre></div>
+</div>
+<div id="blocks-as-random-variables" class="section level2" number="11.5">
+<h2><span class="header-section-number">11.5</span> Blocks as Random Variables</h2>
+<p>Blocks are properties of experimental designs and usually we are not interested in the block levels <em>per se</em> but need to account for the variability introduced by them.</p>
+<p>Recall the agriculture experiment in the dataset <code>oatvar</code> from the <code>faraway</code> package. We had 8 different varieties of oats and we had 5 different fields (which we called blocks). Because of limitations on how we plant, we could only divide the blocks into 8 plots and in each plot we planted one of the varieties.</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="11-mixed-effects-models.html#cb313-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb313-2"><a href="11-mixed-effects-models.html#cb313-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span> variety)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb313-3"><a href="11-mixed-effects-models.html#cb313-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb313-4"><a href="11-mixed-effects-models.html#cb313-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>block, <span class="dt">labeller=</span>label_both)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-187-1.png" width="672" /></p>
+<p>In this case, we don’t really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment.</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="11-mixed-effects-models.html#cb314-1" aria-hidden="true"></a>model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>oatvar)</span>
+<span id="cb314-2"><a href="11-mixed-effects-models.html#cb314-2" aria-hidden="true"></a>model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>oatvar)</span>
+<span id="cb314-3"><a href="11-mixed-effects-models.html#cb314-3" aria-hidden="true"></a><span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: oatvar
+## Models:
+## model.0: yield ~ (1 | block)
+## model.1: yield ~ variety + (1 | block)
+##         npar    AIC    BIC  logLik deviance Chisq Df Pr(&gt;Chisq)    
+## model.0    3 446.94 452.01 -220.47   440.94                        
+## model.1   10 421.67 438.56 -200.84   401.67 39.27  7  1.736e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that this is doing a Likelihood Ratio Test
+<span class="math display">\[-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24\]</span></p>
+<p>This shows that the variety matters, though this is pretty annoying. We’d prefer to use the <code>anova</code> command with just model and see the p-values for each covariate.</p>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="11-mixed-effects-models.html#cb317-1" aria-hidden="true"></a><span class="kw">anova</span>(model<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##         Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
+## variety  77524   11075     7    28  8.2839 1.804e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>There is quite a bit of debate among statisticians about which test should be recommended in different scenarios using random effects and this is an active area of research. In this case, instead of performing a LRT, the <code>lmerTest</code> package opted to use a Satterthwaite approximation.</p>
+<p>To consider if the random effect should be included in the model, we can again turn to the Likelihood Ratio test.</p>
+<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="11-mixed-effects-models.html#cb319-1" aria-hidden="true"></a><span class="kw">ranova</span>(model<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## yield ~ variety + (1 | block)
+##             npar  logLik    AIC    LRT Df Pr(&gt;Chisq)   
+## &lt;none&gt;        10 -170.68 361.35                        
+## (1 | block)    9 -175.08 368.16 8.8065  1   0.003002 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Here, both the AIC and LRT suggest that the random effect of block is appropriate to include in the model.</p>
+<p>Now that we have chosen our model, we can examine is model.</p>
+<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="11-mixed-effects-models.html#cb321-1" aria-hidden="true"></a><span class="kw">summary</span>(model<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: yield ~ variety + (1 | block)
+##    Data: oatvar
+## 
+## REML criterion at convergence: 341.4
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.7135 -0.5503 -0.1280  0.4862  2.1756 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  block    (Intercept)  876.5   29.61   
+##  Residual             1336.9   36.56   
+## Number of obs: 40, groups:  block, 5
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value Pr(&gt;|t|)    
+## (Intercept)   334.40      21.04  15.26  15.894 6.64e-11 ***
+## variety2       42.20      23.12  28.00   1.825   0.0787 .  
+## variety3       28.20      23.12  28.00   1.219   0.2328    
+## variety4      -47.60      23.12  28.00  -2.058   0.0490 *  
+## variety5      105.00      23.12  28.00   4.541 9.73e-05 ***
+## variety6       -3.80      23.12  28.00  -0.164   0.8707    
+## variety7      -16.00      23.12  28.00  -0.692   0.4947    
+## variety8       49.80      23.12  28.00   2.154   0.0400 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr) varty2 varty3 varty4 varty5 varty6 varty7
+## variety2 -0.550                                          
+## variety3 -0.550  0.500                                   
+## variety4 -0.550  0.500  0.500                            
+## variety5 -0.550  0.500  0.500  0.500                     
+## variety6 -0.550  0.500  0.500  0.500  0.500              
+## variety7 -0.550  0.500  0.500  0.500  0.500  0.500       
+## variety8 -0.550  0.500  0.500  0.500  0.500  0.500  0.500</code></pre>
+<p>We start with the Random effects. This section shows us the <em>block-to-block</em> variability (and the square root of that, the Standard Deviation) as well as the “pure-error”, labeled residuals, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted <em>within</em> the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.</p>
+<p>Why do we care about this? This actually tells us quite a lot about the spatial variability. Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.</p>
+<p>Next we turn to the fixed effects. These will be the offsets from the reference group, as we’ve typically worked with. Here we see that varieties 2,5, and 8 are the best performers (relative to variety 1),</p>
+<p>We are certain that there are differences among the varieties, and we should look at all of the pairwise contrasts among the variety levels. As usual we could use the package <code>emmeans</code>, which automates much of this (and uses <code>lmerTest</code> produced p-values for the tests).</p>
+<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="11-mixed-effects-models.html#cb323-1" aria-hidden="true"></a>LetterResults &lt;-<span class="st"> </span>emmeans<span class="op">::</span><span class="kw">emmeans</span>( model<span class="fl">.1</span>, <span class="op">~</span><span class="st"> </span>variety) <span class="op">%&gt;%</span></span>
+<span id="cb323-2"><a href="11-mixed-effects-models.html#cb323-2" aria-hidden="true"></a><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</span>
+<span id="cb323-3"><a href="11-mixed-effects-models.html#cb323-3" aria-hidden="true"></a>LetterResults</span></code></pre></div>
+<pre><code>##  variety emmean SE   df lower.CL upper.CL .group
+##  4          287 21 15.2      242      332  a    
+##  7          318 21 15.2      274      363  ab   
+##  6          331 21 15.2      286      375  ab   
+##  1          334 21 15.2      290      379  ab   
+##  3          363 21 15.2      318      407   b   
+##  2          377 21 15.2      332      421   bc  
+##  8          384 21 15.2      339      429   bc  
+##  5          439 21 15.2      395      484    c  
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 8 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>As usual we’ll join this information into the original data table and then make a nice summary graph.</p>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb325-1"><a href="11-mixed-effects-models.html#cb325-1" aria-hidden="true"></a>LetterResults &lt;-<span class="st"> </span>LetterResults <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb325-2"><a href="11-mixed-effects-models.html#cb325-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">LetterHeight=</span><span class="dv">500</span>,  <span class="dt">.group =</span> <span class="kw">str_trim</span>(.group))</span>
+<span id="cb325-3"><a href="11-mixed-effects-models.html#cb325-3" aria-hidden="true"></a></span>
+<span id="cb325-4"><a href="11-mixed-effects-models.html#cb325-4" aria-hidden="true"></a>oatvar <span class="op">%&gt;%</span></span>
+<span id="cb325-5"><a href="11-mixed-effects-models.html#cb325-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">variety =</span> <span class="kw">fct_reorder</span>(variety, yield)) <span class="op">%&gt;%</span></span>
+<span id="cb325-6"><a href="11-mixed-effects-models.html#cb325-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>( <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></span>
+<span id="cb325-7"><a href="11-mixed-effects-models.html#cb325-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">color=</span>block)) <span class="op">+</span></span>
+<span id="cb325-8"><a href="11-mixed-effects-models.html#cb325-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">data=</span>LetterResults, <span class="kw">aes</span>(<span class="dt">label=</span>.group, <span class="dt">y=</span>LetterHeight))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-193-1.png" width="672" /></p>
+<hr />
+<p>We’ll consider a second example using data from the pharmaceutical industry. We are interested in 4 different processes (our treatment variable) used in the biosynthesis and purification of the drug penicillin. The biosynthesis requires a nutrient source (corn steep liquor) as a nutrient source for the fungus and the nutrient source is quite variable. Each batch of the nutrient is is referred to as a ‘blend’ and each blend is sufficient to create 4 runs of penicillin. We avoid confounding our biosynthesis methods with the blend by using a Randomized Complete Block Design and observing the yield of penicillin from each of the four methods (A,B,D, and D) in each blend.</p>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="11-mixed-effects-models.html#cb326-1" aria-hidden="true"></a><span class="kw">data</span>(penicillin, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb326-2"><a href="11-mixed-effects-models.html#cb326-2" aria-hidden="true"></a></span>
+<span id="cb326-3"><a href="11-mixed-effects-models.html#cb326-3" aria-hidden="true"></a><span class="kw">ggplot</span>(penicillin, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>treat)) <span class="op">+</span></span>
+<span id="cb326-4"><a href="11-mixed-effects-models.html#cb326-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb326-5"><a href="11-mixed-effects-models.html#cb326-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>( <span class="op">~</span><span class="st"> </span>blend, <span class="dt">ncol=</span><span class="dv">5</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-194-1.png" width="672" /></p>
+<p>It looks like there is definitely a <code>Blend</code> effect (e.g. Blend1 is much better than Blend5) but it isn’t clear that there is a treatment effect.</p>
+<div class="sourceCode" id="cb327"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb327-1"><a href="11-mixed-effects-models.html#cb327-1" aria-hidden="true"></a>model<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st">  </span><span class="dv">1</span>    <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)</span>
+<span id="cb327-2"><a href="11-mixed-effects-models.html#cb327-2" aria-hidden="true"></a>model<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>treat <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>blend), <span class="dt">data=</span>penicillin)</span>
+<span id="cb327-3"><a href="11-mixed-effects-models.html#cb327-3" aria-hidden="true"></a><span class="kw">anova</span>(model<span class="fl">.0</span>, model<span class="fl">.1</span>)  <span class="co"># Analysis using a LRT</span></span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: penicillin
+## Models:
+## model.0: yield ~ 1 + (1 | blend)
+## model.1: yield ~ treat + (1 | blend)
+##         npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)
+## model.0    3 127.33 130.31 -60.662   121.33                     
+## model.1    6 129.28 135.25 -58.639   117.28 4.0474  3     0.2564</code></pre>
+<div class="sourceCode" id="cb330"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb330-1"><a href="11-mixed-effects-models.html#cb330-1" aria-hidden="true"></a><span class="kw">anova</span>(model<span class="fl">.1</span>)  <span class="co"># using whatever lmerTest thinks is appropriate </span></span></code></pre></div>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##       Sum Sq Mean Sq NumDF DenDF F value Pr(&gt;F)
+## treat     70  23.333     3    12  1.2389 0.3387</code></pre>
+<p>It looks like we don’t have a significant effect of the treatments. Next we’ll examine the simple model to understand the variability.</p>
+<div class="sourceCode" id="cb332"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb332-1"><a href="11-mixed-effects-models.html#cb332-1" aria-hidden="true"></a><span class="kw">ranova</span>(model<span class="fl">.1</span>)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## yield ~ treat + (1 | blend)
+##             npar  logLik    AIC    LRT Df Pr(&gt;Chisq)  
+## &lt;none&gt;         6 -51.915 115.83                       
+## (1 | blend)    5 -53.296 116.59 2.7629  1    0.09647 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Blend looks marginally significant, but it might still be interesting to compare the variability between blends to variability within blends.</p>
+<div class="sourceCode" id="cb334"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb334-1"><a href="11-mixed-effects-models.html#cb334-1" aria-hidden="true"></a><span class="kw">summary</span>(model<span class="fl">.0</span>)   <span class="co"># the lack of fixed effects caused lmerTest to revert to lme4</span></span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: yield ~ 1 + (1 | blend)
+##    Data: penicillin
+## 
+## REML criterion at convergence: 118.4
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.5526 -0.7310 -0.0789  0.5007  1.8241 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  blend    (Intercept) 11.57    3.401   
+##  Residual             19.73    4.442   
+## Number of obs: 20, groups:  blend, 5
+## 
+## Fixed effects:
+##             Estimate Std. Error     df t value Pr(&gt;|t|)    
+## (Intercept)   86.000      1.817  4.000   47.34 1.19e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We see that the noise is more in the within blend rather than the between blends. If my job were to understand the variability and figure out how to improve production, this suggests that understanding the both how variability is introduced at the blend level <em>and</em> at the run level. The run level has slightly more variability, so I might start there.</p>
+</div>
+<div id="nested-effects" class="section level2" number="11.6">
+<h2><span class="header-section-number">11.6</span> Nested Effects</h2>
+<p>When the levels of one factor vary only within the levels of another factor, that factor is said to be nested. For example, when measuring the performance of workers at several job locations, if the workers only work at one site, then the workers are nested within site. If the workers work at more than one location, we would say that workers are <em>crossed</em> with site.</p>
+<p>We’ve already seen a number of nested designs when we looked at split plot designs. Recall the <code>AgData</code> set that I made up that simulated an agricultural experiment with 8 plots and 4 subplots per plot. We applied an irrigation treatment at the plot level and a fertilizer treatment at the subplot level. I actually have 5 replicate observations per subplot.</p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+<p>So all together we have 8 plots, 32 subplots, and 5 replicates per subplot. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units. In other words, I should have 8 random effects for plot, and 32 random effects for subplot.</p>
+<div class="sourceCode" id="cb336"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb336-1"><a href="11-mixed-effects-models.html#cb336-1" aria-hidden="true"></a><span class="co"># The following model definitions are equivalent</span></span>
+<span id="cb336-2"><a href="11-mixed-effects-models.html#cb336-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">:</span>subplot), <span class="dt">data=</span>AgData )</span>
+<span id="cb336-3"><a href="11-mixed-effects-models.html#cb336-3" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)</span>
+<span id="cb336-4"><a href="11-mixed-effects-models.html#cb336-4" aria-hidden="true"></a><span class="kw">anova</span>(model)</span></code></pre></div>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##             Sum Sq Mean Sq NumDF   DenDF F value    Pr(&gt;F)    
+## Irrigation  3.4769  3.4769     1  5.9999  3.4281    0.1136    
+## Fertilizer 31.3824 31.3824     1 22.9999 30.9420 1.169e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We’ll remove the irrigation covariate and refit the model.</p>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb338-1"><a href="11-mixed-effects-models.html#cb338-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData)</span>
+<span id="cb338-2"><a href="11-mixed-effects-models.html#cb338-2" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: yield ~ Fertilizer + (1 | plot/subplot)
+##    Data: AgData
+## 
+## REML criterion at convergence: 572.6
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.78714 -0.62878 -0.08602  0.64094  2.36353 
+## 
+## Random effects:
+##  Groups       Name        Variance Std.Dev.
+##  subplot:plot (Intercept) 5.345    2.312   
+##  plot         (Intercept) 8.854    2.975   
+##  Residual                 1.014    1.007   
+## Number of obs: 160, groups:  subplot:plot, 32; plot, 8
+## 
+## Fixed effects:
+##                Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)     21.0211     1.2056  8.9744  17.436 3.14e-08 ***
+## FertilizerHigh   4.6323     0.8328 23.0000   5.563 1.17e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##             (Intr)
+## FertilzrHgh -0.345</code></pre>
+<p>Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot.</p>
+<hr />
+<p>A number of <em>in-situ</em> experiments looking at the addition CO<span class="math inline">\(_2\)</span> and warming on landscapes have been done (typically called Free Air CO<span class="math inline">\(_2\)</span> Experiments (FACE)) and these are interesting from an experimental design perspective because we have limited number of replicates because the cost of exposing plants to different CO<span class="math inline">\(_2\)</span> levels outside a greenhouse is extraordinarily expensive. In the <code>dsData</code> package, there is a dataset that is inspired by one of those studies.</p>
+<p>The experimental units for the CO<span class="math inline">\(_2\)</span> treatment will be called a ring, and we have nine rings. We have three treatments (A,B,C) which correspond to an elevated CO<span class="math inline">\(_2\)</span> treatment, an ambient CO<span class="math inline">\(_2\)</span> treatment with all the fans, and a pure control. For each ring we’ll have some measure of productivity but we have six replicate observations per ring.</p>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb340-1"><a href="11-mixed-effects-models.html#cb340-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&quot;HierarchicalData&quot;</span>, <span class="dt">package =</span> <span class="st">&#39;dsData&#39;</span>)</span>
+<span id="cb340-2"><a href="11-mixed-effects-models.html#cb340-2" aria-hidden="true"></a><span class="kw">head</span>(HierarchicalData)</span></code></pre></div>
+<pre><code>##   Trt Ring Rep        y
+## 1   A    1   1 363.9684
+## 2   A    1   2 312.0613
+## 3   A    1   3 332.9916
+## 4   A    1   4 320.0109
+## 5   A    1   5 292.2656
+## 6   A    1   6 315.8136</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-203-1.png" width="672" /></p>
+<p>We can easily fit this model using random effects for each ring.</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb342-1"><a href="11-mixed-effects-models.html#cb342-1" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>( y <span class="op">~</span><span class="st"> </span>Trt <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring), <span class="dt">data=</span>HierarchicalData )</span>
+<span id="cb342-2"><a href="11-mixed-effects-models.html#cb342-2" aria-hidden="true"></a><span class="kw">anova</span>(model)</span></code></pre></div>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##     Sum Sq Mean Sq NumDF DenDF F value  Pr(&gt;F)  
+## Trt  10776  5388.1     2     6  5.7176 0.04075 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>To think about what is actually going on, it is helpful to consider the predicted values from this model. As usual we will use the <code>predict</code> function, but now we have the option of including the random effects or not.</p>
+<p>First lets consider the predicted values if we completely ignore the Ring random effect while making predictions.</p>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb344-1"><a href="11-mixed-effects-models.html#cb344-1" aria-hidden="true"></a>HierarchicalData.Predictions &lt;-<span class="st"> </span>HierarchicalData <span class="op">%&gt;%</span></span>
+<span id="cb344-2"><a href="11-mixed-effects-models.html#cb344-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> <span class="op">~</span><span class="st"> </span><span class="dv">0</span>),  <span class="co"># don&#39;t include any random effects </span></span>
+<span id="cb344-3"><a href="11-mixed-effects-models.html#cb344-3" aria-hidden="true"></a>          <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),</span>
+<span id="cb344-4"><a href="11-mixed-effects-models.html#cb344-4" aria-hidden="true"></a>          <span class="dt">my.text =</span> <span class="kw">TeX</span>(<span class="kw">paste</span>(<span class="st">&#39;$</span><span class="ch">\\</span><span class="st">hat{y}$ =&#39;</span>, y.hat), <span class="dt">output=</span><span class="st">&#39;character&#39;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb344-5"><a href="11-mixed-effects-models.html#cb344-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(Trt, Ring) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb344-6"><a href="11-mixed-effects-models.html#cb344-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span>)  <span class="co"># Predictions are the same for all replicates in the ring</span></span>
+<span id="cb344-7"><a href="11-mixed-effects-models.html#cb344-7" aria-hidden="true"></a></span>
+<span id="cb344-8"><a href="11-mixed-effects-models.html#cb344-8" aria-hidden="true"></a>HierarchicalData.Predictions <span class="op">%&gt;%</span></span>
+<span id="cb344-9"><a href="11-mixed-effects-models.html#cb344-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+## # Groups:   Trt, Ring [6]
+##   Trt   Ring    Rep     y y.hat my.text                                        
+##   &lt;fct&gt; &lt;fct&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;                                          
+## 1 A     1         1  364.  312. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 311&#39;,&#39;. 78&#39;)
+## 2 A     2         1  269.  312. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 311&#39;,&#39;. 78&#39;)
+## 3 A     3         1  321.  312. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 311&#39;,&#39;. 78&#39;)
+## 4 B     4         1  189.  235. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 234&#39;,&#39;. 53&#39;)
+## 5 B     5         1  265.  235. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 234&#39;,&#39;. 53&#39;)
+## 6 B     6         1  251.  235. paste(&#39;&#39;,&#39;&#39;,hat(paste(&#39;y&#39;)),&#39;&#39;,&#39; = 234&#39;,&#39;. 53&#39;)</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-206-1.png" width="672" /></p>
+<p>Now we consider the predicted values, but created using the Ring random effect. These random effects provide for a slight perturbation up or down depending on the quality of the Ring, but the sum of all 9 Ring effects is <em>required</em> to be 0.</p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb346-1"><a href="11-mixed-effects-models.html#cb346-1" aria-hidden="true"></a><span class="kw">ranef</span>(model)</span></code></pre></div>
+<pre><code>## $Ring
+##   (Intercept)
+## 1    9.458738
+## 2  -29.798425
+## 3   20.339687
+## 4  -40.532972
+## 5   21.067503
+## 6   19.465469
+## 7  -21.814405
+## 8    2.548287
+## 9   19.266118
+## 
+## with conditional variances for &quot;Ring&quot;</code></pre>
+<div class="sourceCode" id="cb348"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb348-1"><a href="11-mixed-effects-models.html#cb348-1" aria-hidden="true"></a><span class="kw">sum</span>(<span class="kw">ranef</span>(model)<span class="op">$</span>Ring)</span></code></pre></div>
+<pre><code>## [1] -3.519407e-12</code></pre>
+<p>Also notice that the sum of the random effects <em>within a treatment</em> is zero! (Recall Ring 1:3 was treatment A, 4:6 was treatment B, and 7:9 was treatment C).</p>
+<div class="sourceCode" id="cb350"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb350-1"><a href="11-mixed-effects-models.html#cb350-1" aria-hidden="true"></a>HierarchicalData.Predictions &lt;-<span class="st"> </span>HierarchicalData <span class="op">%&gt;%</span></span>
+<span id="cb350-2"><a href="11-mixed-effects-models.html#cb350-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">y.hat   =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span> <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Ring)),  <span class="co"># Include Ring Random effect</span></span>
+<span id="cb350-3"><a href="11-mixed-effects-models.html#cb350-3" aria-hidden="true"></a>          <span class="dt">y.hat   =</span> <span class="kw">round</span>( y.hat, <span class="dt">digits=</span><span class="dv">2</span>),</span>
+<span id="cb350-4"><a href="11-mixed-effects-models.html#cb350-4" aria-hidden="true"></a>          <span class="dt">my.text =</span> <span class="kw">TeX</span>(<span class="kw">paste</span>(<span class="st">&#39;$</span><span class="ch">\\</span><span class="st">hat{y}$ =&#39;</span>, y.hat), <span class="dt">output=</span><span class="st">&#39;character&#39;</span>))  </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-209-1.png" width="672" /></p>
+<p>We interpret the random effect of Ring as a perturbation to expected value of the response that you expect just based on the treatment provided.</p>
+<hr />
+<p>We’ll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.</p>
+<p>In terms of notation, we will refer to the 6 labs as <span class="math inline">\(L_{i}\)</span> and the lab technicians as <span class="math inline">\(T_{ij}\)</span> and we note that <span class="math inline">\(j\)</span> is either 1 or 2 which doesn’t uniquely identify the technician unless we include the lab subscript as well. Finally the sub-samples are nested within the technicians and we denote them as <span class="math inline">\(S_{ijk}\)</span>. Finally our “pure” error is the two measurements from the same sub-sample. So the model we wish to fit is:
+<span class="math display">\[y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}\]</span>
+where <span class="math inline">\(L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)\)</span>, <span class="math inline">\(T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)\)</span>, <span class="math inline">\(S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)\)</span>, <span class="math inline">\(\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)\)</span>.</p>
+<p>We need a convenient way to tell <code>lmer</code> which factors are nested in which. We can do this by creating data columns that make the interaction terms. For example there are 12 technicians (2 from each lab), but in our data frame we only see two levels, so to create all 12 random effects, we need to create an interaction column (or tell <code>lmer</code> to create it and use it). Likewise there are 24 sub-samples and 48 “pure” random effects.</p>
+<div class="sourceCode" id="cb351"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb351-1"><a href="11-mixed-effects-models.html#cb351-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;eggs&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb351-2"><a href="11-mixed-effects-models.html#cb351-2" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician) <span class="op">+</span></span>
+<span id="cb351-3"><a href="11-mixed-effects-models.html#cb351-3" aria-hidden="true"></a><span class="st">                     </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">:</span>Technician<span class="op">:</span>Sample), <span class="dt">data=</span>eggs)</span>
+<span id="cb351-4"><a href="11-mixed-effects-models.html#cb351-4" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">lmer</span>( Fat <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample), <span class="dt">data=</span>eggs)</span></code></pre></div>
+<div class="sourceCode" id="cb352"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb352-1"><a href="11-mixed-effects-models.html#cb352-1" aria-hidden="true"></a>eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb352-2"><a href="11-mixed-effects-models.html#cb352-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))</span>
+<span id="cb352-3"><a href="11-mixed-effects-models.html#cb352-3" aria-hidden="true"></a><span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb352-4"><a href="11-mixed-effects-models.html#cb352-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb352-5"><a href="11-mixed-effects-models.html#cb352-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb352-6"><a href="11-mixed-effects-models.html#cb352-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">:</span>Technician) <span class="op">+</span></span>
+<span id="cb352-7"><a href="11-mixed-effects-models.html#cb352-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average Value Only&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-211-1.png" width="672" /></p>
+<div class="sourceCode" id="cb353"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb353-1"><a href="11-mixed-effects-models.html#cb353-1" aria-hidden="true"></a>eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb353-2"><a href="11-mixed-effects-models.html#cb353-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab)))</span>
+<span id="cb353-3"><a href="11-mixed-effects-models.html#cb353-3" aria-hidden="true"></a><span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb353-4"><a href="11-mixed-effects-models.html#cb353-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb353-5"><a href="11-mixed-effects-models.html#cb353-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb353-6"><a href="11-mixed-effects-models.html#cb353-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span></span>
+<span id="cb353-7"><a href="11-mixed-effects-models.html#cb353-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab Offset&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-212-1.png" width="672" /></p>
+<div class="sourceCode" id="cb354"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb354-1"><a href="11-mixed-effects-models.html#cb354-1" aria-hidden="true"></a>eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb354-2"><a href="11-mixed-effects-models.html#cb354-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician)))</span>
+<span id="cb354-3"><a href="11-mixed-effects-models.html#cb354-3" aria-hidden="true"></a><span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb354-4"><a href="11-mixed-effects-models.html#cb354-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb354-5"><a href="11-mixed-effects-models.html#cb354-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb354-6"><a href="11-mixed-effects-models.html#cb354-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span></span>
+<span id="cb354-7"><a href="11-mixed-effects-models.html#cb354-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician Offset&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-213-1.png" width="672" /></p>
+<div class="sourceCode" id="cb355"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb355-1"><a href="11-mixed-effects-models.html#cb355-1" aria-hidden="true"></a>eggs &lt;-<span class="st"> </span>eggs <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb355-2"><a href="11-mixed-effects-models.html#cb355-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">yhat =</span> <span class="kw">predict</span>(model, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Lab<span class="op">/</span>Technician<span class="op">/</span>Sample)))</span>
+<span id="cb355-3"><a href="11-mixed-effects-models.html#cb355-3" aria-hidden="true"></a><span class="kw">ggplot</span>(eggs, <span class="kw">aes</span>(<span class="dt">x=</span>Sample, <span class="dt">y=</span>Fat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb355-4"><a href="11-mixed-effects-models.html#cb355-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb355-5"><a href="11-mixed-effects-models.html#cb355-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat, <span class="dt">x=</span><span class="kw">as.integer</span>(Sample)), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb355-6"><a href="11-mixed-effects-models.html#cb355-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(. <span class="op">~</span><span class="st"> </span>Lab<span class="op">+</span>Technician) <span class="op">+</span></span>
+<span id="cb355-7"><a href="11-mixed-effects-models.html#cb355-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Average With Lab + Technician + Sample Offset&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-214-1.png" width="672" /></p>
+<p>Now that we have an idea of how things vary, we can look at the summary table.</p>
+<div class="sourceCode" id="cb356"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb356-1"><a href="11-mixed-effects-models.html#cb356-1" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: Fat ~ 1 + (1 | Lab/Technician/Sample)
+##    Data: eggs
+## 
+## REML criterion at convergence: -64.2
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.04098 -0.46576  0.00927  0.59713  1.54276 
+## 
+## Random effects:
+##  Groups                  Name        Variance Std.Dev.
+##  Sample:(Technician:Lab) (Intercept) 0.003065 0.05536 
+##  Technician:Lab          (Intercept) 0.006980 0.08355 
+##  Lab                     (Intercept) 0.005920 0.07694 
+##  Residual                            0.007196 0.08483 
+## Number of obs: 48, groups:  
+## Sample:(Technician:Lab), 24; Technician:Lab, 12; Lab, 6
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)  0.38750    0.04296 5.00000   9.019  0.00028 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>It looks like there is still plenty of unexplained variability, but the next largest source of variability is in the technician and also the lab. Is the variability lab-to-lab large enough for us to convincingly argue that it is statistically significant?</p>
+<div class="sourceCode" id="cb358"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb358-1"><a href="11-mixed-effects-models.html#cb358-1" aria-hidden="true"></a><span class="kw">ranova</span>(model)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## Fat ~ (1 | Sample:(Technician:Lab)) + (1 | Technician:Lab) + 
+##     (1 | Lab)
+##                               npar logLik     AIC     LRT Df Pr(&gt;Chisq)  
+## &lt;none&gt;                           5 32.118 -54.235                        
+## (1 | Sample:(Technician:Lab))    4 31.316 -54.632 1.60342  1    0.20542  
+## (1 | Technician:Lab)             4 30.740 -53.480 2.75552  1    0.09692 .
+## (1 | Lab)                        4 31.719 -55.439 0.79649  1    0.37215  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>It looks like the technician effect is at the edge of statistically significant, but the lab-to-lab effect is smaller than the pure error and not statistically significant. I’m not thrilled with the repeatability, but the technicians are a bigger concern than the individual labs.</p>
+</div>
+<div id="crossed-effects" class="section level2" number="11.7">
+<h2><span class="header-section-number">11.7</span> Crossed Effects</h2>
+<p>If two effects are not nested, we say they are <em>crossed</em>. In the penicillin example, the treatments and blends were not nested and are therefore crossed.</p>
+<p>An example is a Latin square experiment to look the effects of abrasion on four different material types (A, B, C, and D). We have a machine to do the abrasion test with four positions and we did 4 different machine runs. Our data looks like the following setup:</p>
+<table style="width:86%;">
+<colgroup>
+<col width="8%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">run</th>
+<th align="center">Position: 1</th>
+<th align="center">Position: 2</th>
+<th align="center">Position: 3</th>
+<th align="center">Position: 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">C</td>
+<td align="center">D</td>
+<td align="center">B</td>
+<td align="center">A</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">A</td>
+<td align="center">B</td>
+<td align="center">D</td>
+<td align="center">C</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">D</td>
+<td align="center">C</td>
+<td align="center">A</td>
+<td align="center">B</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">B</td>
+<td align="center">A</td>
+<td align="center">C</td>
+<td align="center">D</td>
+</tr>
+</tbody>
+</table>
+<p>Our model can be written as <span class="math display">\[y_{ijk}=\mu+M_{i}+P_{j}+R_{k}+\epsilon_{ijk}\]</span>
+and we notice that the position and run effects are not nested within anything else and thus the subscript have just a single index variable. Certainly the run effect should be considered random as these four are a sample from all possible runs, but what about the position variable? Here we consider that the machine being used is a random selection from all possible abrasion machines and any position differences have likely developed over time and could be considered as a random sample of possible position effects. We’ll regard both position and run as crossed random effects.</p>
+<div class="sourceCode" id="cb360"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb360-1"><a href="11-mixed-effects-models.html#cb360-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;abrasion&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb360-2"><a href="11-mixed-effects-models.html#cb360-2" aria-hidden="true"></a><span class="kw">ggplot</span>(abrasion, <span class="kw">aes</span>(<span class="dt">x=</span>material, <span class="dt">y=</span>wear, <span class="dt">color=</span>position, <span class="dt">shape=</span>run)) <span class="op">+</span></span>
+<span id="cb360-3"><a href="11-mixed-effects-models.html#cb360-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">3</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-218-1.png" width="672" /></p>
+<p>It certainly looks like the materials are different. I don’t think the run matters, but position 2 seems to develop excessive wear compared to the other positions.</p>
+<div class="sourceCode" id="cb361"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb361-1"><a href="11-mixed-effects-models.html#cb361-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</span>
+<span id="cb361-2"><a href="11-mixed-effects-models.html#cb361-2" aria-hidden="true"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Type III Analysis of Variance Table with Satterthwaite&#39;s method
+##          Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    
+## material 4621.5  1540.5     3     6  25.151 0.0008498 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.</p>
+<div class="sourceCode" id="cb363"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb363-1"><a href="11-mixed-effects-models.html#cb363-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> pairwise<span class="op">~</span>material) </span></code></pre></div>
+<pre><code>## $emmeans
+##  material emmean   SE   df lower.CL upper.CL
+##  A           266 7.67 7.48      248      284
+##  B           220 7.67 7.48      202      238
+##  C           242 7.67 7.48      224      260
+##  D           230 7.67 7.48      213      248
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## 
+## $contrasts
+##  contrast estimate   SE df t.ratio p.value
+##  A - B        45.8 5.53  6  8.267  0.0007 
+##  A - C        24.0 5.53  6  4.337  0.0190 
+##  A - D        35.2 5.53  6  6.370  0.0029 
+##  B - C       -21.8 5.53  6 -3.930  0.0295 
+##  B - D       -10.5 5.53  6 -1.897  0.3206 
+##  C - D        11.2 5.53  6  2.033  0.2743 
+## 
+## Degrees-of-freedom method: kenward-roger 
+## P value adjustment: tukey method for comparing a family of 4 estimates</code></pre>
+<div class="sourceCode" id="cb365"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb365-1"><a href="11-mixed-effects-models.html#cb365-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m, <span class="dt">specs=</span> <span class="op">~</span>material) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) </span></code></pre></div>
+<pre><code>##  material emmean   SE   df lower.CL upper.CL .group
+##  B           220 7.67 7.48      202      238  a    
+##  D           230 7.67 7.48      213      248  ab   
+##  C           242 7.67 7.48      224      260   b   
+##  A           266 7.67 7.48      248      284    c  
+## 
+## Degrees-of-freedom method: kenward-roger 
+## Confidence level used: 0.95 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## significance level used: alpha = 0.05</code></pre>
+<p>So material D is in between materials B and C for abrasion resistance.</p>
+<div class="sourceCode" id="cb367"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb367-1"><a href="11-mixed-effects-models.html#cb367-1" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: wear ~ material + (1 | run) + (1 | position)
+##    Data: abrasion
+## 
+## REML criterion at convergence: 100.3
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -1.08973 -0.30231  0.02697  0.42254  1.21052 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  run      (Intercept)  66.90    8.179  
+##  position (Intercept) 107.06   10.347  
+##  Residual              61.25    7.826  
+## Number of obs: 16, groups:  run, 4; position, 4
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)  265.750      7.668   7.475  34.656 1.57e-09 ***
+## materialB    -45.750      5.534   6.000  -8.267 0.000169 ***
+## materialC    -24.000      5.534   6.000  -4.337 0.004892 ** 
+## materialD    -35.250      5.534   6.000  -6.370 0.000703 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##           (Intr) matrlB matrlC
+## materialB -0.361              
+## materialC -0.361  0.500       
+## materialD -0.361  0.500  0.500</code></pre>
+<p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.</p>
+<div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="11-mixed-effects-models.html#cb369-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</span>
+<span id="cb369-2"><a href="11-mixed-effects-models.html#cb369-2" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run), <span class="dt">data=</span>abrasion)</span>
+<span id="cb369-3"><a href="11-mixed-effects-models.html#cb369-3" aria-hidden="true"></a><span class="kw">anova</span>(m, m2)  <span class="co"># Run is important; Notice refitting using ML</span></span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: abrasion
+## Models:
+## m2: wear ~ material + (1 | position)
+## m: wear ~ material + (1 | run) + (1 | position)
+##    npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)  
+## m2    6 137.74 142.38 -62.870   125.74                       
+## m     7 134.32 139.73 -60.162   120.32 5.4164  1    0.01995 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="11-mixed-effects-models.html#cb372-1" aria-hidden="true"></a><span class="kw">anova</span>(m, m3)  <span class="co"># Position is really important; Notice refitting using ML</span></span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<pre><code>## Data: abrasion
+## Models:
+## m3: wear ~ material + (1 | run)
+## m: wear ~ material + (1 | run) + (1 | position)
+##    npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
+## m3    6 139.80 144.44 -63.901   127.80                        
+## m     7 134.32 139.73 -60.162   120.32 7.4794  1   0.006241 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect. Similarly the Likelihood Ratio Test gives a p-value of about <span class="math inline">\(0.02\)</span>. So while the run effect wasn’t visible in our initial graph, it looks like it is a statistically significant effect.</p>
+<div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="11-mixed-effects-models.html#cb375-1" aria-hidden="true"></a><span class="co"># Now do a similar test, but using the REML estimates of the variance components</span></span>
+<span id="cb375-2"><a href="11-mixed-effects-models.html#cb375-2" aria-hidden="true"></a><span class="co"># Recall that REML estimates are unbiased and should be used!</span></span>
+<span id="cb375-3"><a href="11-mixed-effects-models.html#cb375-3" aria-hidden="true"></a><span class="kw">ranova</span>(m)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## wear ~ material + (1 | run) + (1 | position)
+##                npar  logLik    AIC    LRT Df Pr(&gt;Chisq)  
+## &lt;none&gt;            7 -50.128 114.26                       
+## (1 | run)         6 -51.651 115.30 3.0459  1    0.08094 .
+## (1 | position)    6 -52.425 116.85 4.5931  1    0.03210 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continutes to be statistically significant, the run has dropped down to marginal significance.</p>
+</div>
+<div id="repeated-measures-longitudinal-studies" class="section level2" number="11.8">
+<h2><span class="header-section-number">11.8</span> Repeated Measures / Longitudinal Studies</h2>
+<p>In repeated measurement experiments, repeated observations are taken on each subject. When those repeated measurements are taken over a sequence of time, we call it a longitudinal study. Typically covariates are also observed at the same time points and we are interested in how the response is related to the covariates.</p>
+<p>In this case the correlation structure is that observations on the same person/object should be more similar than observations between two people/objects. As a result we need to account for repeated measures by including the person/object as a random effect.</p>
+<p>To demonstrate a longitudinal study we turn to the data set <code>sleepstudy</code> in the <code>lme4</code> library. Eighteen patients participated in a study in which they were allowed only 3 hours of sleep per night and their reaction time in a specific test was observed. On day zero (before any sleep deprivation occurred) their reaction times were recorded and then the measurement was repeated on 9 subsequent days.</p>
+<div class="sourceCode" id="cb377"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb377-1"><a href="11-mixed-effects-models.html#cb377-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;sleepstudy&#39;</span>, <span class="dt">package=</span><span class="st">&#39;lme4&#39;</span>)</span>
+<span id="cb377-2"><a href="11-mixed-effects-models.html#cb377-2" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb377-3"><a href="11-mixed-effects-models.html#cb377-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb377-4"><a href="11-mixed-effects-models.html#cb377-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb377-5"><a href="11-mixed-effects-models.html#cb377-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-224-1.png" width="672" /></p>
+<p>We want to fit a line to these data, but how should we do this? First we notice that each subject has their own baseline for reaction time and the subsequent measurements are relative to this, so it is clear that we should fit a model with a random intercept.</p>
+<div class="sourceCode" id="cb378"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb378-1"><a href="11-mixed-effects-models.html#cb378-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>Subject), <span class="dt">data=</span>sleepstudy)</span>
+<span id="cb378-2"><a href="11-mixed-effects-models.html#cb378-2" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: Reaction ~ Days + (1 | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1786.5
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.2257 -0.5529  0.0109  0.5188  4.2506 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  Subject  (Intercept) 1378.2   37.12   
+##  Residual              960.5   30.99   
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error       df t value Pr(&gt;|t|)    
+## (Intercept) 251.4051     9.7467  22.8102   25.79   &lt;2e-16 ***
+## Days         10.4673     0.8042 161.0000   13.02   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.371</code></pre>
+<div class="sourceCode" id="cb380"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb380-1"><a href="11-mixed-effects-models.html#cb380-1" aria-hidden="true"></a><span class="kw">ranova</span>(m1)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## Reaction ~ Days + (1 | Subject)
+##               npar  logLik    AIC   LRT Df Pr(&gt;Chisq)    
+## &lt;none&gt;           4 -893.23 1794.5                        
+## (1 | Subject)    3 -946.83 1899.7 107.2  1  &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>To visualize how well this model fits our data, we will plot the predicted values which are lines with y-intercepts that are equal to the sum of the fixed effect of intercept and the random intercept per subject. The slope for each patient is assumed to be the same and is approximately <span class="math inline">\(10.4\)</span>.</p>
+<div class="sourceCode" id="cb382"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb382-1"><a href="11-mixed-effects-models.html#cb382-1" aria-hidden="true"></a>sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb382-2"><a href="11-mixed-effects-models.html#cb382-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m1, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">|</span>Subject)))</span>
+<span id="cb382-3"><a href="11-mixed-effects-models.html#cb382-3" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb382-4"><a href="11-mixed-effects-models.html#cb382-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb382-5"><a href="11-mixed-effects-models.html#cb382-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb382-6"><a href="11-mixed-effects-models.html#cb382-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb382-7"><a href="11-mixed-effects-models.html#cb382-7" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
+<p>This isn’t too bad, but I would really like to have each patient have their own slope as well as their own y-intercept. The random slope will be calculated as a fixed effect of slope plus a random offset from that.</p>
+<div class="sourceCode" id="cb383"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb383-1"><a href="11-mixed-effects-models.html#cb383-1" aria-hidden="true"></a><span class="co"># Random effects for intercept and Slope </span></span>
+<span id="cb383-2"><a href="11-mixed-effects-models.html#cb383-2" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>( <span class="dv">1</span><span class="op">+</span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data=</span>sleepstudy)</span>
+<span id="cb383-3"><a href="11-mixed-effects-models.html#cb383-3" aria-hidden="true"></a></span>
+<span id="cb383-4"><a href="11-mixed-effects-models.html#cb383-4" aria-hidden="true"></a>sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb383-5"><a href="11-mixed-effects-models.html#cb383-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</span>
+<span id="cb383-6"><a href="11-mixed-effects-models.html#cb383-6" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">y=</span>Reaction, <span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb383-7"><a href="11-mixed-effects-models.html#cb383-7" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb383-8"><a href="11-mixed-effects-models.html#cb383-8" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb383-9"><a href="11-mixed-effects-models.html#cb383-9" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></span>
+<span id="cb383-10"><a href="11-mixed-effects-models.html#cb383-10" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<p>This appears to fit the observed data quite a bit better, but it is useful to test this.</p>
+<div class="sourceCode" id="cb384"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb384-1"><a href="11-mixed-effects-models.html#cb384-1" aria-hidden="true"></a><span class="co"># anova(m2, m1)  # the ML analysis, which is not preferred</span></span>
+<span id="cb384-2"><a href="11-mixed-effects-models.html#cb384-2" aria-hidden="true"></a><span class="kw">ranova</span>(m2)</span></code></pre></div>
+<pre><code>## ANOVA-like table for random-effects: Single term deletions
+## 
+## Model:
+## Reaction ~ Days + (1 + Days | Subject)
+##                              npar  logLik    AIC    LRT Df Pr(&gt;Chisq)    
+## &lt;none&gt;                          6 -871.81 1755.6                         
+## Days in (1 + Days | Subject)    4 -893.23 1794.5 42.837  2   4.99e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.</p>
+<p>It is instructive to look at this example from the top down. First we plot the population regression line.</p>
+<div class="sourceCode" id="cb386"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb386-1"><a href="11-mixed-effects-models.html#cb386-1" aria-hidden="true"></a>sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb386-2"><a href="11-mixed-effects-models.html#cb386-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>))</span>
+<span id="cb386-3"><a href="11-mixed-effects-models.html#cb386-3" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>yhat)) <span class="op">+</span></span>
+<span id="cb386-4"><a href="11-mixed-effects-models.html#cb386-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span></span>
+<span id="cb386-5"><a href="11-mixed-effects-models.html#cb386-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Population Estimated Regression Curve&#39;</span>) <span class="op">+</span></span>
+<span id="cb386-6"><a href="11-mixed-effects-models.html#cb386-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-229-1.png" width="672" /></p>
+<div class="sourceCode" id="cb387"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb387-1"><a href="11-mixed-effects-models.html#cb387-1" aria-hidden="true"></a>sleepstudy &lt;-<span class="st"> </span>sleepstudy <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb387-2"><a href="11-mixed-effects-models.html#cb387-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yhat.ind =</span> <span class="kw">predict</span>(m2, <span class="dt">re.form=</span><span class="op">~</span>(<span class="dv">1</span><span class="op">+</span>Days<span class="op">|</span>Subject)))</span>
+<span id="cb387-3"><a href="11-mixed-effects-models.html#cb387-3" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb387-4"><a href="11-mixed-effects-models.html#cb387-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">size=</span><span class="dv">3</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb387-5"><a href="11-mixed-effects-models.html#cb387-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb387-6"><a href="11-mixed-effects-models.html#cb387-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>)) <span class="op">+</span></span>
+<span id="cb387-7"><a href="11-mixed-effects-models.html#cb387-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Person-to-Person Variation&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-230-1.png" width="672" /></p>
+<div class="sourceCode" id="cb388"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb388-1"><a href="11-mixed-effects-models.html#cb388-1" aria-hidden="true"></a><span class="kw">ggplot</span>(sleepstudy, <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb388-2"><a href="11-mixed-effects-models.html#cb388-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb388-3"><a href="11-mixed-effects-models.html#cb388-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat.ind, <span class="dt">group=</span>Subject), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb388-4"><a href="11-mixed-effects-models.html#cb388-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">9</span>, <span class="dt">by=</span><span class="dv">2</span>)) <span class="op">+</span></span>
+<span id="cb388-5"><a href="11-mixed-effects-models.html#cb388-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&#39;Reaction&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&#39;Within Person Variation&#39;</span>) <span class="op">+</span></span>
+<span id="cb388-6"><a href="11-mixed-effects-models.html#cb388-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>Subject, <span class="dt">ncol=</span><span class="dv">6</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb388-7"><a href="11-mixed-effects-models.html#cb388-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Reaction))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-231-1.png" width="672" /></p>
+<p>Finally we want to go back and look at the coefficients for the complex model.</p>
+<div class="sourceCode" id="cb389"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb389-1"><a href="11-mixed-effects-models.html#cb389-1" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [
+## lmerModLmerTest]
+## Formula: Reaction ~ Days + (1 + Days | Subject)
+##    Data: sleepstudy
+## 
+## REML criterion at convergence: 1743.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.9536 -0.4634  0.0231  0.4634  5.1793 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  Subject  (Intercept) 612.10   24.741       
+##           Days         35.07    5.922   0.07
+##  Residual             654.94   25.592       
+## Number of obs: 180, groups:  Subject, 18
+## 
+## Fixed effects:
+##             Estimate Std. Error      df t value Pr(&gt;|t|)    
+## (Intercept)  251.405      6.825  17.000  36.838  &lt; 2e-16 ***
+## Days          10.467      1.546  17.000   6.771 3.26e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## Days -0.138</code></pre>
+</div>
+<div id="confidence-and-prediction-intervals" class="section level2" number="11.9">
+<h2><span class="header-section-number">11.9</span> Confidence and Prediction Intervals</h2>
+<p>As with the standard linear model, we often want to create confidence and prediction intervals for a new observation or set of observations. Unfortunately, there isn’t a nice way to easily incorporate the uncertainty of the variance components. Instead we have to rely on bootstapping techniques to produce these quantities. Fortunately the <code>lme4</code> package provides a function that will handle most of the looping required, but we have to describe to the program how to create the bootstrap samples, and given a bootstrap sample, what statistics do we want to produce intervals for.</p>
+<p>Recall that the steps of a bootstrap procedure are:</p>
+<ol style="list-style-type: decimal">
+<li>Generate a bootstrap sample.</li>
+<li>Fit a model to that bootstrap sample.</li>
+<li><em>From that model, calculate some statistic(s) you care about. This is the only step that the user needs do any work to specify.</em></li>
+<li>Repeat steps 1-3, many times, generating a bootstrap distribution of the statistics you care about.</li>
+<li>From the bootstrap distribution generate confidence intervals for the value of interest.</li>
+</ol>
+<p>Typically the bootstrap is used when we don’t want to make any distributional assumptions on the data. In that case, we sample with replacement from the observed data to create the bootstrap data. But, if we don’t mind making distributional assumptions, then instead of re-sampling the data, we could sample from the distribution with the observed parameter. In our sleep study example, we have estimated a population intercept and slope of <span class="math inline">\(251.4\)</span> and <span class="math inline">\(10.5\)</span>. But we also have a subject intercept and slope random effect which we assumed to be normally distributed centered at zero with and with estimated standard deviations of <span class="math inline">\(24.7\)</span> and <span class="math inline">\(5.9\)</span>. Then given a subjects regression line, observations are just normal (mean zero, standard deviation <span class="math inline">\(25.6\)</span>) perturbations from the line. All of these numbers came from the <code>summary(m2)</code> output.</p>
+<p>To create a bootstrap data simulating a new subject, we could do the following:</p>
+<div class="sourceCode" id="cb391"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb391-1"><a href="11-mixed-effects-models.html#cb391-1" aria-hidden="true"></a>subject.intercept =<span class="st"> </span><span class="fl">251.4</span> <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">24.7</span>)</span>
+<span id="cb391-2"><a href="11-mixed-effects-models.html#cb391-2" aria-hidden="true"></a>subject.slope     =<span class="st"> </span><span class="fl">10.5</span>  <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>( <span class="dv">1</span>, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd=</span><span class="fl">10.5</span>)</span>
+<span id="cb391-3"><a href="11-mixed-effects-models.html#cb391-3" aria-hidden="true"></a><span class="kw">c</span>(subject.intercept, subject.slope)</span></code></pre></div>
+<pre><code>## [1] 276.51147  16.71648</code></pre>
+<div class="sourceCode" id="cb393"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb393-1"><a href="11-mixed-effects-models.html#cb393-1" aria-hidden="true"></a>subject.obs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="op">%&gt;%</span></span>
+<span id="cb393-2"><a href="11-mixed-effects-models.html#cb393-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Reaction =</span> subject.intercept <span class="op">+</span><span class="st"> </span>subject.slope<span class="op">*</span>Days <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">9</span>, <span class="dt">sd=</span><span class="fl">25.6</span>) )</span>
+<span id="cb393-3"><a href="11-mixed-effects-models.html#cb393-3" aria-hidden="true"></a></span>
+<span id="cb393-4"><a href="11-mixed-effects-models.html#cb393-4" aria-hidden="true"></a><span class="kw">ggplot</span>(subject.obs, <span class="kw">aes</span>(<span class="dt">x=</span>Days, <span class="dt">y=</span>Reaction)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
+<p>This approach is commonly referred to as a “parametric” bootstrap because we are making some assumptions about the parameter distributions, whereas in a “non-parametric” bootstrap we don’t make any distributional assumptions. By default, the <code>bootMer</code> function will</p>
+<ol style="list-style-type: decimal">
+<li>Perform a parametric bootstrap to create new bootstrap data sets, using the results of the initial model.</li>
+<li>Create a bootstrap model by analyzing the bootstrap data using the same model formula used by the initial model.</li>
+<li>Apply some function you write to each bootstrap model. This function takes in a bootstrap model and returns a statistic or vector of statistics.</li>
+<li>Repeat steps 1-4 repeatedly to create the bootstrap distribution of the statistics returned by your function.</li>
+</ol>
+<div id="confidence-intervals" class="section level3" number="11.9.1">
+<h3><span class="header-section-number">11.9.1</span> Confidence Intervals</h3>
+<p>Now that we have a bootstrap data set, we need to take the data and then fit a model to the data and then grab the predictions from the model. At this point we are creating a confidence interval for the response line of a randomly selected person from the population. The <code>lme4::bootMer</code> function will create bootstrap data sets and then send those into the <code>lmer</code> function.</p>
+<div class="sourceCode" id="cb394"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb394-1"><a href="11-mixed-effects-models.html#cb394-1" aria-hidden="true"></a>ConfData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>)   <span class="co"># What x-values I care about</span></span>
+<span id="cb394-2"><a href="11-mixed-effects-models.html#cb394-2" aria-hidden="true"></a></span>
+<span id="cb394-3"><a href="11-mixed-effects-models.html#cb394-3" aria-hidden="true"></a><span class="co"># Get our best guess as to the relationship between day and reaction time</span></span>
+<span id="cb394-4"><a href="11-mixed-effects-models.html#cb394-4" aria-hidden="true"></a>ConfData &lt;-<span class="st"> </span>ConfData <span class="op">%&gt;%</span></span>
+<span id="cb394-5"><a href="11-mixed-effects-models.html#cb394-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">Estimate =</span> <span class="kw">predict</span>( m2, <span class="dt">newdata =</span> ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span>) )</span>
+<span id="cb394-6"><a href="11-mixed-effects-models.html#cb394-6" aria-hidden="true"></a></span>
+<span id="cb394-7"><a href="11-mixed-effects-models.html#cb394-7" aria-hidden="true"></a><span class="co"># A function to generate yhat from a model</span></span>
+<span id="cb394-8"><a href="11-mixed-effects-models.html#cb394-8" aria-hidden="true"></a>myStats &lt;-<span class="st"> </span><span class="cf">function</span>(model.star){</span>
+<span id="cb394-9"><a href="11-mixed-effects-models.html#cb394-9" aria-hidden="true"></a>  out &lt;-<span class="st"> </span><span class="kw">predict</span>( model.star, <span class="dt">newdata=</span>ConfData, <span class="dt">re.form=</span><span class="op">~</span><span class="dv">0</span> )</span>
+<span id="cb394-10"><a href="11-mixed-effects-models.html#cb394-10" aria-hidden="true"></a>  <span class="kw">return</span>(out)</span>
+<span id="cb394-11"><a href="11-mixed-effects-models.html#cb394-11" aria-hidden="true"></a>}</span>
+<span id="cb394-12"><a href="11-mixed-effects-models.html#cb394-12" aria-hidden="true"></a></span>
+<span id="cb394-13"><a href="11-mixed-effects-models.html#cb394-13" aria-hidden="true"></a><span class="co"># bootMer generates new data sets, calls lmer on the data to produce a model,</span></span>
+<span id="cb394-14"><a href="11-mixed-effects-models.html#cb394-14" aria-hidden="true"></a><span class="co"># and then produces calls whatever function I pass in. It repeats this `nsim`</span></span>
+<span id="cb394-15"><a href="11-mixed-effects-models.html#cb394-15" aria-hidden="true"></a><span class="co"># number of times.</span></span>
+<span id="cb394-16"><a href="11-mixed-effects-models.html#cb394-16" aria-hidden="true"></a>bootObj &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">bootMer</span>(m2, <span class="dt">FUN=</span>myStats, <span class="dt">nsim =</span> <span class="dv">1000</span> )</span>
+<span id="cb394-17"><a href="11-mixed-effects-models.html#cb394-17" aria-hidden="true"></a></span>
+<span id="cb394-18"><a href="11-mixed-effects-models.html#cb394-18" aria-hidden="true"></a><span class="co"># using car::hist.boot, but because hist() is overloaded, I&#39;m not able </span></span>
+<span id="cb394-19"><a href="11-mixed-effects-models.html#cb394-19" aria-hidden="true"></a><span class="co"># to call it directly. Unfortunately, it doesn&#39;t allow me to select the </span></span>
+<span id="cb394-20"><a href="11-mixed-effects-models.html#cb394-20" aria-hidden="true"></a><span class="co"># bias-corrected and accelerated method, but the percentile method is ok</span></span>
+<span id="cb394-21"><a href="11-mixed-effects-models.html#cb394-21" aria-hidden="true"></a><span class="co"># for visualizaton.</span></span>
+<span id="cb394-22"><a href="11-mixed-effects-models.html#cb394-22" aria-hidden="true"></a><span class="kw">hist</span>(bootObj, <span class="dt">ci=</span><span class="st">&#39;perc&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-234-1.png" width="672" /></p>
+<div class="sourceCode" id="cb395"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb395-1"><a href="11-mixed-effects-models.html#cb395-1" aria-hidden="true"></a><span class="co"># Add the confidence interval values onto estimates data frame</span></span>
+<span id="cb395-2"><a href="11-mixed-effects-models.html#cb395-2" aria-hidden="true"></a>CI &lt;-<span class="st"> </span><span class="kw">confint</span>( bootObj,  <span class="dt">level=</span><span class="fl">0.95</span>, <span class="dt">ci=</span><span class="st">&#39;bca&#39;</span>) </span>
+<span id="cb395-3"><a href="11-mixed-effects-models.html#cb395-3" aria-hidden="true"></a><span class="kw">colnames</span>(CI) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lwr&#39;</span>,<span class="st">&#39;upr&#39;</span>) </span>
+<span id="cb395-4"><a href="11-mixed-effects-models.html#cb395-4" aria-hidden="true"></a>ConfData &lt;-<span class="st"> </span><span class="kw">cbind</span>(ConfData, CI)</span></code></pre></div>
+<div class="sourceCode" id="cb396"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb396-1"><a href="11-mixed-effects-models.html#cb396-1" aria-hidden="true"></a><span class="co"># Now for a nice graph!  </span></span>
+<span id="cb396-2"><a href="11-mixed-effects-models.html#cb396-2" aria-hidden="true"></a>ConfData <span class="op">%&gt;%</span></span>
+<span id="cb396-3"><a href="11-mixed-effects-models.html#cb396-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb396-4"><a href="11-mixed-effects-models.html#cb396-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb396-5"><a href="11-mixed-effects-models.html#cb396-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-235-1.png" width="672" /></p>
+</div>
+<div id="prediction-intervals" class="section level3" number="11.9.2">
+<h3><span class="header-section-number">11.9.2</span> Prediction Intervals</h3>
+<p>For a confidence interval, we just want to find the range of observed values. In this case, we want to use the bootstrap data, but don’t need to fit a model at each bootstrap step. The <code>lme4::simulate</code> function creates the bootstrap dataset and doesn’t send it for more processing. It returns a vector of response values that are appropriately organized to be appended to the original dataset.</p>
+<div class="sourceCode" id="cb397"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb397-1"><a href="11-mixed-effects-models.html#cb397-1" aria-hidden="true"></a><span class="co"># # set up the structure of new subjects</span></span>
+<span id="cb397-2"><a href="11-mixed-effects-models.html#cb397-2" aria-hidden="true"></a>PredData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Subject=</span><span class="st">&#39;new&#39;</span>, <span class="dt">Days=</span><span class="dv">0</span><span class="op">:</span><span class="dv">8</span>) <span class="co"># Simulate a NEW patient</span></span>
+<span id="cb397-3"><a href="11-mixed-effects-models.html#cb397-3" aria-hidden="true"></a></span>
+<span id="cb397-4"><a href="11-mixed-effects-models.html#cb397-4" aria-hidden="true"></a><span class="co"># Create a n x 1000 data frame</span></span>
+<span id="cb397-5"><a href="11-mixed-effects-models.html#cb397-5" aria-hidden="true"></a>Simulated &lt;-<span class="st"> </span><span class="kw">simulate</span>(m2, <span class="dt">newdata=</span>PredData, <span class="dt">allow.new.levels=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span><span class="dv">1000</span>)</span>
+<span id="cb397-6"><a href="11-mixed-effects-models.html#cb397-6" aria-hidden="true"></a> </span>
+<span id="cb397-7"><a href="11-mixed-effects-models.html#cb397-7" aria-hidden="true"></a><span class="co"># squish the Subject/Day info together with the simulated and then grab the quantiles</span></span>
+<span id="cb397-8"><a href="11-mixed-effects-models.html#cb397-8" aria-hidden="true"></a><span class="co"># for each day</span></span>
+<span id="cb397-9"><a href="11-mixed-effects-models.html#cb397-9" aria-hidden="true"></a>PredIntervals &lt;-<span class="st"> </span><span class="kw">cbind</span>(PredData, Simulated) <span class="op">%&gt;%</span></span>
+<span id="cb397-10"><a href="11-mixed-effects-models.html#cb397-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">gather</span>(<span class="st">&#39;sim&#39;</span>,<span class="st">&#39;Reaction&#39;</span>, sim_<span class="dv">1</span><span class="op">:</span>sim_<span class="dv">1000</span> ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># go from wide to long structure</span></span>
+<span id="cb397-11"><a href="11-mixed-effects-models.html#cb397-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(Subject, Days) <span class="op">%&gt;%</span></span>
+<span id="cb397-12"><a href="11-mixed-effects-models.html#cb397-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">lwr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.025</span>),</span>
+<span id="cb397-13"><a href="11-mixed-effects-models.html#cb397-13" aria-hidden="true"></a>            <span class="dt">upr =</span> <span class="kw">quantile</span>(Reaction, <span class="dt">probs =</span> <span class="fl">0.975</span>))</span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;Subject&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb399"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb399-1"><a href="11-mixed-effects-models.html#cb399-1" aria-hidden="true"></a><span class="co"># Plot the prediction and confidence intervals</span></span>
+<span id="cb399-2"><a href="11-mixed-effects-models.html#cb399-2" aria-hidden="true"></a><span class="kw">ggplot</span>(ConfData,  <span class="kw">aes</span>(<span class="dt">x=</span>Days)) <span class="op">+</span></span>
+<span id="cb399-3"><a href="11-mixed-effects-models.html#cb399-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Estimate), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb399-4"><a href="11-mixed-effects-models.html#cb399-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span> upr), <span class="dt">fill=</span><span class="st">&#39;salmon&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>) <span class="op">+</span></span>
+<span id="cb399-5"><a href="11-mixed-effects-models.html#cb399-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>PredIntervals, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;blue&#39;</span>, <span class="dt">alpha=</span><span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-237-1.png" width="672" /></p>
+</div>
+</div>
+<div id="Exercises_RandomEffects" class="section level2" number="11.10">
+<h2><span class="header-section-number">11.10</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li><p>An experiment was conducted to determine the effect of recipe and baking temperature on chocolate cake quality. For each recipe, <span class="math inline">\(15\)</span> batches of cake mix for were prepared (so 45 batches total). Each batch was sufficient for six cakes. Each of the six cakes was baked at a different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is available in the <code>faraway</code> package as <code>choccake</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>For the variables Temperature, Recipe, and Batch, which should be fixed and which should be random?</li>
+<li>Inspect the data. How many levels of batch are there and how will that influence your model statements in R?</li>
+<li>Build a mixed model using the main effects (no interactions).</li>
+<li>Compare your model in part (c) one models with one or both of the fixed effects removed. Which model is preferred?</li>
+<li>Compare your model in part (c) with a more complicated model that includes the interaction between temperature and recipe. Which model is preferred?</li>
+<li>Using the model you selected, discuss the impact of the different variance components.</li>
+</ol></li>
+<li><p>An experiment was conducted to select the supplier of raw materials for production of a component. The breaking strength of the component was the objective of interest. Raw materials from four suppliers were considered. In our factory, we have four operators that can only produce one component per day. We utilized a Latin square design so that each factory operator worked with a different supplier each day. The data set is presented in the <code>faraway</code> package as <code>breaking</code>.</p>
+<ol style="list-style-type: lower-alpha">
+<li>Explain why it would be natural to treat the operators and days as random effects but the suppliers as fixed effects.</li>
+<li>Inspect the data? Does anything seem weird? It turns out that the person responsible for entering the data made an input error and transposed the response values for rows 15 and 16. Create a graph where the transposition is evident and then fix it. After your fix, make sure that each day has all 4 suppliers and 4 operators.</li>
+<li>Build a model to predict the breaking strength. Describe the variation from operator to operator and from day to day.</li>
+<li>Test the significance of the supplier effect.</li>
+<li>Is there a significant difference between the operators?</li>
+</ol></li>
+<li><p>An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups. The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats’ growth. The data are available in the <code>faraway</code> package as <code>ratdrink</code>.
+<em>I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.</em> The following R code might be helpful for the initial visualization.</p>
+<div class="sourceCode" id="cb400"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb400-1"><a href="11-mixed-effects-models.html#cb400-1" aria-hidden="true"></a><span class="co"># we need to force ggplot to only draw lines between points for the same</span></span>
+<span id="cb400-2"><a href="11-mixed-effects-models.html#cb400-2" aria-hidden="true"></a><span class="co"># rat.  If I haven&#39;t already defined some aesthetic that is different</span></span>
+<span id="cb400-3"><a href="11-mixed-effects-models.html#cb400-3" aria-hidden="true"></a><span class="co"># for each rat, then it will connect points at the same week but for different</span></span>
+<span id="cb400-4"><a href="11-mixed-effects-models.html#cb400-4" aria-hidden="true"></a><span class="co"># rats. The solution is to add an aesthetic that does the equivalent of the</span></span>
+<span id="cb400-5"><a href="11-mixed-effects-models.html#cb400-5" aria-hidden="true"></a><span class="co"># dplyr function group_by(). In ggplot2, this aesthetic is &quot;group&quot;. </span></span>
+<span id="cb400-6"><a href="11-mixed-effects-models.html#cb400-6" aria-hidden="true"></a><span class="kw">ggplot</span>(ratdrink, <span class="kw">aes</span>(<span class="dt">y=</span>wt, <span class="dt">x=</span>weeks, <span class="dt">color=</span>treat)) <span class="op">+</span><span class="st">    </span></span>
+<span id="cb400-7"><a href="11-mixed-effects-models.html#cb400-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">shape=</span>treat)) <span class="op">+</span></span>
+<span id="cb400-8"><a href="11-mixed-effects-models.html#cb400-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>subject))  <span class="co"># play with removing the group=subject aesthetic...</span></span></code></pre></div>
+<ol style="list-style-type: lower-alpha">
+<li>Consider the model with an interaction between Treatment and Week along with a random effect for each subject rat. Does the model with a random offset in the y-intercept perform as well as the model with random offsets in both the y-intercept and slope?</li>
+<li>Next consider if you can simplify the model by removing the interaction between Treatment and Week and possibly even the Treatment main effect.<br />
+</li>
+<li>Comment on the effect of each treatment.</li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="10-VariableSelection-Chapter.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="12-binomial-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/571/blob/master/14_RandomEffects.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/dereksonderegger/571/raw/master/14_RandomEffects.Rmd",
+"text": null
+},
+"download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
