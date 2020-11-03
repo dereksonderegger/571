@@ -484,20 +484,21 @@ In the table below $\beta$ represents the group offset value, or the slope value
 ## Exercises {#Transformation-Exercises}
 
 1. In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement). 
-    a. Load the `ToothGrowth` data which is pre-loaded in base R and calculate the $\log_{10}$ dose level.
+    a. Load the `ToothGrowth` data which is available in base R.
     b. Plot the data with log dose level on the x-axis and tooth length growth on the y-axis. Color the points by supplement type.
     c. Fit a linear model using the log transformed dose.
-    d. Interpret the effect of doubling the dose (NOT LOG DOSE!) on tooth growth for the OJ and VC supplement groups.
+    d. Interpret the effect of doubling the dose on tooth growth for the OJ and VC supplement groups.
 
 2. We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
     a. Load the `EmployedACS` dataset from the `Lock5Data` package.
     b. Create a box plot showing the relationship between `Race` and `Income`.
-    c. Consider the boxcox family of transformations of `Income`. What transformation seems appropriate? *Because there are people with zero income, we have to do something. We could either use a transformation like $\sqrt{y}$, remove all the zero observations, or to add a small value to the zero observations. We'll add 0.05 to the zero values, which represents the zero income people receiving $\$50$.*
+    c. Consider the boxcox family of transformations of `Income`. What transformation seems appropriate? *Because there are people with zero income, we have to do something. We could either use a transformation like $\sqrt{y}$, remove all the zero observations, or to add a small value to the zero observations. We'll add 0.05 to the zero values, which represents the zero income people receiving $\$50$. Graph both the log and square root transformations. Do either completely address the issue?*
     d. Using your log-transformed `Income` variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. Provide (and interpret) the point estimates for the ratios, even though they aren't statistically significant. *Importantly, we haven't accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.*
 
-3. The dataset `Lock5Data::HomesForSale` has a random sample of home prices in 4 different states. Consider a regression model predicting the `Price` as a function of `Size`.
+3. The dataset `Lock5Data::HomesForSale` has a random sample of home prices in 4 different states. Consider a regression model predicting the `Price` as a function of `Size`, `Bedrooms`, and `Baths`.
     a) Examine a scatterplot of `Price` and `Size` and justify a log transformation to both.
-    b) Calculate and interpret the estimated effect of a $10\%$ increase in home size on the price. 
-    c) Calculate and interpret the difference between California and Pennsylvania in terms of average house price.
+    b) Build an appropriate model considering only main effects. Find any observations that are unusual.
+    c) Calculate and interpret the estimated effect of a $10\%$ increase in home size on the price. 
+    d) Calculate and interpret the difference between California and Pennsylvania in terms of average house price.
 
 

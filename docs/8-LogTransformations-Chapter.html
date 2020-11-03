@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-10-22" />
+<meta name="date" content="2020-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -900,21 +900,22 @@ and we again consider two <span class="math inline">\(x\)</span> values (again <
 <ol style="list-style-type: decimal">
 <li>In the ANCOVA chapter, we examined the relationship on dose of vitamin C on guinea pig tooth growth based on how the vitamin was delivered (orange juice vs a pill supplement).
 <ol style="list-style-type: lower-alpha">
-<li>Load the <code>ToothGrowth</code> data which is pre-loaded in base R and calculate the <span class="math inline">\(\log_{10}\)</span> dose level.</li>
+<li>Load the <code>ToothGrowth</code> data which is available in base R.</li>
 <li>Plot the data with log dose level on the x-axis and tooth length growth on the y-axis. Color the points by supplement type.</li>
 <li>Fit a linear model using the log transformed dose.</li>
-<li>Interpret the effect of doubling the dose (NOT LOG DOSE!) on tooth growth for the OJ and VC supplement groups.</li>
+<li>Interpret the effect of doubling the dose on tooth growth for the OJ and VC supplement groups.</li>
 </ol></li>
 <li>We will consider the relationship between income and race using a subset of employed individuals from the American Community Survey.
 <ol style="list-style-type: lower-alpha">
 <li>Load the <code>EmployedACS</code> dataset from the <code>Lock5Data</code> package.</li>
 <li>Create a box plot showing the relationship between <code>Race</code> and <code>Income</code>.</li>
-<li>Consider the boxcox family of transformations of <code>Income</code>. What transformation seems appropriate? <em>Because there are people with zero income, we have to do something. We could either use a transformation like <span class="math inline">\(\sqrt{y}\)</span>, remove all the zero observations, or to add a small value to the zero observations. We’ll add 0.05 to the zero values, which represents the zero income people receiving <span class="math inline">\(\$50\)</span>.</em></li>
+<li>Consider the boxcox family of transformations of <code>Income</code>. What transformation seems appropriate? <em>Because there are people with zero income, we have to do something. We could either use a transformation like <span class="math inline">\(\sqrt{y}\)</span>, remove all the zero observations, or to add a small value to the zero observations. We’ll add 0.05 to the zero values, which represents the zero income people receiving <span class="math inline">\(\$50\)</span>. Graph both the log and square root transformations. Do either completely address the issue?</em></li>
 <li>Using your log-transformed <code>Income</code> variable, fit an ANOVA model and evaluate the relationship between race and income utilizing these data. Provide (and interpret) the point estimates for the ratios, even though they aren’t statistically significant. <em>Importantly, we haven’t accounted for many sources of variability such as education level and job type. There is much more to consider than just this simple analysis.</em></li>
 </ol></li>
-<li>The dataset <code>Lock5Data::HomesForSale</code> has a random sample of home prices in 4 different states. Consider a regression model predicting the <code>Price</code> as a function of <code>Size</code>.
+<li>The dataset <code>Lock5Data::HomesForSale</code> has a random sample of home prices in 4 different states. Consider a regression model predicting the <code>Price</code> as a function of <code>Size</code>, <code>Bedrooms</code>, and <code>Baths</code>.
 <ol style="list-style-type: lower-alpha">
 <li>Examine a scatterplot of <code>Price</code> and <code>Size</code> and justify a log transformation to both.</li>
+<li>Build an appropriate model considering only main effects. Find any observations that are unusual.</li>
 <li>Calculate and interpret the estimated effect of a <span class="math inline">\(10\%\)</span> increase in home size on the price.</li>
 <li>Calculate and interpret the difference between California and Pennsylvania in terms of average house price.</li>
 </ol></li>

@@ -138,15 +138,15 @@ Mixed effects models are models that have both fixed and random effects. We will
 
 Recall that the likelihood function is the function links the model parameters to the data and is found by taking the probability density function and interpreting it as a function of the parameters instead of the a function of the data. Loosely, the probability function tells us what outcomes are most probable, with the height of the function telling us which values (or regions of values) are most probable given a set of parameter values. The higher the probability function, the higher the probability of seeing that value (or data in that region). The likelihood function turns that relationship around and tells us what parameter values are most likely to have generated the data we have, again with the parameter values with a higher likelihood value being more “likely”.
 
-The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( \mu, \sigma \right)$ can be written as a function of our parameters $\mu$ and $\sigma^{2}$ then we have defined our likelihood function
-$$L \left(\mu,\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{\mu}\right)\right]$$
+The likelihood function for a sample $y_i \stackrel{iid}{\sim} N\left( \boldsymbol{X_{i,\cdot}\beta},\, \sigma \right)$ can be written as a function of our parameters $\boldsymbol{\beta}$ and $\sigma^{2}$ then we have defined our likelihood function
+$$L \left(\boldsymbol{\beta},\sigma^{2}|y_{1},\dots,y_{n}\right)=\frac{1}{\left(2\pi\right)^{n/2}\left[\det\left(\boldsymbol{\Omega}\right)\right]^{1/2}}\exp\left[-\frac{1}{2}\left(\boldsymbol{y}-\boldsymbol{X\beta}\right)^{T}\boldsymbol{\Omega}^{-1}\left(\boldsymbol{y}-\boldsymbol{X\beta}\right)\right]$$
 
-where the variance/covariance matrix is $\boldsymbol{\Omega}=\sigma I_n$.
+where the variance/covariance matrix is $\boldsymbol{\Omega}=\sigma \boldsymbol{I}_n$.
 
-We can use to this equation to find the maximum likelihood estimators by either taking the derivatives and setting them equal to zero and solving for the parameters or by using numerical methods. In the normal case, we can find the maximum likelihood estimators (MLEs) using the derivative trick and we find that $$\hat{\mu}_{MLE}=\hat{y}=\bar{y}$$
+We can use to this equation to find the maximum likelihood estimators by either taking the derivatives and setting them equal to zero and solving for the parameters or by using numerical methods. In the normal case, we can find the maximum likelihood estimators (MLEs) using the derivative trick and we find that $$\hat{\boldsymbol{\beta}}_{MLE}=\left(\boldsymbol{X}^T\boldsymbol{\Omega}^{-1}\boldsymbol{X}\right)^{-1}\boldsymbol{X}^T\boldsymbol{\Omega}^{-1}y$$
 and
 $$\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}\left(y_{i}-\hat{y}\right)^{2}$$
-and we notice that this is not our usual estimator $\hat{\sigma}^{2}=s^{2}$ where $s^{2}$ is the sample variance. It turns out that the MLE estimate of $\sigma^{2}$ is biased (the correction is to divide by $n-1$ instead of $n$). This is normally not an issue if our sample size is large, but with a small sample, the bias is not insignificant.
+and where $\hat{y}_i = \boldsymbol{X_{i\cdot}}\hat{\boldsymbol{\beta}}$ we notice that this is not our usual estimator $\hat{\sigma}^{2}=s^{2}$ where $s^{2}$ is the sample variance. It turns out that the MLE estimate of $\sigma^{2}$ is biased (the correction is to divide by $n-1$ instead of $n$). This is normally not an issue if our sample size is large, but with a small sample, the bias is not insignificant.
 
 Notice if we happened to know that $\mu=0$, then we could use $$\hat{\sigma}_{MLE}^{2}=\frac{1}{n}\sum_{i=1}^{n}y_{i}^{2}$$ 
 and this would be unbiased for $\sigma^{2}$.
