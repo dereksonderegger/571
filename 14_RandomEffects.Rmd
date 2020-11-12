@@ -238,12 +238,13 @@ ggplot(pulp, aes(x=operator, y=bright)) + geom_point()
 ```{r}
 # set the contrasts to sum-to-zero constraint
 op <- options(contrasts=c('contr.sum', 'contr.poly'))
-m <- aov(bright ~ operator, data=pulp)
+# m <- aov(bright ~ operator, data=pulp)   #
+m <- lm(bright ~ operator, data=pulp)      # same analyses ...
 summary(m)
 coef(m)
 ```
 
-The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28
+The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 $= - (-0.16 - 0.34 + 0.22) = 0.28$
  
 To fit the random effects model we will use the package `lmerTest` which is a nicer user interface to the package `lme4`. The reason we won't use `lme4` directly is that the authors of `lme4` refuse to calculate p-values. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don't know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of `lme4` are adamant that until robust methods are developed, they prefer to not calculate any p-values. There are other packages out there that recognize that we need approximate p-values and the package `lmerTest` provides reasonable answers that match was SAS calculates.
 
@@ -616,18 +617,18 @@ Notice that run and the pure error have about the same magnitude, but position i
 ```{r}
 m2 <- lmer( wear ~ material + (1|position), data=abrasion)
 m3 <- lmer( wear ~ material + (1|run), data=abrasion)
-anova(m, m2)  # Run is important; Notice refitting using ML
-anova(m, m3)  # Position is really important; Notice refitting using ML
+anova(m, m2)  # Run is important; Notice refitting using ML!  Wrong!
+anova(m, m3)  # Position is really important; Notice refitting using ML! Wrong!
 ```
 
-Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect.  Similarly the Likelihood Ratio Test gives a p-value of about $0.02$. So while the run effect wasn't visible in our initial graph, it looks like it is a statistically significant effect.
+Notice that R is refitting the model to make comparisons between fixed effects. But in the two models we are comparing, there is no difference in fixed effects so this is actually inappropriate! 
 
 ```{r}
 # Now do a similar test, but using the REML estimates of the variance components
 # Recall that REML estimates are unbiased and should be used!
 ranova(m)
 ```
-This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continutes to be statistically significant, the run has dropped down to marginal significance.
+This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continues to be statistically significant, the run has dropped down to marginal significance.
 
 
 ## Repeated Measures / Longitudinal Studies

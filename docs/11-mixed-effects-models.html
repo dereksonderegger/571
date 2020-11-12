@@ -24,7 +24,7 @@
 <meta name="author" content="Derek L. Sonderegger" />
 
 
-<meta name="date" content="2020-11-03" />
+<meta name="date" content="2020-11-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,7 +33,7 @@
   
 <link rel="prev" href="10-VariableSelection-Chapter.html"/>
 <link rel="next" href="12-binomial-regression.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -51,6 +51,8 @@
 
 
 
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
 
 
 <style type="text/css">
@@ -608,17 +610,33 @@ and perform our maximization on this transformed set of data. Once we have our u
 <p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
 <div class="sourceCode" id="cb304"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb304-1"><a href="11-mixed-effects-models.html#cb304-1" aria-hidden="true"></a><span class="co"># set the contrasts to sum-to-zero constraint</span></span>
 <span id="cb304-2"><a href="11-mixed-effects-models.html#cb304-2" aria-hidden="true"></a>op &lt;-<span class="st"> </span><span class="kw">options</span>(<span class="dt">contrasts=</span><span class="kw">c</span>(<span class="st">&#39;contr.sum&#39;</span>, <span class="st">&#39;contr.poly&#39;</span>))</span>
-<span id="cb304-3"><a href="11-mixed-effects-models.html#cb304-3" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>(bright <span class="op">~</span><span class="st"> </span>operator, <span class="dt">data=</span>pulp)</span>
-<span id="cb304-4"><a href="11-mixed-effects-models.html#cb304-4" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
-<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
-## operator     3   1.34  0.4467   4.204 0.0226 *
-## Residuals   16   1.70  0.1062                 
+<span id="cb304-3"><a href="11-mixed-effects-models.html#cb304-3" aria-hidden="true"></a><span class="co"># m &lt;- aov(bright ~ operator, data=pulp)   #</span></span>
+<span id="cb304-4"><a href="11-mixed-effects-models.html#cb304-4" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>(bright <span class="op">~</span><span class="st"> </span>operator, <span class="dt">data=</span>pulp)      <span class="co"># same analyses ...</span></span>
+<span id="cb304-5"><a href="11-mixed-effects-models.html#cb304-5" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = bright ~ operator, data = pulp)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -0.440 -0.195 -0.070  0.175  0.560 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 60.40000    0.07289 828.681   &lt;2e-16 ***
+## operator1   -0.16000    0.12624  -1.267    0.223    
+## operator2   -0.34000    0.12624  -2.693    0.016 *  
+## operator3    0.22000    0.12624   1.743    0.101    
 ## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.326 on 16 degrees of freedom
+## Multiple R-squared:  0.4408, Adjusted R-squared:  0.3359 
+## F-statistic: 4.204 on 3 and 16 DF,  p-value: 0.02261</code></pre>
 <div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="11-mixed-effects-models.html#cb306-1" aria-hidden="true"></a><span class="kw">coef</span>(m)</span></code></pre></div>
 <pre><code>## (Intercept)   operator1   operator2   operator3 
 ##       60.40       -0.16       -0.34        0.22</code></pre>
-<p>The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 = -(-0.16-0.34+0.22) = 0.28</p>
+<p>The sum-to-zero constraint forces the operator parameters to sum to zero so we can find the value of the fourth operator as operator4 <span class="math inline">\(= - (-0.16 - 0.34 + 0.22) = 0.28\)</span></p>
 <p>To fit the random effects model we will use the package <code>lmerTest</code> which is a nicer user interface to the package <code>lme4</code>. The reason we won’t use <code>lme4</code> directly is that the authors of <code>lme4</code> refuse to calculate p-values. The reason for this is that in mixed models it is not always clear what the appropriate degrees of freedom are for the residuals, and therefore we don’t know what the appropriate t-distribution is to compare the t-values to. In simple balanced designs the degrees of freedom can be calculated, but in complicated unbalanced designs the appropriate degrees of freedom is not known and all proposed heuristic methods (including what is calculated by SAS) can fail spectacularly in certain cases. The authors of <code>lme4</code> are adamant that until robust methods are developed, they prefer to not calculate any p-values. There are other packages out there that recognize that we need approximate p-values and the package <code>lmerTest</code> provides reasonable answers that match was SAS calculates.</p>
 <div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="11-mixed-effects-models.html#cb308-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( bright <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>operator), <span class="dt">data=</span>pulp )</span>
 <span id="cb308-2"><a href="11-mixed-effects-models.html#cb308-2" aria-hidden="true"></a><span class="kw">summary</span>(m2)  <span class="co"># because there are no fixed effects, lmerTest bailed out to lme4.</span></span></code></pre></div>
@@ -1174,7 +1192,7 @@ and we notice that the position and run effects are not nested within anything e
 <p>Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.</p>
 <div class="sourceCode" id="cb369"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb369-1"><a href="11-mixed-effects-models.html#cb369-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>position), <span class="dt">data=</span>abrasion)</span>
 <span id="cb369-2"><a href="11-mixed-effects-models.html#cb369-2" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">lmer</span>( wear <span class="op">~</span><span class="st"> </span>material <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>run), <span class="dt">data=</span>abrasion)</span>
-<span id="cb369-3"><a href="11-mixed-effects-models.html#cb369-3" aria-hidden="true"></a><span class="kw">anova</span>(m, m2)  <span class="co"># Run is important; Notice refitting using ML</span></span></code></pre></div>
+<span id="cb369-3"><a href="11-mixed-effects-models.html#cb369-3" aria-hidden="true"></a><span class="kw">anova</span>(m, m2)  <span class="co"># Run is important; Notice refitting using ML!  Wrong!</span></span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: abrasion
 ## Models:
@@ -1185,7 +1203,7 @@ and we notice that the position and run effects are not nested within anything e
 ## m     7 134.32 139.73 -60.162   120.32 5.4164  1    0.01995 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="11-mixed-effects-models.html#cb372-1" aria-hidden="true"></a><span class="kw">anova</span>(m, m3)  <span class="co"># Position is really important; Notice refitting using ML</span></span></code></pre></div>
+<div class="sourceCode" id="cb372"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb372-1"><a href="11-mixed-effects-models.html#cb372-1" aria-hidden="true"></a><span class="kw">anova</span>(m, m3)  <span class="co"># Position is really important; Notice refitting using ML! Wrong!</span></span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
 <pre><code>## Data: abrasion
 ## Models:
@@ -1196,7 +1214,7 @@ and we notice that the position and run effects are not nested within anything e
 ## m     7 134.32 139.73 -60.162   120.32 7.4794  1   0.006241 **
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>Notice that R is refitting the model to make an appropriate comparison. The AIC difference between the two models is about 3 units (the larger model having a lower AIC) and so we could interpret this as decent evidence for a run effect. Similarly the Likelihood Ratio Test gives a p-value of about <span class="math inline">\(0.02\)</span>. So while the run effect wasn’t visible in our initial graph, it looks like it is a statistically significant effect.</p>
+<p>Notice that R is refitting the model to make comparisons between fixed effects. But in the two models we are comparing, there is no difference in fixed effects so this is actually inappropriate!</p>
 <div class="sourceCode" id="cb375"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb375-1"><a href="11-mixed-effects-models.html#cb375-1" aria-hidden="true"></a><span class="co"># Now do a similar test, but using the REML estimates of the variance components</span></span>
 <span id="cb375-2"><a href="11-mixed-effects-models.html#cb375-2" aria-hidden="true"></a><span class="co"># Recall that REML estimates are unbiased and should be used!</span></span>
 <span id="cb375-3"><a href="11-mixed-effects-models.html#cb375-3" aria-hidden="true"></a><span class="kw">ranova</span>(m)</span></code></pre></div>
@@ -1210,7 +1228,7 @@ and we notice that the position and run effects are not nested within anything e
 ## (1 | position)    6 -52.425 116.85 4.5931  1    0.03210 *
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
-<p>This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continutes to be statistically significant, the run has dropped down to marginal significance.</p>
+<p>This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continues to be statistically significant, the run has dropped down to marginal significance.</p>
 </div>
 <div id="repeated-measures-longitudinal-studies" class="section level2" number="11.8">
 <h2><span class="header-section-number">11.8</span> Repeated Measures / Longitudinal Studies</h2>
