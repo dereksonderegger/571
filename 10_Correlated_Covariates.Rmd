@@ -1,10 +1,10 @@
-# Correlated Covariates {#CorrelatedCovariates_Chapter}
+# Correlated Covariates {-}
 
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
-## Interpretation with Correlated Covariates
+## Interpretation with Correlated Covariates {-}
 
 The standard interpretation of the slope parameter is that $\beta_{j}$ is the amount of increase in $y$ for a one unit increase in the $j$th covariate, provided that all other covariates stayed the same.
 
@@ -77,7 +77,7 @@ $$ y_i = \beta_0 + \left[(\beta_1-10) + \beta_2 + (\beta_3+10)\right] L_3 + \eps
 
 In general, you should be very careful with the interpretation of the regression coefficients when the covariates are highly correlated. 
 
-## Solutions
+## Solutions {-}
 
 In general you have three ways to deal with correlated covariates.
 
@@ -89,6 +89,5 @@ In general you have three ways to deal with correlated covariates.
 
 4. Just not worry about it. Remember, the only problem is with the _interpretation_ of the parameters. If we only care about making accurate predictions within the scope of our data, then including highly correlated variables doesn't matter. However, if you are making predictions away from the data, the flipped signs might be a big deal. 
 
-## Exercises
 
 

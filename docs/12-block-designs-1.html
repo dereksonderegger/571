@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Project Appendix | Statistical Methods II</title>
+  <title>Chapter 12 Block Designs | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Project Appendix | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 12 Block Designs | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Project Appendix | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 12 Block Designs | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="13-maximum-likelihood-principle.html"/>
-
+<link rel="prev" href="11-binomial-regression.html"/>
+<link rel="next" href="13-maximum-likelihood-principle.html"/>
 <script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -385,25 +385,271 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="project-appendix" class="section level1 unnumbered">
-<h1>Project Appendix</h1>
-<p>STA 571 Course Project Timeline
-This document presents a rough outline to the projects conducted in STA 571: Statistical Methods II. The outline gives when certain topics should be discussed, when decisions should be made on moving forward with projects, and what students need to be focused on. Proposal and final project rubrics will be provided in additional PDFs. As always, there is flexibility based on the way you run your course.</p>
-<div id="weeks-1-4-project-feasibility" class="section level2" number="13.6">
-<h2><span class="header-section-number">13.6</span> Weeks 1 – 4 (Project Feasibility)</h2>
-<p>Leading up to Exam 1, decisions will be made if the projects can be conducted effectively within the course. This requires students to determine what data set they want to analyze and what methods they think they would be interested in using.
-1. For students with thesis/dissertation work, the idea is to allow them to use their own data (likely data they have collected) to advance the project.
-2. Students that don’t have thesis/dissertation work, or for students who don’t yet have data from their own research should be engaged in looking into a source of data and determining what type of analysis can be completed. One very good source of datasets and problems is <a href="www.kaggle.com">kaggle</a>.</p>
-<div id="wibgis" class="section level3" number="13.6.1">
-<h3><span class="header-section-number">13.6.1</span> WIBGIs</h3>
-<p>Project ideas can be motivated through “Wouldn’t it be great if …” statements, or WIBGIs.</p>
-<p>Write out 3 - 5 ideas for a project to be done this semester. Think about what data you may have available or what data you may be interested in analyzing. If possible try to write a statement of this form:</p>
-<p>Wouldn’t it be great if what you want to analyze could be used to solve a problem using statistics/data science.</p>
-<p>Example: Wouldn’t it be great if plasma thermogram data could be used to classify lupus using logistic regression.</p>
-<p>The first four weeks should include students trying to create as many WIBGIs as possible. At the end of each homework assignment, I added an additional optional section entitle “Project Development” where I reminded the students they need to produce at minimum 3 WIBGI statements.</p>
-<p>The main concept here is to encourage exploration and broad thinking. It is okay if students write statements that are not feasible. It is also okay if they write statements that don’t conform to the example statement. The goal here is creativity. The idea is to begin generating ideas and determining sources of data; we are trying to encourage data exploration and thinking outside the box from their core studies.</p>
-
+<div id="block-designs-1" class="section level1" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Block Designs</h1>
+<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="12-block-designs-1.html#cb537-1" aria-hidden="true"></a><span class="co"># packages for this chapter</span></span>
+<span id="cb537-2"><a href="12-block-designs-1.html#cb537-2" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)    <span class="co"># ggplot2, dplyr, etc...</span></span>
+<span id="cb537-3"><a href="12-block-designs-1.html#cb537-3" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># TukeyLetters stuff</span></span></code></pre></div>
+<p>Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large. For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.</p>
+<p>Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables. We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are <em>nested</em>.</p>
+<p>Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.</p>
+<table style="width:76%;">
+<colgroup>
+<col width="20%" />
+<col width="19%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Field 1</th>
+<th>Field 2</th>
+<th>Field 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Plot 1</strong></td>
+<td>Variety A</td>
+<td>Variety C</td>
+<td>Variety B</td>
+</tr>
+<tr class="even">
+<td><strong>Plot 2</strong></td>
+<td>Variety B</td>
+<td>Variety A</td>
+<td>Variety C</td>
+</tr>
+<tr class="odd">
+<td><strong>Plot 3</strong></td>
+<td>Variety C</td>
+<td>Variety B</td>
+<td>Variety A</td>
+</tr>
+</tbody>
+</table>
+<p>Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials’ use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren’t really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.</p>
+<div id="randomized-complete-block-design-rcbd-1" class="section level2" number="12.1">
+<h2><span class="header-section-number">12.1</span> Randomized Complete Block Design (RCBD)</h2>
+<p>The dataset <code>oatvar</code> in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.</p>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="12-block-designs-1.html#cb538-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb538-2"><a href="12-block-designs-1.html#cb538-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb538-3"><a href="12-block-designs-1.html#cb538-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb538-4"><a href="12-block-designs-1.html#cb538-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-295-1.png" width="672" /></p>
+<p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because
+<span class="math display">\[\begin{aligned}
+  df_\epsilon   &amp;=  n-p \\
+        &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
+        &amp;=  40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+        &amp;=  40-12 \\
+        &amp;=  28
+ \end{aligned}\]</span></p>
+<div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="12-block-designs-1.html#cb539-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)</span>
+<span id="cb539-2"><a href="12-block-designs-1.html#cb539-2" aria-hidden="true"></a><span class="kw">anova</span>(m1)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## block      4  33396  8348.9  6.2449  0.001008 ** 
+## variety    7  77524 11074.8  8.2839 1.804e-05 ***
+## Residuals 28  37433  1336.9                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="12-block-designs-1.html#cb541-1" aria-hidden="true"></a><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></span></code></pre></div>
+<p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
+<p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
+<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do any statistical inference at the block scale!</p>
+<p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="12-block-designs-1.html#cb542-1" aria-hidden="true"></a><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span></span>
+<span id="cb542-2"><a href="12-block-designs-1.html#cb542-2" aria-hidden="true"></a>letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb542-3"><a href="12-block-designs-1.html#cb542-3" aria-hidden="true"></a><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb542-4"><a href="12-block-designs-1.html#cb542-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span></span>
+<span id="cb542-5"><a href="12-block-designs-1.html#cb542-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)</span>
+<span id="cb542-6"><a href="12-block-designs-1.html#cb542-6" aria-hidden="true"></a></span>
+<span id="cb542-7"><a href="12-block-designs-1.html#cb542-7" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></span>
+<span id="cb542-8"><a href="12-block-designs-1.html#cb542-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb542-9"><a href="12-block-designs-1.html#cb542-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-297-1.png" width="672" /></p>
+<p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="12-block-designs-1.html#cb543-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)</span>
+<span id="cb543-2"><a href="12-block-designs-1.html#cb543-2" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
+<pre><code>## 
+## Error: block
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  4  33396    8349               
+## 
+## Error: Within
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+## variety    7  77524   11075   8.284 1.8e-05 ***
+## Residuals 28  37433    1337                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don’t have any replication of the blocks. So our analysis respects that blocks are present, but does not attempt any statistical analyses on them.</p>
 </div>
+<div id="split-plot-designs" class="section level2" number="12.2">
+<h2><span class="header-section-number">12.2</span> Split-plot designs</h2>
+<p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.</p>
+<pre><code>## `summarise()` regrouping output by &#39;plot&#39;, &#39;subplot&#39;, &#39;Fertilizer&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+## # Groups:   plot, subplot, Fertilizer [6]
+##   plot  subplot Fertilizer Irrigation yield
+##   &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt;      &lt;fct&gt;      &lt;dbl&gt;
+## 1 1     1       Low        Low         20.2
+## 2 1     2       High       Low         24.4
+## 3 1     3       Low        Low         18.0
+## 4 1     4       High       Low         21.0
+## 5 2     1       Low        Low         23.2
+## 6 2     2       High       Low         26.5</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
+<p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
+<p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
+<p>We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.</p>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="12-block-designs-1.html#cb547-1" aria-hidden="true"></a><span class="co"># AgData came from my data package, dsData, (however I did some summarization</span></span>
+<span id="cb547-2"><a href="12-block-designs-1.html#cb547-2" aria-hidden="true"></a><span class="co"># first.)</span></span>
+<span id="cb547-3"><a href="12-block-designs-1.html#cb547-3" aria-hidden="true"></a></span>
+<span id="cb547-4"><a href="12-block-designs-1.html#cb547-4" aria-hidden="true"></a><span class="co"># To analyze Irrigation, average over the subplots first...</span></span>
+<span id="cb547-5"><a href="12-block-designs-1.html#cb547-5" aria-hidden="true"></a>Irrigation.data &lt;-<span class="st">   </span>AgData <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb547-6"><a href="12-block-designs-1.html#cb547-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(plot, Irrigation) <span class="op">%&gt;%</span></span>
+<span id="cb547-7"><a href="12-block-designs-1.html#cb547-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarise</span>( <span class="dt">yield =</span> <span class="kw">mean</span>(yield)) <span class="op">%&gt;%</span></span>
+<span id="cb547-8"><a href="12-block-designs-1.html#cb547-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">as.data.frame</span>()  <span class="co"># the aov command doesn&#39;t like tibbles.</span></span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;plot&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="12-block-designs-1.html#cb549-1" aria-hidden="true"></a><span class="co"># Now do a standard analysis. I use the aov() command instead of lm()</span></span>
+<span id="cb549-2"><a href="12-block-designs-1.html#cb549-2" aria-hidden="true"></a><span class="co"># because we will shortly do something very tricky that can only be</span></span>
+<span id="cb549-3"><a href="12-block-designs-1.html#cb549-3" aria-hidden="true"></a><span class="co"># done with aov(). For the most part, everything is </span></span>
+<span id="cb549-4"><a href="12-block-designs-1.html#cb549-4" aria-hidden="true"></a><span class="co"># identical from what you are used to.</span></span>
+<span id="cb549-5"><a href="12-block-designs-1.html#cb549-5" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation, <span class="dt">data=</span>Irrigation.data )</span>
+<span id="cb549-6"><a href="12-block-designs-1.html#cb549-6" aria-hidden="true"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Irrigation  1 26.064 26.0645  3.4281 0.1136
+## Residuals   6 45.619  7.6032</code></pre>
+<p>In this case we see that we have insufficient evidence to conclude that the observed difference between the Irrigation levels could not be due to random chance.</p>
+<p>Next we can do the appropriate analysis for the fertilizer, recognizing that all the p-values for the plot effects are nonsense and should be ignored.</p>
+<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb551-1"><a href="12-block-designs-1.html#cb551-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )</span>
+<span id="cb551-2"><a href="12-block-designs-1.html#cb551-2" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## plot         7 286.73   40.96   3.153 0.0173 *
+## Fertilizer   1   0.43    0.43   0.033 0.8572  
+## Residuals   23 298.83   12.99                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Ideally I wouldn’t have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.</p>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="12-block-designs-1.html#cb553-1" aria-hidden="true"></a><span class="co"># To do this right, we have to abandon the general lm() command and use the more</span></span>
+<span id="cb553-2"><a href="12-block-designs-1.html#cb553-2" aria-hidden="true"></a><span class="co"># specialized aov() command.  The Error() part of the formula allows me to nest</span></span>
+<span id="cb553-3"><a href="12-block-designs-1.html#cb553-3" aria-hidden="true"></a><span class="co"># the error terms and allow us to do the correct analysis. The order of these is</span></span>
+<span id="cb553-4"><a href="12-block-designs-1.html#cb553-4" aria-hidden="true"></a><span class="co"># to start with the largest/highest level and then work down the nesting.</span></span>
+<span id="cb553-5"><a href="12-block-designs-1.html#cb553-5" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData )</span>
+<span id="cb553-6"><a href="12-block-designs-1.html#cb553-6" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<pre><code>## 
+## Error: plot
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Irrigation  1  104.3  104.26   3.428  0.114
+## Residuals   6  182.5   30.41               
+## 
+## Error: plot:subplot
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Fertilizer  1   0.43    0.43   0.033  0.857
+## Residuals  23 298.83   12.99</code></pre>
+<p>In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.</p>
+<p>What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?</p>
+<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="12-block-designs-1.html#cb555-1" aria-hidden="true"></a>bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)</span>
+<span id="cb555-2"><a href="12-block-designs-1.html#cb555-2" aria-hidden="true"></a><span class="kw">anova</span>(bad.model)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## Irrigation  1 104.26 104.258  6.2818 0.01806 *
+## Fertilizer  1   0.43   0.430  0.0259 0.87324  
+## Residuals  29 481.31  16.597                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools.
+<span class="math display">\[\begin{aligned}
+  RSS_{total} &amp;= RSS_{Fertilizer} + RSS_{Irrigation} \\
+        456.12 &amp;= 273.64 + 182.5
+  \end{aligned}\]</span></p>
+<p>When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool.</p>
+<hr />
+<p>A second example of a slightly more complex split plot is given in the package <code>MASS</code> under the dataset <code>oats</code>. From the help file the data describes the following experiment:</p>
+<blockquote>
+<p>The yield of oats from a split-plot field trial using three varieties and four levels of manurial treatment. The experiment was laid out in 6 blocks of 3 main plots, each split into 4 sub-plots. The varieties were applied to the main plots and the manurial treatments to the sub-plots.</p>
+</blockquote>
+<p>This is a lot to digest so lets unpack it. First we have 6 blocks and we’ll replicate the exact same experiment in each block. Within a block, we’ll split it into three sections, which we’ll call plots (within the block). Finally within each plot, we’ll have 4 subplots.</p>
+<p>We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of 3 plots, we’ll randomly assign the 3 varieties, and to each set of subplots, we’ll assign the fertilizers.</p>
+<p>One issue that makes this issue confusing for students is that most texts get lazy and don’t define the blocks, plots, and sub-plots when there are no replicates in a particular level. I prefer to be clear about defining those so.</p>
+<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb557-1"><a href="12-block-designs-1.html#cb557-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oats&#39;</span>, <span class="dt">package=</span><span class="st">&#39;MASS&#39;</span>)</span>
+<span id="cb557-2"><a href="12-block-designs-1.html#cb557-2" aria-hidden="true"></a>oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</span>
+<span id="cb557-3"><a href="12-block-designs-1.html#cb557-3" aria-hidden="true"></a>  <span class="dt">Nf =</span> <span class="kw">ordered</span>(N, <span class="dt">levels =</span> <span class="kw">sort</span>(<span class="kw">levels</span>(N))),  <span class="co"># make manure an ordered factor</span></span>
+<span id="cb557-4"><a href="12-block-designs-1.html#cb557-4" aria-hidden="true"></a>  <span class="dt">plot =</span> <span class="kw">as.integer</span>(V),                       <span class="co"># plot</span></span>
+<span id="cb557-5"><a href="12-block-designs-1.html#cb557-5" aria-hidden="true"></a>  <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></span></code></pre></div>
+<p>As always we first create a graph to examine the data</p>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="12-block-designs-1.html#cb558-1" aria-hidden="true"></a>oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">B_Plot =</span> <span class="kw">interaction</span>(B, plot)) </span>
+<span id="cb558-2"><a href="12-block-designs-1.html#cb558-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span></span>
+<span id="cb558-3"><a href="12-block-designs-1.html#cb558-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span></span>
+<span id="cb558-4"><a href="12-block-designs-1.html#cb558-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb558-5"><a href="12-block-designs-1.html#cb558-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-306-1.png" width="672" /></p>
+<p>This graph also makes me think that variety doesn’t matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check.</p>
+<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb559-1"><a href="12-block-designs-1.html#cb559-1" aria-hidden="true"></a><span class="co">#  What makes sense to me</span></span>
+<span id="cb559-2"><a href="12-block-designs-1.html#cb559-2" aria-hidden="true"></a><span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></span></code></pre></div>
+<p>Unfortunately the above model isn’t correct because R isn’t smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting. So we have to be smart enough to recognize that plot and subplot are actually Variety and Fertilizer.</p>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="12-block-designs-1.html#cb560-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">*</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</span>
+<span id="cb560-2"><a href="12-block-designs-1.html#cb560-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)</span></code></pre></div>
+<pre><code>## 
+## Error: B
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  5  15875    3175               
+## 
+## Error: B:V
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## V          2   1786   893.2   1.485  0.272
+## Residuals 10   6013   601.3               
+## 
+## Error: B:V:Nf
+##           Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Nf         3  20020    6673  37.686 2.46e-12 ***
+## V:Nf       6    322      54   0.303    0.932    
+## Residuals 45   7969     177                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Sure enough the interaction term is not significant. We next consider the Variety term.</p>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="12-block-designs-1.html#cb562-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">+</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</span>
+<span id="cb562-2"><a href="12-block-designs-1.html#cb562-2" aria-hidden="true"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
+<pre><code>## 
+## Error: B
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  5  15875    3175               
+## 
+## Error: B:V
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## V          2   1786   893.2   1.485  0.272
+## Residuals 10   6013   601.3               
+## 
+## Error: B:V:Nf
+##           Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Nf         3  20020    6673   41.05 1.23e-13 ***
+## Residuals 51   8291     163                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We conclude by noticing that the Variety does not matter, but that the fertilizer level is quite significant.</p>
+<hr />
+<p>There are many other types of designs out there. For example you might have 5 levels of a factor, but when you split your block into plots, you can only create 3 plots. So not every block will have every level of the factor. This is called <em>Randomized Incomplete Block Designs</em> (RIBD).</p>
+<p>You might have a design where you apply even more levels of nesting. Suppose you have a green house study where you have rooms where you can apply a temperature treatment, within the room you have four tables and can apply a light treatment to each table. Finally within each table you can have four trays where can apply a soil treatment to each tray. This is a continuation of the split-plot design and by extending the nesting we can develop <em>split-split-plot</em> and <em>split-split-split-plot</em> designs.</p>
+<p>You might have 7 covariates each with two levels (High, Low) and you want to investigate how these influence your response but also allow for second and third order interactions. If you looked at every treatment combination you’d have <span class="math inline">\(2^7=128\)</span> different treatment combinations and perhaps you only have the budget for a sample of <span class="math inline">\(n=32\)</span>. How should you design your experiment? This question is addressed by <em>fractional factorial</em> designs.</p>
+<p>If your research interests involve designing experiments such as these, you should consider taking an Experimental design course.</p>
+</div>
+<div id="exercises" class="section level2" number="12.3">
+<h2><span class="header-section-number">12.3</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>???</li>
+<li>???</li>
+<li>???</li>
+</ol>
+
 </div>
 </div>
             </section>
@@ -411,8 +657,8 @@ This document presents a rough outline to the projects conducted in STA 571: Sta
           </div>
         </div>
       </div>
-<a href="13-maximum-likelihood-principle.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="11-binomial-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="13-maximum-likelihood-principle.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -445,7 +691,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/blob/master/99_Project_Appendix.Rmd",
+"link": "https://github.com/dereksonderegger/571/blob/master/70_BlockDesigns.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -453,7 +699,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/dereksonderegger/571/raw/master/99_Project_Appendix.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/70_BlockDesigns.Rmd",
 "text": null
 },
 "download": [["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.pdf", "PDF"], ["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.epub", "E-Pub"]],

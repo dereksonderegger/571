@@ -1,5 +1,5 @@
 
-# Maximum Likelihood Priciple
+# Maximum Likelihood Principle
 ```{r, echo=FALSE}
 # Unattach any packages that happen to already be loaded. In general this is unecessary
 # but is important for the creation of the book to not have package namespaces
@@ -361,5 +361,5 @@ while the spread of the distribution is inversely related to the magnitude of $\
     a) For different values of $\alpha$ and $\beta$, plot the distribution function $f(x|\alpha, \beta)$. You might consider keeping the ratio between $\alpha$ and $\beta$ constant and just increase their magnitude. The valid range of $x$ values is $[0,1]$.
     b) Suppose that we've observed $x = \{0.25, 0.42, 0.45, 0.50, 0.55\}$. Calculate the sample mean and standard deviation.
     c) Graphically show that the maximum likelihood estimators of $\alpha$ and $\beta$ are approximately $9.5$ and $12.5$.
-    d) Show that the maximum likelihhood estimators of $\alpha$ and $\beta$ are approximately $9.5$ and $12.5$.
+    d) Show that the maximum likelihood estimators of $\alpha$ and $\beta$ are approximately $9.5$ and $12.5$.
     

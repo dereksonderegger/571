@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 14 Maximum Likelihood Priciple | Statistical Methods II</title>
+  <title>Chapter 13 Block Designs | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 14 Maximum Likelihood Priciple | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 13 Block Designs | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 14 Maximum Likelihood Priciple | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 13 Block Designs | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="13-block-designs-1.html"/>
-<link rel="next" href="project-appendix.html"/>
+<link rel="prev" href="12-poisson-regression.html"/>
+<link rel="next" href="14-maximum-likelihood-priciple.html"/>
 <script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -386,233 +386,269 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="maximum-likelihood-priciple" class="section level1" number="14">
-<h1><span class="header-section-number">Chapter 14</span> Maximum Likelihood Priciple</h1>
-<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="14-maximum-likelihood-priciple.html#cb564-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot2</span></span></code></pre></div>
-<div id="learning-outcomes-1" class="section level3 unnumbered">
-<h3>Learning Outcomes</h3>
-<ul>
-<li>Explain how the probability mass/density function <span class="math inline">\(f(x|\theta)\)</span> indicates what data regions are more probable.</li>
-<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is defined if we know the probability function.</li>
-<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is used to find the maximum likelihood estimate of <span class="math inline">\(\theta\)</span>.</li>
-<li>For a given sample of data drawn from a distribution, find the maximum likelihood estimate for the distribution parameters using R.</li>
-</ul>
-</div>
-<div id="introduction-1" class="section level2" number="14.1">
-<h2><span class="header-section-number">14.1</span> Introduction</h2>
-<p>The goal of statistical modeling is to take data that has some general trend along with some un-explainable variability, and say something intelligent about the trend. For example, the simple regression model</p>
-<p><span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \epsilon_i \;\;\;\;\;\; \textrm{where} \;\; \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\]</span>
-<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-312-1.png" width="672" /></p>
-<p>There is a general increasing trend in the response (i.e. the <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> term) and then some un-explainable noise (the <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> part).</p>
-<p>While it has been convenient to write the model in this form, it is also possible to write the simple regression model as
-<span class="math display">\[y_i \stackrel{ind}{\sim} N(\, \beta_0 + \beta_1x_i,\; \sigma^2 \,)\]</span></p>
-<p>This model contains three parameters <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span> but it certainly isn’t clear how to estimate these three values. In this chapter, we’ll develop a mechanism for taking observed data sampled from some distribution parameterized by some <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\sigma\)</span>, or <span class="math inline">\(\theta\)</span> and then estimating those parameters.</p>
-</div>
-<div id="distributions" class="section level2" number="14.2">
-<h2><span class="header-section-number">14.2</span> Distributions</h2>
-<p>Depending on what values the data can take on (integers, positive values) and the shape of the distribution of values, we might chose to model the data using one of several different distributions. Next we’ll quickly introduce the mathematical relationship between the parameter and probable data values of several distributions.</p>
-<div id="poisson" class="section level3" number="14.2.1">
-<h3><span class="header-section-number">14.2.1</span> Poisson</h3>
-<p>The Poisson distribution is used to model the number of events that happen in some unit of time or space. This distribution is often used to model events that can only be positive integers. This distribution is parameterized by <span class="math inline">\(\lambda\)</span>, which represents the expected number of events that happen (as defined as the average over an infinitely large number of draws). Because <span class="math inline">\(\lambda\)</span> represents the average number of events, the <span class="math inline">\(\lambda\)</span> parameter must be greater than or equal to 0.</p>
-<p>The function that defines the relationship between the parameter <span class="math inline">\(\lambda\)</span> and what values are most probable is called the <em>probability mass function</em> when talking about discrete random variables and <em>probability density functions</em> in the continuous case. Either way, these functions are traditionally notated using <span class="math inline">\(f(x)\)</span>.
-<span class="math display">\[f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}\]</span></p>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-313-1.png" width="672" /></p>
-<p>The notation <span class="math inline">\(f(x|\lambda)\)</span> read as “f <em>given</em> <span class="math inline">\(\lambda\)</span>” and is used to denote that this is a function that describes what values of the data <span class="math inline">\(X\)</span> are most probable and that the function depends on the parameter value. This is emphasizing that if we were to change the parameter value (to say <span class="math inline">\(\lambda = 10\)</span>), then a different set of data values would be more probable. In the above example with <span class="math inline">\(\lambda = 3.5\)</span>, the most probable outcome is <span class="math inline">\(3\)</span> but we aren’t surprised if we were to observe a value of <span class="math inline">\(x=1,2,\)</span> or <span class="math inline">\(4\)</span>. However, from this graph, we see that <span class="math inline">\(x=10\)</span> or <span class="math inline">\(x=15\)</span> would be highly improbable.</p>
-</div>
-<div id="exponential" class="section level3" number="14.2.2">
-<h3><span class="header-section-number">14.2.2</span> Exponential</h3>
-<p>The Exponential distribution can be used to model events that take on a positive real value and the distribution of values has some skewness. We will parameterize this distribution using <span class="math inline">\(\beta\)</span> as the mean of the distribution.</p>
-<p><span class="math display">\[f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x &gt; 0\]</span></p>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
-<p>In this distribution, the region near zero is the most probable outcome, and larger observations are less probable.</p>
-</div>
-<div id="normal" class="section level3" number="14.2.3">
-<h3><span class="header-section-number">14.2.3</span> Normal</h3>
-<p>The Normal distribution is extremely commonly used in statistics and can be used to modeled continuous variables and is parameterized by the center <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span> parameters.</p>
-<p><span class="math display">\[f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]\]</span>
-where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational convenience.</p>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;
-
-## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
-<p>All of these distributions (and there are many, many more distributions commonly used) have some mathematical function that defines the how probable a region of response values is and that function depends on the parameters. Importantly <span class="math inline">\(X\)</span> regions with the highest <span class="math inline">\(f(x|\theta)\)</span> are the most probable data values.</p>
-<p>There are many additional mathematical details that go into these density functions but the important aspect is that they tell us what data values are most probable given some parameter values <span class="math inline">\(\theta\)</span>.</p>
-</div>
-</div>
-<div id="likelihood-function" class="section level2" number="14.3">
-<h2><span class="header-section-number">14.3</span> Likelihood Function</h2>
-<p>As a researcher, I am not particularly interested in saying "If <span class="math inline">\(\mu=3\)</span> and <span class="math inline">\(\sigma=2\)</span> then I’m likely to observe approximately 95% of my data between <span class="math inline">\(-1\)</span> and <span class="math inline">\(7\)</span>. Instead, I want to make an inference about what values for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the most concordant with observed data that I’ve collected. However, the probability density function <span class="math inline">\(f(x|\mu,\sigma)\)</span> is still the mathematical link between the data and parameter and we will continue to use that function, but we’ll re-interpret which is <em>known</em>.</p>
-<p>The <em>Likelihood</em> function is just the probability density (or mass) function <span class="math inline">\(f(x|\theta)\)</span> re-interpreted to be a function where the data is the known quantity and we are looking to see what parameter values are consistent with the data.</p>
-<div id="poisson-1" class="section level3" number="14.3.1">
-<h3><span class="header-section-number">14.3.1</span> Poisson</h3>
-<p>Suppose that we have observed a single data point drawn from a Poisson(<span class="math inline">\(\lambda\)</span>) and we don’t know what <span class="math inline">\(\lambda\)</span> is. We first write down the likelihood function</p>
-<p><span class="math display">\[\begin{aligned}
-\mathcal{L}(\lambda|x) = f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!}
-\end{aligned}\]</span></p>
-<p>If we have observed <span class="math inline">\(x=4\)</span>, then <span class="math inline">\(\mathcal{L}(\lambda|x=4)\)</span> is the following function</p>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;
-
-## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
-<p>Our best estimate for <span class="math inline">\(\lambda\)</span> is the value that maximizes <span class="math inline">\(\mathcal{L}(\lambda|x)\)</span>. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by taking the log of the Likelihood function. Because the log function is monotonic, maximizing the Likelihood function is equivalent to maximizing the log-Likelihood function. Second, if taking the derivative is impossible, we could just use a numerical solving algorithm to find the value of <span class="math inline">\(\lambda\)</span> that maximizes the log-likelihood function. Numerical solvers are convenient, but are only accurate to machine tolerance you specify. In this case where <span class="math inline">\(x=4\)</span>, the actual maximum likelihood value is <span class="math inline">\(\hat{\lambda}=4\)</span>.</p>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="14-maximum-likelihood-priciple.html#cb569-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
-<span id="cb569-2"><a href="14-maximum-likelihood-priciple.html#cb569-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb569-3"><a href="14-maximum-likelihood-priciple.html#cb569-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
-<span id="cb569-4"><a href="14-maximum-likelihood-priciple.html#cb569-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># take the log</span></span>
-<span id="cb569-5"><a href="14-maximum-likelihood-priciple.html#cb569-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># multiply by -1</span></span>
-<span id="cb569-6"><a href="14-maximum-likelihood-priciple.html#cb569-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()      </span>
-<span id="cb569-7"><a href="14-maximum-likelihood-priciple.html#cb569-7" aria-hidden="true"></a>}</span>
-<span id="cb569-8"><a href="14-maximum-likelihood-priciple.html#cb569-8" aria-hidden="true"></a></span>
-<span id="cb569-9"><a href="14-maximum-likelihood-priciple.html#cb569-9" aria-hidden="true"></a><span class="co"># Optimize function will find the maximum of the Likelihood function</span></span>
-<span id="cb569-10"><a href="14-maximum-likelihood-priciple.html#cb569-10" aria-hidden="true"></a><span class="co"># over the range of lambda values [0, 20]. By default, the optimize function</span></span>
-<span id="cb569-11"><a href="14-maximum-likelihood-priciple.html#cb569-11" aria-hidden="true"></a><span class="co"># finds the minimum, but has an option to find the maximum. Alternatively</span></span>
-<span id="cb569-12"><a href="14-maximum-likelihood-priciple.html#cb569-12" aria-hidden="true"></a><span class="co"># we could find the minimum of the -logL function.</span></span>
-<span id="cb569-13"><a href="14-maximum-likelihood-priciple.html#cb569-13" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
-<pre><code>## $minimum
-## [1] 3.999993
+<div id="block-designs-1" class="section level1" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Block Designs</h1>
+<div class="sourceCode" id="cb537"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb537-1"><a href="13-block-designs-1.html#cb537-1" aria-hidden="true"></a><span class="co"># packages for this chapter</span></span>
+<span id="cb537-2"><a href="13-block-designs-1.html#cb537-2" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)    <span class="co"># ggplot2, dplyr, etc...</span></span>
+<span id="cb537-3"><a href="13-block-designs-1.html#cb537-3" aria-hidden="true"></a><span class="kw">library</span>(emmeans)     <span class="co"># TukeyLetters stuff</span></span></code></pre></div>
+<p>Often there are covariates in the experimental units that are known to affect the response variable and must be taken into account. Ideally an experimenter can group the experimental units into blocks where the within block variance is small, but the block to block variability is large. For example, in testing a drug to prevent heart disease, we know that gender, age, and exercise levels play a large role. We should partition our study participants into gender, age, and exercise groups and then randomly assign the treatment (placebo vs drug) within the group. This will ensure that we do not have a gender, age, and exercise group that has all placebo observations.</p>
+<p>Often blocking variables are not the variables that we are primarily interested in, but must nevertheless be considered. We call these nuisance variables. We already know how to deal with these variables by adding them to the model, but there are experimental designs where we must be careful because the experimental treatments are <em>nested</em>.</p>
+<p>Example 1. An agricultural field study has three fields in which the researchers will evaluate the quality of three different varieties of barley. Due to how they harvest the barley, we can only create a maximum of three plots in each field. In this example we will block on field since there might be differences in soil type, drainage, etc from field to field. In each field, we will plant all three varieties so that we can tell the difference between varieties without the block effect of field confounding our inference. In this example, the varieties are nested within the fields.</p>
+<table style="width:76%;">
+<colgroup>
+<col width="20%" />
+<col width="19%" />
+<col width="18%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Field 1</th>
+<th>Field 2</th>
+<th>Field 3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Plot 1</strong></td>
+<td>Variety A</td>
+<td>Variety C</td>
+<td>Variety B</td>
+</tr>
+<tr class="even">
+<td><strong>Plot 2</strong></td>
+<td>Variety B</td>
+<td>Variety A</td>
+<td>Variety C</td>
+</tr>
+<tr class="odd">
+<td><strong>Plot 3</strong></td>
+<td>Variety C</td>
+<td>Variety B</td>
+<td>Variety A</td>
+</tr>
+</tbody>
+</table>
+<p>Example 2. We are interested in how a mouse responds to five different materials inserted into subcutaneous tissue to evaluate the materials’ use in medicine. Each mouse can have a maximum of 3 insertions. Here we will block on the individual mice because even lab mice have individual variation. We actually are not interested in estimating the effect of the mice because they aren’t really of interest, but the mouse block effect should be accounted for before we make any inferences about the materials. Notice that if we only have one insertion per mouse, then the mouse effect will be confounded with materials.</p>
+<div id="randomized-complete-block-design-rcbd-1" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Randomized Complete Block Design (RCBD)</h2>
+<p>The dataset <code>oatvar</code> in the faraway library contains information about an experiment on eight different varieties of oats. The area in which the experiment was done had some systematic variability and the researchers divided the area up into five different blocks in which they felt the area inside a block was uniform while acknowledging that some blocks are likely superior to others for growing crops. Within each block, the researchers created eight plots and randomly assigned a variety to a plot. This type of design is called a Randomized Complete Block Design (RCBD) because each block contains all possible levels of the factor of primary interest.</p>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="13-block-designs-1.html#cb538-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oatvar&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb538-2"><a href="13-block-designs-1.html#cb538-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">y=</span>yield, <span class="dt">x=</span>block, <span class="dt">color=</span>variety)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb538-3"><a href="13-block-designs-1.html#cb538-3" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">size=</span><span class="dv">5</span>) <span class="op">+</span></span>
+<span id="cb538-4"><a href="13-block-designs-1.html#cb538-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(block))) <span class="co"># connect the dots</span></span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-295-1.png" width="672" /></p>
+<p>While there is one unusual observation in block IV, there doesn’t appear to be a blatant interaction. We will consider the interaction shortly. For the main effects model of yield ~ block + variety we have <span class="math inline">\(p=12\)</span> parameters and <span class="math inline">\(28\)</span> residual degrees of freedom because
+<span class="math display">\[\begin{aligned}
+  df_\epsilon   &amp;=  n-p \\
+        &amp;=  n-\left(1+\left[\left(I-1\right)+\left(J-1\right)\right]\right) \\
+        &amp;=  40-\left(1+\left[\left(5-1\right)+\left(8-1\right)\right]\right) \\
+        &amp;=  40-12 \\
+        &amp;=  28
+ \end{aligned}\]</span></p>
+<div class="sourceCode" id="cb539"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb539-1"><a href="13-block-designs-1.html#cb539-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">lm</span>( yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>oatvar)</span>
+<span id="cb539-2"><a href="13-block-designs-1.html#cb539-2" aria-hidden="true"></a><span class="kw">anova</span>(m1)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
 ## 
-## $objective
-## [1] 1.632876</code></pre>
-<p>But what if we have multiple observations from this Poisson distribution? If the observations are <em>independent</em>, then the probability mass or probability density functions <span class="math inline">\(f(x_i|\theta)\)</span> can just be multiplied together.</p>
-<p><span class="math display">\[\begin{aligned}
-\mathcal{L}(\lambda|\textbf{x}) = \prod_{i=1}^{n}f(x_i|\lambda) = \prod_{i=1}^n\frac{e^{-\lambda} \lambda^x_i}{x_i!}
-\end{aligned}\]</span></p>
-<p>So, suppose we have observed <span class="math inline">\(\textbf{x} = \{4,6,3,3,2,4,3,2\}\)</span>. We could maximize this function and discover that the maximum occurs at <span class="math inline">\(\hat{\lambda} = \bar{x} = 3.375\)</span>.</p>
-<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;
-
-## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-318-1.png" width="672" /></p>
-<p>If we are using the log-Likelihood, then the multiplication is equivalent to summing and we’ll define and subsequently optimize our log-Likelihood function like this:</p>
-<div class="sourceCode" id="cb573"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb573-1"><a href="14-maximum-likelihood-priciple.html#cb573-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
-<span id="cb573-2"><a href="14-maximum-likelihood-priciple.html#cb573-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb573-3"><a href="14-maximum-likelihood-priciple.html#cb573-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
-<span id="cb573-4"><a href="14-maximum-likelihood-priciple.html#cb573-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb573-5"><a href="14-maximum-likelihood-priciple.html#cb573-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb573-6"><a href="14-maximum-likelihood-priciple.html#cb573-6" aria-hidden="true"></a>}</span>
-<span id="cb573-7"><a href="14-maximum-likelihood-priciple.html#cb573-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
-<pre><code>## $minimum
-## [1] 3.37499
+## Response: yield
+##           Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## block      4  33396  8348.9  6.2449  0.001008 ** 
+## variety    7  77524 11074.8  8.2839 1.804e-05 ***
+## Residuals 28  37433  1336.9                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb541"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb541-1"><a href="13-block-designs-1.html#cb541-1" aria-hidden="true"></a><span class="co"># plot(m1)      # check diagnostic plots - they are fine...</span></span></code></pre></div>
+<p>Because this is an orthogonal design, the sums of squares doesn’t change regardless of which order we add the factors, but if we remove one or two observations, they would.</p>
+<p>In determining the significance of <code>variety</code> the above F-value and p-value is correct. We have 40 observations (5 per variety), and after accounting for the model structure (including the extraneous blocking variable), we have <span class="math inline">\(28\)</span> residual degrees of freedom.</p>
+<p>But the F-value and p-value for testing if <code>block</code> is significant is nonsense! Imagine that variety didn’t matter we just have 8 replicate samples per block, but these aren’t true replicates, they are what is called <em>pseudoreplicates</em>. Imagine taking a sample of <span class="math inline">\(n=3\)</span> people and observing their height at 1000 different points in time during the day. You don’t have 3000 data points for estimating the mean height in the population, you have 3. Unless we account for the this, the inference for the block variable is wrong. In this case, we only have one observation for each block, so we can’t do any statistical inference at the block scale!</p>
+<p>Fortunately in this case, we don’t care about the blocking variable and including it in the model was simply guarding us in case there was a difference, but I wasn’t interested in estimating it. If the only covariate we care about is the most deeply nested effect, then we can do the usual analysis and recognize the p-value for the blocking variable is nonsense, and we don’t care about it.</p>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="13-block-designs-1.html#cb542-1" aria-hidden="true"></a><span class="co"># Ignore any p-values regarding block, but I&#39;m happy with the analysis for variety</span></span>
+<span id="cb542-2"><a href="13-block-designs-1.html#cb542-2" aria-hidden="true"></a>letter_df &lt;-<span class="st"> </span><span class="kw">emmeans</span>(m1, <span class="op">~</span>variety) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb542-3"><a href="13-block-designs-1.html#cb542-3" aria-hidden="true"></a><span class="st">  </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb542-4"><a href="13-block-designs-1.html#cb542-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(variety, .group) <span class="op">%&gt;%</span></span>
+<span id="cb542-5"><a href="13-block-designs-1.html#cb542-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">yield =</span> <span class="dv">500</span>)</span>
+<span id="cb542-6"><a href="13-block-designs-1.html#cb542-6" aria-hidden="true"></a></span>
+<span id="cb542-7"><a href="13-block-designs-1.html#cb542-7" aria-hidden="true"></a><span class="kw">ggplot</span>(oatvar, <span class="kw">aes</span>(<span class="dt">x=</span>variety, <span class="dt">y=</span>yield)) <span class="op">+</span></span>
+<span id="cb542-8"><a href="13-block-designs-1.html#cb542-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_boxplot</span>() <span class="op">+</span></span>
+<span id="cb542-9"><a href="13-block-designs-1.html#cb542-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_text</span>( <span class="dt">data=</span>letter_df, <span class="kw">aes</span>(<span class="dt">label=</span>.group) ) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-297-1.png" width="672" /></p>
+<p>However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about. To make R do the correct analysis, we have to denote the nesting. In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the <code>Error()</code> function within our formula. By default, <code>Error()</code> just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.</p>
+<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb543-1"><a href="13-block-designs-1.html#cb543-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(block), <span class="dt">data=</span>oatvar)</span>
+<span id="cb543-2"><a href="13-block-designs-1.html#cb543-2" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
+<pre><code>## 
+## Error: block
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  4  33396    8349               
 ## 
-## $objective
-## [1] 13.85426</code></pre>
+## Error: Within
+##           Df Sum Sq Mean Sq F value  Pr(&gt;F)    
+## variety    7  77524   11075   8.284 1.8e-05 ***
+## Residuals 28  37433    1337                    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don’t have any replication of the blocks. So our analysis respects that blocks are present, but does not attempt any statistical analyses on them.</p>
 </div>
-<div id="exponential-example" class="section level3" number="14.3.2">
-<h3><span class="header-section-number">14.3.2</span> Exponential Example</h3>
-<p>We next consider data sampled from the exponential distribution. For this example, suppose that we had observed <span class="math inline">\(\textbf{x}=\{7.2, 6.1, 9.0, 12, 8.8\}\)</span></p>
-<p><span class="math display">\[\mathcal{L}(\mu, \sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \beta e^{\beta x_i}\]</span>
-which is maximized at <span class="math inline">\(\hat{\mu} = \bar{x} = 8.62\)</span>. We can numerically see this following the same process as previously seen.</p>
-<pre><code>## [1] 8.62</code></pre>
-<pre><code>## Warning: Problem with `mutate()` input `L`.
-## ℹ NaNs produced
-## ℹ Input `L` is `dexp(.$x, rate = 1/.$beta)`.</code></pre>
-<pre><code>## Warning in dexp(.$x, rate = 1/.$beta): NaNs produced</code></pre>
-<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
-<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-320-1.png" width="672" /></p>
-<div class="sourceCode" id="cb583"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb583-1"><a href="14-maximum-likelihood-priciple.html#cb583-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">7.2</span>, <span class="fl">6.1</span>, <span class="fl">9.0</span>, <span class="dv">12</span>, <span class="fl">8.8</span>)</span>
-<span id="cb583-2"><a href="14-maximum-likelihood-priciple.html#cb583-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb583-3"><a href="14-maximum-likelihood-priciple.html#cb583-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
-<span id="cb583-4"><a href="14-maximum-likelihood-priciple.html#cb583-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb583-5"><a href="14-maximum-likelihood-priciple.html#cb583-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb583-6"><a href="14-maximum-likelihood-priciple.html#cb583-6" aria-hidden="true"></a>}</span>
-<span id="cb583-7"><a href="14-maximum-likelihood-priciple.html#cb583-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>) )</span></code></pre></div>
-<pre><code>## $minimum
-## [1] 8.61999
+<div id="split-plot-designs" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Split-plot designs</h2>
+<p>There are plenty of experimental designs where we have levels of treatments nested within each other for practical reasons. The literature often gives the example of an agriculture experiment where we investigate the effect of irrigation and fertilizer on the yield of a crop. However because our irrigation system can’t be fine-tuned, we have plots with different irrigation levels and within each plot we have perhaps four subplots that have the fertilizer treatment. To summarize, Irrigation treatments were randomly assigned to plots, and fertilizer treatments were randomly assigned to sub-plots.</p>
+<pre><code>## `summarise()` regrouping output by &#39;plot&#39;, &#39;subplot&#39;, &#39;Fertilizer&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 6 x 5
+## # Groups:   plot, subplot, Fertilizer [6]
+##   plot  subplot Fertilizer Irrigation yield
+##   &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt;      &lt;fct&gt;      &lt;dbl&gt;
+## 1 1     1       Low        Low         20.2
+## 2 1     2       High       Low         24.4
+## 3 1     3       Low        Low         18.0
+## 4 1     4       High       Low         21.0
+## 5 2     1       Low        Low         23.2
+## 6 2     2       High       Low         26.5</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-300-1.png" width="672" /></p>
+<p>So all together we have 8 plots, and 32 subplots. When I analyze the fertilizer, I have 32 experimental units (the thing I have applied my treatment to), but when analyzing the effect of irrigation, I only have 8 experimental units.</p>
+<p>I like to think of this set up as having some lurking variables that act at the plot level (changes in aspect, maybe something related to what was planted prior) and some lurking variables that act on a local subplot scale (maybe variation in clay/silt/sand ratios). So even after I account for Irrigation and Fertilizer treatments, observations within a plot will be more similar to each other than observations in two different plots.</p>
+<p>We can think about doing two separate analyses, one for the effect of irrigation, and another for the effect of the fertilizer.</p>
+<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb547-1"><a href="13-block-designs-1.html#cb547-1" aria-hidden="true"></a><span class="co"># AgData came from my data package, dsData, (however I did some summarization</span></span>
+<span id="cb547-2"><a href="13-block-designs-1.html#cb547-2" aria-hidden="true"></a><span class="co"># first.)</span></span>
+<span id="cb547-3"><a href="13-block-designs-1.html#cb547-3" aria-hidden="true"></a></span>
+<span id="cb547-4"><a href="13-block-designs-1.html#cb547-4" aria-hidden="true"></a><span class="co"># To analyze Irrigation, average over the subplots first...</span></span>
+<span id="cb547-5"><a href="13-block-designs-1.html#cb547-5" aria-hidden="true"></a>Irrigation.data &lt;-<span class="st">   </span>AgData <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb547-6"><a href="13-block-designs-1.html#cb547-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(plot, Irrigation) <span class="op">%&gt;%</span></span>
+<span id="cb547-7"><a href="13-block-designs-1.html#cb547-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">summarise</span>( <span class="dt">yield =</span> <span class="kw">mean</span>(yield)) <span class="op">%&gt;%</span></span>
+<span id="cb547-8"><a href="13-block-designs-1.html#cb547-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">as.data.frame</span>()  <span class="co"># the aov command doesn&#39;t like tibbles.</span></span></code></pre></div>
+<pre><code>## `summarise()` regrouping output by &#39;plot&#39; (override with `.groups` argument)</code></pre>
+<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb549-1"><a href="13-block-designs-1.html#cb549-1" aria-hidden="true"></a><span class="co"># Now do a standard analysis. I use the aov() command instead of lm()</span></span>
+<span id="cb549-2"><a href="13-block-designs-1.html#cb549-2" aria-hidden="true"></a><span class="co"># because we will shortly do something very tricky that can only be</span></span>
+<span id="cb549-3"><a href="13-block-designs-1.html#cb549-3" aria-hidden="true"></a><span class="co"># done with aov(). For the most part, everything is </span></span>
+<span id="cb549-4"><a href="13-block-designs-1.html#cb549-4" aria-hidden="true"></a><span class="co"># identical from what you are used to.</span></span>
+<span id="cb549-5"><a href="13-block-designs-1.html#cb549-5" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation, <span class="dt">data=</span>Irrigation.data )</span>
+<span id="cb549-6"><a href="13-block-designs-1.html#cb549-6" aria-hidden="true"></a><span class="kw">anova</span>(m)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
 ## 
-## $objective
-## [1] 15.77043</code></pre>
+## Response: yield
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Irrigation  1 26.064 26.0645  3.4281 0.1136
+## Residuals   6 45.619  7.6032</code></pre>
+<p>In this case we see that we have insufficient evidence to conclude that the observed difference between the Irrigation levels could not be due to random chance.</p>
+<p>Next we can do the appropriate analysis for the fertilizer, recognizing that all the p-values for the plot effects are nonsense and should be ignored.</p>
+<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb551-1"><a href="13-block-designs-1.html#cb551-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>plot <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData )</span>
+<span id="cb551-2"><a href="13-block-designs-1.html#cb551-2" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>##             Df Sum Sq Mean Sq F value Pr(&gt;F)  
+## plot         7 286.73   40.96   3.153 0.0173 *
+## Fertilizer   1   0.43    0.43   0.033 0.8572  
+## Residuals   23 298.83   12.99                 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Ideally I wouldn’t have to do the averaging over the nested observations and we would like to not have the misleading p-values for the plots. To do this, we only have to specify the nesting of the error terms and R will figure out the appropriate degrees of freedom for the covariates.</p>
+<div class="sourceCode" id="cb553"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb553-1"><a href="13-block-designs-1.html#cb553-1" aria-hidden="true"></a><span class="co"># To do this right, we have to abandon the general lm() command and use the more</span></span>
+<span id="cb553-2"><a href="13-block-designs-1.html#cb553-2" aria-hidden="true"></a><span class="co"># specialized aov() command.  The Error() part of the formula allows me to nest</span></span>
+<span id="cb553-3"><a href="13-block-designs-1.html#cb553-3" aria-hidden="true"></a><span class="co"># the error terms and allow us to do the correct analysis. The order of these is</span></span>
+<span id="cb553-4"><a href="13-block-designs-1.html#cb553-4" aria-hidden="true"></a><span class="co"># to start with the largest/highest level and then work down the nesting.</span></span>
+<span id="cb553-5"><a href="13-block-designs-1.html#cb553-5" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(plot<span class="op">/</span>subplot), <span class="dt">data=</span>AgData )</span>
+<span id="cb553-6"><a href="13-block-designs-1.html#cb553-6" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<pre><code>## 
+## Error: plot
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Irrigation  1  104.3  104.26   3.428  0.114
+## Residuals   6  182.5   30.41               
+## 
+## Error: plot:subplot
+##            Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Fertilizer  1   0.43    0.43   0.033  0.857
+## Residuals  23 298.83   12.99</code></pre>
+<p>In the output, we see that the ANOVA table row for the Fertilizer is the same for both analyses, but the sums-of-squares for Irrigation are different between the two analyses (because of the averaging) while the F and p values are the same between the two analyses.</p>
+<p>What would have happened if we had performed the analysis incorrectly and had too many degrees of freedom for the Irrigation test?</p>
+<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb555-1"><a href="13-block-designs-1.html#cb555-1" aria-hidden="true"></a>bad.model &lt;-<span class="st"> </span><span class="kw">aov</span>( yield <span class="op">~</span><span class="st"> </span>Irrigation <span class="op">+</span><span class="st"> </span>Fertilizer, <span class="dt">data=</span>AgData)</span>
+<span id="cb555-2"><a href="13-block-designs-1.html#cb555-2" aria-hidden="true"></a><span class="kw">anova</span>(bad.model)</span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: yield
+##            Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+## Irrigation  1 104.26 104.258  6.2818 0.01806 *
+## Fertilizer  1   0.43   0.430  0.0259 0.87324  
+## Residuals  29 481.31  16.597                  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>In this case we would have concluded that we had statistically significant evidence to conclude the Irrigation levels are different. Notice that the sums-of-squares in this <strong>wrong</strong> analysis match up with the sums-of-squares in the correct design and the only difference is that when we figure out the sum-of-squares for the residuals we split that into different pools.
+<span class="math display">\[\begin{aligned}
+  RSS_{total} &amp;= RSS_{Fertilizer} + RSS_{Irrigation} \\
+        456.12 &amp;= 273.64 + 182.5
+  \end{aligned}\]</span></p>
+<p>When we want to infer if the amount of noise explained by adding Irrigation or Fertilizer is sufficiently large to justify their inclusion into the model, we compare the sum-of-squares value to the RSS but now we have to use the appropriate pool.</p>
+<hr />
+<p>A second example of a slightly more complex split plot is given in the package <code>MASS</code> under the dataset <code>oats</code>. From the help file the data describes the following experiment:</p>
+<blockquote>
+<p>The yield of oats from a split-plot field trial using three varieties and four levels of manurial treatment. The experiment was laid out in 6 blocks of 3 main plots, each split into 4 sub-plots. The varieties were applied to the main plots and the manurial treatments to the sub-plots.</p>
+</blockquote>
+<p>This is a lot to digest so lets unpack it. First we have 6 blocks and we’ll replicate the exact same experiment in each block. Within a block, we’ll split it into three sections, which we’ll call plots (within the block). Finally within each plot, we’ll have 4 subplots.</p>
+<p>We have 3 varieties of oats, and 4 levels of fertilizer (manure). To each set of 3 plots, we’ll randomly assign the 3 varieties, and to each set of subplots, we’ll assign the fertilizers.</p>
+<p>One issue that makes this issue confusing for students is that most texts get lazy and don’t define the blocks, plots, and sub-plots when there are no replicates in a particular level. I prefer to be clear about defining those so.</p>
+<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb557-1"><a href="13-block-designs-1.html#cb557-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;oats&#39;</span>, <span class="dt">package=</span><span class="st">&#39;MASS&#39;</span>)</span>
+<span id="cb557-2"><a href="13-block-designs-1.html#cb557-2" aria-hidden="true"></a>oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</span>
+<span id="cb557-3"><a href="13-block-designs-1.html#cb557-3" aria-hidden="true"></a>  <span class="dt">Nf =</span> <span class="kw">ordered</span>(N, <span class="dt">levels =</span> <span class="kw">sort</span>(<span class="kw">levels</span>(N))),  <span class="co"># make manure an ordered factor</span></span>
+<span id="cb557-4"><a href="13-block-designs-1.html#cb557-4" aria-hidden="true"></a>  <span class="dt">plot =</span> <span class="kw">as.integer</span>(V),                       <span class="co"># plot</span></span>
+<span id="cb557-5"><a href="13-block-designs-1.html#cb557-5" aria-hidden="true"></a>  <span class="dt">subplot =</span> <span class="kw">as.integer</span>(Nf))                   <span class="co"># sub-plot</span></span></code></pre></div>
+<p>As always we first create a graph to examine the data</p>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="13-block-designs-1.html#cb558-1" aria-hidden="true"></a>oats &lt;-<span class="st"> </span>oats <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">B_Plot =</span> <span class="kw">interaction</span>(B, plot)) </span>
+<span id="cb558-2"><a href="13-block-designs-1.html#cb558-2" aria-hidden="true"></a><span class="kw">ggplot</span>(oats, <span class="kw">aes</span>(<span class="dt">x=</span>Nf, <span class="dt">y=</span>Y, <span class="dt">color=</span>V)) <span class="op">+</span></span>
+<span id="cb558-3"><a href="13-block-designs-1.html#cb558-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>( B <span class="op">~</span><span class="st"> </span>plot, <span class="dt">labeller=</span>label_both) <span class="op">+</span></span>
+<span id="cb558-4"><a href="13-block-designs-1.html#cb558-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb558-5"><a href="13-block-designs-1.html#cb558-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(Nf)))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-306-1.png" width="672" /></p>
+<p>This graph also makes me think that variety doesn’t matter and it is unlikely that there an interaction between oat variety and fertilizer level, but we should check.</p>
+<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb559-1"><a href="13-block-designs-1.html#cb559-1" aria-hidden="true"></a><span class="co">#  What makes sense to me</span></span>
+<span id="cb559-2"><a href="13-block-designs-1.html#cb559-2" aria-hidden="true"></a><span class="co"># m.c &lt;- aov( Y ~ V * Nf + Error(B/plot/subplot), data=oats)</span></span></code></pre></div>
+<p>Unfortunately the above model isn’t correct because R isn’t smart enough to understand that the levels of plot and subplot are exact matches to the Variety and Fertilizer levels. As a result if I defined the model above, the degrees of freedom will be all wrong because there is too much nesting. So we have to be smart enough to recognize that plot and subplot are actually Variety and Fertilizer.</p>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="13-block-designs-1.html#cb560-1" aria-hidden="true"></a>m.c &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">*</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</span>
+<span id="cb560-2"><a href="13-block-designs-1.html#cb560-2" aria-hidden="true"></a><span class="kw">summary</span>(m.c)</span></code></pre></div>
+<pre><code>## 
+## Error: B
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  5  15875    3175               
+## 
+## Error: B:V
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## V          2   1786   893.2   1.485  0.272
+## Residuals 10   6013   601.3               
+## 
+## Error: B:V:Nf
+##           Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Nf         3  20020    6673  37.686 2.46e-12 ***
+## V:Nf       6    322      54   0.303    0.932    
+## Residuals 45   7969     177                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Sure enough the interaction term is not significant. We next consider the Variety term.</p>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="13-block-designs-1.html#cb562-1" aria-hidden="true"></a>m.s &lt;-<span class="st"> </span><span class="kw">aov</span>( Y <span class="op">~</span><span class="st"> </span>V <span class="op">+</span><span class="st"> </span>Nf <span class="op">+</span><span class="st"> </span><span class="kw">Error</span>(B<span class="op">/</span>V<span class="op">/</span>Nf), <span class="dt">data=</span>oats)</span>
+<span id="cb562-2"><a href="13-block-designs-1.html#cb562-2" aria-hidden="true"></a><span class="kw">summary</span>(m.s)</span></code></pre></div>
+<pre><code>## 
+## Error: B
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## Residuals  5  15875    3175               
+## 
+## Error: B:V
+##           Df Sum Sq Mean Sq F value Pr(&gt;F)
+## V          2   1786   893.2   1.485  0.272
+## Residuals 10   6013   601.3               
+## 
+## Error: B:V:Nf
+##           Df Sum Sq Mean Sq F value   Pr(&gt;F)    
+## Nf         3  20020    6673   41.05 1.23e-13 ***
+## Residuals 51   8291     163                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>We conclude by noticing that the Variety does not matter, but that the fertilizer level is quite significant.</p>
+<hr />
+<p>There are many other types of designs out there. For example you might have 5 levels of a factor, but when you split your block into plots, you can only create 3 plots. So not every block will have every level of the factor. This is called <em>Randomized Incomplete Block Designs</em> (RIBD).</p>
+<p>You might have a design where you apply even more levels of nesting. Suppose you have a green house study where you have rooms where you can apply a temperature treatment, within the room you have four tables and can apply a light treatment to each table. Finally within each table you can have four trays where can apply a soil treatment to each tray. This is a continuation of the split-plot design and by extending the nesting we can develop <em>split-split-plot</em> and <em>split-split-split-plot</em> designs.</p>
+<p>You might have 7 covariates each with two levels (High, Low) and you want to investigate how these influence your response but also allow for second and third order interactions. If you looked at every treatment combination you’d have <span class="math inline">\(2^7=128\)</span> different treatment combinations and perhaps you only have the budget for a sample of <span class="math inline">\(n=32\)</span>. How should you design your experiment? This question is addressed by <em>fractional factorial</em> designs.</p>
+<p>If your research interests involve designing experiments such as these, you should consider taking an Experimental design course.</p>
 </div>
-<div id="normal-1" class="section level3" number="14.3.3">
-<h3><span class="header-section-number">14.3.3</span> Normal</h3>
-<p>We finally consider the case where we have observation coming from a distribution that has multiple parameters. The normal distribution is parameterized by a mean <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span>. Suppose that we had observed <span class="math inline">\(x_i \stackrel{iid}{\sim} N(\mu, \sigma^2)\)</span> and saw <span class="math inline">\(\textbf{x} = \{5, 8, 9, 7, 11, 9\}\)</span>.</p>
-<p>As usual we can calculate the likelihood function</p>
-<p><span class="math display">\[\mathcal{L}(\mu,\sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma} \exp \left[ -\frac{1}{2}\frac{(x_i-\mu)^2}{\sigma^2} \right]\]</span></p>
-<p>It turns out the maximum likelihood estimators in this model are
-<span class="math display">\[\hat{\mu} = \bar{x} = 8.16666\]</span>
-<span class="math display">\[\hat{\sigma}_{mle} = \sqrt{ \frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2 } = 1.8634\]</span>
-which is somewhat unexpected because the typical estimator we use has a <span class="math inline">\(\frac{1}{n-1}\)</span> multiplier.</p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb585-1"><a href="14-maximum-likelihood-priciple.html#cb585-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
-<span id="cb585-2"><a href="14-maximum-likelihood-priciple.html#cb585-2" aria-hidden="true"></a>xbar &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
-<span id="cb585-3"><a href="14-maximum-likelihood-priciple.html#cb585-3" aria-hidden="true"></a>s2 &lt;-<span class="st"> </span><span class="kw">sum</span>( (x <span class="op">-</span><span class="st"> </span>xbar)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span> )</span>
-<span id="cb585-4"><a href="14-maximum-likelihood-priciple.html#cb585-4" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s2)</span></code></pre></div>
-<pre><code>## `summarise()` regrouping output by &#39;mu&#39; (override with `.groups` argument)</code></pre>
-<pre><code>## Warning: Removed 35050 rows containing non-finite values (stat_contour).</code></pre>
-<pre><code>## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;
-
-## Warning in is.na(x): is.na() applied to non-(list or vector) of type
-## &#39;expression&#39;</code></pre>
-<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-323-1.png" width="672" /></p>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb589-1"><a href="14-maximum-likelihood-priciple.html#cb589-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
-<span id="cb589-2"><a href="14-maximum-likelihood-priciple.html#cb589-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
-<span id="cb589-3"><a href="14-maximum-likelihood-priciple.html#cb589-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
-<span id="cb589-4"><a href="14-maximum-likelihood-priciple.html#cb589-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
-<span id="cb589-5"><a href="14-maximum-likelihood-priciple.html#cb589-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
-<span id="cb589-6"><a href="14-maximum-likelihood-priciple.html#cb589-6" aria-hidden="true"></a>}</span>
-<span id="cb589-7"><a href="14-maximum-likelihood-priciple.html#cb589-7" aria-hidden="true"></a></span>
-<span id="cb589-8"><a href="14-maximum-likelihood-priciple.html#cb589-8" aria-hidden="true"></a><span class="co"># Bivariate optimization uses the optim function that only can search</span></span>
-<span id="cb589-9"><a href="14-maximum-likelihood-priciple.html#cb589-9" aria-hidden="true"></a><span class="co"># for a minimum. The first argument is an initial guess to start the algorithm.</span></span>
-<span id="cb589-10"><a href="14-maximum-likelihood-priciple.html#cb589-10" aria-hidden="true"></a><span class="co"># So long as the start point isn&#39;t totally insane, the numerical algorithm should</span></span>
-<span id="cb589-11"><a href="14-maximum-likelihood-priciple.html#cb589-11" aria-hidden="true"></a><span class="co"># be fine.</span></span>
-<span id="cb589-12"><a href="14-maximum-likelihood-priciple.html#cb589-12" aria-hidden="true"></a><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>), neglogL )  </span></code></pre></div>
-<pre><code>## $par
-## [1] 8.166924 1.863391
-## 
-## $value
-## [1] 12.24802
-## 
-## $counts
-## function gradient 
-##       71       NA 
-## 
-## $convergence
-## [1] 0
-## 
-## $message
-## NULL</code></pre>
-</div>
-</div>
-<div id="discussion" class="section level2" number="14.4">
-<h2><span class="header-section-number">14.4</span> Discussion</h2>
+<div id="exercises" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Exercises</h2>
 <ol style="list-style-type: decimal">
-<li><p>How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and <span class="math inline">\(\ge 0\)</span> for all <span class="math inline">\(x\)</span>. <em>While knowing the derivative function <span class="math inline">\(f&#39;(x)\)</span> would allow us to be much more clever, lets think about how to do the maximization by just evaluating <span class="math inline">\(f(x)\)</span> for different values of <span class="math inline">\(x\)</span>.</em></p></li>
-<li><p>Convince yourself that if <span class="math inline">\(x_0\)</span> is the maximizer of <span class="math inline">\(f(x)\)</span>, then it is also the maximizer of <span class="math inline">\(log( f( x ) )\)</span>. This will rest on the idea that <span class="math inline">\(log()\)</span> is a strictly increasing function.</p></li>
-</ol>
-</div>
-<div id="exercises-1" class="section level2" number="14.5">
-<h2><span class="header-section-number">14.5</span> Exercises</h2>
-<ol style="list-style-type: decimal">
-<li>The <span class="math inline">\(\chi^2\)</span> distribution is parameterized by its degrees of freedom parameter <span class="math inline">\(\nu\)</span> which corresponds to the mean of the distribution (<span class="math inline">\(\nu\)</span> must be <span class="math inline">\(&gt;0\)</span>). The density function <span class="math inline">\(f(x|\nu)\)</span> can be accessed R using the <code>dchisq(x, df=nu)</code>.
-<ol style="list-style-type: lower-alpha">
-<li>For different values of <span class="math inline">\(\nu\)</span>, plot the distribution function of <span class="math inline">\(f(x|\nu)\)</span>. You might consider <span class="math inline">\(\nu = 5, 10,\)</span> and <span class="math inline">\(20\)</span>. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,\infty)\)</span> so select the</li>
-<li>Suppose that we’ve observed <span class="math inline">\(x = \{9,7,7,6,10,7,9)\)</span>. Calculate the sample mean and standard deviation.</li>
-<li>Graphically show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span>.</li>
-<li>Show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span> using a numerical maximization function.</li>
-</ol></li>
-<li>The Beta distribution is often used when dealing with data that are proportions. It is parameterized by <em>two</em> parameters, usually called <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> (both of which must be greater than zero). The mean of this distribution is by <span class="math display">\[E[X]=\frac{\alpha}{\alpha+\beta}\]</span>
-while the spread of the distribution is inversely related to the magnitude of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. The density function <span class="math inline">\(f(x|\alpha,\beta)\)</span> can be accessed in R using the <code>dbeta(x, alpha, beta)</code> function.
-<ol style="list-style-type: lower-alpha">
-<li>For different values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, plot the distribution function <span class="math inline">\(f(x|\alpha, \beta)\)</span>. You might consider keeping the ratio between <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> constant and just increase their magnitude. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,1]\)</span>.</li>
-<li>Suppose that we’ve observed <span class="math inline">\(x = \{0.25, 0.42, 0.45, 0.50, 0.55\}\)</span>. Calculate the sample mean and standard deviation.</li>
-<li>Graphically show that the maximum likelihood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
-<li>Show that the maximum likelihood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
-</ol></li>
+<li>???</li>
+<li>???</li>
+<li>???</li>
 </ol>
 
 </div>
@@ -622,8 +658,8 @@ while the spread of the distribution is inversely related to the magnitude of <s
           </div>
         </div>
       </div>
-<a href="13-block-designs-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="project-appendix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="12-poisson-regression.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="14-maximum-likelihood-priciple.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -656,7 +692,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/blob/master/90_Maximum_Likelihood.Rmd",
+"link": "https://github.com/dereksonderegger/571/blob/master/70_BlockDesigns.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -664,7 +700,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/dereksonderegger/571/raw/master/90_Maximum_Likelihood.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/70_BlockDesigns.Rmd",
 "text": null
 },
 "download": [["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.pdf", "PDF"], ["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.epub", "E-Pub"]],

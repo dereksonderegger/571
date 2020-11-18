@@ -103,10 +103,6 @@ log-transformed-response-un-transformed-covariates
 un-transformed-response-log-transformed-covariate
 log-transformed-response-log-transformed-covariate
 Transformation-Exercises
-CorrelatedCovariates_Chapter
-interpretation-with-correlated-covariates
-solutions
-exercises
 VariableSelection_Chapter
 nested-models
 testing-based-model-selection
@@ -140,12 +136,11 @@ prediction-and-effective-dose-levels
 overdispersion
 roc-curves
 Exercises_BinomialRegression
-poisson-regression
 block-designs-1
 randomized-complete-block-design-rcbd-1
 split-plot-designs
-exercises-1
-maximum-likelihood-priciple
+exercises
+maximum-likelihood-principle
 introduction-1
 distributions
 poisson
@@ -156,6 +151,6 @@ poisson-1
 exponential-example
 normal-1
 discussion
-exercises-2
+exercises-1
 weeks-1-4-project-feasibility
 wibgis
