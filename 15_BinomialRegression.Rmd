@@ -115,30 +115,30 @@ As in the mixed model case, there are no closed form solution for $\hat{\boldsym
 $$\begin{aligned}
  L\left(\boldsymbol{\beta}|\boldsymbol{w} \right)	&=
   \prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i} \right) \\
-	&=	\prod_{i=1}^{n} p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}} \\
+	&=	\prod_{i=1}^{n} p_{i}^{w_i}\left(1-p_{i}\right)^{1-w_{i}} \\
 	&= \prod_{i=1}^n \left(\textrm{ilogit}(X_i \beta) \right)^{w_i} \left( 1-\textrm{ilogit}(X_i \beta)\right)^{1-w_i}  
 	\end{aligned}$$
 and we recognize that 
-$$p_{i}=\textrm{ilogit}\left(\boldsymbol{X\beta}\right)=1/\left(1+e^{-\boldsymbol{X\beta}}\right)$$
+$$p_{i}=\textrm{ilogit}\left(\boldsymbol{X_i\beta}\right)=1/\left(1+e^{-\boldsymbol{X_i\beta}}\right)$$
 and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is _really_ small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.
 
-Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $y_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
+Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $w_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
 
 ```{r}
 # beta are the parameters 
 # y is the response in terms of 0,1 for this mayfly example
 # X is the design matrix that we use for our covariates.
-logL <- function(beta, y, X){
-  out <- dbinom( y, size=1, prob= faraway::ilogit(X%*%beta), log=TRUE ) %>% sum()
+logL <- function(beta, w, X){
+  out <- dbinom( w, size=1, prob= faraway::ilogit(X%*%beta), log=TRUE ) %>% sum()
   return(out)  
 }
-NeglogL <- function(beta, y, X){ return( -logL(beta, y, X)) }
+NeglogL <- function(beta, w, X){ return( -logL(beta, w, X)) }
 ```
 
 ```{r}
 optim( par=c(0,0),     # intial bad guesses
        fn = NeglogL,   # we want to minimize the -logL function, maximize logL
-       y=Mayflies$Occupancy,  # parameters to pass to the logL function
+       w=Mayflies$Occupancy,  # parameters to pass to the logL function
        X = model.matrix( ~ 1 + CCU, data=Mayflies ) )  # ditto
 ```
 

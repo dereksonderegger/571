@@ -100,18 +100,23 @@ ggplot(oatvar, aes(x=variety, y=yield)) +
   geom_text( data=letter_df, aes(label=.group) ) 
 ```
 
-However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about.  To make R do the correct analysis, we have to denote the nesting.  In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the `Error()` function within our formula.  By default, `Error()` just creates independent error terms, but when we add a covariate, it adds the appropriate nesting.
+However it would be pretty sloppy to not do the analysis correctly because our blocking variable might be something we care about.  
 
-```{r}
-m3 <- aov( yield ~ variety + Error(block), data=oatvar)
-summary(m3)
-```
+<!-- I initially had the following section in the book to remind myself how to do the traditional analysis doing block averaging, but that just confuses students. -->
 
-Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don't have any replication of the blocks.  So our analysis respects that blocks are present, but does not attempt any statistical analyses on them. 
+<!-- To make R do the correct analysis, we have to denote the nesting.  In this case we have block-to-block errors, and then variability within blocks. To denote the nesting we use the `Error()` function within our formula.  By default, `Error()` just creates independent error terms, but when we add a covariate, it adds the appropriate nesting. -->
 
+<!-- ```{r} -->
+<!-- # Account for the nesting, but  -->
+<!-- m3 <- aov( yield ~ variety + Error(block), data=oatvar) -->
+<!-- summary(m3) -->
+<!-- ``` -->
 
+<!-- Notice that in our block level, there is no p-value to assess if the blocks are different. This is because we don't have any replication of the blocks.  So our analysis respects that blocks are present, but does not attempt any statistical analyses on them.  -->
 
-Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models. In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.
+<!-- Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models.  -->
+
+In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.
 
 Mixed effects models combine what we call "fixed" and "random" effects. 
 
@@ -237,9 +242,8 @@ ggplot(pulp, aes(x=operator, y=bright)) + geom_point()
 
 ```{r}
 # set the contrasts to sum-to-zero constraint
-op <- options(contrasts=c('contr.sum', 'contr.poly'))
-# m <- aov(bright ~ operator, data=pulp)   #
-m <- lm(bright ~ operator, data=pulp)      # same analyses ...
+options(contrasts=c('contr.sum', 'contr.poly'))
+m <- lm(bright ~ operator, data=pulp)
 summary(m)
 coef(m)
 ```
@@ -293,6 +297,8 @@ $$-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \ri
 This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. 
 
 ```{r}
+# Do an F test for the fixed effects using the similar degree of freedom
+# approximations done by SAS
 anova(model.1)
 ```
 
@@ -358,7 +364,7 @@ anova(model.0, model.1)  # Analysis using a LRT
 ```
 
 ```{r}
-anova(model.1)  # using whatever lmerTest thinks is appropriate 
+anova(model.1)  # Tests using an F-test with an approximated degrees of freedom
 ```
 
 It looks like we don't have a significant effect of the treatments. Next we'll examine the simple model to understand the variability.
@@ -605,7 +611,8 @@ anova(m)
 The material effect is statistically significant and we can figure out the pairwise differences in the usual fashion.
 ```{r}
 emmeans(m, specs= pairwise~material) 
-emmeans(m, specs= ~material) %>% multcomp::cld(Letters=letters) 
+emmeans(m, specs= ~material) %>% 
+  multcomp::cld(Letters=letters) 
 ```
 So material D is in between materials B and C for abrasion resistance.
 
@@ -827,22 +834,15 @@ ggplot(ConfData,  aes(x=Days)) +
 
 
 ## Exercises {#Exercises_RandomEffects}
-1. An experiment was conducted to determine the effect of recipe and baking temperature on chocolate cake quality. For each recipe, $15$ batches of cake mix for were prepared (so 45 batches total). Each batch was sufficient for six cakes. Each of the six cakes was baked at a different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is available in the `faraway` package as `choccake`.
-    a. For the variables Temperature, Recipe, and Batch, which should be fixed and which should be random?
-    b. Inspect the data. How many levels of batch are there and how will that influence your model statements in R?
-    c. Build a mixed model using the main effects (no interactions). 
-    d. Compare your model in part (c) one models with one or both of the fixed effects removed. Which model is preferred?
-    e. Compare your model in part (c) with a more complicated model that includes the interaction between temperature and recipe. Which model is preferred? 
-    f. Using the model you selected, discuss the impact of the different variance components.
 
-2. An experiment was conducted to select the supplier of raw materials for production of a component. The breaking strength of the component was the objective of interest. Raw materials from four suppliers were considered. In our factory, we have four operators that can only produce one component per day. We utilized a Latin square design so that each factory operator worked with a different supplier each day. The data set is presented in the `faraway` package as `breaking`.
+1. An experiment was conducted to select the supplier of raw materials for production of a component. The breaking strength of the component was the objective of interest. Raw materials from four suppliers were considered. In our factory, we have four operators that can only produce one component per day. We utilized a Latin square design so that each factory operator worked with a different supplier each day. The data set is presented in the `faraway` package as `breaking`.
     a. Explain why it would be natural to treat the operators and days as random effects but the suppliers as fixed effects.
     b. Inspect the data? Does anything seem weird? It turns out that the person responsible for entering the data made an input error and transposed the response values for rows 15 and 16.  Create a graph where the transposition is evident and then fix it. After your fix, make sure that each day has all 4 suppliers and 4 operators.
     c. Build a model to predict the breaking strength. Describe the variation from operator to operator and from day to day.
     d. Test the significance of the supplier effect.
     e. Is there a significant difference between the operators?
 
-3. An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups.  The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats' growth. The data are available in the `faraway` package as `ratdrink`.
+2. An experiment was performed to investigate the effect of ingestion of thyroxine or thiouracil. The researchers took 27 newborn rats and divided them into three groups.  The control group is ten rats that receive no addition to their drinking water. A second group of seven rats has thyroxine added to their drinking water and the final set ten rats have thiouracil added to their water. For each of five weeks, we take a body weight measurement to monitor the rats' growth. The data are available in the `faraway` package as `ratdrink`.
 *I suspect that we had 30 rats to begin with and somehow three rats in the thyroxine group had some issue unrelated to the treatment.* The following R code might be helpful for the initial visualization.
     ```{r, eval=FALSE}
     # we need to force ggplot to only draw lines between points for the same
@@ -859,7 +859,13 @@ ggplot(ConfData,  aes(x=Days)) +
     c. Comment on the effect of each treatment. 
     
     
-    
+3. An experiment was conducted to determine the effect of recipe and baking temperature on chocolate cake quality. For each recipe, $15$ batches of cake mix for were prepared (so 45 batches total). Each batch was sufficient for six cakes. Each of the six cakes was baked at a different temperature which was randomly assigned. Several measures of cake quality were recorded of which breaking angle was just one. The dataset is available in the `faraway` package as `choccake`.
+    a. For the variables Temperature, Recipe, and Batch, which should be fixed and which should be random?
+    b. Inspect the data. Create a graph to consider if there is an interaction between Batch and Recipe. Describe the effect of Batch on the BreakAngle. *Hint make graphs with Batch number on the x-axis and faceting on Temperature and Recipe.*
+    c. Based on the graph in part (b), it appears that there is some main effect of Batch, i.e the effect of Batch does NOT change between recipes. I would hypothesize that this is actually some "Time of Day" effect going on. (I'd love to talk the scientist who did the experiment about this). The 45 `batch:recipe` mixes need to be in the model because each batter mix resulted in 6 different cakes. Make a new variable called `mix` that has a unique value for each of the 45 `recipe:batch` levels. Then rename `batch` to be `time`. Should `time` be fixed or random?
+    d. Build a mixed model using the fixed effects along with the random effect of `mix`. Consider two-way interactions. 
+    e. Using the model you selected, discuss the impact of the different variance components.
+
     
     
     

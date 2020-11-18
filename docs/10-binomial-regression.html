@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 Binomial Regression | Statistical Methods II</title>
+  <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 Binomial Regression | Statistical Methods II" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Binomial Regression | Statistical Methods II" />
+  
+  <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
+  
+
+<meta name="author" content="Derek L. Sonderegger" />
+
+
+<meta name="date" content="2020-11-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="9-mixed-effects-models.html"/>
+<link rel="next" href="11-poisson-regression.html"/>
+<script src="libs/header-attrs-2.5/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Statistical Methods II</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#part-statistical-theory"><i class="fa fa-check"></i>(PART*) Statistical Theory</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#MatrixTheory_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#MatrixTheory_Introduction"><i class="fa fa-check"></i><b>0.1</b> Introduction</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#types-of-matrices"><i class="fa fa-check"></i><b>0.2</b> Types of Matrices</a>
+<ul>
+<li class="chapter" data-level="0.2.1" data-path="index.html"><a href="index.html#scalars"><i class="fa fa-check"></i><b>0.2.1</b> Scalars</a></li>
+<li class="chapter" data-level="0.2.2" data-path="index.html"><a href="index.html#vectors"><i class="fa fa-check"></i><b>0.2.2</b> Vectors</a></li>
+<li class="chapter" data-level="0.2.3" data-path="index.html"><a href="index.html#matrix"><i class="fa fa-check"></i><b>0.2.3</b> Matrix</a></li>
+<li class="chapter" data-level="0.2.4" data-path="index.html"><a href="index.html#square-matrices"><i class="fa fa-check"></i><b>0.2.4</b> Square Matrices</a></li>
+<li class="chapter" data-level="0.2.5" data-path="index.html"><a href="index.html#symmetric-matrices"><i class="fa fa-check"></i><b>0.2.5</b> Symmetric Matrices</a></li>
+<li class="chapter" data-level="0.2.6" data-path="index.html"><a href="index.html#diagonal-matrices"><i class="fa fa-check"></i><b>0.2.6</b> Diagonal Matrices</a></li>
+<li class="chapter" data-level="0.2.7" data-path="index.html"><a href="index.html#identity-matrices"><i class="fa fa-check"></i><b>0.2.7</b> Identity Matrices</a></li>
+</ul></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#operations-on-matrices"><i class="fa fa-check"></i><b>0.3</b> Operations on Matrices</a>
+<ul>
+<li class="chapter" data-level="0.3.1" data-path="index.html"><a href="index.html#transpose"><i class="fa fa-check"></i><b>0.3.1</b> Transpose</a></li>
+<li class="chapter" data-level="0.3.2" data-path="index.html"><a href="index.html#addition-and-subtraction"><i class="fa fa-check"></i><b>0.3.2</b> Addition and Subtraction</a></li>
+<li class="chapter" data-level="0.3.3" data-path="index.html"><a href="index.html#multiplication"><i class="fa fa-check"></i><b>0.3.3</b> Multiplication</a></li>
+<li class="chapter" data-level="0.3.4" data-path="index.html"><a href="index.html#vector-multiplication"><i class="fa fa-check"></i><b>0.3.4</b> Vector Multiplication</a></li>
+<li class="chapter" data-level="0.3.5" data-path="index.html"><a href="index.html#matrix-multiplication"><i class="fa fa-check"></i><b>0.3.5</b> Matrix Multiplication</a></li>
+<li class="chapter" data-level="0.3.6" data-path="index.html"><a href="index.html#scalar-times-a-matrix"><i class="fa fa-check"></i><b>0.3.6</b> Scalar times a Matrix</a></li>
+<li class="chapter" data-level="0.3.7" data-path="index.html"><a href="index.html#determinant"><i class="fa fa-check"></i><b>0.3.7</b> Determinant</a></li>
+<li class="chapter" data-level="0.3.8" data-path="index.html"><a href="index.html#inverse"><i class="fa fa-check"></i><b>0.3.8</b> Inverse</a></li>
+</ul></li>
+<li class="chapter" data-level="0.4" data-path="index.html"><a href="index.html#Exercises_MatrixTheory"><i class="fa fa-check"></i><b>0.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html"><i class="fa fa-check"></i><b>1</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#learning-outcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="1.1" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#introduction"><i class="fa fa-check"></i><b>1.1</b> Introduction</a></li>
+<li class="chapter" data-level="1.2" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#model-specifications"><i class="fa fa-check"></i><b>1.2</b> Model Specifications</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#simple-regression"><i class="fa fa-check"></i><b>1.2.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="1.2.2" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#anova-model"><i class="fa fa-check"></i><b>1.2.2</b> ANOVA model</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#parameter-estimation-1"><i class="fa fa-check"></i><b>1.3</b> Parameter Estimation</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#estimation-of-location-paramters"><i class="fa fa-check"></i><b>1.3.1</b> Estimation of Location Paramters</a></li>
+<li class="chapter" data-level="1.3.2" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#estimation-of-variance-parameter"><i class="fa fa-check"></i><b>1.3.2</b> Estimation of Variance Parameter</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#standard-errors"><i class="fa fa-check"></i><b>1.4</b> Standard Errors</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#expectation-and-variance-of-a-random-vector"><i class="fa fa-check"></i><b>1.4.1</b> Expectation and variance of a random vector</a></li>
+<li class="chapter" data-level="1.4.2" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#variance-of-location-parameters"><i class="fa fa-check"></i><b>1.4.2</b> Variance of Location Parameters</a></li>
+<li class="chapter" data-level="1.4.3" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#summary-of-pertinent-results"><i class="fa fa-check"></i><b>1.4.3</b> Summary of pertinent results</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#r-example"><i class="fa fa-check"></i><b>1.5</b> R example</a></li>
+<li class="chapter" data-level="1.6" data-path="1-parameter-estimation.html"><a href="1-parameter-estimation.html#Exercises_Estimation"><i class="fa fa-check"></i><b>1.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="2-inference.html"><a href="2-inference.html"><i class="fa fa-check"></i><b>2</b> Inference</a>
+<ul>
+<li class="chapter" data-level="" data-path="2-inference.html"><a href="2-inference.html#Inference_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="2.1" data-path="2-inference.html"><a href="2-inference.html#Inference_Introduction"><i class="fa fa-check"></i><b>2.1</b> Introduction</a></li>
+<li class="chapter" data-level="2.2" data-path="2-inference.html"><a href="2-inference.html#confidence-intervals-and-hypothesis-tests"><i class="fa fa-check"></i><b>2.2</b> Confidence Intervals and Hypothesis Tests</a></li>
+<li class="chapter" data-level="2.3" data-path="2-inference.html"><a href="2-inference.html#f-tests"><i class="fa fa-check"></i><b>2.3</b> F-tests</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="2-inference.html"><a href="2-inference.html#theory"><i class="fa fa-check"></i><b>2.3.1</b> Theory</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="2-inference.html"><a href="2-inference.html#example"><i class="fa fa-check"></i><b>2.4</b> Example</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="2-inference.html"><a href="2-inference.html#testing-all-covariates"><i class="fa fa-check"></i><b>2.4.1</b> Testing All Covariates</a></li>
+<li class="chapter" data-level="2.4.2" data-path="2-inference.html"><a href="2-inference.html#testing-a-single-covariate"><i class="fa fa-check"></i><b>2.4.2</b> Testing a Single Covariate</a></li>
+<li class="chapter" data-level="2.4.3" data-path="2-inference.html"><a href="2-inference.html#testing-a-subset-of-covariates"><i class="fa fa-check"></i><b>2.4.3</b> Testing a Subset of Covariates</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="2-inference.html"><a href="2-inference.html#Inference_Exercises"><i class="fa fa-check"></i><b>2.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="3-contrasts.html"><a href="3-contrasts.html"><i class="fa fa-check"></i><b>3</b> Contrasts</a>
+<ul>
+<li class="chapter" data-level="" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="3.1" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_Introduction"><i class="fa fa-check"></i><b>3.1</b> Introduction</a></li>
+<li class="chapter" data-level="3.2" data-path="3-contrasts.html"><a href="3-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>3.2</b> Estimate and variance</a></li>
+<li class="chapter" data-level="3.3" data-path="3-contrasts.html"><a href="3-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>3.3</b> Estimating contrasts using <code>glht()</code></a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_glht_OneWayAnova"><i class="fa fa-check"></i><b>3.3.1</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_emmeans"><i class="fa fa-check"></i><b>3.4</b> Using <code>emmeans</code> Package</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_SimpleRegression"><i class="fa fa-check"></i><b>3.4.1</b> Simple Regression</a></li>
+<li class="chapter" data-level="3.4.2" data-path="3-contrasts.html"><a href="3-contrasts.html#Contrasts_OneWayAnova"><i class="fa fa-check"></i><b>3.4.2</b> 1-way ANOVA</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="3-contrasts.html"><a href="3-contrasts.html#Exercises_Contrasts"><i class="fa fa-check"></i><b>3.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path=""><a href="#part-statistical-models"><i class="fa fa-check"></i>(PART*) Statistical Models</a>
+<ul>
+<li class="chapter" data-level="3.6" data-path="3-contrasts.html"><a href="3-contrasts.html#ANCOVA_Introduction"><i class="fa fa-check"></i><b>3.6</b> Introduction</a></li>
+<li class="chapter" data-level="3.7" data-path="3-contrasts.html"><a href="3-contrasts.html#ANCOVA_Additive"><i class="fa fa-check"></i><b>3.7</b> Offset parallel Lines (aka additive models)</a></li>
+<li class="chapter" data-level="3.8" data-path="3-contrasts.html"><a href="3-contrasts.html#ANCOVA_Interaction"><i class="fa fa-check"></i><b>3.8</b> Lines with different slopes (aka Interaction model)</a></li>
+<li class="chapter" data-level="3.9" data-path="3-contrasts.html"><a href="3-contrasts.html#ANCOVA_Iris_Example"><i class="fa fa-check"></i><b>3.9</b> Iris Example</a></li>
+<li class="chapter" data-level="3.10" data-path="3-contrasts.html"><a href="3-contrasts.html#ANCOVA_Exercises"><i class="fa fa-check"></i><b>3.10</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html"><i class="fa fa-check"></i><b>4</b> Two-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#review-of-1-way-anova"><i class="fa fa-check"></i><b>4.1</b> Review of 1-way ANOVA</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#an-example"><i class="fa fa-check"></i><b>4.1.1</b> An Example</a></li>
+<li class="chapter" data-level="4.1.2" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#degrees-of-freedom"><i class="fa fa-check"></i><b>4.1.2</b> Degrees of Freedom</a></li>
+<li class="chapter" data-level="4.1.3" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#pairwise-comparisons"><i class="fa fa-check"></i><b>4.1.3</b> Pairwise Comparisons</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#two-way-anova-1"><i class="fa fa-check"></i><b>4.2</b> Two-Way ANOVA</a></li>
+<li class="chapter" data-level="4.3" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#orthogonality"><i class="fa fa-check"></i><b>4.3</b> Orthogonality</a></li>
+<li class="chapter" data-level="4.4" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#main-effects-model"><i class="fa fa-check"></i><b>4.4</b> Main Effects Model</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#example---fruit-trees"><i class="fa fa-check"></i><b>4.4.1</b> Example - Fruit Trees</a></li>
+<li class="chapter" data-level="4.4.2" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#anova-table"><i class="fa fa-check"></i><b>4.4.2</b> ANOVA Table</a></li>
+<li class="chapter" data-level="4.4.3" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#estimating-contrasts"><i class="fa fa-check"></i><b>4.4.3</b> Estimating Contrasts</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#interaction-model"><i class="fa fa-check"></i><b>4.5</b> Interaction Model</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#anova-table-1"><i class="fa fa-check"></i><b>4.5.1</b> ANOVA Table</a></li>
+<li class="chapter" data-level="4.5.2" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#example---fruit-trees-continued"><i class="fa fa-check"></i><b>4.5.2</b> Example - Fruit Trees (continued)</a></li>
+<li class="chapter" data-level="4.5.3" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#example---warpbreaks"><i class="fa fa-check"></i><b>4.5.3</b> Example - Warpbreaks</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="4-two-way-anova.html"><a href="4-two-way-anova.html#Exercises_TwoWayANOVA"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="5-Diagnostics-Chapter.html"><a href="5-Diagnostics-Chapter.html"><i class="fa fa-check"></i><b>5</b> Diagnostics</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="5-Diagnostics-Chapter.html"><a href="5-Diagnostics-Chapter.html#detecting-assumption-violations"><i class="fa fa-check"></i><b>5.1</b> Detecting Assumption Violations</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="5-Diagnostics-Chapter.html"><a href="5-Diagnostics-Chapter.html#measures-of-influence"><i class="fa fa-check"></i><b>5.1.1</b> Measures of Influence</a></li>
+<li class="chapter" data-level="5.1.2" data-path="5-Diagnostics-Chapter.html"><a href="5-Diagnostics-Chapter.html#diagnostic-plots"><i class="fa fa-check"></i><b>5.1.2</b> Diagnostic Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="5-Diagnostics-Chapter.html"><a href="5-Diagnostics-Chapter.html#Exercises_Diagnostics"><i class="fa fa-check"></i><b>5.2</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html"><i class="fa fa-check"></i><b>6</b> Data Transformations</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#a-review-of-logx-and-ex"><i class="fa fa-check"></i><b>6.1</b> A review of <span class="math inline">\(\log(x)\)</span> and <span class="math inline">\(e^x\)</span></a></li>
+<li class="chapter" data-level="6.2" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#transforming-the-response"><i class="fa fa-check"></i><b>6.2</b> Transforming the Response</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#box-cox-family-of-transformations"><i class="fa fa-check"></i><b>6.2.1</b> Box-Cox Family of Transformations</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#transforming-the-predictors"><i class="fa fa-check"></i><b>6.3</b> Transforming the predictors</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#polynomials-of-a-predictor"><i class="fa fa-check"></i><b>6.3.1</b> Polynomials of a predictor</a></li>
+<li class="chapter" data-level="6.3.2" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#log-and-square-root-of-a-predictor"><i class="fa fa-check"></i><b>6.3.2</b> Log and Square Root of a predictor</a></li>
+<li class="chapter" data-level="6.3.3" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#galapagos-example"><i class="fa fa-check"></i><b>6.3.3</b> Galapagos Example</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#interpretation-of-log-transformed-variable-coefficients"><i class="fa fa-check"></i><b>6.4</b> Interpretation of <span class="math inline">\(\log\)</span> transformed variable coefficients</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#log-transformed-response-un-transformed-covariates"><i class="fa fa-check"></i><b>6.4.1</b> Log-transformed response, un-transformed covariates</a></li>
+<li class="chapter" data-level="6.4.2" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#un-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>6.4.2</b> Un-transformed response, log-transformed covariate</a></li>
+<li class="chapter" data-level="6.4.3" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#log-transformed-response-log-transformed-covariate"><i class="fa fa-check"></i><b>6.4.3</b> Log-transformed response, log-transformed covariate</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="6-LogTransformations-Chapter.html"><a href="6-LogTransformations-Chapter.html#Transformation-Exercises"><i class="fa fa-check"></i><b>6.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="7-CorrelatedCovariates-Chapter.html"><a href="7-CorrelatedCovariates-Chapter.html"><i class="fa fa-check"></i><b>7</b> Correlated Covariates</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="7-CorrelatedCovariates-Chapter.html"><a href="7-CorrelatedCovariates-Chapter.html#interpretation-with-correlated-covariates"><i class="fa fa-check"></i><b>7.1</b> Interpretation with Correlated Covariates</a></li>
+<li class="chapter" data-level="7.2" data-path="7-CorrelatedCovariates-Chapter.html"><a href="7-CorrelatedCovariates-Chapter.html#solutions"><i class="fa fa-check"></i><b>7.2</b> Solutions</a></li>
+<li class="chapter" data-level="7.3" data-path="7-CorrelatedCovariates-Chapter.html"><a href="7-CorrelatedCovariates-Chapter.html#exercises"><i class="fa fa-check"></i><b>7.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html"><i class="fa fa-check"></i><b>8</b> Variable Selection</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#nested-models"><i class="fa fa-check"></i><b>8.1</b> Nested Models</a></li>
+<li class="chapter" data-level="8.2" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#testing-based-model-selection"><i class="fa fa-check"></i><b>8.2</b> Testing-Based Model Selection</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#example---u.s.-life-expectancy"><i class="fa fa-check"></i><b>8.2.1</b> Example - U.S. Life Expectancy</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#criterion-based-procedures"><i class="fa fa-check"></i><b>8.3</b> Criterion Based Procedures</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#information-criterions"><i class="fa fa-check"></i><b>8.3.1</b> Information Criterions</a></li>
+<li class="chapter" data-level="8.3.2" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#adjusted-r-sq"><i class="fa fa-check"></i><b>8.3.2</b> Adjusted <code>R-sq</code></a></li>
+<li class="chapter" data-level="8.3.3" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#example-1"><i class="fa fa-check"></i><b>8.3.3</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="8-VariableSelection-Chapter.html"><a href="8-VariableSelection-Chapter.html#Exercises_VariableSelection"><i class="fa fa-check"></i><b>8.4</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html"><i class="fa fa-check"></i><b>9</b> Mixed Effects Models</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#block-designs"><i class="fa fa-check"></i><b>9.1</b> Block Designs</a></li>
+<li class="chapter" data-level="9.2" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#randomized-complete-block-design-rcbd"><i class="fa fa-check"></i><b>9.2</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="9.3" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#review-of-maximum-likelihood-methods"><i class="fa fa-check"></i><b>9.3</b> Review of Maximum Likelihood Methods</a></li>
+<li class="chapter" data-level="9.4" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#way-anova-with-a-random-effect"><i class="fa fa-check"></i><b>9.4</b> 1-way ANOVA with a random effect</a></li>
+<li class="chapter" data-level="9.5" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#blocks-as-random-variables"><i class="fa fa-check"></i><b>9.5</b> Blocks as Random Variables</a></li>
+<li class="chapter" data-level="9.6" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#nested-effects"><i class="fa fa-check"></i><b>9.6</b> Nested Effects</a></li>
+<li class="chapter" data-level="9.7" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#crossed-effects"><i class="fa fa-check"></i><b>9.7</b> Crossed Effects</a></li>
+<li class="chapter" data-level="9.8" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#repeated-measures-longitudinal-studies"><i class="fa fa-check"></i><b>9.8</b> Repeated Measures / Longitudinal Studies</a></li>
+<li class="chapter" data-level="9.9" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#confidence-and-prediction-intervals"><i class="fa fa-check"></i><b>9.9</b> Confidence and Prediction Intervals</a>
+<ul>
+<li class="chapter" data-level="9.9.1" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#confidence-intervals"><i class="fa fa-check"></i><b>9.9.1</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="9.9.2" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#prediction-intervals"><i class="fa fa-check"></i><b>9.9.2</b> Prediction Intervals</a></li>
+</ul></li>
+<li class="chapter" data-level="9.10" data-path="9-mixed-effects-models.html"><a href="9-mixed-effects-models.html#Exercises_RandomEffects"><i class="fa fa-check"></i><b>9.10</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html"><i class="fa fa-check"></i><b>10</b> Binomial Regression</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#binomial-regression-model"><i class="fa fa-check"></i><b>10.1</b> Binomial Regression Model</a></li>
+<li class="chapter" data-level="10.2" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#measures-of-fit-quality"><i class="fa fa-check"></i><b>10.2</b> Measures of Fit Quality</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#deviance"><i class="fa fa-check"></i><b>10.2.1</b> Deviance</a></li>
+<li class="chapter" data-level="10.2.2" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#goodness-of-fit"><i class="fa fa-check"></i><b>10.2.2</b> Goodness of Fit</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#confidence-intervals-1"><i class="fa fa-check"></i><b>10.3</b> Confidence Intervals</a></li>
+<li class="chapter" data-level="10.4" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#interpreting-model-coefficients"><i class="fa fa-check"></i><b>10.4</b> Interpreting model coefficients</a></li>
+<li class="chapter" data-level="10.5" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#prediction-and-effective-dose-levels"><i class="fa fa-check"></i><b>10.5</b> Prediction and Effective Dose Levels</a></li>
+<li class="chapter" data-level="10.6" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#overdispersion"><i class="fa fa-check"></i><b>10.6</b> Overdispersion</a></li>
+<li class="chapter" data-level="10.7" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#roc-curves"><i class="fa fa-check"></i><b>10.7</b> ROC Curves</a></li>
+<li class="chapter" data-level="10.8" data-path="10-binomial-regression.html"><a href="10-binomial-regression.html#Exercises_BinomialRegression"><i class="fa fa-check"></i><b>10.8</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="11-poisson-regression.html"><a href="11-poisson-regression.html"><i class="fa fa-check"></i><b>11</b> Poisson Regression</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#part-appendix"><i class="fa fa-check"></i>(PART*) Appendix</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="11-poisson-regression.html"><a href="11-poisson-regression.html#randomized-complete-block-design-rcbd-1"><i class="fa fa-check"></i><b>11.1</b> Randomized Complete Block Design (RCBD)</a></li>
+<li class="chapter" data-level="11.2" data-path="11-poisson-regression.html"><a href="11-poisson-regression.html#split-plot-designs"><i class="fa fa-check"></i><b>11.2</b> Split-plot designs</a></li>
+<li class="chapter" data-level="11.3" data-path="11-poisson-regression.html"><a href="11-poisson-regression.html#exercises-1"><i class="fa fa-check"></i><b>11.3</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html"><i class="fa fa-check"></i><b>12</b> Maximum Likelihood Priciple</a>
+<ul>
+<li class="chapter" data-level="" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#learning-outcomes-1"><i class="fa fa-check"></i>Learning Outcomes</a></li>
+<li class="chapter" data-level="12.1" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#introduction-1"><i class="fa fa-check"></i><b>12.1</b> Introduction</a></li>
+<li class="chapter" data-level="12.2" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#distributions"><i class="fa fa-check"></i><b>12.2</b> Distributions</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#poisson"><i class="fa fa-check"></i><b>12.2.1</b> Poisson</a></li>
+<li class="chapter" data-level="12.2.2" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#exponential"><i class="fa fa-check"></i><b>12.2.2</b> Exponential</a></li>
+<li class="chapter" data-level="12.2.3" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#normal"><i class="fa fa-check"></i><b>12.2.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#likelihood-function"><i class="fa fa-check"></i><b>12.3</b> Likelihood Function</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#poisson-1"><i class="fa fa-check"></i><b>12.3.1</b> Poisson</a></li>
+<li class="chapter" data-level="12.3.2" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#exponential-example"><i class="fa fa-check"></i><b>12.3.2</b> Exponential Example</a></li>
+<li class="chapter" data-level="12.3.3" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#normal-1"><i class="fa fa-check"></i><b>12.3.3</b> Normal</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#discussion"><i class="fa fa-check"></i><b>12.4</b> Discussion</a></li>
+<li class="chapter" data-level="12.5" data-path="12-maximum-likelihood-priciple.html"><a href="12-maximum-likelihood-priciple.html#exercises-2"><i class="fa fa-check"></i><b>12.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="project-appendix.html"><a href="project-appendix.html"><i class="fa fa-check"></i>Project Appendix</a>
+<ul>
+<li class="chapter" data-level="12.6" data-path="project-appendix.html"><a href="project-appendix.html#weeks-1-4-project-feasibility"><i class="fa fa-check"></i><b>12.6</b> Weeks 1 – 4 (Project Feasibility)</a>
+<ul>
+<li class="chapter" data-level="12.6.1" data-path="project-appendix.html"><a href="project-appendix.html#wibgis"><i class="fa fa-check"></i><b>12.6.1</b> WIBGIs</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Statistical Methods II</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="binomial-regression" class="section level1" number="10">
+<h1><span class="header-section-number">Chapter 10</span> Binomial Regression</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="10-binomial-regression.html#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># dplyr, tidyr, ggplot2, etc...</span></span>
+<span id="cb1-2"><a href="10-binomial-regression.html#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(emmeans)</span>
+<span id="cb1-3"><a href="10-binomial-regression.html#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(pROC)</span>
+<span id="cb1-4"><a href="10-binomial-regression.html#cb1-4" aria-hidden="true"></a><span class="kw">library</span>(lmerTest)</span></code></pre></div>
+<p>The standard linear model assumes that the observed data is distributed
+<span class="math display">\[\boldsymbol{y} = \boldsymbol{X\beta} + \boldsymbol{\epsilon} \;\; \textrm{ where } \epsilon_i \stackrel{iid}{\sim} N(0,\sigma^2)\]</span>
+which can be re-written as
+<span class="math display">\[\boldsymbol{y}\sim N\left(\boldsymbol{\mu}=\boldsymbol{X\beta},\sigma^{2}\boldsymbol{I}\right)\]</span>
+and notably this assumes that the data are independent. This model has <span class="math inline">\(E\left[\boldsymbol{y}\right]=\boldsymbol{X\beta}\)</span>. This model is quite flexible and includes:</p>
+<table>
+<colgroup>
+<col width="31%" />
+<col width="34%" />
+<col width="34%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model</th>
+<th>Predictor Type</th>
+<th>Response</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Simple Linear Regression</td>
+<td>1 Continuous</td>
+<td>Continuous Normal Response</td>
+</tr>
+<tr class="even">
+<td>1-way ANOVA</td>
+<td>1 Categorical</td>
+<td>Continuous Normal Response</td>
+</tr>
+<tr class="odd">
+<td>2-way ANOVA</td>
+<td>2 Categorical</td>
+<td>Continuous Normal Response</td>
+</tr>
+<tr class="even">
+<td>ANCOVA</td>
+<td>1 Continuous, 1 Categorical</td>
+<td>Continuous Normal Response</td>
+</tr>
+</tbody>
+</table>
+<p>The <em>general</em> linear model expanded on the linear model and we allow the data points to be correlated
+<span class="math display">\[\boldsymbol{y}\sim N\left(\boldsymbol{X\beta},\sigma^{2}\boldsymbol{\Omega}\right)\]</span>
+where we assume that <span class="math inline">\(\boldsymbol{\Omega}\)</span> has some known form but may include some unknown correlation parameters. This type of model includes our work with mixed models and time series data.</p>
+<p>The study of <em>generalized</em> linear models removes the assumption that the error terms are normally distributed and allows the data to be distributed according to some other distribution such as Binomial, Poisson, or Exponential. These distributions are parameterized differently than the normal (instead of <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span>, we might be interested in <span class="math inline">\(\lambda\)</span> or <span class="math inline">\(p\)</span>). However, I am still interested in how my covariates can be used to estimate my parameter of interest.</p>
+<p>Critically, I still want to parameterize my covariates as <span class="math inline">\(\boldsymbol{X\beta}\)</span> because we understand the how continuous and discrete covariates added and interpreted and what interactions between them mean. By keeping the <span class="math inline">\(\boldsymbol{X\beta}\)</span> part, we continue to build on the earlier foundations.</p>
+<div id="binomial-regression-model" class="section level2" number="10.1">
+<h2><span class="header-section-number">10.1</span> Binomial Regression Model</h2>
+<p>To remove a layer of abstraction, we will now consider the case of binary regression. In this model, the observations (which we denote by <span class="math inline">\(w_{i}\)</span>) are zeros and ones which correspond to some binary observation, perhaps presence/absence of an animal in a plot, or the success or failure of an viral infection. Recall that we could model this as <span class="math inline">\(W_{i}\sim Bernoulli\left(p_{i}\right)\)</span> random variable.
+<span class="math display">\[P\left(W_{i}=1\right) =   p_{i}\]</span>
+<span class="math display">\[P\left(W_{i}=0\right) =   \left(1-p_{i}\right)\]</span>
+which I can rewrite more formally letting <span class="math inline">\(w_{i}\)</span> be the observed value as <span class="math display">\[P\left(W_{i}=w_{i}\right)=p_{i}^{w_{i}}\left(1-p_{i}\right)^{1-w_{i}}\]</span> and the parameter that I wish to estimate and understand is the probability of a success <span class="math inline">\(p_{i}\)</span> and usually I wish to know how my covariate data <span class="math inline">\(\boldsymbol{X\beta}\)</span> informs these probabilities.</p>
+<p>In the normal distribution case, we estimated the expected value of my response vector (<span class="math inline">\(\boldsymbol{\mu}\)</span>) simply using <span class="math inline">\(\hat{\boldsymbol{\mu}}=\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span> but this will not work for an estimate of <span class="math inline">\(\hat{\boldsymbol{p}}\)</span> because there is no constraint on <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, there is nothing to prevent it from being negative or greater than 1. Because we require the probability of success to be a number between 0 and 1, I have a problem.</p>
+<p>Example: Suppose we are interested in the abundance of mayflies in a stream. Because mayflies are sensitive to metal pollution, I might be interested in looking at the presence/absence of mayflies in a stream relative to a pollution gradient. Here the pollution gradient is measured in Cumulative Criterion Units (CCU: CCU is defined as the ratio of the measured metal concentration to the hardness adjusted chronic criterion concentration, and then summed across each metal) where larger values imply more metal pollution.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="10-binomial-regression.html#cb2-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;Mayflies&#39;</span>, <span class="dt">package=</span><span class="st">&#39;dsData&#39;</span>)</span>
+<span id="cb2-2"><a href="10-binomial-regression.html#cb2-2" aria-hidden="true"></a><span class="kw">head</span>(Mayflies)</span></code></pre></div>
+<pre><code>##          CCU Occupancy
+## 1 0.05261076         1
+## 2 0.25935617         1
+## 3 0.64322010         1
+## 4 0.90168941         1
+## 5 0.97002630         1
+## 6 1.08037011         1</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="10-binomial-regression.html#cb4-1" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>()</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>If I just fit a regular linear model to this data, we fit the following:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="10-binomial-regression.html#cb5-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">lm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies )</span>
+<span id="cb5-2"><a href="10-binomial-regression.html#cb5-2" aria-hidden="true"></a>Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">yhat =</span> <span class="kw">predict</span>(m))</span>
+<span id="cb5-3"><a href="10-binomial-regression.html#cb5-3" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU, <span class="dt">y=</span>Occupancy)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb5-4"><a href="10-binomial-regression.html#cb5-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb5-5"><a href="10-binomial-regression.html#cb5-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>yhat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>which is horrible. First, we want the regression line to be related to the probability of occurrence and it is giving me a negative value. Instead, we want it to slowly tail off and give me more of an sigmoid-shaped curve. Perhaps something more like the following:
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We need a way to convert our covariate data <span class="math inline">\(\boldsymbol{y}=\boldsymbol{X\beta}\)</span> from something that can take values from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(+\infty\)</span> to something that is constrained between 0 and 1 so that we can fit the model
+<span class="math display">\[w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)\]</span>
+There are several options for the link function <span class="math inline">\(g^{-1}\left(\cdot\right)\)</span> that are commonly used. We use the notation <span class="math inline">\(y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}\)</span> is unconstrained and can be in <span class="math inline">\(\left(-\infty, +\infty\right)\)</span> while <span class="math inline">\(p_{i}=g^{-1}\left(y_{i}\right)\)</span> is constrained to <span class="math inline">\(\left[0,1\right]\)</span>. When convenient, we will drop the <span class="math inline">\(i\)</span>
+subscript while keeping the domain restrictions.</p>
+<ol style="list-style-type: decimal">
+<li><p>Logit (log odds) transformation. The link function is <span class="math display">\[g\left(p\right)=\log\left[\underset{\textrm{odds}}{\underbrace{\frac{p}{1-p}}}\right]=y\]</span>
+with inverse <span class="math display">\[g^{-1}\left(y\right)=\frac{1}{1+e^{-y}}\]</span> and we think of <span class="math inline">\(g\left(p\right)\)</span> as the log odds function.</p></li>
+<li><p>Probit transformation. The link function is <span class="math inline">\(g\left(p\right)=\Phi^{-1}\left(\boldsymbol{p}\right)\)</span> where <span class="math inline">\(\Phi\)</span> is the standard normal cumulative distribution function and therefore <span class="math inline">\(g^{-1}\left(\boldsymbol{X}\boldsymbol{\beta}\right)=\Phi\left(\boldsymbol{X}\boldsymbol{\beta}\right)\)</span>.</p></li>
+<li><p>Complementary log-log transformation: <span class="math inline">\(g\left(p\right)=\log\left[-\log(1-\boldsymbol{p})\right]\)</span>.</p></li>
+</ol>
+<p>All of these functions will give a sigmoid shape with higher probability as <span class="math inline">\(y\)</span> increases and lower probability as it decreases. The logit and probit transformations have the nice property that if <span class="math inline">\(y=0\)</span> then <span class="math inline">\(g^{-1}\left(0\right)=\frac{1}{2}\)</span>.</p>
+<p>Usually the difference in inferences made using these different curves is relatively small and we will usually use the logit transformation because its form lends itself to a nice interpretation of my <span class="math inline">\(\boldsymbol{\beta}\)</span> values. In these cases, a slope parameter in our model will be interpreted as “the change in log odds for every one unit change in the predictor.”</p>
+<p>Because we will be using the logit transformation so often, it is useful to make the following definitions:
+<span class="math display">\[\textrm{logit}\left(p\right)  =   \log\left[\frac{p}{1-p}\right]\]</span>
+<span class="math display">\[\textrm{ilogit}\left(y\right) =   \frac{1}{1+e^{-y}}\]</span>
+where <span class="math inline">\(p\in\left[0,1\right]\)</span> and <span class="math inline">\(y\in\left(-\infty,+\infty\right)\)</span>.</p>
+<p>As in the mixed model case, there are no closed form solution for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and instead we must rely on numerical solutions to find the maximum likelihood estimators for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. To do this, we must derive the likelihood function.</p>
+<p><span class="math display">\[\begin{aligned}
+ L\left(\boldsymbol{\beta}|\boldsymbol{w} \right)   &amp;=
+  \prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i} \right) \\
+    &amp;=  \prod_{i=1}^{n} p_{i}^{wi}\left(1-p_{i}\right)^{1-w_{i}} \\
+    &amp;= \prod_{i=1}^n \left(\textrm{ilogit}(X_i \beta) \right)^{w_i} \left( 1-\textrm{ilogit}(X_i \beta)\right)^{1-w_i}  
+    \end{aligned}\]</span>
+and we recognize that
+<span class="math display">\[p_{i}=\textrm{ilogit}\left(\boldsymbol{X_i\beta}\right)=1/\left(1+e^{-\boldsymbol{X_i\beta}}\right)\]</span>
+and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is <em>really</em> small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.</p>
+<p>Often we have more than one response at a particular level of <span class="math inline">\(\boldsymbol{X}\)</span>. Let <span class="math inline">\(n_{i}\)</span> be the number of observations observed at the particular value of <span class="math inline">\(\boldsymbol{X}\)</span>, and <span class="math inline">\(w_{i}\)</span> be the proportion of successes at that value of <span class="math inline">\(\boldsymbol{X}\)</span>. In that case, <span class="math inline">\(w_{i}\)</span> is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with <span class="math inline">\(n_{i}=1\)</span>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="10-binomial-regression.html#cb6-1" aria-hidden="true"></a><span class="co"># beta are the parameters </span></span>
+<span id="cb6-2"><a href="10-binomial-regression.html#cb6-2" aria-hidden="true"></a><span class="co"># y is the response in terms of 0,1 for this mayfly example</span></span>
+<span id="cb6-3"><a href="10-binomial-regression.html#cb6-3" aria-hidden="true"></a><span class="co"># X is the design matrix that we use for our covariates.</span></span>
+<span id="cb6-4"><a href="10-binomial-regression.html#cb6-4" aria-hidden="true"></a>logL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, w, X){</span>
+<span id="cb6-5"><a href="10-binomial-regression.html#cb6-5" aria-hidden="true"></a>  out &lt;-<span class="st"> </span><span class="kw">dbinom</span>( w, <span class="dt">size=</span><span class="dv">1</span>, <span class="dt">prob=</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(X<span class="op">%*%</span>beta), <span class="dt">log=</span><span class="ot">TRUE</span> ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>()</span>
+<span id="cb6-6"><a href="10-binomial-regression.html#cb6-6" aria-hidden="true"></a>  <span class="kw">return</span>(out)  </span>
+<span id="cb6-7"><a href="10-binomial-regression.html#cb6-7" aria-hidden="true"></a>}</span>
+<span id="cb6-8"><a href="10-binomial-regression.html#cb6-8" aria-hidden="true"></a>NeglogL &lt;-<span class="st"> </span><span class="cf">function</span>(beta, w, X){ <span class="kw">return</span>( <span class="op">-</span><span class="kw">logL</span>(beta, w, X)) }</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="10-binomial-regression.html#cb7-1" aria-hidden="true"></a><span class="kw">optim</span>( <span class="dt">par=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>),     <span class="co"># intial bad guesses</span></span>
+<span id="cb7-2"><a href="10-binomial-regression.html#cb7-2" aria-hidden="true"></a>       <span class="dt">fn =</span> NeglogL,   <span class="co"># we want to minimize the -logL function, maximize logL</span></span>
+<span id="cb7-3"><a href="10-binomial-regression.html#cb7-3" aria-hidden="true"></a>       <span class="dt">w=</span>Mayflies<span class="op">$</span>Occupancy,  <span class="co"># parameters to pass to the logL function</span></span>
+<span id="cb7-4"><a href="10-binomial-regression.html#cb7-4" aria-hidden="true"></a>       <span class="dt">X =</span> <span class="kw">model.matrix</span>( <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies ) )  <span class="co"># ditto</span></span></code></pre></div>
+<pre><code>## $par
+## [1]  5.100892 -3.050336
+## 
+## $value
+## [1] 6.324365
+## 
+## $counts
+## function gradient 
+##       71       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
+<p>In general, we don’t want to have to specify the likelihood function by hand. Instead we will specify the model using the <code>glm</code> function which accepts a model formula as well as the distribution family that the data comes from.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="10-binomial-regression.html#cb9-1" aria-hidden="true"></a><span class="kw">head</span>(Mayflies)</span></code></pre></div>
+<pre><code>##          CCU Occupancy      yhat
+## 1 0.05261076         1 0.8846278
+## 2 0.25935617         1 0.8343395
+## 3 0.64322010         1 0.7409692
+## 4 0.90168941         1 0.6780997
+## 5 0.97002630         1 0.6614776
+## 6 1.08037011         1 0.6346378</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="10-binomial-regression.html#cb11-1" aria-hidden="true"></a><span class="co"># The following are equivalent and a &quot;success&quot; is if the site is </span></span>
+<span id="cb11-2"><a href="10-binomial-regression.html#cb11-2" aria-hidden="true"></a><span class="co"># occupied. If you were to switch it so a success is that the site</span></span>
+<span id="cb11-3"><a href="10-binomial-regression.html#cb11-3" aria-hidden="true"></a><span class="co"># is not occupied, the signs on all the beta coefficients would switch.</span></span>
+<span id="cb11-4"><a href="10-binomial-regression.html#cb11-4" aria-hidden="true"></a><span class="co"># m1 &lt;- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!</span></span>
+<span id="cb11-5"><a href="10-binomial-regression.html#cb11-5" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(Occupancy, <span class="dv">1</span><span class="op">-</span>Occupancy) <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial ) <span class="co">#ok!</span></span>
+<span id="cb11-6"><a href="10-binomial-regression.html#cb11-6" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span>CCU, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</span></code></pre></div>
+<p>For binomial response data, we need to know the number of successes and the number of failures at each level of our covariate. In this case it is quite simple because there is only one observation at each CCU level, so the number of successes is Occupancy and the number of failures is just 1-Occupancy. For binomial data, <code>glm</code> expect the response to be a two-column matrix where the first column is the number successes and and the second column is the number of failures. The default choice of link function for binomial data is the logit link, but the probit can be easily chosen as well using <code>family=binomial(link=probit)</code> in the call to <code>glm()</code>. If you only give a single response vector, it is assumed that the second column is to be calculated as 1-first.column.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="10-binomial-regression.html#cb12-1" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = Occupancy ~ CCU, family = binomial, data = Mayflies)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.55741  -0.31594  -0.06553   0.08653   2.13362  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)    5.102      2.369   2.154   0.0313 *
+## CCU           -3.051      1.211  -2.520   0.0117 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 34.795  on 29  degrees of freedom
+## Residual deviance: 12.649  on 28  degrees of freedom
+## AIC: 16.649
+## 
+## Number of Fisher Scoring iterations: 7</code></pre>
+<p>Notice that the summary table includes an estimate of the standard error of each <span class="math inline">\(\hat{\beta}_{j}\)</span> and a standardized value and z-test that are calculated in the usual manner <span class="math inline">\(z_{j}=\frac{\hat{\beta}_{j}-0}{StdErr\left(\hat{\beta}_{j}\right)}\)</span> but these only approximately follow a standard normal distribution (due to the CLT results for Maximum Likelihood Estimators). We should regard the p-values given as approximate.</p>
+<p>The sigmoid curve shown prior was the result of the logit model and we can estimate the probability of occupancy for any value of CCU. Surprisingly, R does not have a built-in function for the logit and ilogit function, but the faraway package does include them.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="10-binomial-regression.html#cb14-1" aria-hidden="true"></a><span class="co"># Here are two ways to calculate the phat value for CCU = 1</span></span>
+<span id="cb14-2"><a href="10-binomial-regression.html#cb14-2" aria-hidden="true"></a>new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">CCU=</span><span class="dv">1</span>)</span>
+<span id="cb14-3"><a href="10-binomial-regression.html#cb14-3" aria-hidden="true"></a>faraway<span class="op">::</span><span class="kw">ilogit</span>( <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df) )          </span></code></pre></div>
+<pre><code>##        1 
+## 0.886042</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="10-binomial-regression.html#cb16-1" aria-hidden="true"></a><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)   </span></code></pre></div>
+<pre><code>##        1 
+## 0.886042</code></pre>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="10-binomial-regression.html#cb18-1" aria-hidden="true"></a><span class="co"># But the predict() function won&#39;t give you a confidence interval.</span></span>
+<span id="cb18-2"><a href="10-binomial-regression.html#cb18-2" aria-hidden="true"></a><span class="co"># Lets get this value through emmeans() instead.</span></span>
+<span id="cb18-3"><a href="10-binomial-regression.html#cb18-3" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, <span class="op">~</span>CCU, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">CCU=</span><span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##  CCU  prob    SE  df asymp.LCL asymp.UCL
+##    1 0.886 0.129 Inf     0.391      0.99
+## 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="10-binomial-regression.html#cb20-1" aria-hidden="true"></a><span class="co"># Finally a nice graph</span></span>
+<span id="cb20-2"><a href="10-binomial-regression.html#cb20-2" aria-hidden="true"></a>new.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">CCU=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">5</span>, <span class="dt">by=</span>.<span class="dv">01</span>) )</span>
+<span id="cb20-3"><a href="10-binomial-regression.html#cb20-3" aria-hidden="true"></a>yhat.df &lt;-<span class="st"> </span>new.df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">fit =</span> <span class="kw">predict</span>(m1, <span class="dt">newdata=</span>new.df, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) ) </span>
+<span id="cb20-4"><a href="10-binomial-regression.html#cb20-4" aria-hidden="true"></a><span class="kw">ggplot</span>(Mayflies, <span class="kw">aes</span>(<span class="dt">x=</span>CCU)) <span class="op">+</span></span>
+<span id="cb20-5"><a href="10-binomial-regression.html#cb20-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>Occupancy)) <span class="op">+</span></span>
+<span id="cb20-6"><a href="10-binomial-regression.html#cb20-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>( <span class="dt">data=</span>yhat.df, <span class="kw">aes</span>(<span class="dt">y=</span>fit), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Suppose that we were to give a predicted Presence/Absence class based on the <span class="math inline">\(\hat{p}\)</span> value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="10-binomial-regression.html#cb21-1" aria-hidden="true"></a>Mayflies &lt;-<span class="st"> </span>Mayflies <span class="op">%&gt;%</span></span>
+<span id="cb21-2"><a href="10-binomial-regression.html#cb21-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(m1, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb21-3"><a href="10-binomial-regression.html#cb21-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">chat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span>
+<span id="cb21-4"><a href="10-binomial-regression.html#cb21-4" aria-hidden="true"></a></span>
+<span id="cb21-5"><a href="10-binomial-regression.html#cb21-5" aria-hidden="true"></a><span class="co"># This is often called the &quot;confusion matrix&quot;</span></span>
+<span id="cb21-6"><a href="10-binomial-regression.html#cb21-6" aria-hidden="true"></a><span class="kw">table</span>(<span class="dt">Truth =</span> Mayflies<span class="op">$</span>Occupancy, <span class="dt">Prediction =</span> Mayflies<span class="op">$</span>chat)</span></code></pre></div>
+<pre><code>##      Prediction
+## Truth  0  1
+##     0 21  1
+##     1  2  6</code></pre>
+<p>This scheme has mis-classified 3 observations, two cases where mayflies were present but we predicted they would be absent, and one case where no mayflies were detected but we predicted we would see them.</p>
+</div>
+<div id="measures-of-fit-quality" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> Measures of Fit Quality</h2>
+<div id="deviance" class="section level3" number="10.2.1">
+<h3><span class="header-section-number">10.2.1</span> Deviance</h3>
+<p>In the normal linear models case, we were very interested in the Sum of Squared Error (SSE)
+<span class="math display">\[SSE=\sum_{i=1}^{n}\left(w_{i}-\hat{w}_{i}\right)^{2}\]</span>
+because it provided a mechanism for comparing the fit of two different models. If a model had a very small SSE, then it fit the observed data well. We used this as a basis for forming our F-test to compare nested models (some rescaling by the appropriate degrees of freedom was necessary, though).</p>
+<p>We want an equivalent measure of goodness-of-fit for models that are non-normal, but in the normal case, I would like it to be related to my SSE statistic.</p>
+<p>The deviance of a model with respect to some data <span class="math inline">\(\boldsymbol{y}\)</span> is defined by
+<span class="math display">\[D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{0}\right) = -2\left[\log L\left(\hat{\boldsymbol{\theta}}_{0}|\boldsymbol{w}\right)-\log L\left(\hat{\boldsymbol{\theta}}_{S}|\boldsymbol{w}\right)\right]\]</span>
+where <span class="math inline">\(\hat{\boldsymbol{\theta}}_{0}\)</span> are the fitted parameters of the model of interest, and <span class="math inline">\(\hat{\boldsymbol{\theta}}_{S}\)</span> are the fitted parameters under a “saturated” model that has as many parameters as it has observations and can therefore fit the data perfectly. Thus the deviance is a measure of deviation from a perfect model and is flexible enough to handle non-normal distributions appropriately.</p>
+<p>Notice that this definition is very similar to what is calculated during the Likelihood Ratio Test. For any two models under consideration, the LRT can be formed by looking at the difference of the deviances of the two nested models
+<span class="math display">\[LRT=D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{simple}\right)-D\left(\boldsymbol{w},\hat{\boldsymbol{\theta}}_{complex}\right)\stackrel{\cdot}{\sim}\chi_{df_{complex}-df_{simple}}^{2}\]</span></p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="10-binomial-regression.html#cb23-1" aria-hidden="true"></a>m0 &lt;-<span class="st"> </span><span class="kw">glm</span>( Occupancy <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data=</span>Mayflies, <span class="dt">family=</span>binomial )</span>
+<span id="cb23-2"><a href="10-binomial-regression.html#cb23-2" aria-hidden="true"></a><span class="kw">anova</span>(m0, m1)</span></code></pre></div>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model 1: Occupancy ~ 1
+## Model 2: Occupancy ~ CCU
+##   Resid. Df Resid. Dev Df Deviance
+## 1        29     34.795            
+## 2        28     12.649  1   22.146</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="10-binomial-regression.html#cb25-1" aria-hidden="true"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">22.146</span>, <span class="dt">df=</span><span class="dv">1</span> )</span></code></pre></div>
+<pre><code>## [1] 2.526819e-06</code></pre>
+<p>A convenient way to get R to calculate the LRT <span class="math inline">\(\chi^{2}\)</span> p-value for you is to specify the <code>test=LRT</code> inside the <code>anova</code> function.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="10-binomial-regression.html#cb27-1" aria-hidden="true"></a><span class="kw">anova</span>(m1, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</span></code></pre></div>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: Occupancy
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##      Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                    29     34.795              
+## CCU   1   22.146        28     12.649 2.527e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The inference of this can be confirmed by looking at the AIC values of the two models as well.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="10-binomial-regression.html#cb29-1" aria-hidden="true"></a><span class="kw">AIC</span>(m0, m1)</span></code></pre></div>
+<pre><code>##    df      AIC
+## m0  1 36.79491
+## m1  2 16.64873</code></pre>
+</div>
+<div id="goodness-of-fit" class="section level3" number="10.2.2">
+<h3><span class="header-section-number">10.2.2</span> Goodness of Fit</h3>
+<p>The deviance is a good way to measure if a model fits the data, but it is not the only method. Pearson’s <span class="math inline">\(X^{2}\)</span> statistic is also applicable. This statistic takes the general form <span class="math inline">\(X^{2}=\sum_{i=1}^{n}\frac{\left(O_{i}-E_{i}\right)^{2}}{E_{i}}\)</span> where <span class="math inline">\(O_{i}\)</span> is the number of observations observed in category <span class="math inline">\(i\)</span> and <span class="math inline">\(E_{i}\)</span> is the number expected in category <span class="math inline">\(i\)</span>. In our case we need to figure out the categories we have. Since we have both the number of success and failures, we’ll have two categories per observation <span class="math inline">\(i\)</span>.
+<span class="math display">\[X^{2} =   \sum_{i=1}^{n}\left[\frac{\left(w_{i}-n_{i}\hat{p}_{i}\right)^{2}}{n_{i}\hat{p}_{i}}+\frac{\left(\left(n_{i}-w_{i}\right)-n_{i}\left(1-\hat{p}_{i}\right)\right)^{2}}{n_{i}\left(1-\hat{p}_{i}\right)}\right]
+    =   \sum_{i=1}^{n}\frac{\left(w_{i}-n_{i}\hat{p}_{i}\right)^{2}}{n_{i}\hat{p}_{i}\left(1-\hat{p}_{i}\right)}\]</span>
+and the Pearson residual can be defined as
+<span class="math display">\[r_{i}=\frac{w_{i}-n_{i}\hat{p}_{i}}{\sqrt{n_{i}\hat{p}_{i}\left(1-\hat{p}_{i}\right)}}\]</span></p>
+<p>These can be found in R via the following commands</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="10-binomial-regression.html#cb31-1" aria-hidden="true"></a><span class="kw">sum</span>( <span class="kw">residuals</span>(m1, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>)<span class="op">^</span><span class="dv">2</span> )</span></code></pre></div>
+<pre><code>## [1] 14.92367</code></pre>
+<p>Pearson’s <span class="math inline">\(X^{2}\)</span> statistic is quite similar to the deviance statistic</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="10-binomial-regression.html#cb33-1" aria-hidden="true"></a><span class="kw">deviance</span>(m1)</span></code></pre></div>
+<pre><code>## [1] 12.64873</code></pre>
+</div>
+</div>
+<div id="confidence-intervals-1" class="section level2" number="10.3">
+<h2><span class="header-section-number">10.3</span> Confidence Intervals</h2>
+<p>Confidence intervals for the regression could be constructed using normal approximations for the parameter estimates. An approximate <span class="math inline">\(100\left(1-\alpha\right)\%\)</span> confidence interval for <span class="math inline">\(\beta_{i}\)</span> would be
+<span class="math display">\[\hat{\beta}_{i}\pm z^{1-\alpha/2}\,StdErr\left(\hat{\beta}_{i}\right)\]</span>
+but we know that this is not a good approximation because the the normal approximation will not be good for small sample sizes and it isn’t clear what is “big enough”. Instead we will use an inverted LRT to develop confidence intervals for the <span class="math inline">\(\beta_{i}\)</span> parameters.</p>
+<p>We first consider the simplest case, where we have only an intercept and slope parameter. Below is a contour plot of the likelihood surface and the shaded region is the region of the parameter space where the parameters <span class="math inline">\(\left(\beta_{0},\beta_{1}\right)\)</span> would not be rejected by the LRT. This region is found by finding the maximum likelihood estimators <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span>, and then finding set of <span class="math inline">\(\beta_{0},\beta_{1}\)</span> pairs such that
+<span class="math display">\[\begin{aligned}
+-2\left[\log L\left(\beta_{0},\beta_{1}\right)-\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)\right]    &amp; \le \chi_{df=1,0.95}^{2} \\
+\log L\left(\beta_{0},\beta_{1}\right)  &amp;\ge    \left(\frac{-1}{2}\right)\chi_{1,0.95}^{2}+\log L\left(\hat{\beta}_{0},\hat{\beta}_{1}\right)
+\end{aligned}\]</span></p>
+<p><img src="Statistical-Methods-II_files/figure-html/Profile_CI2-1.png" width="672" /></p>
+<p>Looking at just the <span class="math inline">\(\beta_{0}\)</span> axis, this translates into a confidence interval of <span class="math inline">\((1.63,\, 11.78)\)</span>. This method is commonly referred to as the “profile likelihood” interval because the interval is created by viewing the contour plot from the one axis. The physical analogy is to viewing a mountain range from afar and asking, “What parts of the mountain are higher than 8000 feet?”</p>
+<p>This type of confidence interval is more robust than the normal approximation and should be used whenever practical. In R, the profile likelihood confidence interval for <code>glm</code> objects is available in the <code>MASS</code> library.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="10-binomial-regression.html#cb35-1" aria-hidden="true"></a><span class="kw">confint</span>(m1) <span class="co"># using defaults</span></span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept)  1.629512 11.781167
+## CCU         -6.446863 -1.304244</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="10-binomial-regression.html#cb38-1" aria-hidden="true"></a><span class="kw">confint</span>(m1, <span class="dt">level=</span>.<span class="dv">95</span>, <span class="dt">parm=</span><span class="st">&#39;CCU&#39;</span>) <span class="co"># Just the slope parameter</span></span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##     2.5 %    97.5 % 
+## -6.446863 -1.304244</code></pre>
+</div>
+<div id="interpreting-model-coefficients" class="section level2" number="10.4">
+<h2><span class="header-section-number">10.4</span> Interpreting model coefficients</h2>
+<p>We first consider why we are dealing with odds <span class="math inline">\(\frac{p}{1-p}\)</span> instead of just <span class="math inline">\(p\)</span>. They contain the same information, so the choice is somewhat arbitrary, however we’ve been using probabilities for so long that it feels unnatural to switch to odds. There are two good reasons for this, however.</p>
+<p>The first is that the odds <span class="math inline">\(\frac{p}{1-p}\)</span> can take on any value from <span class="math inline">\(0\)</span> to <span class="math inline">\(\infty\)</span> and so part of our translation of <span class="math inline">\(p\)</span> to an unrestricted domain is already done.</p>
+<p>The second is that it is easier to compare odds than to compare probabilities. For example, (as of this writing) I have a three month old baby who is prone to spitting up her milk.</p>
+<ul>
+<li><p>I think the probability that she will not spit up on me today is <span class="math inline">\(p_{1}=0.10\)</span>. My wife disagrees and believes the probability is <span class="math inline">\(p_{2}=0.01\)</span>. We can look at those probabilities and recognize that we differ in our assessment by a factor of <span class="math inline">\(10\)</span> because <span class="math inline">\(10=p_{1}/p_{2}\)</span>. If we had assessed the chance of her spitting up using odds, I would have calculated <span class="math inline">\(o_{1}=0.1/0.9=1/9\)</span>. My wife, on the other hand, would have calculated <span class="math inline">\(o_{2}=.01/.99=1/99\)</span>. The odds ratio of these is <span class="math inline">\(\left[1/9\right] / \left[1/99\right] = 99/9 =11\)</span>. This shows that she is much more certain that the event will not happen and the multiplying factor of the pair of odds is 11.</p></li>
+<li><p>But what if we were to consider the probability that my daughter will spit up? The probabilities assigned by me versus my wife are <span class="math inline">\(p_{1}=0.9\)</span> and <span class="math inline">\(p_{2}=0.99\)</span>. How should I assess that our probabilities differ by a factor of 10, because <span class="math inline">\(p_{1}/p_{2}=0.91\ne10\)</span>? The odds ratio remains the same calculation, however. The odds I would give are <span class="math inline">\(o_1=.9/.1=9\)</span> vs my wife’s odds <span class="math inline">\(o_2 = .99/.01 = 99\)</span>. The odds ratio is now <span class="math inline">\(9/99=1/11\)</span> and gives the same information as I calculated from the where we defined a success as my daughter not spitting up.</p></li>
+</ul>
+<p>To try to clear up the verbiage we’ll consider a few different cases:</p>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="51%" />
+<col width="29%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Probability</th>
+<th>Odds</th>
+<th>Verbiage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p=.95\)</span></td>
+<td><span class="math inline">\(\frac{95}{5} = \frac{19}{1} = 19\)</span></td>
+<td>19 to 1 odds for</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p=.75\)</span></td>
+<td><span class="math inline">\(\frac{75}{25} = \frac{3}{1} = 3\)</span></td>
+<td>3 to 1 odds for</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p=.50\)</span></td>
+<td><span class="math inline">\(\frac{50}{50} = \frac{1}{1} = 1\)</span></td>
+<td>1 to 1 odds</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(p=.25\)</span></td>
+<td><span class="math inline">\(\frac{25}{75} = \frac{1}{3} = 0.33\)</span></td>
+<td>3 to 1 odds against</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p=.05\)</span></td>
+<td><span class="math inline">\(\frac{95}{5} = \frac{1}{19} = 0.0526\)</span></td>
+<td>19 to 1 odds against</td>
+</tr>
+</tbody>
+</table>
+<p>Given a logistic regression model with two continuous covariates, then using the <code>logit()</code> link function we have <span class="math display">\[\log\left(\frac{p}{1-p}\right)   =   \beta_{0}+\beta_{1}x_{1}+\beta_{2}x_{2}\]</span>
+<span class="math display">\[\frac{p}{1-p} =   e^{\beta_{0}}e^{\beta_{1}x_{1}}e^{\beta_{2}x_{2}}\]</span>
+and we can interpret <span class="math inline">\(\beta_{1}\)</span> and <span class="math inline">\(\beta_{2}\)</span> as the increase in the log odds for every unit increase in <span class="math inline">\(x_{1}\)</span> and <span class="math inline">\(x_{2}\)</span>. We could alternatively interpret <span class="math inline">\(\beta_{1}\)</span> and <span class="math inline">\(\beta_{2}\)</span> using the notion that a one unit change in <span class="math inline">\(x_{1}\)</span> as a percent change of <span class="math inline">\(e^{\beta_{1}}\)</span> in the odds. That is to say, <span class="math inline">\(e^{\beta_{1}}\)</span> is the odds ratio of that change.</p>
+<p>To investigate how to interpret these effects, we will consider an example of the rates of respiratory disease of babies in the first year based on covariates of gender and feeding method (breast milk, formula from a bottle, or a combination of the two). The data percentages of babies suffering respiratory disease are</p>
+<table>
+<colgroup>
+<col width="18%" />
+<col width="22%" />
+<col width="22%" />
+<col width="36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Formula <code>f</code></th>
+<th>Breast Milk <code>b</code></th>
+<th>Breast Milk + Supplement <code>s</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Males <code>M</code></td>
+<td><span class="math inline">\(\frac{77}{485}\)</span></td>
+<td><span class="math inline">\(\frac{47}{494}\)</span></td>
+<td><span class="math inline">\(\frac{19}{147}\)</span></td>
+</tr>
+<tr class="even">
+<td>Females <code>F</code></td>
+<td><span class="math inline">\(\frac{48}{384}\)</span></td>
+<td><span class="math inline">\(\frac{31}{464}\)</span></td>
+<td><span class="math inline">\(\frac{16}{127}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>We can fit the saturated model (6 parameters to fit 6 different probabilities) as</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="10-binomial-regression.html#cb41-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;babyfood&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb41-2"><a href="10-binomial-regression.html#cb41-2" aria-hidden="true"></a><span class="kw">head</span>(babyfood)</span></code></pre></div>
+<pre><code>##   disease nondisease  sex   food
+## 1      77        381  Boy Bottle
+## 2      19        128  Boy  Suppl
+## 3      47        447  Boy Breast
+## 4      48        336 Girl Bottle
+## 5      16        111 Girl  Suppl
+## 6      31        433 Girl Breast</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="10-binomial-regression.html#cb43-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease,nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">*</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood )</span>
+<span id="cb43-2"><a href="10-binomial-regression.html#cb43-2" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = cbind(disease, nondisease) ~ sex * food, family = binomial, 
+##     data = babyfood)
+## 
+## Deviance Residuals: 
+## [1]  0  0  0  0  0  0
+## 
+## Coefficients:
+##                    Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)        -1.59899    0.12495 -12.797  &lt; 2e-16 ***
+## sexGirl            -0.34692    0.19855  -1.747 0.080591 .  
+## foodBreast         -0.65342    0.19780  -3.303 0.000955 ***
+## foodSuppl          -0.30860    0.27578  -1.119 0.263145    
+## sexGirl:foodBreast -0.03742    0.31225  -0.120 0.904603    
+## sexGirl:foodSuppl   0.31757    0.41397   0.767 0.443012    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2.6375e+01  on 5  degrees of freedom
+## Residual deviance: 2.6401e-13  on 0  degrees of freedom
+## AIC: 43.518
+## 
+## Number of Fisher Scoring iterations: 3</code></pre>
+<p>Notice that the residual deviance is effectively zero with zero degrees of freedom indicating we just fit the saturated model.</p>
+<p>It is nice to look at the single term deletions to see if the interaction term could be dropped from the model.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="10-binomial-regression.html#cb45-1" aria-hidden="true"></a><span class="kw">anova</span>(m2, <span class="dt">test=</span><span class="st">&#39;LRT&#39;</span>)</span></code></pre></div>
+<pre><code>## Analysis of Deviance Table
+## 
+## Model: binomial, link: logit
+## 
+## Response: cbind(disease, nondisease)
+## 
+## Terms added sequentially (first to last)
+## 
+## 
+##          Df Deviance Resid. Df Resid. Dev  Pr(&gt;Chi)    
+## NULL                         5    26.3753              
+## sex       1   5.4761         4    20.8992   0.01928 *  
+## food      2  20.1772         2     0.7219 4.155e-05 ***
+## sex:food  2   0.7219         0     0.0000   0.69701    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Given this, we will look use the reduced model with out the interaction and check if we could reduce the model any more.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="10-binomial-regression.html#cb47-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(disease, nondisease) <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>food, <span class="dt">family=</span>binomial, <span class="dt">data=</span>babyfood)</span>
+<span id="cb47-2"><a href="10-binomial-regression.html#cb47-2" aria-hidden="true"></a><span class="kw">drop1</span>(m1, <span class="dt">test=</span><span class="st">&#39;Chi&#39;</span>)  <span class="co"># all single term deletions, using LRT </span></span></code></pre></div>
+<pre><code>## Single term deletions
+## 
+## Model:
+## cbind(disease, nondisease) ~ sex + food
+##        Df Deviance    AIC     LRT  Pr(&gt;Chi)    
+## &lt;none&gt;      0.7219 40.240                      
+## sex     1   5.6990 43.217  4.9771   0.02569 *  
+## food    2  20.8992 56.417 20.1772 4.155e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>From this we see that we cannot reduce the model any more and we will interpret the coefficients of this model.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="10-binomial-regression.html#cb49-1" aria-hidden="true"></a><span class="kw">coef</span>(m1, <span class="dt">digits=</span><span class="dv">5</span>)  <span class="co"># more accuracy</span></span></code></pre></div>
+<pre><code>## (Intercept)     sexGirl  foodBreast   foodSuppl 
+##  -1.6127038  -0.3125528  -0.6692946  -0.1725424</code></pre>
+<p>We interpret the intercept term as the log odds that a male child fed only formula will develop a respiratory disease in their first year. With that, we could then calculate what the probability of a male formula fed baby developing respiratory disease using following
+<span class="math display">\[-1.6127=\log\left(\frac{p_{M,f}}{1-p_{M,f}}\right)=\textrm{logit}\left(p_{M,f}\right)\]</span>
+thus
+<span class="math display">\[p_{M,f}=\textrm{ilogit}\left(-1.6127\right)=\frac{1}{1+e^{1.6127}}=0.1662\]</span>
+We notice that the odds of respiratory disease disease is
+<span class="math display">\[\frac{p_{M,f}}{1-p_{M,f}}=\frac{0.1662}{1-0.1662}=0.1993=e^{-1.613}\]</span></p>
+<p>For a female child bottle fed only formula, their probability of developing respiratory disease is <span class="math display">\[p_{F,f}=\frac{1}{1+e^{-(-1.6127-0.3126)}}=\frac{1}{1+e^{1.9253}}=0.1273\]</span></p>
+<p>and the associated odds are
+<span class="math display">\[\frac{p_{F,f}}{1-p_{F,f}}=\frac{0.1273}{1-0.1273}=0.1458=e^{-1.6127-0.3126}\]</span>
+so we can interpret <span class="math inline">\(e^{-0.3126}=0.7315\)</span> as the percent change in odds from male to female infants. That is to say, it is the <em>odds ratio</em> of the female infants to the males is <span class="math display">\[e^{-0.3126}=\frac{\left(\frac{p_{F,f}}{1-p_{F,f}}\right)}{\left(\frac{p_{M,f}}{1-p_{M,f}}\right)}=\frac{0.1458}{0.1993}=0.7315\]</span></p>
+<p>The interpretation here is that odds of respiratory infection for females is 73.1% than that of a similarly feed male child and I might say that being female reduces the odds of respiratory illness by <span class="math inline">\(27\%\)</span> compared to male babies. Similarly we can calculate the change in odds ratio for the feeding types:</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="10-binomial-regression.html#cb51-1" aria-hidden="true"></a><span class="kw">exp</span>( <span class="kw">coef</span>(m1) )</span></code></pre></div>
+<pre><code>## (Intercept)     sexGirl  foodBreast   foodSuppl 
+##   0.1993479   0.7315770   0.5120696   0.8415226</code></pre>
+<p>First we notice that the intercept term can be interpreted as the odds of infection for the reference group. The each of the offset terms are the odds ratios compared to the reference group. We see that breast milk along with formula has only <span class="math inline">\(84\%\)</span> of the odds of respiratory disease as a formula only baby, and a breast milk fed child only has <span class="math inline">\(51\%\)</span> of the odds for respiratory disease as the formula fed baby. We can look at confidence intervals for the odds ratios by the following:</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="10-binomial-regression.html#cb53-1" aria-hidden="true"></a><span class="kw">exp</span>( <span class="kw">confint</span>(m1) )</span></code></pre></div>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                 2.5 %    97.5 %
+## (Intercept) 0.1591988 0.2474333
+## sexGirl     0.5536209 0.9629225
+## foodBreast  0.3781905 0.6895181
+## foodSuppl   0.5555372 1.2464312</code></pre>
+<p>We should be careful in drawing conclusions here because this study was a retrospective study and the decision to breast feed a baby vs feeding with formula is inextricably tied to socio-economic status and we should investigate if the effect measured is due to feeding method or some other lurking variable tied to socio-economic status.</p>
+<p>As usual, we don’t want to calculate all these quantities by hand and would prefer if <code>emmeans</code> would do all the back-transformations for us.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="10-binomial-regression.html#cb56-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, <span class="op">~</span><span class="st"> </span>sex<span class="op">+</span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)  <span class="co"># probabilities for each sex/treatment</span></span></code></pre></div>
+<pre><code>##  sex  food     prob     SE  df asymp.LCL asymp.UCL
+##  Boy  Bottle 0.1662 0.0156 Inf    0.1379    0.1990
+##  Girl Bottle 0.1273 0.0143 Inf    0.1018    0.1580
+##  Boy  Breast 0.0926 0.0111 Inf    0.0730    0.1168
+##  Girl Breast 0.0695 0.0093 Inf    0.0533    0.0901
+##  Boy  Suppl  0.1437 0.0234 Inf    0.1036    0.1958
+##  Girl Suppl  0.1093 0.0194 Inf    0.0766    0.1536
+## 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="10-binomial-regression.html#cb58-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, pairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Boy / Girl</span></span></code></pre></div>
+<pre><code>## $emmeans
+##  sex    prob     SE  df asymp.LCL asymp.UCL
+##  Boy  0.1309 0.0111 Inf    0.1105     0.154
+##  Girl 0.0992 0.0103 Inf    0.0808     0.121
+## 
+## Results are averaged over the levels of: food 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## 
+## $contrasts
+##  contrast   odds.ratio    SE  df z.ratio p.value
+##  Boy / Girl       1.37 0.193 Inf 2.216   0.0267 
+## 
+## Results are averaged over the levels of: food 
+## Tests are performed on the log odds ratio scale</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="10-binomial-regression.html#cb60-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, revpairwise<span class="op">~</span><span class="st"> </span>sex, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Girl / Boy</span></span></code></pre></div>
+<pre><code>## $emmeans
+##  sex    prob     SE  df asymp.LCL asymp.UCL
+##  Boy  0.1309 0.0111 Inf    0.1105     0.154
+##  Girl 0.0992 0.0103 Inf    0.0808     0.121
+## 
+## Results are averaged over the levels of: food 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## 
+## $contrasts
+##  contrast   odds.ratio    SE  df z.ratio p.value
+##  Girl / Boy      0.732 0.103 Inf -2.216  0.0267 
+## 
+## Results are averaged over the levels of: food 
+## Tests are performed on the log odds ratio scale</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="10-binomial-regression.html#cb62-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, pairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></span></code></pre></div>
+<pre><code>## $emmeans
+##  food     prob      SE  df asymp.LCL asymp.UCL
+##  Bottle 0.1457 0.01220 Inf    0.1233    0.1712
+##  Breast 0.0803 0.00877 Inf    0.0647    0.0993
+##  Suppl  0.1255 0.01994 Inf    0.0913    0.1700
+## 
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## 
+## $contrasts
+##  contrast        odds.ratio    SE  df z.ratio p.value
+##  Bottle / Breast      1.953 0.299 Inf  4.374  &lt;.0001 
+##  Bottle / Suppl       1.188 0.244 Inf  0.839  0.6786 
+##  Breast / Suppl       0.609 0.132 Inf -2.296  0.0564 
+## 
+## Results are averaged over the levels of: sex 
+## P value adjustment: tukey method for comparing a family of 3 estimates 
+## Tests are performed on the log odds ratio scale</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="10-binomial-regression.html#cb64-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m1, revpairwise <span class="op">~</span><span class="st"> </span>food, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="co"># compare Foods</span></span></code></pre></div>
+<pre><code>## $emmeans
+##  food     prob      SE  df asymp.LCL asymp.UCL
+##  Bottle 0.1457 0.01220 Inf    0.1233    0.1712
+##  Breast 0.0803 0.00877 Inf    0.0647    0.0993
+##  Suppl  0.1255 0.01994 Inf    0.0913    0.1700
+## 
+## Results are averaged over the levels of: sex 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## 
+## $contrasts
+##  contrast        odds.ratio     SE  df z.ratio p.value
+##  Breast / Bottle      0.512 0.0783 Inf -4.374  &lt;.0001 
+##  Suppl / Bottle       0.842 0.1730 Inf -0.839  0.6786 
+##  Suppl / Breast       1.643 0.3556 Inf  2.296  0.0564 
+## 
+## Results are averaged over the levels of: sex 
+## P value adjustment: tukey method for comparing a family of 3 estimates 
+## Tests are performed on the log odds ratio scale</code></pre>
+</div>
+<div id="prediction-and-effective-dose-levels" class="section level2" number="10.5">
+<h2><span class="header-section-number">10.5</span> Prediction and Effective Dose Levels</h2>
+<p>To demonstrate the ideas in this section, we’ll use a toxicology study that examined insect mortality as a function of increasing concentrations of an insecticide.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="10-binomial-regression.html#cb66-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;bliss&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span></code></pre></div>
+<p>We first fit the logistic regression model and plot the results</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="10-binomial-regression.html#cb67-1" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(alive, dead) <span class="op">~</span><span class="st"> </span>conc, <span class="dt">family=</span>binomial, <span class="dt">data=</span>bliss)</span></code></pre></div>
+<p>Given this, we want to develop a confidence interval for the probabilities by first calculating using the following formula. As usual, we recall that the <span class="math inline">\(y\)</span> values live in <span class="math inline">\(\left(-\infty,\infty\right)\)</span>.
+<span class="math display">\[CI_{y}:\,\,\,\hat{y}\pm z^{1-\alpha/2}\,StdErr\left(\hat{y}\right)\]</span>
+We must then convert this to the <span class="math inline">\(\left[ 0,1 \right]\)</span> space using the <span class="math inline">\(\textrm{ilogit}()\)</span> function. <span class="math display">\[CI_{p}=\textrm{ilogit}\left(CI_{y}\right)\]</span></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="10-binomial-regression.html#cb68-1" aria-hidden="true"></a>probs &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">conc=</span><span class="kw">seq</span>(<span class="dv">0</span>,<span class="dv">4</span>,<span class="dt">by=</span>.<span class="dv">1</span>))</span>
+<span id="cb68-2"><a href="10-binomial-regression.html#cb68-2" aria-hidden="true"></a>yhat &lt;-<span class="st"> </span><span class="kw">predict</span>(m1, <span class="dt">newdata=</span>probs, <span class="dt">se.fit=</span><span class="ot">TRUE</span>)  <span class="co"># list with two elements fit and se.fit</span></span>
+<span id="cb68-3"><a href="10-binomial-regression.html#cb68-3" aria-hidden="true"></a>yhat &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">fit=</span>yhat<span class="op">$</span>fit, <span class="dt">se.fit =</span> yhat<span class="op">$</span>se.fit)</span>
+<span id="cb68-4"><a href="10-binomial-regression.html#cb68-4" aria-hidden="true"></a>probs &lt;-<span class="st"> </span><span class="kw">cbind</span>(probs, yhat)</span>
+<span id="cb68-5"><a href="10-binomial-regression.html#cb68-5" aria-hidden="true"></a><span class="kw">head</span>(probs)</span></code></pre></div>
+<pre><code>##   conc      fit    se.fit
+## 1  0.0 2.323790 0.4178878
+## 2  0.1 2.207600 0.4022371
+## 3  0.2 2.091411 0.3868040
+## 4  0.3 1.975221 0.3716158
+## 5  0.4 1.859032 0.3567036
+## 6  0.5 1.742842 0.3421035</code></pre>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="10-binomial-regression.html#cb70-1" aria-hidden="true"></a>probs &lt;-<span class="st"> </span>probs <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</span>
+<span id="cb70-2"><a href="10-binomial-regression.html#cb70-2" aria-hidden="true"></a>  <span class="dt">phat  =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>(fit),</span>
+<span id="cb70-3"><a href="10-binomial-regression.html#cb70-3" aria-hidden="true"></a>  <span class="dt">lwr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">-</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ),</span>
+<span id="cb70-4"><a href="10-binomial-regression.html#cb70-4" aria-hidden="true"></a>  <span class="dt">upr   =</span> faraway<span class="op">::</span><span class="kw">ilogit</span>( fit <span class="op">+</span><span class="st"> </span><span class="fl">1.96</span> <span class="op">*</span><span class="st"> </span>se.fit ))</span>
+<span id="cb70-5"><a href="10-binomial-regression.html#cb70-5" aria-hidden="true"></a><span class="kw">ggplot</span>(bliss, <span class="kw">aes</span>(<span class="dt">x=</span>conc)) <span class="op">+</span></span>
+<span id="cb70-6"><a href="10-binomial-regression.html#cb70-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">y=</span>alive<span class="op">/</span>(alive<span class="op">+</span>dead))) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb70-7"><a href="10-binomial-regression.html#cb70-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb70-8"><a href="10-binomial-regression.html#cb70-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="dt">data=</span>probs, <span class="kw">aes</span>(<span class="dt">ymin=</span>lwr, <span class="dt">ymax=</span>upr), <span class="dt">fill=</span><span class="st">&#39;red&#39;</span>, <span class="dt">alpha=</span>.<span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb70-9"><a href="10-binomial-regression.html#cb70-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Bliss Insecticide Data&#39;</span>) <span class="op">+</span></span>
+<span id="cb70-10"><a href="10-binomial-regression.html#cb70-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&#39;Concentration&#39;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">&#39;Proportion Alive&#39;</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>Alternatively, we might want to do this calculation via <code>emmeans</code>.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="10-binomial-regression.html#cb71-1" aria-hidden="true"></a>emmeans<span class="op">::</span><span class="kw">emmeans</span>(m1, <span class="op">~</span>conc, <span class="dt">at=</span><span class="kw">list</span>(<span class="dt">conc=</span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">4</span>)), <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </span></code></pre></div>
+<pre><code>##  conc   prob     SE  df asymp.LCL asymp.UCL
+##     0 0.9108 0.0339 Inf    0.8183     0.959
+##     1 0.7617 0.0500 Inf    0.6507     0.846
+##     2 0.5000 0.0518 Inf    0.3998     0.600
+##     3 0.2383 0.0500 Inf    0.1542     0.349
+##     4 0.0892 0.0339 Inf    0.0414     0.182
+## 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale</code></pre>
+<p>The next thing we want to do is come up with a confidence intervals for the concentration level that results in the death of <span class="math inline">\(100(p)\%\)</span> of the insects. Often we are interested in the case of <span class="math inline">\(p=0.5\)</span>. This is often called LD50, which is the lethal dose for 50% of the population. Using the link function you can set the <span class="math inline">\(p\)</span> value and solve for the concentration value to find
+<span class="math display">\[\hat{x}_{p}=\frac{\textrm{logit}\left(p\right)-\hat{\beta}_{0}}{\hat{\beta}_{1}}\]</span>
+which gives us a point estimate of LD(p). To get a confidence interval we need to find the standard error of <span class="math inline">\(\hat{x}_{p}\)</span>. Since this is a non-linear function of <span class="math inline">\(\hat{\beta}_{0}\)</span> and <span class="math inline">\(\hat{\beta}_{1}\)</span> which are correlated, we must be careful in the calculation. The actual calculation is done using the Delta Method Approximation:
+<span class="math display">\[Var\left(g\left(\hat{\boldsymbol{\theta}}\right)\right)=g&#39;\left(\boldsymbol{\theta}\right)^{T}Var\left(\boldsymbol{\theta}\right)g&#39;\left(\boldsymbol{\theta}\right)\]</span>
+Fortunately we don’t have to do these calculations by hand and can use the <code>dose.p()</code> function in the <code>MASS</code> package.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="10-binomial-regression.html#cb73-1" aria-hidden="true"></a>LD &lt;-<span class="st"> </span>MASS<span class="op">::</span><span class="kw">dose.p</span>(m1, <span class="dt">p=</span><span class="kw">c</span>(.<span class="dv">25</span>, <span class="fl">.5</span>, <span class="fl">.75</span>))</span>
+<span id="cb73-2"><a href="10-binomial-regression.html#cb73-2" aria-hidden="true"></a>LD</span></code></pre></div>
+<pre><code>##               Dose        SE
+## p = 0.25: 2.945535 0.2315932
+## p = 0.50: 2.000000 0.1784367
+## p = 0.75: 1.054465 0.2315932</code></pre>
+<p>and we can use these to create approximately confidence intervals for these <span class="math inline">\(\hat{x}_{p}\)</span> values via
+<span class="math display">\[\hat{x}_{p}\pm z^{1-\alpha/2}\,StdErr\left(\hat{x}_{p}\right)\]</span></p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="10-binomial-regression.html#cb75-1" aria-hidden="true"></a><span class="co"># why did the MASS authors make LD a vector of the </span></span>
+<span id="cb75-2"><a href="10-binomial-regression.html#cb75-2" aria-hidden="true"></a><span class="co"># estimated values and have an additional attribute </span></span>
+<span id="cb75-3"><a href="10-binomial-regression.html#cb75-3" aria-hidden="true"></a><span class="co"># that contains the standard errors?  Whatever, lets</span></span>
+<span id="cb75-4"><a href="10-binomial-regression.html#cb75-4" aria-hidden="true"></a><span class="co"># turn this into a convential data.frame.</span></span>
+<span id="cb75-5"><a href="10-binomial-regression.html#cb75-5" aria-hidden="true"></a><span class="kw">str</span>(LD) </span></code></pre></div>
+<pre><code>##  &#39;glm.dose&#39; Named num [1:3] 2.95 2 1.05
+##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;p = 0.25:&quot; &quot;p = 0.50:&quot; &quot;p = 0.75:&quot;
+##  - attr(*, &quot;SE&quot;)= num [1:3, 1] 0.232 0.178 0.232
+##   ..- attr(*, &quot;dimnames&quot;)=List of 2
+##   .. ..$ : chr [1:3] &quot;p = 0.25:&quot; &quot;p = 0.50:&quot; &quot;p = 0.75:&quot;
+##   .. ..$ : NULL
+##  - attr(*, &quot;p&quot;)= num [1:3] 0.25 0.5 0.75</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="10-binomial-regression.html#cb77-1" aria-hidden="true"></a>CI &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">p =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;p&#39;</span>),</span>
+<span id="cb77-2"><a href="10-binomial-regression.html#cb77-2" aria-hidden="true"></a>                 <span class="dt">Dose =</span> <span class="kw">as.vector</span>(LD),</span>
+<span id="cb77-3"><a href="10-binomial-regression.html#cb77-3" aria-hidden="true"></a>                 <span class="dt">SE   =</span> <span class="kw">attr</span>(LD,<span class="st">&#39;SE&#39;</span>)) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># save the output table as LD</span></span>
+<span id="cb77-4"><a href="10-binomial-regression.html#cb77-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">lwr =</span> Dose <span class="op">-</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE,</span>
+<span id="cb77-5"><a href="10-binomial-regression.html#cb77-5" aria-hidden="true"></a>          <span class="dt">upr =</span> Dose <span class="op">+</span><span class="st"> </span><span class="kw">qnorm</span>(.<span class="dv">975</span>)<span class="op">*</span>SE )</span>
+<span id="cb77-6"><a href="10-binomial-regression.html#cb77-6" aria-hidden="true"></a>CI</span></code></pre></div>
+<pre><code>##      p     Dose        SE       lwr      upr
+## 1 0.25 2.945535 0.2315932 2.4916207 3.399449
+## 2 0.50 2.000000 0.1784367 1.6502705 2.349730
+## 3 0.75 1.054465 0.2315932 0.6005508 1.508379</code></pre>
+</div>
+<div id="overdispersion" class="section level2" number="10.6">
+<h2><span class="header-section-number">10.6</span> Overdispersion</h2>
+<p>In the binomial distribution, the variance is a function of the probability of success and is <span class="math display">\[Var\left(W\right)=np\left(1-p\right)\]</span>
+but there are many cases where we might be interested in adding an additional variance parameter <span class="math inline">\(\phi\)</span> to the model. A common reason for overdispersion to appear is that we might not have captured all the covariates that influence <span class="math inline">\(p\)</span>.</p>
+<p>We can do a quick simulation to demonstrate that additional variability in <span class="math inline">\(p\)</span> leads to addition variability overall.</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="10-binomial-regression.html#cb79-1" aria-hidden="true"></a>N &lt;-<span class="st"> </span><span class="dv">1000</span> </span>
+<span id="cb79-2"><a href="10-binomial-regression.html#cb79-2" aria-hidden="true"></a>n &lt;-<span class="st"> </span><span class="dv">10</span>   </span>
+<span id="cb79-3"><a href="10-binomial-regression.html#cb79-3" aria-hidden="true"></a>p &lt;-<span class="st"> </span><span class="fl">.6</span> </span>
+<span id="cb79-4"><a href="10-binomial-regression.html#cb79-4" aria-hidden="true"></a>overdispersed_p &lt;-<span class="st"> </span>p <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean=</span><span class="dv">0</span>, <span class="dt">sd=</span>.<span class="dv">05</span>)</span>
+<span id="cb79-5"><a href="10-binomial-regression.html#cb79-5" aria-hidden="true"></a>sim.data &lt;-<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb79-6"><a href="10-binomial-regression.html#cb79-6" aria-hidden="true"></a><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>N ){ </span>
+<span id="cb79-7"><a href="10-binomial-regression.html#cb79-7" aria-hidden="true"></a>  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</span>
+<span id="cb79-8"><a href="10-binomial-regression.html#cb79-8" aria-hidden="true"></a>    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>p)),</span>
+<span id="cb79-9"><a href="10-binomial-regression.html#cb79-9" aria-hidden="true"></a>    <span class="dt">type =</span> <span class="st">&#39;Standard&#39;</span>))</span>
+<span id="cb79-10"><a href="10-binomial-regression.html#cb79-10" aria-hidden="true"></a>  sim.data &lt;-<span class="st"> </span>sim.data <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(</span>
+<span id="cb79-11"><a href="10-binomial-regression.html#cb79-11" aria-hidden="true"></a>    <span class="dt">var =</span> <span class="kw">var</span>( <span class="kw">rbinom</span>(N, <span class="dt">size=</span>n, <span class="dt">prob=</span>overdispersed_p )),</span>
+<span id="cb79-12"><a href="10-binomial-regression.html#cb79-12" aria-hidden="true"></a>    <span class="dt">type =</span> <span class="st">&#39;OverDispersed&#39;</span>))</span>
+<span id="cb79-13"><a href="10-binomial-regression.html#cb79-13" aria-hidden="true"></a>} </span>
+<span id="cb79-14"><a href="10-binomial-regression.html#cb79-14" aria-hidden="true"></a>true.var &lt;-<span class="st"> </span>p<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>p)<span class="op">*</span>n</span>
+<span id="cb79-15"><a href="10-binomial-regression.html#cb79-15" aria-hidden="true"></a><span class="kw">ggplot</span>(sim.data, <span class="kw">aes</span>(<span class="dt">x=</span>var, <span class="dt">y=</span>..density..)) <span class="op">+</span></span>
+<span id="cb79-16"><a href="10-binomial-regression.html#cb79-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">bins=</span><span class="dv">30</span>) <span class="op">+</span></span>
+<span id="cb79-17"><a href="10-binomial-regression.html#cb79-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> true.var, <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb79-18"><a href="10-binomial-regression.html#cb79-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(type<span class="op">~</span>.) <span class="op">+</span></span>
+<span id="cb79-19"><a href="10-binomial-regression.html#cb79-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&#39;Histogram of Sample Variances&#39;</span>) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<p>We see that the sample variances fall neatly about the true variance of <span class="math inline">\(2.4\)</span> in the case where the data is distributed with a constant value for <span class="math inline">\(p\)</span>. However adding a small amount of random noise about the parameter <span class="math inline">\(p\)</span>, and we’d have more variance in the samples.</p>
+<p>The extra uncertainty of the probability of success results in extra variability in the responses.</p>
+<p>We can recognize when overdispersion is present by examining the deviance of our model. Because the deviance is approximately distributed
+<span class="math display">\[D\left(\boldsymbol{y},\boldsymbol{\theta}\right)\stackrel{\cdot}{\sim}\chi_{df}^{2}\]</span>
+where <span class="math inline">\(df\)</span> is the residual degrees of freedom in the model. Because the <span class="math inline">\(\chi_{k}^{2}\)</span> is the sum of <span class="math inline">\(k\)</span> independent, squared standard normal random variables, it has an expectation <span class="math inline">\(k\)</span> and variance <span class="math inline">\(2k\)</span>. For binomial data with group sizes (say larger than 5), this approximation isn’t too bad and we can detect overdispersion. For binary responses, the approximation is quite poor and we cannot detect overdispersion.</p>
+<p>The simplest approach for modeling overdispersion is to introduce an addition dispersion parameter <span class="math inline">\(\sigma^{2}\)</span>. This dispersion parameter may be estimated using<br />
+<span class="math display">\[\hat{\sigma}^{2}=\frac{X^{2}}{n-p}.\]</span>
+With the addition of the overdispersion parameter to the model, the differences between a simple and complex model is no longer distributed <span class="math inline">\(\chi^{2}\)</span> and we must use the following approximate F-statistic
+<span class="math display">\[F=\frac{\left(D_{simple}-D_{complex}\right)/\left(df_{small}-df_{large}\right)}{\hat{\sigma}^{2}}\]</span></p>
+<p>Using the F-test when the the overdispersion parameter is 1 is a less powerful test than the <span class="math inline">\(\chi^{2}\)</span> test, so we’ll only use the F-test when the overdispersion parameter must be estimated.</p>
+<p>Example: We consider an experiment where at five different stream locations, four boxes of trout eggs were buried and retrieved at four different times after the original placement. The number of surviving eggs was recorded and the eggs disposed of.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="10-binomial-regression.html#cb80-1" aria-hidden="true"></a><span class="kw">data</span>(troutegg, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>) </span>
+<span id="cb80-2"><a href="10-binomial-regression.html#cb80-2" aria-hidden="true"></a>troutegg &lt;-<span class="st"> </span>troutegg <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb80-3"><a href="10-binomial-regression.html#cb80-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>( <span class="dt">perish =</span> total <span class="op">-</span><span class="st"> </span>survive) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb80-4"><a href="10-binomial-regression.html#cb80-4" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(location, period, survive, perish, total) <span class="op">%&gt;%</span></span>
+<span id="cb80-5"><a href="10-binomial-regression.html#cb80-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">arrange</span>(location, period)</span>
+<span id="cb80-6"><a href="10-binomial-regression.html#cb80-6" aria-hidden="true"></a></span>
+<span id="cb80-7"><a href="10-binomial-regression.html#cb80-7" aria-hidden="true"></a>troutegg <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(location, period)</span></code></pre></div>
+<pre><code>##    location period survive perish total
+## 1         1      4      89      5    94
+## 2         1      7      94      4    98
+## 3         1      8      77      9    86
+## 4         1     11     141     14   155
+## 5         2      4     106      2   108
+## 6         2      7      91     15   106
+## 7         2      8      87      9    96
+## 8         2     11     104     18   122
+## 9         3      4     119      4   123
+## 10        3      7     100     30   130
+## 11        3      8      88     31   119
+## 12        3     11      91     34   125
+## 13        4      4     104      0   104
+## 14        4      7      80     17    97
+## 15        4      8      67     32    99
+## 16        4     11     111     21   132
+## 17        5      4      49     44    93
+## 18        5      7      11    102   113
+## 19        5      8      18     70    88
+## 20        5     11       0    138   138</code></pre>
+<p>We can first visualize the data</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="10-binomial-regression.html#cb82-1" aria-hidden="true"></a><span class="kw">ggplot</span>(troutegg, <span class="kw">aes</span>(<span class="dt">x=</span>period, <span class="dt">y=</span>survive<span class="op">/</span>total, <span class="dt">color=</span>location)) <span class="op">+</span><span class="st">    </span></span>
+<span id="cb82-2"><a href="10-binomial-regression.html#cb82-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">size=</span>total)) <span class="op">+</span><span class="st">    </span></span>
+<span id="cb82-3"><a href="10-binomial-regression.html#cb82-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.integer</span>(period)))</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>We can fit the logistic regression model (noting that the model with the interaction of location and period would be saturated):</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="10-binomial-regression.html#cb83-1" aria-hidden="true"></a>m &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">*</span><span class="st"> </span>period, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</span>
+<span id="cb83-2"><a href="10-binomial-regression.html#cb83-2" aria-hidden="true"></a><span class="kw">summary</span>(m)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = cbind(survive, perish) ~ location * period, family = binomial, 
+##     data = troutegg)
+## 
+## Deviance Residuals: 
+##  [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)            2.8792     0.4596   6.265 3.74e-10 ***
+## location2              1.0911     0.8489   1.285  0.19870    
+## location3              0.5136     0.6853   0.749  0.45356    
+## location4             24.4707 51676.2179   0.000  0.99962    
+## location5             -2.7716     0.5044  -5.495 3.90e-08 ***
+## period7                0.2778     0.6869   0.404  0.68591    
+## period8               -0.7326     0.5791  -1.265  0.20582    
+## period11              -0.5695     0.5383  -1.058  0.29007    
+## location2:period7     -2.4453     1.0291  -2.376  0.01749 *  
+## location3:period7     -2.4667     0.8796  -2.804  0.00504 ** 
+## location4:period7    -26.0789 51676.2179  -0.001  0.99960    
+## location5:period7     -2.6125     0.7847  -3.329  0.00087 ***
+## location2:period8     -0.9690     0.9836  -0.985  0.32453    
+## location3:period8     -1.6169     0.7983  -2.025  0.04284 *  
+## location4:period8    -25.8783 51676.2179  -0.001  0.99960    
+## location5:period8     -0.7331     0.6696  -1.095  0.27354    
+## location2:period11    -1.6468     0.9297  -1.771  0.07651 .  
+## location3:period11    -1.8388     0.7672  -2.397  0.01654 *  
+## location4:period11   -25.1154 51676.2179   0.000  0.99961    
+## location5:period11   -27.1679 51597.7368  -0.001  0.99958    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1.0215e+03  on 19  degrees of freedom
+## Residual deviance: 5.5198e-10  on  0  degrees of freedom
+## AIC: 116.53
+## 
+## Number of Fisher Scoring iterations: 22</code></pre>
+<p>The residual deviance seems a little large. With <span class="math inline">\(12\)</span> residual degrees of freedom, the deviance should be near <span class="math inline">\(12\)</span>. We can confirm that the deviance is quite large via:</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="10-binomial-regression.html#cb85-1" aria-hidden="true"></a><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="kw">pchisq</span>( <span class="fl">64.5</span>, <span class="dt">df=</span><span class="dv">12</span> )</span></code></pre></div>
+<pre><code>## [1] 3.372415e-09</code></pre>
+<p>We therefore estimate the overdispersion parameter</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="10-binomial-regression.html#cb87-1" aria-hidden="true"></a>sigma2 &lt;-<span class="st"> </span><span class="kw">sum</span>( <span class="kw">residuals</span>(m, <span class="dt">type=</span><span class="st">&#39;pearson&#39;</span>) <span class="op">^</span><span class="dv">2</span> ) <span class="op">/</span><span class="st"> </span><span class="dv">12</span> </span>
+<span id="cb87-2"><a href="10-binomial-regression.html#cb87-2" aria-hidden="true"></a>sigma2</span></code></pre></div>
+<pre><code>## [1] 2.29949e-11</code></pre>
+<p>and note that this is quite a bit larger than <span class="math inline">\(1\)</span>, which is what it should be in the non-overdispersed setting. Using this we can now test the significance of the effects of location and period.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="10-binomial-regression.html#cb89-1" aria-hidden="true"></a><span class="kw">drop1</span>(m, <span class="dt">scale=</span>sigma2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</span></code></pre></div>
+<pre><code>## Warning in drop1.glm(m, scale = sigma2, test = &quot;F&quot;): F test assumes
+## &#39;quasibinomial&#39; family</code></pre>
+<pre><code>## Warning in pf(q = q, df1 = df1, ...): NaNs produced</code></pre>
+<pre><code>## Single term deletions
+## 
+## Model:
+## cbind(survive, perish) ~ location * period
+## 
+## scale:  2.29949e-11 
+## 
+##                 Df Deviance        AIC F value Pr(&gt;F)
+## &lt;none&gt;                0.000 1.1700e+02               
+## location:period 12   64.495 2.8048e+12       0</code></pre>
+<p>and conclude that both location and period are significant predictors of trout egg survivorship.</p>
+<p>We could have avoided having to calculate <span class="math inline">\(\hat{\sigma}^{2}\)</span> by hand by simply using the <code>quasibinomial</code> family instead of the binomial.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="10-binomial-regression.html#cb93-1" aria-hidden="true"></a>m2 &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>location <span class="op">+</span><span class="st"> </span>period, </span>
+<span id="cb93-2"><a href="10-binomial-regression.html#cb93-2" aria-hidden="true"></a>          <span class="dt">family=</span>quasibinomial, <span class="dt">data=</span>troutegg) </span>
+<span id="cb93-3"><a href="10-binomial-regression.html#cb93-3" aria-hidden="true"></a><span class="kw">summary</span>(m2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = cbind(survive, perish) ~ location + period, family = quasibinomial, 
+##     data = troutegg)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -4.8305  -0.3650  -0.0303   0.6191   3.2434  
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   4.6358     0.6495   7.138 1.18e-05 ***
+## location2    -0.4168     0.5682  -0.734 0.477315    
+## location3    -1.2421     0.5066  -2.452 0.030501 *  
+## location4    -0.9509     0.5281  -1.800 0.096970 .  
+## location5    -4.6138     0.5777  -7.987 3.82e-06 ***
+## period7      -2.1702     0.5504  -3.943 0.001953 ** 
+## period8      -2.3256     0.5609  -4.146 0.001356 ** 
+## period11     -2.4500     0.5405  -4.533 0.000686 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for quasibinomial family taken to be 5.330358)
+## 
+##     Null deviance: 1021.469  on 19  degrees of freedom
+## Residual deviance:   64.495  on 12  degrees of freedom
+## AIC: NA
+## 
+## Number of Fisher Scoring iterations: 5</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="10-binomial-regression.html#cb95-1" aria-hidden="true"></a><span class="kw">drop1</span>(m2, <span class="dt">test=</span><span class="st">&#39;F&#39;</span>)</span></code></pre></div>
+<pre><code>## Single term deletions
+## 
+## Model:
+## cbind(survive, perish) ~ location + period
+##          Df Deviance F value    Pr(&gt;F)    
+## &lt;none&gt;         64.50                      
+## location  4   913.56  39.494 8.142e-07 ***
+## period    3   228.57  10.176  0.001288 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="10-binomial-regression.html#cb97-1" aria-hidden="true"></a><span class="co"># anova(m2, test=&#39;F&#39;)</span></span></code></pre></div>
+<p>While each of the time periods is different than the first, it looks like periods 7,8, and 11 aren’t different from each other. As usual, we need to turn to the <code>emmeans</code> package for looking at the pairwise differences between the periods.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="10-binomial-regression.html#cb98-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m2, pairwise<span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) </span></code></pre></div>
+<pre><code>## $emmeans
+##  period  prob     SE  df asymp.LCL asymp.UCL
+##  4      0.960 0.0177 Inf     0.907     0.984
+##  7      0.735 0.0567 Inf     0.611     0.831
+##  8      0.704 0.0618 Inf     0.571     0.809
+##  11     0.677 0.0549 Inf     0.562     0.774
+## 
+## Results are averaged over the levels of: location 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## 
+## $contrasts
+##  contrast odds.ratio    SE  df z.ratio p.value
+##  4 / 7          8.76 4.821 Inf 3.943   0.0005 
+##  4 / 8         10.23 5.740 Inf 4.146   0.0002 
+##  4 / 11        11.59 6.263 Inf 4.533   &lt;.0001 
+##  7 / 8          1.17 0.475 Inf 0.383   0.9810 
+##  7 / 11         1.32 0.501 Inf 0.739   0.8814 
+##  8 / 11         1.13 0.431 Inf 0.327   0.9880 
+## 
+## Results are averaged over the levels of: location 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## Tests are performed on the log odds ratio scale</code></pre>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="10-binomial-regression.html#cb100-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m2, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</span></code></pre></div>
+<pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
+##  11     0.677 0.0549 Inf     0.562     0.774  a    
+##  8      0.704 0.0618 Inf     0.571     0.809  a    
+##  7      0.735 0.0567 Inf     0.611     0.831  a    
+##  4      0.960 0.0177 Inf     0.907     0.984   b   
+## 
+## Results are averaged over the levels of: location 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## Tests are performed on the log odds ratio scale 
+## significance level used: alpha = 0.05</code></pre>
+<p>Looking at this experiment, it looks like there is an interaction between location and period. If we fit a model with the interaction, it is the saturated model (20 covariates for 20 observations)</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="10-binomial-regression.html#cb102-1" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">glm</span>( <span class="kw">cbind</span>(survive, perish) <span class="op">~</span><span class="st"> </span>period <span class="op">*</span><span class="st"> </span>location, <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</span>
+<span id="cb102-2"><a href="10-binomial-regression.html#cb102-2" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = cbind(survive, perish) ~ period * location, family = binomial, 
+##     data = troutegg)
+## 
+## Deviance Residuals: 
+##  [1]  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+## 
+## Coefficients:
+##                      Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)            2.8792     0.4596   6.265 3.74e-10 ***
+## period7                0.2778     0.6869   0.404  0.68591    
+## period8               -0.7326     0.5791  -1.265  0.20582    
+## period11              -0.5695     0.5383  -1.058  0.29007    
+## location2              1.0911     0.8489   1.285  0.19870    
+## location3              0.5136     0.6853   0.749  0.45356    
+## location4             24.4707 51676.2184   0.000  0.99962    
+## location5             -2.7716     0.5044  -5.495 3.90e-08 ***
+## period7:location2     -2.4453     1.0291  -2.376  0.01749 *  
+## period8:location2     -0.9690     0.9836  -0.985  0.32453    
+## period11:location2    -1.6468     0.9297  -1.771  0.07651 .  
+## period7:location3     -2.4667     0.8796  -2.804  0.00504 ** 
+## period8:location3     -1.6169     0.7983  -2.025  0.04284 *  
+## period11:location3    -1.8388     0.7672  -2.397  0.01654 *  
+## period7:location4    -26.0789 51676.2184  -0.001  0.99960    
+## period8:location4    -25.8783 51676.2184  -0.001  0.99960    
+## period11:location4   -25.1154 51676.2184   0.000  0.99961    
+## period7:location5     -2.6125     0.7847  -3.329  0.00087 ***
+## period8:location5     -0.7331     0.6696  -1.095  0.27354    
+## period11:location5   -27.1679 51597.7368  -0.001  0.99958    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 1.0215e+03  on 19  degrees of freedom
+## Residual deviance: 5.5196e-10  on  0  degrees of freedom
+## AIC: 116.53
+## 
+## Number of Fisher Scoring iterations: 22</code></pre>
+<p>Notice that we’ve fit the saturated model and we’ve resolved the overdispersion problem because of that.</p>
+<p>As usual, we can now look at the effect of <code>period</code> at each of the locations.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="10-binomial-regression.html#cb104-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m3, <span class="op">~</span><span class="st"> </span>period <span class="op">|</span><span class="st"> </span>location, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>()</span></code></pre></div>
+<pre><code>## location = 1:
+##  period      prob         SE  df asymp.LCL asymp.UCL .group
+##  8      0.8953488 0.03300798 Inf 0.8109406 0.9446443  1    
+##  11     0.9096774 0.02302375 Inf 0.8532710 0.9457777  1    
+##  4      0.9468085 0.02314665 Inf 0.8785095 0.9776867  1    
+##  7      0.9591837 0.01998733 Inf 0.8962639 0.9845962  1    
+## 
+## location = 2:
+##  period      prob         SE  df asymp.LCL asymp.UCL .group
+##  11     0.8524590 0.03210799 Inf 0.7779341 0.9050269  1    
+##  7      0.8584906 0.03385381 Inf 0.7784456 0.9128537  1    
+##  8      0.9062500 0.02974911 Inf 0.8295443 0.9504977  12   
+##  4      0.9814815 0.01297276 Inf 0.9289964 0.9953638   2   
+## 
+## location = 3:
+##  period      prob         SE  df asymp.LCL asymp.UCL .group
+##  11     0.7280000 0.03980111 Inf 0.6434907 0.7987421  1    
+##  8      0.7394958 0.04023479 Inf 0.6533948 0.8104142  1    
+##  7      0.7692308 0.03695265 Inf 0.6891126 0.8336850  1    
+##  4      0.9674797 0.01599358 Inf 0.9165610 0.9877408   2   
+## 
+## location = 4:
+##  period      prob         SE  df asymp.LCL asymp.UCL .group
+##  8      0.6767677 0.04700674 Inf 0.5787856 0.7613551  1    
+##  7      0.8247423 0.03860215 Inf 0.7360186 0.8881766  12   
+##  11     0.8409091 0.03183558 Inf 0.7682755 0.8939194   2   
+##  4      1.0000000 0.00000007 Inf 0.0000000 1.0000000  12   
+## 
+## location = 5:
+##  period      prob         SE  df asymp.LCL asymp.UCL .group
+##  11     0.0000000 0.00000005 Inf 0.0000000 1.0000000  12   
+##  7      0.0973451 0.02788552 Inf 0.0547290 0.1672733  1    
+##  8      0.2045455 0.04299929 Inf 0.1328383 0.3015023  1    
+##  4      0.5268817 0.05177260 Inf 0.4256954 0.6259069   2   
+## 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## Tests are performed on the log odds ratio scale 
+## significance level used: alpha = 0.05</code></pre>
+<p>Notice that there isn’t a huge difference in period for locations 1-4, but in location 5 things are very different.</p>
+<p>We might consider that location really ought to be a random effect. Fortunately <code>lme4</code> supports the family option, although it will not accept quasi families, you either fit a random effect or fit a quasibinomial. In either case, fitting the full interaction model with <code>period*location</code> doesn’t work because we have a saturated model</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="10-binomial-regression.html#cb106-1" aria-hidden="true"></a><span class="co"># addititive model</span></span>
+<span id="cb106-2"><a href="10-binomial-regression.html#cb106-2" aria-hidden="true"></a>m3 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>location), </span>
+<span id="cb106-3"><a href="10-binomial-regression.html#cb106-3" aria-hidden="true"></a>          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</span>
+<span id="cb106-4"><a href="10-binomial-regression.html#cb106-4" aria-hidden="true"></a><span class="kw">summary</span>(m3)</span></code></pre></div>
+<pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
+##   Approximation) [glmerMod]
+##  Family: binomial  ( logit )
+## Formula: cbind(survive, perish) ~ period + (1 | location)
+##    Data: troutegg
+## 
+##      AIC      BIC   logLik deviance df.resid 
+##    180.3    185.3    -85.2    170.3       15 
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -4.2274 -0.3592  0.0027  0.6531  3.5841 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  location (Intercept) 2.682    1.638   
+## Number of obs: 20, groups:  location, 5
+## 
+## Fixed effects:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)   3.1799     0.7594   4.187 2.82e-05 ***
+## period7      -2.1545     0.2368  -9.097  &lt; 2e-16 ***
+## period8      -2.3085     0.2414  -9.564  &lt; 2e-16 ***
+## period11     -2.4324     0.2325 -10.460  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation of Fixed Effects:
+##          (Intr) perid7 perid8
+## period7  -0.224              
+## period8  -0.225  0.732       
+## period11 -0.234  0.758  0.761</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="10-binomial-regression.html#cb108-1" aria-hidden="true"></a><span class="kw">emmeans</span>(m3, <span class="op">~</span>period, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span>multcomp<span class="op">::</span><span class="kw">cld</span>(<span class="dt">Letters=</span>letters)</span></code></pre></div>
+<pre><code>##  period  prob     SE  df asymp.LCL asymp.UCL .group
+##  11     0.679 0.1615 Inf     0.331     0.900  a    
+##  8      0.705 0.1546 Inf     0.358     0.911  a    
+##  7      0.736 0.1444 Inf     0.394     0.923  a    
+##  4      0.960 0.0291 Inf     0.844     0.991   b   
+## 
+## Confidence level used: 0.95 
+## Intervals are back-transformed from the logit scale 
+## P value adjustment: tukey method for comparing a family of 4 estimates 
+## Tests are performed on the log odds ratio scale 
+## significance level used: alpha = 0.05</code></pre>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="10-binomial-regression.html#cb110-1" aria-hidden="true"></a><span class="co"># Interaction  model</span></span>
+<span id="cb110-2"><a href="10-binomial-regression.html#cb110-2" aria-hidden="true"></a>m4 &lt;-<span class="st"> </span><span class="kw">glmer</span>(<span class="kw">cbind</span>(survive,perish) <span class="op">~</span><span class="st"> </span>period <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>period<span class="op">|</span>location), </span>
+<span id="cb110-3"><a href="10-binomial-regression.html#cb110-3" aria-hidden="true"></a>          <span class="dt">family=</span>binomial, <span class="dt">data=</span>troutegg)</span></code></pre></div>
+<pre><code>## Warning in checkConv(attr(opt, &quot;derivs&quot;), opt$par, ctrl = control$checkConv, :
+## Model failed to converge with max|grad| = 0.0184817 (tol = 0.002, component 1)</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="10-binomial-regression.html#cb112-1" aria-hidden="true"></a><span class="co">#summary(m4)</span></span>
+<span id="cb112-2"><a href="10-binomial-regression.html#cb112-2" aria-hidden="true"></a><span class="co">#emmeans(m4, ~period, type=&#39;response&#39;) %&gt;% multcomp::cld(Letters=letters)</span></span></code></pre></div>
+<p>Unfortunately, we aren’t able to fit the saturated model using random effects because the numerical optimization function for finding MLE estimates failed to converge.</p>
+</div>
+<div id="roc-curves" class="section level2" number="10.7">
+<h2><span class="header-section-number">10.7</span> ROC Curves</h2>
+<p>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (ie cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="10-binomial-regression.html#cb113-1" aria-hidden="true"></a><span class="kw">data</span>(<span class="st">&#39;wbca&#39;</span>, <span class="dt">package=</span><span class="st">&#39;faraway&#39;</span>)</span>
+<span id="cb113-2"><a href="10-binomial-regression.html#cb113-2" aria-hidden="true"></a></span>
+<span id="cb113-3"><a href="10-binomial-regression.html#cb113-3" aria-hidden="true"></a><span class="co"># clean up the data</span></span>
+<span id="cb113-4"><a href="10-binomial-regression.html#cb113-4" aria-hidden="true"></a>wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb113-5"><a href="10-binomial-regression.html#cb113-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Class =</span> <span class="kw">ifelse</span>(Class<span class="op">==</span><span class="dv">0</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb113-6"><a href="10-binomial-regression.html#cb113-6" aria-hidden="true"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(Class, BNucl, UShap, USize) </span>
+<span id="cb113-7"><a href="10-binomial-regression.html#cb113-7" aria-hidden="true"></a></span>
+<span id="cb113-8"><a href="10-binomial-regression.html#cb113-8" aria-hidden="true"></a><span class="co"># Fit the model where Malignant is considered a success</span></span>
+<span id="cb113-9"><a href="10-binomial-regression.html#cb113-9" aria-hidden="true"></a><span class="co"># model &lt;- glm( I(Class==&#39;malignant&#39;) ~ ., data=wbca, family=&#39;binomial&#39; )  # emmeans hates this version</span></span>
+<span id="cb113-10"><a href="10-binomial-regression.html#cb113-10" aria-hidden="true"></a></span>
+<span id="cb113-11"><a href="10-binomial-regression.html#cb113-11" aria-hidden="true"></a>model &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( <span class="dt">Class =</span> (Class <span class="op">==</span><span class="st"> &#39;malignant&#39;</span>) ) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># Clear what is success</span></span>
+<span id="cb113-12"><a href="10-binomial-regression.html#cb113-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">glm</span>( Class <span class="op">~</span>., <span class="dt">data=</span>., <span class="dt">family=</span><span class="st">&#39;binomial&#39;</span> )                     <span class="co"># and emmeans still happy</span></span>
+<span id="cb113-13"><a href="10-binomial-regression.html#cb113-13" aria-hidden="true"></a></span>
+<span id="cb113-14"><a href="10-binomial-regression.html#cb113-14" aria-hidden="true"></a><span class="co"># Get the response values</span></span>
+<span id="cb113-15"><a href="10-binomial-regression.html#cb113-15" aria-hidden="true"></a><span class="co"># type=&#39;response&#39; gives phat values which live in [0,1]</span></span>
+<span id="cb113-16"><a href="10-binomial-regression.html#cb113-16" aria-hidden="true"></a><span class="co"># type=&#39;link&#39; gives the Xbeta values whice live in (-infinity, infinity)</span></span>
+<span id="cb113-17"><a href="10-binomial-regression.html#cb113-17" aria-hidden="true"></a>wbca &lt;-<span class="st"> </span>wbca <span class="op">%&gt;%</span></span>
+<span id="cb113-18"><a href="10-binomial-regression.html#cb113-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">phat =</span> <span class="kw">predict</span>(model, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>),</span>
+<span id="cb113-19"><a href="10-binomial-regression.html#cb113-19" aria-hidden="true"></a>         <span class="dt">yhat =</span> <span class="kw">ifelse</span>(phat <span class="op">&gt;</span><span class="st"> </span><span class="fl">.5</span>, <span class="st">&#39;malignant&#39;</span>, <span class="st">&#39;benign&#39;</span>))</span>
+<span id="cb113-20"><a href="10-binomial-regression.html#cb113-20" aria-hidden="true"></a></span>
+<span id="cb113-21"><a href="10-binomial-regression.html#cb113-21" aria-hidden="true"></a><span class="co"># Calculate the confusion matrix</span></span>
+<span id="cb113-22"><a href="10-binomial-regression.html#cb113-22" aria-hidden="true"></a><span class="kw">table</span>( <span class="dt">Truth=</span>wbca<span class="op">$</span>Class, <span class="dt">Predicted=</span>wbca<span class="op">$</span>yhat )</span></code></pre></div>
+<pre><code>##            Predicted
+## Truth       benign malignant
+##   benign       432        11
+##   malignant     15       223</code></pre>
+<p>As usual we can calculate the summary tables…</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="10-binomial-regression.html#cb115-1" aria-hidden="true"></a><span class="kw">summary</span>(model)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## glm(formula = Class ~ ., family = &quot;binomial&quot;, data = .)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.8890  -0.1409  -0.1409   0.0287   2.2284  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -6.35433    0.54076 -11.751  &lt; 2e-16 ***
+## BNucl        0.55297    0.08041   6.877 6.13e-12 ***
+## UShap        0.62583    0.17506   3.575 0.000350 ***
+## USize        0.56793    0.15910   3.570 0.000358 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 881.39  on 680  degrees of freedom
+## Residual deviance: 148.43  on 677  degrees of freedom
+## AIC: 156.43
+## 
+## Number of Fisher Scoring iterations: 7</code></pre>
+<p>From this table, we see that for a breast tumor, the larger values of <code>BNucl</code>, <code>UShap</code>, and <code>USize</code> imply a greater probability of it being malignant. So for a tumor with</p>
+<pre><code>##   BNucl UShap USize
+## 1     2     1     2</code></pre>
+<p>We would calculate
+<span class="math display">\[\begin{aligned} X \hat{\beta} 
+  &amp;= \hat{\beta}_0 + 2 \cdot \hat{\beta}_1 + 1 \cdot \hat{\beta}_2 + 2 \cdot \hat{\beta}_3 \\
+  &amp;= -6.35 + 2*(0.553) + 1*(0.626) + 2*(0.568) \\
+  &amp;= -3.482
+  \end{aligned}\]</span></p>
+<p>and therefore <span class="math display">\[\hat{p} = \frac{1}{1+e^{-X\hat{\beta}}} = \frac{1}{1+e^{3.482}} = 0.0297\]</span></p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="10-binomial-regression.html#cb118-1" aria-hidden="true"></a>newdata =<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">BNucl=</span><span class="dv">2</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">2</span> )</span>
+<span id="cb118-2"><a href="10-binomial-regression.html#cb118-2" aria-hidden="true"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata)</span></code></pre></div>
+<pre><code>##         1 
+## -3.486719</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="10-binomial-regression.html#cb120-1" aria-hidden="true"></a><span class="kw">predict</span>(model, <span class="dt">newdata=</span>newdata, <span class="dt">type=</span><span class="st">&#39;response&#39;</span>)</span></code></pre></div>
+<pre><code>##         1 
+## 0.0296925</code></pre>
+<p>So for a tumor with these covariates, we would classify it as most likely to be benign.</p>
+<p>In this medical scenario where we have to decide how to classify if a tumor is malignant of benign, we shouldn’t treat the misclassification errors as being the same. If we incorrectly identify a tumor as malignant when it is not, that will cause a patient to undergo a somewhat invasive surgury to remove the tumor. However if we incorrectly identify a tumor as being benign, then the cancerous tumor will likely grow and eventually kill the patient. While the first error is regretable, the second is far worse.</p>
+<p>Given that reasoning, perhaps we shouldn’t use the rule: If <span class="math inline">\(\hat{p} &gt;= 0.5\)</span> classify as malignant. Instead perhaps we should use <span class="math inline">\(\hat{p} &gt;= 0.3\)</span> or <span class="math inline">\(\hat{p} &gt;= 0.05\)</span>.</p>
+<p>Whatever decision rule we make, we should consider how many of each type of error we make. Consider the following confusion matrix:</p>
+<table style="width:97%;">
+<colgroup>
+<col width="22%" />
+<col width="30%" />
+<col width="30%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Predict Negative</th>
+<th align="center">Predict Positive</th>
+<th align="center">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>Negative</strong></td>
+<td align="center">True Neg (TN)</td>
+<td align="center">False Pos (FP)</td>
+<td align="center"><span class="math inline">\(N\)</span></td>
+</tr>
+<tr class="even">
+<td align="center"><strong>Positive</strong></td>
+<td align="center">False Neg (FN)</td>
+<td align="center">True Pos (TP)</td>
+<td align="center"><span class="math inline">\(P\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Total</strong></td>
+<td align="center"><span class="math inline">\(N^*\)</span></td>
+<td align="center"><span class="math inline">\(P^*\)</span></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>where <span class="math inline">\(P\)</span> is the number of positive cases, <span class="math inline">\(N\)</span> is the number of negative cases, <span class="math inline">\(P^*\)</span> is the number of observations predicted to be positive, and <span class="math inline">\(N^*\)</span> is the number predicted to be negative.</p>
+<table style="width:88%;">
+<colgroup>
+<col width="30%" />
+<col width="15%" />
+<col width="41%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantity</th>
+<th>Formula</th>
+<th>Synonyms</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>False Positive Rate</td>
+<td><span class="math inline">\(FP/N\)</span></td>
+<td>Type I Error; 1-Specificity</td>
+</tr>
+<tr class="even">
+<td>True Positive Rate</td>
+<td><span class="math inline">\(TP/P\)</span></td>
+<td>Power; Sensitivity; Recall</td>
+</tr>
+<tr class="odd">
+<td>Pos. Pred. Value</td>
+<td><span class="math inline">\(TP/P^*\)</span></td>
+<td>Precision</td>
+</tr>
+</tbody>
+</table>
+<p>We can think of the True Positive Rate as the probability that a Positive case will be correctly classified as a positive. Similarly a False Positive Rate is the probability that a Negative case will be incorrectly classified as a positive.</p>
+<p>I wish to examine the relationship between the False Positive Rate and the True Positive Rate for any decision rule. So what we could do is select a sequence of decision rules and for each calculate the <code>(FPR, TPR)</code> pair, and then make a plot where we play connect the dots with the <code>(FPR, TPR)</code> pairs.</p>
+<p>Of course we don’t want to have to do this by hand, so we’ll use the package <code>pROC</code> to do it for us.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="10-binomial-regression.html#cb122-1" aria-hidden="true"></a><span class="co"># Calculate the ROC information using pROC::roc()</span></span>
+<span id="cb122-2"><a href="10-binomial-regression.html#cb122-2" aria-hidden="true"></a>myROC &lt;-<span class="st"> </span><span class="kw">roc</span>( wbca<span class="op">$</span>Class,  wbca<span class="op">$</span>phat )</span></code></pre></div>
+<pre><code>## Setting levels: control = benign, case = malignant</code></pre>
+<pre><code>## Setting direction: controls &lt; cases</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="10-binomial-regression.html#cb125-1" aria-hidden="true"></a><span class="co"># make a nice plot using ggplot2 and pROC::ggroc()</span></span>
+<span id="cb125-2"><a href="10-binomial-regression.html#cb125-2" aria-hidden="true"></a><span class="kw">ggroc</span>( myROC ) </span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p>This looks pretty good and in an ideal classifier that makes prefect predictions, this would be a perfect right angle at the bend.</p>
+<p>Lets zoom in a little on the high specificity values (i.e. low false positive rates)</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="10-binomial-regression.html#cb126-1" aria-hidden="true"></a><span class="kw">ggroc</span>( myROC ) <span class="op">+</span><span class="st"> </span><span class="kw">xlim</span>(<span class="dv">1</span>, <span class="fl">.9</span>)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<p>We see that if we want to correctly identify about 99% of maligant tumors, we will have a false positive rate of about 1-0.95 = 0.05. So about 5% of benign tumors would be incorrectly classified as malignant.</p>
+<p>It is a little challenging to read the graph to see what the Sensitivity is for a particular value of Specificity. To do this we’ll use another function because the authors would prefer you to also estimate the confidence intervals for the quantity. This is a case where bootstrap confidence intervals are quite effective.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="10-binomial-regression.html#cb127-1" aria-hidden="true"></a><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;sp&#39;</span>, <span class="dt">sensitivities=</span>.<span class="dv">99</span>)</span></code></pre></div>
+<pre><code>## 95% CI (2000 stratified bootstrap replicates):
+##    se sp.low sp.median sp.high
+##  0.99 0.9187    0.9571  0.9797</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="10-binomial-regression.html#cb129-1" aria-hidden="true"></a><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;se&#39;</span>, <span class="dt">specificities=</span>.<span class="dv">975</span>)</span></code></pre></div>
+<pre><code>## 95% CI (2000 stratified bootstrap replicates):
+##     sp se.low se.median se.high
+##  0.975 0.8827     0.937  0.9958</code></pre>
+<p>One measure of how far we are from the perfect predictor is the area under the curve. The perfect model would have an area under the curve of 1. For this model the area under the curve is:</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="10-binomial-regression.html#cb131-1" aria-hidden="true"></a><span class="kw">auc</span>(myROC) </span></code></pre></div>
+<pre><code>## Area under the curve: 0.9929</code></pre>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="10-binomial-regression.html#cb133-1" aria-hidden="true"></a><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>)</span></code></pre></div>
+<pre><code>## 95% CI: 0.9878-0.9981 (DeLong)</code></pre>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="10-binomial-regression.html#cb135-1" aria-hidden="true"></a><span class="kw">ci</span>(myROC, <span class="dt">of=</span><span class="st">&#39;auc&#39;</span>, <span class="dt">method=</span><span class="st">&#39;bootstrap&#39;</span>)</span></code></pre></div>
+<pre><code>## 95% CI: 0.9872-0.9973 (2000 stratified bootstrap replicates)</code></pre>
+<p>which seems pretty good and Area Under the Curve (AUC) is often used as a way of comparing the quality of binary classifiers.</p>
+</div>
+<div id="Exercises_BinomialRegression" class="section level2" number="10.8">
+<h2><span class="header-section-number">10.8</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>The dataset <code>faraway::wbca</code> comes from a study of breast cancer in Wisconsin. There are 681 cases of potentially cancerous tumors of which 238 are actually malignant (i.e. cancerous). Determining whether a tumor is really malignant is traditionally determined by an invasive surgical procedure. The purpose of this study was to determine whether a new procedure called ‘fine needle aspiration’, which draws only a small sample of tissue, could be effective in determining tumor status.
+<ol style="list-style-type: lower-alpha">
+<li><p>Fit a binomial regression with <code>Class</code> as the response variable and the other nine variables as predictors (for consistency among students, define a success as the tumor being benign and remember that <code>glm</code> wants the response to be a matrix where the first column is the number of successes). Report the residual deviance and associated degrees of freedom. Can this information be used to determine if this model fits the data?</p></li>
+<li><p>Use AIC as the criterion to determine the best subset of variables using the step function.</p></li>
+<li><p>Use the reduced model to give the estimated probability that a tumor with associated predictor variables</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="10-binomial-regression.html#cb137-1" aria-hidden="true"></a>newdata &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="dt">Adhes=</span><span class="dv">1</span>, <span class="dt">BNucl=</span><span class="dv">1</span>, <span class="dt">Chrom=</span><span class="dv">3</span>, <span class="dt">Epith=</span><span class="dv">2</span>, <span class="dt">Mitos=</span><span class="dv">1</span>, </span>
+<span id="cb137-2"><a href="10-binomial-regression.html#cb137-2" aria-hidden="true"></a>                       <span class="dt">NNucl=</span><span class="dv">1</span>, <span class="dt">Thick=</span><span class="dv">4</span>, <span class="dt">UShap=</span><span class="dv">1</span>, <span class="dt">USize=</span><span class="dv">1</span>)</span></code></pre></div>
+<p>is benign and give a confidence interval for your estimate.</p></li>
+<li><p>Suppose that a cancer is classified as benign if <span class="math inline">\(\hat{p}&gt;0.5\)</span> and malignant if <span class="math inline">\(\hat{p}\le0.5\)</span>. Compute the number of errors of both types that will be made if this method is applied to the current data with the reduced model. <em>Hint: save the <span class="math inline">\(\hat{p}\)</span> as a column in the wbca data frame and use that to create a new column <code>Est_Class</code> which is the estimated class (making sure it is the same encoding scheme as Class). Then use dplyr functions to create a table of how many rows fall into each of the four Class/Est_Class combinations.</em></p></li>
+<li><p>Suppose we changed the cutoff to <span class="math inline">\(0.9\)</span>. Compute the number of errors of each type in this case. Discuss the ethical issues in determining the cutoff.</p></li>
+</ol></li>
+<li>Aflatoxin B1 was fed to lab animals at various doses and the number responding with liver cancer recorded and is available in the dataset <code>faraway::aflatoxin</code>.
+<ol style="list-style-type: lower-alpha">
+<li>Build a model to predict the occurrence of liver cancer. Consider a square-root transformation to the dose level.</li>
+<li>Compute the ED50 level (effective dose level… same as LD50 but isn’t confined to strictly lethal effects) and an approximate <span class="math inline">\(95\%\)</span> confidence interval.</li>
+</ol></li>
+<li>The dataset <code>faraway::pima</code> is data from a study of adult female Pima Indians living near Phoenix was done and resulted <span class="math inline">\(n=752\)</span> observations after the cases of missing data (obnoxiously coded as 0) were removed. Testing positive for diabetes was the success (<code>test</code>) and the predictor variables we will use are: <code>pregnant</code>, <code>glucose</code>, and <code>bmi</code>.
+<ol style="list-style-type: lower-alpha">
+<li><p>Remove the observations that have missing data (coded as a zero) for either <code>glucose</code> or <code>bmi</code>. <em>The researcher’s choice of using 0 to represent missing data is a bad idea because 0 is a valid value for the number of pregnancies, so assume a zero in the <code>pregnant</code> covariate is a true value. The <code>dplyr</code> function <code>filter</code> could be used here.</em></p></li>
+<li><p>Fit the logistic regression model for <code>test</code> with using the main effects of <code>glucose</code>, <code>bmi</code>, and <code>pregnant</code>.</p></li>
+<li><p>Produce a graphic that displays the relationship between the variables. <em>Notice I’ve done the part (a) for you and the assume that your model produced in part (b) is named <code>m</code>. I also split up the pregnancy and bmi values into some logical grouping for the visualization. If you’ve never used the <code>cut</code> function, go look it up because it is extremely handy.</em></p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="10-binomial-regression.html#cb138-1" aria-hidden="true"></a>pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>( bmi <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>, glucose <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>)</span>
+<span id="cb138-2"><a href="10-binomial-regression.html#cb138-2" aria-hidden="true"></a>pima &lt;-<span class="st"> </span>pima <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>( </span>
+<span id="cb138-3"><a href="10-binomial-regression.html#cb138-3" aria-hidden="true"></a>  <span class="dt">phat=</span><span class="kw">ilogit</span>(<span class="kw">predict</span>(m)),</span>
+<span id="cb138-4"><a href="10-binomial-regression.html#cb138-4" aria-hidden="true"></a>  <span class="dt">pregnant.grp =</span> <span class="kw">cut</span>(pregnant, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">100</span>), <span class="dt">right =</span> <span class="ot">FALSE</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;0&#39;</span>,<span class="st">&#39;1:2&#39;</span>,<span class="st">&#39;3:5&#39;</span>,<span class="st">&#39;6+&#39;</span>)),</span>
+<span id="cb138-5"><a href="10-binomial-regression.html#cb138-5" aria-hidden="true"></a>  <span class="dt">bmi.grp =</span> <span class="kw">cut</span>(bmi, <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">18</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">100</span>), <span class="dt">labels=</span><span class="kw">c</span>(<span class="st">&#39;Underweight&#39;</span>,<span class="st">&#39;Normal&#39;</span>,<span class="st">&#39;Overweight&#39;</span>,<span class="st">&#39;Obese&#39;</span>)))</span>
+<span id="cb138-6"><a href="10-binomial-regression.html#cb138-6" aria-hidden="true"></a><span class="kw">ggplot</span>(pima, <span class="kw">aes</span>(<span class="dt">y=</span>test, <span class="dt">x=</span>glucose)) <span class="op">+</span></span>
+<span id="cb138-7"><a href="10-binomial-regression.html#cb138-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>() <span class="op">+</span></span>
+<span id="cb138-8"><a href="10-binomial-regression.html#cb138-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y=</span>phat), <span class="dt">color=</span><span class="st">&#39;red&#39;</span>) <span class="op">+</span></span>
+<span id="cb138-9"><a href="10-binomial-regression.html#cb138-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_grid</span>(bmi.grp <span class="op">~</span><span class="st"> </span>pregnant.grp)</span></code></pre></div></li>
+<li><p>Discuss the quality of your predictions based on the graphic above and modify your model accordingly.<br />
+</p></li>
+<li><p>Give the probability of testing positive for diabetes for a Pima woman who had had no pregnancies, had <code>bmi=28</code> and a glucose level of <code>110</code>.</p></li>
+<li><p>Give the odds that the same woman would test positive for diabetes.</p></li>
+<li><p>How do her odds change to if she were to have a child? That is to say, what is the odds ratio for that change?</p></li>
+</ol></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="9-mixed-effects-models.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="11-poisson-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"],
+"google": false,
+"instapper": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/dereksonderegger/571/blob/master/15_BinomialRegression.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/dereksonderegger/571/raw/master/15_BinomialRegression.Rmd",
+"text": null
+},
+"download": [["Statistical_Methods_II.pdf", "PDF"], ["Statistical_Methods_II.epub", "EPUB"]],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+},
+"search": true
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
