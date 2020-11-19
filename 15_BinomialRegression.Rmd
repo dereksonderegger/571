@@ -72,8 +72,8 @@ If I just fit a regular linear model to this data, we fit the following:
 
 ```{r}
 m <- lm( Occupancy ~ CCU, data=Mayflies )
-Mayflies <- Mayflies %>% mutate(yhat = predict(m))
-ggplot(Mayflies, aes(x=CCU, y=Occupancy)) + 
+Mayflies %>% mutate(yhat = predict(m)) %>%
+  ggplot(aes(x=CCU, y=Occupancy)) + 
   geom_point() +
   geom_line(aes(y=yhat), color='red')
 ```
@@ -91,11 +91,12 @@ ggplot(Mayflies, aes(x=CCU, y=Occupancy)) +
 
 We need a way to convert our covariate data $\boldsymbol{y}=\boldsymbol{X\beta}$ from something that can take values from $-\infty$ to $+\infty$ to something that is constrained between 0 and 1 so that we can fit the model
 $$w_{i}\sim Bernoulli\left(\underset{\textrm{in }[0,1]}{\underbrace{g^{-1}\left(\underset{\textrm{in }\left[-\infty,\infty\right]}{\underbrace{y_{i}}}\right)}}\right)$$
-There are several options for the link function $g^{-1}\left(\cdot\right)$ that are commonly used. We use the notation $y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}$ is unconstrained and can be in $\left(-\infty, +\infty\right)$ while $p_{i}=g^{-1}\left(y_{i}\right)$ is constrained to $\left[0,1\right]$. When convenient, we will drop the $i$
-subscript while keeping the domain restrictions.
+We use the notation $y_{i}=\boldsymbol{X}_{i,\cdot}\boldsymbol{\beta}$ to denote a single set of covariate values and notice that this is unconstrained and can be in $\left(-\infty, +\infty\right)$ while the parameter of interest $p_{i}=g^{-1}\left(y_{i}\right)$ is constrained to $\left[0,1\right]$. When convenient, we will drop the $i$ subscript while keeping the domain restrictions.
 
-1. Logit (log odds) transformation. The link function is $$g\left(p\right)=\log\left[\underset{\textrm{odds}}{\underbrace{\frac{p}{1-p}}}\right]=y$$
- with inverse $$g^{-1}\left(y\right)=\frac{1}{1+e^{-y}}$$ and we think of $g\left(p\right)$ as the log odds function. 
+There are several options for the link function $g^{-1}\left(\cdot\right)$ that are commonly used. 
+
+1. Logit (log odds) transformation. The link function is $$g\left(p\right)=\textrm{logit}(p)=\log\left[\underset{\textrm{odds}}{\underbrace{\frac{p}{1-p}}}\right]=y$$
+ with inverse $$g^{-1}\left(y\right)=\textrm{ilogit}(y)=\frac{1}{1+e^{-y}}=p$$ and we think of $g\left(p\right)$ as the log odds function. 
 
 2. Probit transformation. The link function is $g\left(p\right)=\Phi^{-1}\left(\boldsymbol{p}\right)$ where $\Phi$ is the standard normal cumulative distribution function and therefore $g^{-1}\left(\boldsymbol{X}\boldsymbol{\beta}\right)=\Phi\left(\boldsymbol{X}\boldsymbol{\beta}\right)$.
 
@@ -103,30 +104,50 @@ subscript while keeping the domain restrictions.
 
 All of these functions will give a sigmoid shape with higher probability as $y$ increases and lower probability as it decreases. The logit and probit transformations have the nice property that if $y=0$ then $g^{-1}\left(0\right)=\frac{1}{2}$.
 
+```{r, echo=FALSE, fig.height=3}
+data.frame( x= seq(-5, 5, by=.01)) %>%
+  mutate(y = faraway::ilogit(x)) %>%
+  ggplot(aes(x=x, y=y)) +
+  geom_line(color='red') +
+  labs(x=latex2exp::TeX('y = $X\\beta$'), y='p', title='Inverse Logit() function')
+```
+
+
 Usually the difference in inferences made using these different curves is relatively small and we will usually use the logit transformation because its form lends itself to a nice interpretation of my $\boldsymbol{\beta}$ values. In these cases, a slope parameter in our model will be interpreted as “the change in log odds for every one unit change in the predictor.”
 
-Because we will be using the logit transformation so often, it is useful to make the following definitions: 
-$$\textrm{logit}\left(p\right)	=	\log\left[\frac{p}{1-p}\right]$$
-$$\textrm{ilogit}\left(y\right)	=	\frac{1}{1+e^{-y}}$$
-where $p\in\left[0,1\right]$ and $y\in\left(-\infty,+\infty\right)$.
 
 As in the mixed model case, there are no closed form solution for $\hat{\boldsymbol{\beta}}$ and instead we must rely on numerical solutions to find the maximum likelihood estimators for $\hat{\boldsymbol{\beta}}$. To do this, we must derive the likelihood function.
 
-$$\begin{aligned}
- L\left(\boldsymbol{\beta}|\boldsymbol{w} \right)	&=
-  \prod_{i=1}^{n}L\left(\boldsymbol{\beta}|w_{i} \right) \\
-	&=	\prod_{i=1}^{n} p_{i}^{w_i}\left(1-p_{i}\right)^{1-w_{i}} \\
-	&= \prod_{i=1}^n \left(\textrm{ilogit}(X_i \beta) \right)^{w_i} \left( 1-\textrm{ilogit}(X_i \beta)\right)^{1-w_i}  
-	\end{aligned}$$
-and we recognize that 
-$$p_{i}=\textrm{ilogit}\left(\boldsymbol{X_i\beta}\right)=1/\left(1+e^{-\boldsymbol{X_i\beta}}\right)$$
-and we substituted that into the equation. Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is _really_ small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.
+If
 
-Often we have more than one response at a particular level of $\boldsymbol{X}$. Let $n_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $w_{i}$ be the proportion of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $n_{i}=1$.
+$$w_i \stackrel{iid}{\sim} Bernoulli(p_i)$$ 
+
+Then
+
+$$\mathcal{L}(\boldsymbol{p}|\boldsymbol{w}) = \prod_{i=1}^n p_i^{w_i}(1-p_i)^{1-w_i}$$
+and therefore  substituting $p_i = \textrm{ilogit}(\boldsymbol{X}_i\boldsymbol{\beta})$ in we have
+
+
+$$\begin{aligned}
+ \mathcal{L}\left(\boldsymbol{\beta}|\boldsymbol{w} \right)	&=
+	\prod_{i=1}^n \left(\textrm{ilogit}(\boldsymbol{X}_i \boldsymbol{\beta}) \right)^{w_i} 
+	              \left( 1-\textrm{ilogit}(\boldsymbol{X}_i \boldsymbol{\beta})\right)^{1-w_i}  
+	\end{aligned}$$
+and
+
+$$\log \mathcal{L}\left(\boldsymbol{\beta}|\boldsymbol{w} \right)	= 
+\sum_{i=1}^n \log \left\{ 
+  \left(   \textrm{ilogit}(\boldsymbol{X}_i \boldsymbol{\beta})\right)^{w_i} 
+  \left( 1-\textrm{ilogit}(\boldsymbol{X}_i \boldsymbol{\beta})\right)^{1-w_i}
+\right\}$$
+
+Often times it is more numerically stable to maximize the log-likelihood rather than the pure likelihood function because using logs helps prevent machine under-flow issues when the values of the likelihood is _really_ small, but we will ignore that here and just assume that the function the performs the maximization is well designed to consider such issues.
+
+We have more than one response at a particular level of $\boldsymbol{X}$. Let $m_{i}$ be the number of observations observed at the particular value of $\boldsymbol{X}$, and $w_{i}$ be the number of successes at that value of $\boldsymbol{X}$. In that case, $w_{i}$ is not a Bernoulli random variable, but rather a binomial random variable. Note that the Bernoulli distribution is the special case of the binomial distribution with $m_{i}=1$.
 
 ```{r}
 # beta are the parameters 
-# y is the response in terms of 0,1 for this mayfly example
+# w is the response in terms of 0,1 for this mayfly example
 # X is the design matrix that we use for our covariates.
 logL <- function(beta, w, X){
   out <- dbinom( w, size=1, prob= faraway::ilogit(X%*%beta), log=TRUE ) %>% sum()
@@ -136,7 +157,7 @@ NeglogL <- function(beta, w, X){ return( -logL(beta, w, X)) }
 ```
 
 ```{r}
-optim( par=c(0,0),     # intial bad guesses
+optim( par=c(0,0),     # initial bad guesses
        fn = NeglogL,   # we want to minimize the -logL function, maximize logL
        w=Mayflies$Occupancy,  # parameters to pass to the logL function
        X = model.matrix( ~ 1 + CCU, data=Mayflies ) )  # ditto
@@ -147,12 +168,15 @@ In general, we don't want to have to specify the likelihood function by hand. In
 
 ```{r}
 head(Mayflies)
-# The following are equivalent and a "success" is if the site is 
-# occupied. If you were to switch it so a success is that the site
-# is not occupied, the signs on all the beta coefficients would switch.
-# m1 <- glm( (Occupancy == 1) ~ CCU, data=Mayflies, family=binomial )  # problem with emmeans!
+# The following defines a "success" as if the site is 
+# occupied. For binomial regression, it is best to always specify the response
+# as two columns where the first is the number of successes and the second is the
+# number of failures for the particular set of covariates.
+# 
+# In our case, each data row denotes a single trial and occupancy is either 0 or 1.
+# To get the number of failures, we just have to subtract from the number of trials
+# at the given value of CCU, which is just 1.
 m1 <- glm( cbind(Occupancy, 1-Occupancy) ~ CCU, data=Mayflies, family=binomial ) #ok!
-m1 <- glm( Occupancy ~ CCU, data=Mayflies, family=binomial )
 ```
 
 
@@ -167,23 +191,25 @@ Notice that the summary table includes an estimate of the standard error of each
 The sigmoid curve shown prior was the result of the logit model and we can estimate the probability of occupancy for any value of CCU. Surprisingly, R does not have a built-in function for the logit and ilogit function, but the faraway package does include them.
 
 ```{r}
-# Here are two ways to calculate the phat value for CCU = 1
-new.df <- data.frame(CCU=1)
-faraway::ilogit( predict(m1, newdata=new.df) )          
-predict(m1, newdata=new.df, type='response')   
-
-# But the predict() function won't give you a confidence interval.
-# Lets get this value through emmeans() instead.
-emmeans(m1, ~CCU, type='response', at=list(CCU=1))
+# Here are three ways to calculate the phat value for CCU = 1. The predict()
+# function won't give you confidence intervals, however. So I prefer emmeans()
+# new.df <- data.frame(CCU=1)
+# predict(m1, newdata=new.df) %>% faraway::ilogit()  # back transform to p myself
+# predict(m1, newdata=new.df, type='response')       # ask predict() to do it
+emmeans(m1, ~CCU, at=list(CCU=1), type='response')
 
 # Finally a nice graph
-new.df <- data.frame( CCU=seq(0,5, by=.01) )
-yhat.df <- new.df %>% mutate(fit = predict(m1, newdata=new.df, type='response') ) 
+# new.df <- data.frame( CCU=seq(0,5, by=.01) )
+# yhat.df <- new.df %>% mutate(fit = predict(m1, newdata=new.df, type='response') ) 
+yhat.df <- emmeans(m1, ~CCU, at=list(CCU=seq(0,5,by=.01)), type='response') %>%
+  as.data.frame()
+  
 ggplot(Mayflies, aes(x=CCU)) +
+  geom_ribbon(data=yhat.df, aes(ymin=asymp.LCL, ymax=asymp.UCL), fill='salmon', alpha=.4) +
+  geom_line( data=yhat.df, aes(y=prob), color='red') +
   geom_point(aes(y=Occupancy)) +
-  geom_line( data=yhat.df, aes(y=fit), color='red') 
+  labs(y='Probability of Occupancy', x='Heavy Metal Pollution (CCU)', title='Mayfly Example')
 ```
-
 
 Suppose that we were to give a predicted Presence/Absence class based on the $\hat{p}$ value. Lets predict presence if the probability is greater than 0.5 and absent if the the probability is less that 0.5. 
 
@@ -204,7 +230,7 @@ This scheme has mis-classified 3 observations, two cases where mayflies were pre
 
 In the normal linear models case, we were very interested in the Sum of Squared Error (SSE)
 $$SSE=\sum_{i=1}^{n}\left(w_{i}-\hat{w}_{i}\right)^{2}$$
-because it provided a mechanism for comparing the fit of two different models. If a model had a very small SSE, then it fit the observed data well. We used this as a basis for forming our F-test to compare nested models (some rescaling by the appropriate degrees of freedom was necessary, though).
+because it provided a mechanism for comparing the fit of two different models. If a model had a very small SSE, then it fit the observed data well. We used this as a basis for forming our F-test to compare nested models (some re-scaling by the appropriate degrees of freedom was necessary, though).
 
 We want an equivalent measure of goodness-of-fit for models that are non-normal, but in the normal case, I would like it to be related to my SSE statistic.
 

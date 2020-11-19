@@ -33,11 +33,6 @@ library(tidyverse)  # ggplot2, dplyr, tidyr
 The goal of statistics is to take information calculated from sample data and use that information to estimate population parameters. The problem is that the sample statistic is only a rough guess and if we were to collect another sample of data, we'd get a different sample statistic and thus a different parameter estimate. Therefore, we need to utilize the sample statistics to create confidence intervals and make hypothesis tests about those parameters. 
 
 
-
-* Introduce the inference ideas about why we care.
-* Introduce the Gala data set.
-* 
-
 In this chapter, we'll consider a dataset about the Galápagos Islands relating the number of tortoise species on an island to various island characteristics such as size, maximum elevation, etc. The set contains $n=30$ islands and 
 
   Variable  |   Description

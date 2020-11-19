@@ -62,7 +62,7 @@ The Poisson distribution is used to model the number of events that happen in so
 The function that defines the relationship between the parameter $\lambda$ and what values are most probable is called the *probability mass function* when talking about discrete random variables and *probability density functions* in the continuous case.  Either way, these functions are traditionally notated using $f(x)$.
 $$f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}$$
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 data <- tibble(x=0:10) %>%
   mutate(upr = dpois(x, lambda = 3.5), lwr=0) %>%
   pivot_longer(lwr:upr, names_to='Type', values_to='y') 
@@ -84,7 +84,7 @@ The Exponential distribution can be used to model events that take on a positive
 
 $$f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x > 0$$
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 data <- tibble(x=seq(0,20, by=0.01)) %>%
   mutate(y = dexp(x, rate= 1/3.5))
  
@@ -105,7 +105,7 @@ The Normal distribution is extremely commonly used in statistics and can be used
 $$f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]$$
 where $\exp [w] = e^w$ is just a notational convenience. 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 data <- tibble( x= seq(3,9,by=0.01)) %>%
   mutate(y = dnorm(x, mean=6, sd=1))
 
@@ -138,7 +138,7 @@ $$\begin{aligned}
 \end{aligned}$$
 
 If we have observed $x=4$, then $\mathcal{L}(\lambda|x=4)$ is the following function
-```{r, echo=FALSE, fig.height=5}
+```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
 data <- tibble(lambda=seq(0,15, by=0.01)) %>%
   mutate(L = dpois(4, lambda = lambda))
 
@@ -187,7 +187,7 @@ $$\begin{aligned}
 
 So, suppose we have observed $\textbf{x} = \{4,6,3,3,2,4,3,2\}$. We could maximize this function and discover that the maximum occurs at $\hat{\lambda} = \bar{x} = 3.375$.
 
-```{r, echo=FALSE, fig.height=5}
+```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
 x <- c(4,6,3,3,2,4,3,2)
 
 data <- 
@@ -230,37 +230,38 @@ optimize(neglogL, interval=c(0,20) )
 
 
 ### Exponential Example
-We next consider data sampled from the exponential distribution. For this example, suppose that we had observed $\textbf{x}=\{7.2, 6.1, 9.0, 12, 8.8\}$ 
+We next consider data sampled from the exponential distribution. Recall the exponential distribution can be parametrized by a single parameter, $\beta$ and which is the expectation of the distribution and variance is $\beta^2$. We might consider using as an estimator *either* the sample mean or the sample standard deviation. It turns out that the sample mean is the maximum likelihood estimator in this case. For a concrete example, suppose that we had observed $\textbf{x}=\{15.6, 2.03, 9.12, 1.54, 3.69\}$ 
 
 
 $$\mathcal{L}(\mu, \sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \beta e^{\beta x_i}$$
-which is maximized at $\hat{\mu} = \bar{x} = 8.62$. We can numerically see this following the same process as previously seen.
+which is maximized at $\hat{\beta} = \bar{x} = 6.39$. We can numerically see this following the same process as previously seen.
 
-```{r, echo=FALSE, fig.height=5}
-x <- c(7.2, 6.1, 9.0, 12, 8.8)
+```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
+x <- c(15.6, 2.03, 9.12, 1.54, 3.69)
 mean(x)
 
 data <- 
-  expand.grid( beta=seq(0,30, by=0.01), x=x) %>%
+  expand.grid( beta=seq(.01,30, by=0.01), x=x) %>%
   mutate(L = dexp(.$x, rate = 1/ .$beta)) %>%
   group_by(beta) %>%
-  summarize( L = prod(L) )
+  summarize( L = prod(L), .groups='drop' ) %>%
+  as.data.frame()
 
 P1 <- 
   ggplot(data, aes(x=beta, y=L)) +
   geom_line() +
-  annotate('path', x=c(8.62,8.62), y=c(1.415e-7, 0), color='blue') +
-  annotate('text', x=8.62, y=1.52e-7, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
-  scale_y_continuous(limits=c(0,1.55e-7)) +
+  annotate('path', x=rep(mean(x),2), y=c(6.29e-7, 0), color='blue') +
+  annotate('text', x=mean(x), y=6.70e-7, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
+  # scale_y_continuous(limits=c(0,1.55e-7)) +
   labs( x = latex2exp::TeX('$\\beta$'), 
         y = latex2exp::TeX('$L(\\, \\beta \\,|\\, \\textbf{x} \\,)$'),
         title = latex2exp::TeX('Exponential Likelihood given $\\textbf{x}$') )
 P2 <- 
   ggplot(data, aes(x=beta, y=log(L) )) +
   geom_line() +
-  annotate('path', x=c(8.62,8.62), y=c(-15.8, -30), color='blue') +
-  annotate('text', x=8.62, y=-14.8, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
-  scale_y_continuous(limits=c(-30,-14.5)) +
+  annotate('path', x=rep(mean(x),2), y=c(-14.3, -30), color='blue') +
+  annotate('text', x=mean(x), y=-13.2, label=latex2exp::TeX('$\\hat{\\beta}$'), color='blue') +
+  scale_y_continuous(limits=c(-30,-13.0)) +
   labs( x = latex2exp::TeX('$\\beta$'), 
         y = latex2exp::TeX('$logL(\\, \\lambda \\,|\\, \\textbf{x} \\,)$'),
         title = latex2exp::TeX('Exponential log-Likelihood given $\\textbf{x}$') )
@@ -270,10 +271,11 @@ cowplot::plot_grid(P1, P2, nrow=2)
 
 
 ```{r}
-x <- c(7.2, 6.1, 9.0, 12, 8.8)
+x <- c(15.6, 2.03, 9.12, 1.54, 3.69)
 neglogL <- function(param){
-  dexp(x, rate=1/param) %>%   # We defined beta as 1/rate
-    log() %>% sum() %>% prod(-1) %>%
+  dexp(x, rate=1/param, log = TRUE) %>%   # We defined beta as 1/rate
+    sum() %>% 
+    prod(-1) %>%
     return()
 }
 optimize(neglogL, interval=c(0,30) )
@@ -302,7 +304,7 @@ s2 <- sum( (x - xbar)^2 / 6 )
 s <- sqrt(s2)
 ```
 
-```{r, echo=FALSE, fig.height=5}
+```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
 x <- c(5, 8, 9, 7, 11, 9)
 
 data <- 

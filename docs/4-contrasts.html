@@ -206,7 +206,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="4-contrasts.html"><a href="4-contrasts.html"><i class="fa fa-check"></i><b>4</b> Contrasts</a>
 <ul>
-<li class="chapter" data-level="" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_LearningOutcomes"><i class="fa fa-check"></i>Learning Outcomes</a></li>
 <li class="chapter" data-level="4.1" data-path="4-contrasts.html"><a href="4-contrasts.html#Contrasts_Introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
 <li class="chapter" data-level="4.2" data-path="4-contrasts.html"><a href="4-contrasts.html#estimate-and-variance"><i class="fa fa-check"></i><b>4.2</b> Estimate and variance</a></li>
 <li class="chapter" data-level="4.3" data-path="4-contrasts.html"><a href="4-contrasts.html#estimating-contrasts-using-glht"><i class="fa fa-check"></i><b>4.3</b> Estimating contrasts using <code>glht()</code></a>
@@ -391,9 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb49-2"><a href="4-contrasts.html#cb49-2" aria-hidden="true"></a><span class="kw">library</span>(tidymodels)  <span class="co"># for broom functions</span></span>
 <span id="cb49-3"><a href="4-contrasts.html#cb49-3" aria-hidden="true"></a><span class="kw">library</span>(emmeans)    <span class="co"># for emmeans()</span></span>
 <span id="cb49-4"><a href="4-contrasts.html#cb49-4" aria-hidden="true"></a><span class="co"># library(multcomp)   # for glht()  - multcomp fights with dplyr, :(</span></span></code></pre></div>
-<div id="Contrasts_LearningOutcomes" class="section level3 unnumbered">
-<h3>Learning Outcomes</h3>
-</div>
+<!-- ### Learning Outcomes{-} -->
 <div id="Contrasts_Introduction" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Introduction</h2>
 <p>We have written our model as <span class="math inline">\(\boldsymbol{y} = \boldsymbol{X\beta}+\boldsymbol{\epsilon}\)</span> and often we are interested in some linear function of the <span class="math inline">\(\boldsymbol{\hat{\beta}}\)</span>. Some examples include the model predictions <span class="math inline">\(\hat{y}_i = \boldsymbol{X}_{i\cdot} \boldsymbol{\beta}\)</span> where <span class="math inline">\(\boldsymbol{X}_{i\cdot}\)</span> is the <span class="math inline">\(i^{th}\)</span> row of the <span class="math inline">\(\boldsymbol{X}\)</span> matrix. Other examples include differences in group means in a one-way ANOVA or differences in predicted values <span class="math inline">\(\hat{y}_i - \hat{y}_j\)</span>.</p>

@@ -22,7 +22,7 @@ library(emmeans)    # for emmeans()
 # library(multcomp)   # for glht()  - multcomp fights with dplyr, :(
 ```
 
-### Learning Outcomes{-#Contrasts_LearningOutcomes}
+<!-- ### Learning Outcomes{-} -->
 
 ## Introduction {#Contrasts_Introduction}
 We have written our model as $\boldsymbol{y} = \boldsymbol{X\beta}+\boldsymbol{\epsilon}$ and often we are interested in some linear function of the $\boldsymbol{\hat{\beta}}$. Some examples include the model predictions $\hat{y}_i = \boldsymbol{X}_{i\cdot} \boldsymbol{\beta}$ where $\boldsymbol{X}_{i\cdot}$ is the $i^{th}$ row of the $\boldsymbol{X}$ matrix. Other examples include differences in group means in a one-way ANOVA or differences in predicted values $\hat{y}_i - \hat{y}_j$.
