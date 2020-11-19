@@ -282,7 +282,7 @@ By default, `emmeans()` and `emtrends()` don't provide p-values for testing if t
     a) Create a boxplot of the respondents' `Race` and `Income`.
     b) Fit a 1-way ANOVA on these data.
     c) Use `multcomp::glht()` to calculate all the pairwise differences between the race categories.
-    d) Use `emmeans()` to calculate all the pairwise differnces between the race categories. 
+    d) Use `emmeans()` to calculate all the pairwise differences between the race categories. 
 
 2. We will examine a data set from Ashton et al. (2007) that relates the length of a tortoise’s carapace to the number of eggs laid in a clutch. The data are
     ```{r}

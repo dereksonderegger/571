@@ -161,7 +161,9 @@ P2 <- ggplot(data, aes(x=lambda, y=log(L) )) +
 cowplot::plot_grid(P1, P2, nrow=2)
 ```
 
-Our best estimate for $\lambda$ is the value that maximizes $\mathcal{L}(\lambda|x)$. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by taking the log of the Likelihood function. Because the log function is monotonic, maximizing the Likelihood function is equivalent to maximizing the log-Likelihood function. Second, if taking the derivative is impossible, we could just use a numerical solving algorithm to find the value of $\lambda$ that maximizes the log-likelihood function. Numerical solvers are convenient, but are only accurate to machine tolerance you specify.  In this case where $x=4$, the actual maximum likelihood value is $\hat{\lambda}=4$.
+Our best estimate for $\lambda$ is the value that maximizes $\mathcal{L}(\lambda|x)$. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by instead maximizing the log of the Likelihood function. This is equivalent because the log function is monotonically increasing and if $a < b$ then $\log(a) < \log(b)$. It is simpler because taking logs makes everything 1 operation simpler and reduces the need for using the chain rule while taking derivatives. We could also find the value of $\lambda$ that maximizes the likelihood using numerical methods. Again because the log function makes everything nicer, in practice we'll always maximize the log likelihood. Many optimization functions are designed around finding function minimums, so to use those, we'll actually seek to minimize the *negative* log likelihood which is simply $-1* \log \mathcal{L}()$. 
+
+Numerical solvers are convenient, but are only accurate to machine tolerance you specify.  In this case where $x=4$, the actual maximum likelihood value is $\hat{\lambda}=4$.
 
 ```{r}
 x <- 4
@@ -185,7 +187,7 @@ $$\begin{aligned}
 \mathcal{L}(\lambda|\textbf{x}) = \prod_{i=1}^{n}f(x_i|\lambda) = \prod_{i=1}^n\frac{e^{-\lambda} \lambda^x_i}{x_i!}
 \end{aligned}$$
 
-So, suppose we have observed $\textbf{x} = \{4,6,3,3,2,4,3,2\}$. We could maximize this function and discover that the maximum occurs at $\hat{\lambda} = \bar{x} = 3.375$.
+So, suppose we have observed $\textbf{x} = \{4,6,3,3,2,4,3,2\}$. We could maximize this function either using calculus methods  or numerical methods this function and discover that the maximum occurs at $\hat{\lambda} = \bar{x} = 3.375$.
 
 ```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
 x <- c(4,6,3,3,2,4,3,2)
@@ -232,9 +234,10 @@ optimize(neglogL, interval=c(0,20) )
 ### Exponential Example
 We next consider data sampled from the exponential distribution. Recall the exponential distribution can be parametrized by a single parameter, $\beta$ and which is the expectation of the distribution and variance is $\beta^2$. We might consider using as an estimator *either* the sample mean or the sample standard deviation. It turns out that the sample mean is the maximum likelihood estimator in this case. For a concrete example, suppose that we had observed $\textbf{x}=\{15.6, 2.03, 9.12, 1.54, 3.69\}$ 
 
+The likelihood is
+$$\mathcal{L}(\beta | \textbf{x}) =  \prod_{i=1}^n \beta e^{\beta x_i}$$
 
-$$\mathcal{L}(\mu, \sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \beta e^{\beta x_i}$$
-which is maximized at $\hat{\beta} = \bar{x} = 6.39$. We can numerically see this following the same process as previously seen.
+A bit of calculus will show that this is maximized at $\hat{\beta} = \bar{x} = 6.39$. We can numerically see this following the same process as previously seen.
 
 ```{r, echo=FALSE, fig.height=5, warning=FALSE, message=FALSE}
 x <- c(15.6, 2.03, 9.12, 1.54, 3.69)
@@ -290,7 +293,7 @@ As usual we can calculate the likelihood function
 
 $$\mathcal{L}(\mu,\sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma} \exp \left[ -\frac{1}{2}\frac{(x_i-\mu)^2}{\sigma^2} \right]$$
 
-It turns out the maximum likelihood estimators in this model are
+Again using calculus, it can be shown that the maximum likelihood estimators in this model are
 $$\hat{\mu} = \bar{x} = 8.16666$$
 $$\hat{\sigma}_{mle} = \sqrt{ \frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2 } = 1.8634$$
 which is somewhat unexpected because the typical estimator we use has a $\frac{1}{n-1}$ multiplier. 
@@ -347,7 +350,7 @@ optim(c(5,2), neglogL )
 ## Discussion
 1. How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and $\ge 0$ for all $x$. *While knowing the derivative function $f'(x)$ would allow us to be much more clever, lets think about how to do the maximization by just evaluating $f(x)$ for different values of $x$.*
 
-2. Convince yourself that if $x_0$ is the maximizer of $f(x)$, then it is also the maximizer of $log( f( x ) )$. This will rest on the idea that $log()$ is a strictly increasing function. 
+2. Convince yourself that if $x_0$ is the value of $x$ that maximizes $f(x)$, then it is also the value that maximizes $log( f( x ) )$. This will rest on the idea that $log()$ is a strictly increasing function. 
 
 
 

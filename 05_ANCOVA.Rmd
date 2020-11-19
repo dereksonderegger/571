@@ -169,6 +169,8 @@ y_{47}
 \epsilon_{47}
 \end{array}\right]
 $$
+
+
 where the new fourth column is the what I would get if I multiplied the $\boldsymbol{x}$ column element-wise with the dummy-variable column. To fit this model in R we have
 ```{r}
 data('teengamb', package='faraway')
