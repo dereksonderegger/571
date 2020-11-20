@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 1 Matrix Manipulation | Statistical Methods II</title>
+  <title>Chapter 13 Maximum Likelihood Estimation | Statistical Methods II</title>
   <meta name="description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   <meta name="generator" content="bookdown 0.20.6 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 1 Matrix Manipulation | Statistical Methods II" />
+  <meta property="og:title" content="Chapter 13 Maximum Likelihood Estimation | Statistical Methods II" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="dereksonderegger/STA_571_Book" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 1 Matrix Manipulation | Statistical Methods II" />
+  <meta name="twitter:title" content="Chapter 13 Maximum Likelihood Estimation | Statistical Methods II" />
   
   <meta name="twitter:description" content="The second semester of an Intro Stats course designed for graduate students in Biology, Forestry, Ecology, etc." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="2-parameter-estimation.html"/>
+<link rel="prev" href="12-block-designs-1.html"/>
+<link rel="next" href="project-appendix.html"/>
 <script src="libs/header-attrs-2.5/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -384,489 +384,198 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="matrix-manipulation" class="section level1" number="1">
-<h1><span class="header-section-number">Chapter 1</span> Matrix Manipulation</h1>
-<div id="MatrixTheory_LearningOutcomes" class="section level3 unnumbered">
+<div id="maximum-likelihood-estimation" class="section level1" number="13">
+<h1><span class="header-section-number">Chapter 13</span> Maximum Likelihood Estimation</h1>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="13-maximum-likelihood-estimation.html#cb560-1" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)  <span class="co"># dplyr, tidyr, ggplot2</span></span></code></pre></div>
+<div id="learning-outcomes-1" class="section level3 unnumbered">
 <h3>Learning Outcomes</h3>
 <ul>
-<li>Perform basic vector and matrix operations of addition and multiplication</li>
-<li>Perform matrix operations of transpose and inverse.</li>
+<li>Explain how the probability mass/density function <span class="math inline">\(f(x|\theta)\)</span> indicates what data regions are more probable.</li>
+<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is defined if we know the probability function.</li>
+<li>Explain how the likelihood function <span class="math inline">\(\mathcal{L}(\theta|x)\)</span> is used to find the maximum likelihood estimate of <span class="math inline">\(\theta\)</span>.</li>
+<li>For a given sample of data drawn from a distribution, find the maximum likelihood estimate for the distribution parameters using R.</li>
 </ul>
 </div>
-<div id="MatrixTheory_Introduction" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Introduction</h2>
-<p>Almost all of the calculations done in classical statistics require
-formulas with large number of subscripts and many different sums.
-In this chapter we will develop the mathematical machinery to write
-these formulas in a simple compact formula using <em>matrices</em>.</p>
+<div id="introduction-1" class="section level2" number="13.1">
+<h2><span class="header-section-number">13.1</span> Introduction</h2>
+<p>The goal of statistical modeling is to take data that has some general trend along with some un-explainable variability, and say something intelligent about the trend. For example, the simple regression model</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \epsilon_i \;\;\;\;\;\; \textrm{where} \;\; \epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\]</span>
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-312-1.png" width="672" /></p>
+<p>There is a general increasing trend in the response (i.e. the <span class="math inline">\(\beta_0 + \beta_1 x_i\)</span> term) and then some un-explainable noise (the <span class="math inline">\(\epsilon_i \stackrel{iid}{\sim} N(0, \sigma^2)\)</span> part).</p>
+<p>While it has been convenient to write the model in this form, it is also possible to write the simple regression model as
+<span class="math display">\[y_i \stackrel{ind}{\sim} N(\, \beta_0 + \beta_1x_i,\; \sigma^2 \,)\]</span></p>
+<p>This model contains three parameters <span class="math inline">\(\beta_0, \beta_1\)</span>, and <span class="math inline">\(\sigma\)</span> but it certainly isn’t clear how to estimate these three values. In this chapter, we’ll develop a mechanism for taking observed data sampled from some distribution parameterized by some <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\lambda\)</span>, <span class="math inline">\(\sigma\)</span>, or <span class="math inline">\(\theta\)</span> and then estimating those parameters.</p>
 </div>
-<div id="types-of-matrices" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> Types of Matrices</h2>
-<p>We will first introduce the idea behind a matrix and give several
-special types of matrices that we will encounter.</p>
-<div id="scalars" class="section level3" number="1.2.1">
-<h3><span class="header-section-number">1.2.1</span> Scalars</h3>
-<p>To begin, we first define a <em>scalar</em>. A scalar is just a single
-number, either real or complex. The key is that a scalar is just a
-single number. For example, <span class="math inline">\(6\)</span> is a scalar, as is <span class="math inline">\(-3\)</span>. By convention,
-variable names for scalars will be lower case and not in bold typeface.</p>
-<p>Examples could be <span class="math inline">\(a=5\)</span>, <span class="math inline">\(b=\sqrt{3}\)</span>, or <span class="math inline">\(\sigma=2\)</span>.</p>
+<div id="distributions" class="section level2" number="13.2">
+<h2><span class="header-section-number">13.2</span> Distributions</h2>
+<p>Depending on what values the data can take on (integers, positive values) and the shape of the distribution of values, we might chose to model the data using one of several different distributions. Next we’ll quickly introduce the mathematical relationship between the parameter and probable data values of several distributions.</p>
+<div id="poisson" class="section level3" number="13.2.1">
+<h3><span class="header-section-number">13.2.1</span> Poisson</h3>
+<p>The Poisson distribution is used to model the number of events that happen in some unit of time or space. This distribution is often used to model events that can only be positive integers. This distribution is parameterized by <span class="math inline">\(\lambda\)</span>, which represents the expected number of events that happen (as defined as the average over an infinitely large number of draws). Because <span class="math inline">\(\lambda\)</span> represents the average number of events, the <span class="math inline">\(\lambda\)</span> parameter must be greater than or equal to 0.</p>
+<p>The function that defines the relationship between the parameter <span class="math inline">\(\lambda\)</span> and what values are most probable is called the <em>probability mass function</em> when talking about discrete random variables and <em>probability density functions</em> in the continuous case. Either way, these functions are traditionally notated using <span class="math inline">\(f(x)\)</span>.
+<span class="math display">\[f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!} \;\;\;\; \textrm{for}\;\;  x \in \{0,1,2,\dots\}\]</span></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-313-1.png" width="672" /></p>
+<p>The notation <span class="math inline">\(f(x|\lambda)\)</span> read as “f <em>given</em> <span class="math inline">\(\lambda\)</span>” and is used to denote that this is a function that describes what values of the data <span class="math inline">\(X\)</span> are most probable and that the function depends on the parameter value. This is emphasizing that if we were to change the parameter value (to say <span class="math inline">\(\lambda = 10\)</span>), then a different set of data values would be more probable. In the above example with <span class="math inline">\(\lambda = 3.5\)</span>, the most probable outcome is <span class="math inline">\(3\)</span> but we aren’t surprised if we were to observe a value of <span class="math inline">\(x=1,2,\)</span> or <span class="math inline">\(4\)</span>. However, from this graph, we see that <span class="math inline">\(x=10\)</span> or <span class="math inline">\(x=15\)</span> would be highly improbable.</p>
 </div>
-<div id="vectors" class="section level3" number="1.2.2">
-<h3><span class="header-section-number">1.2.2</span> Vectors</h3>
-<p>A vector is collection of scalars, arranged as a row or column. Our
-convention will be that a vector will be a lower cased letter but
-written in a bold type. In other branches of mathematics is common
-to put a bar over the variable name to denote that it is a vector,
-but in statistics, we have already used a bar to denote a mean.</p>
-<p>Examples of column vectors could be
-<span class="math display">\[\boldsymbol{a} = \left[\begin{array}{c} 2\\ -3\\ 4\end{array}\right]
-\;\;\;\;\;
-\boldsymbol{b}=\left[\begin{array}{c} 2\\ 8\\ 3\\ 4\\ 1 \end{array}\right]\]</span></p>
-<p>and examples of row vectors are</p>
-<p><span class="math display">\[
-\boldsymbol{c}=\left[\begin{array}{cccc}
-8 &amp; 10 &amp; 43 &amp; -22\end{array}\right]
-\]</span></p>
-<p><span class="math display">\[
-\boldsymbol{d}=\left[\begin{array}{ccc}
--1 &amp; 5 &amp; 2\end{array}\right]
-\]</span></p>
-<p>To denote a specific entry in the vector, we will use a subscript.
-For example, the second element of <span class="math inline">\(\boldsymbol{d}\)</span> is <span class="math inline">\(d_{2}=5\)</span>.
-Notice, that we do not bold this symbol because the second element
-of the vector is the scalar value <span class="math inline">\(5\)</span>.</p>
+<div id="exponential" class="section level3" number="13.2.2">
+<h3><span class="header-section-number">13.2.2</span> Exponential</h3>
+<p>The Exponential distribution can be used to model events that take on a positive real value and the distribution of values has some skewness. We will parameterize this distribution using <span class="math inline">\(\beta\)</span> as the mean of the distribution.</p>
+<p><span class="math display">\[f(x|\beta) = \beta e^{\beta x} \;\;\;\; \textrm{for} \;\; x &gt; 0\]</span></p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
+<p>In this distribution, the region near zero is the most probable outcome, and larger observations are less probable.</p>
 </div>
-<div id="matrix" class="section level3" number="1.2.3">
-<h3><span class="header-section-number">1.2.3</span> Matrix</h3>
-<p>Just as a vector is a collection of scalars, a matrix can be viewed
-as a collection of vectors (all of the same length). We will denote
-matrices with bold capitalized letters. In general, I try to use letters
-at the end of the alphabet for matrices. Likewise, I try to use symmetric
-letters to denote symmetric matrices.</p>
-<p>For example, the following is a matrix with two rows and three columns
-<span class="math display">\[
-\boldsymbol{W}=\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\\
-4 &amp; 5 &amp; 6
-\end{array}\right]
-\]</span>
-and there is no requirement that the number of rows be equal, less
-than, or greater than the number of columns. In denoting the size
-of the matrix, we first refer to the number of rows and then the number
-of columns. Thus <span class="math inline">\(\boldsymbol{W}\)</span> is a <span class="math inline">\(2\times3\)</span> matrix and it
-sometimes is helpful to remind ourselves of this by writing <span class="math inline">\(\boldsymbol{W}_{2\times3}\)</span>.</p>
-<p>To pick out a particular element of a matrix, I will again use a subscripting
-notation, always with the row number first and then column. Notice
-the notational shift to lowercase, non-bold font.
-<span class="math display">\[
-w_{1,2}=2\;\;\;\;\;\;\textrm{and }\;\;\;\;\;\;\;w_{2,3}=6
-\]</span></p>
-<p>There are times I will wish to refer to a particular row or column
-of a matrix and we will use the following notation
-<span class="math display">\[
-\boldsymbol{w}_{1,\cdot}=\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\end{array}\right]
-\]</span>
-is the first row of the matrix <span class="math inline">\(\boldsymbol{W}\)</span>. The second column
-of matrix <span class="math inline">\(\boldsymbol{W}\)</span> is
-<span class="math display">\[
-\boldsymbol{w}_{\cdot,2}=\left[\begin{array}{c}
-2\\
-5
-\end{array}\right]
-\]</span></p>
-</div>
-<div id="square-matrices" class="section level3" number="1.2.4">
-<h3><span class="header-section-number">1.2.4</span> Square Matrices</h3>
-<p>A square matrix is a matrix with the same number of rows as columns.
-The following are square
-<span class="math display">\[
-\boldsymbol{Z}=\left[\begin{array}{cc}
-3 &amp; 6\\
-8 &amp; 10
-\end{array}\right]\;\;\;\;\;\;\boldsymbol{X}=\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\\
-2 &amp; 1 &amp; 2\\
-3 &amp; 2 &amp; 1
-\end{array}\right]
-\]</span></p>
-</div>
-<div id="symmetric-matrices" class="section level3" number="1.2.5">
-<h3><span class="header-section-number">1.2.5</span> Symmetric Matrices</h3>
-<p>In statistics we are often interested in square matrices where the
-<span class="math inline">\(i,j\)</span> element is the same as the <span class="math inline">\(j,i\)</span> element. For example, <span class="math inline">\(x_{1,2}=x_{2,1}\)</span>
-in the above matrix <span class="math inline">\(\boldsymbol{X}.\)</span></p>
-<p>Consider a matrix <span class="math inline">\(\boldsymbol{D}\)</span> that contains the distance
-from four towns to each of the other four towns. Let <span class="math inline">\(d_{i,j}\)</span> be
-the distance from town <span class="math inline">\(i\)</span> to town <span class="math inline">\(j\)</span>. It only makes sense that
-the distance doesn’t matter which direction you are traveling, and
-we should therefore require that <span class="math inline">\(d_{i,j}=d_{j,i}\)</span>.</p>
-<p>In this example, it is the values <span class="math inline">\(d_{i,i}\)</span> represent the distance
-from a town to itself, which should be zero. It turns out that we
-are often interested in the terms <span class="math inline">\(d_{i,i}\)</span> and I will refer to those
-terms as the <em>main diagonal</em> of matrix <span class="math inline">\(\boldsymbol{D}\)</span>.</p>
-<p>Symmetric matrices play a large role in statistics because matrices
-that represent the covariances between random variables must be symmetric
-because <span class="math inline">\(Cov\left(Y,Z\right)=Cov\left(Z,Y\right)\)</span>.</p>
-</div>
-<div id="diagonal-matrices" class="section level3" number="1.2.6">
-<h3><span class="header-section-number">1.2.6</span> Diagonal Matrices</h3>
-<p>A square matrix that has zero entries in every location except the
-main diagonal is called a diagonal matrix. Here are two examples:
-<span class="math display">\[
-\boldsymbol{Q}=\left[\begin{array}{ccc}
-4 &amp; 0 &amp; 0\\
-0 &amp; 5 &amp; 0\\
-0 &amp; 0 &amp; 6
-\end{array}\right]\;\;\;\;\;\;\;\;\boldsymbol{R}=\left[\begin{array}{cccc}
-1 &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; 2 &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; 2 &amp; 0\\
-0 &amp; 0 &amp; 0 &amp; 3
-\end{array}\right]
-\]</span>
-Sometimes to make matrix more clear, I will replace the <span class="math inline">\(0\)</span> with
-a dot to emphasize the non-zero components.
-<span class="math display">\[
-\boldsymbol{R}=\left[\begin{array}{cccc}
-1 &amp; \cdot &amp; \cdot &amp; \cdot\\
-\cdot &amp; 2 &amp; \cdot &amp; \cdot\\
-\cdot &amp; \cdot &amp; 2 &amp; \cdot\\
-\cdot &amp; \cdot &amp; \cdot &amp; 3
-\end{array}\right]
-\]</span></p>
-</div>
-<div id="identity-matrices" class="section level3" number="1.2.7">
-<h3><span class="header-section-number">1.2.7</span> Identity Matrices</h3>
-<p>A diagonal matrix with main diagonal values exactly <span class="math inline">\(1\)</span> is called
-the identity matrix. The <span class="math inline">\(3\times3\)</span> identity matrix is denoted <span class="math inline">\(I_{3}\)</span>.
-<span class="math display">\[
-\boldsymbol{I}_{3}=\left[\begin{array}{ccc}
-1 &amp; \cdot &amp; \cdot\\
-\cdot &amp; 1 &amp; \cdot\\
-\cdot &amp; \cdot &amp; 1
-\end{array}\right]
-\]</span></p>
+<div id="normal" class="section level3" number="13.2.3">
+<h3><span class="header-section-number">13.2.3</span> Normal</h3>
+<p>The Normal distribution is extremely commonly used in statistics and can be used to modeled continuous variables and is parameterized by the center <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span> parameters.</p>
+<p><span class="math display">\[f(x|\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}} \exp \left[ -\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2 \right]\]</span>
+where <span class="math inline">\(\exp [w] = e^w\)</span> is just a notational convenience.</p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
+<p>All of these distributions (and there are many, many more distributions commonly used) have some mathematical function that defines the how probable a region of response values is and that function depends on the parameters. Importantly <span class="math inline">\(X\)</span> regions with the highest <span class="math inline">\(f(x|\theta)\)</span> are the most probable data values.</p>
+<p>There are many additional mathematical details that go into these density functions but the important aspect is that they tell us what data values are most probable given some parameter values <span class="math inline">\(\theta\)</span>.</p>
 </div>
 </div>
-<div id="operations-on-matrices" class="section level2" number="1.3">
-<h2><span class="header-section-number">1.3</span> Operations on Matrices</h2>
-<div id="transpose" class="section level3" number="1.3.1">
-<h3><span class="header-section-number">1.3.1</span> Transpose</h3>
-<p>The simplest operation on a square matrix matrix is called <em>transpose</em>.
-It is defined as <span class="math inline">\(\boldsymbol{M}=\boldsymbol{W}^{T}\)</span> if and only
-if <span class="math inline">\(m_{i,j}=w_{j,i}.\)</span></p>
-<p><span class="math display">\[
-\boldsymbol{Z}=\left[\begin{array}{cc}
-1 &amp; 6\\
-8 &amp; 3
-\end{array}\right]\;\;\;\;\;\;\boldsymbol{Z}^{T}=\left[\begin{array}{cc}
-1 &amp; 8\\
-6 &amp; 3
-\end{array}\right]
-\]</span>
-<span class="math display">\[
-\boldsymbol{M}=\left[\begin{array}{ccc}
-3 &amp; 1 &amp; 2\\
-9 &amp; 4 &amp; 5\\
-8 &amp; 7 &amp; 6
-\end{array}\right]\;\;\;\;\;\boldsymbol{M}^{T}=\left[\begin{array}{ccc}
-3 &amp; 9 &amp; 8\\
-1 &amp; 4 &amp; 7\\
-2 &amp; 5 &amp; 6
-\end{array}\right]
-\]</span>
-We can think of this as swapping all elements about the main diagonal. Alternatively we could think about the transpose as making the first row become the first column, the second row become the second column, etc. In this fashion we could define the transpose of a non-square matrix.</p>
-<p><span class="math display">\[
-\boldsymbol{W}=\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\\
-4 &amp; 5 &amp; 6
-\end{array}\right]
-\]</span></p>
-<p><span class="math display">\[
-\boldsymbol{W}^T=\left[\begin{array}{cc}
-1 &amp; 4 \\
-2 &amp; 5 \\
-3 &amp; 6
-\end{array}\right]
-\]</span></p>
-</div>
-<div id="addition-and-subtraction" class="section level3" number="1.3.2">
-<h3><span class="header-section-number">1.3.2</span> Addition and Subtraction</h3>
-<p>Addition and subtraction are performed <em>element-wise</em>. This means
-that two matrices or vectors can only be added or subtracted if their
-dimensions match.
-<span class="math display">\[
-\left[\begin{array}{c}
-1\\
-2\\
-3\\
-4
-\end{array}\right]+\left[\begin{array}{c}
-5\\
-6\\
-7\\
-8
-\end{array}\right]=\left[\begin{array}{c}
-6\\
-8\\
-10\\
-12
-\end{array}\right]
-\]</span>
-<span class="math display">\[
-\left[\begin{array}{cc}
-5 &amp; 8\\
-2 &amp; 4\\
-11 &amp; 15
-\end{array}\right]-\left[\begin{array}{cc}
-1 &amp; 2\\
-3 &amp; 4\\
-5 &amp; -6
-\end{array}\right]=\left[\begin{array}{cc}
-4 &amp; 6\\
--1 &amp; 0\\
-6 &amp; 21
-\end{array}\right]
-\]</span></p>
-</div>
-<div id="multiplication" class="section level3" number="1.3.3">
-<h3><span class="header-section-number">1.3.3</span> Multiplication</h3>
-<p>Multiplication is the operation that is vastly different for matrices
-and vectors than it is for scalars. There is a great deal of mathematical
-theory that suggests a useful way to define multiplication. What is
-presented below is referred to as the <em>dot-product</em> of vectors
-in calculus, and is referred to as the standard <em>inner-product</em>
-in linear algebra.</p>
-</div>
-<div id="vector-multiplication" class="section level3" number="1.3.4">
-<h3><span class="header-section-number">1.3.4</span> Vector Multiplication</h3>
-<p>We first define multiplication for a row and column vector. For this
-multiplication to be defined, both vectors must be the same length.
-The product is the sum of the element-wise multiplications.
-<span class="math display">\[
-\left[\begin{array}{cccc}
-1 &amp; 2 &amp; 3 &amp; 4\end{array}\right]\left[\begin{array}{c}
-5\\
-6\\
-7\\
-8
-\end{array}\right]=\left(1\cdot5\right)+\left(2\cdot6\right)+\left(3\cdot7\right)+\left(4\cdot8\right)=5+12+21+32=70
-\]</span></p>
-</div>
-<div id="matrix-multiplication" class="section level3" number="1.3.5">
-<h3><span class="header-section-number">1.3.5</span> Matrix Multiplication</h3>
-<p>Matrix multiplication is just a sequence of vector multiplications.
-If <span class="math inline">\(\boldsymbol{X}\)</span> is a <span class="math inline">\(m\times n\)</span> matrix and <span class="math inline">\(\boldsymbol{W}\)</span>
-is <span class="math inline">\(n\times p\)</span> matrix then <span class="math inline">\(\boldsymbol{Z}=\boldsymbol{XW}\)</span> is a
-<span class="math inline">\(m\times p\)</span> matrix where <span class="math inline">\(z_{i,j}=\boldsymbol{x}_{i,\cdot}\boldsymbol{w}_{\cdot, j}\)</span>
-where <span class="math inline">\(\boldsymbol{x}_{i,\cdot}\)</span> is the <span class="math inline">\(i\)</span>th column of
-<span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{w}_{\cdot, j}\)</span> is the <span class="math inline">\(j\)</span>th column
-of <span class="math inline">\(\boldsymbol{W}\)</span>. For example, let
-<span class="math display">\[
-\boldsymbol{X}=\left[\begin{array}{cccc}
-1 &amp; 2 &amp; 3 &amp; 4\\
-5 &amp; 6 &amp; 7 &amp; 8\\
-9 &amp; 10 &amp; 11 &amp; 12
-\end{array}\right]\;\;\;\;\;\;\;\;\;\boldsymbol{W}=\left[\begin{array}{cc}
-13 &amp; 14\\
-15 &amp; 16\\
-17 &amp; 18\\
-19 &amp; 20
-\end{array}\right]
-\]</span>
-so <span class="math inline">\(\boldsymbol{X}\)</span> is <span class="math inline">\(3\times4\)</span> (which we remind ourselves by
-adding a <span class="math inline">\(3\times4\)</span> subscript to <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_{3\times4}\)</span>)
-and <span class="math inline">\(\boldsymbol{W}\)</span> is <span class="math inline">\(\boldsymbol{W}{}_{4\times2}\)</span>. Because the
-<em>inner</em> dimensions match for this multiplication, then <span class="math inline">\(\boldsymbol{Z}_{3\times2}=\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span>
-is defined where
-<span class="math display">\[\begin{aligned}
-z_{1,1} &amp;=  \boldsymbol{x}_{1,\cdot}\boldsymbol{w}_{\cdot,1}\\
- &amp;=  \left(1\cdot13\right)+\left(2\cdot15\right)+\left(3\cdot17\right)+\left(4\cdot19\right)=170
-\end{aligned}\]</span></p>
-<p>and similarly</p>
-<p><span class="math display">\[\begin{aligned}  z_{2,1} 
-  &amp;=  \boldsymbol{x}_{2,\cdot}\boldsymbol{w}_{\cdot,1}\\
-  &amp;= \left(5\cdot13\right)+\left(6\cdot15\right)+\left(7\cdot17\right)+\left(8\cdot19\right) \\
-  &amp;= 426
-\end{aligned}\]</span></p>
-<p>so that</p>
-<p><span class="math display">\[\boldsymbol{Z}=\left[\begin{array}{cc}
-170 &amp; 180\\
-426 &amp; 452\\
-682 &amp; 724
-\end{array}\right]\]</span></p>
-<p>For another example, we note that
-<span class="math display">\[\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\\
-2 &amp; 3 &amp; 4
-\end{array}\right]\left[\begin{array}{cc}
-1 &amp; 2\\
-2 &amp; 2\\
-1 &amp; 2
-\end{array}\right] =  \left[\begin{array}{cc}
-1+4+3\;\;\; &amp; 2+4+6\\
-2+6+4\;\;\; &amp; 4+6+8
-\end{array}\right] 
- =  \left[\begin{array}{cc}
-8 &amp; 12\\
-12 &amp; 18
-\end{array}\right] \]</span></p>
-<p>Notice that this definition of multiplication means that the order
-matters. Above, we calculated <span class="math inline">\(\boldsymbol{X}_{3\times4}\boldsymbol{W}_{4\times2}\)</span>
-but we cannot reverse the order because the inner dimensions do not
-match up.</p>
-</div>
-<div id="scalar-times-a-matrix" class="section level3" number="1.3.6">
-<h3><span class="header-section-number">1.3.6</span> Scalar times a Matrix</h3>
-<p>Strictly speaking, we are not allowed to multiply a matrix by a scalar
-because the dimensions do not match. However, it is often notationally
-convenient. So we define <span class="math inline">\(a\boldsymbol{X}\)</span> to be the <em>element-wise</em>
-multiplication of each element of <span class="math inline">\(\boldsymbol{X}\)</span> by the scalar
-<span class="math inline">\(a\)</span>. Because this is just a notational convenience, the mathematical
-theory about inner-products does not apply to this operation.
-<span class="math display">\[5\left[\begin{array}{cc}
-4 &amp; 5\\
-7 &amp; 6\\
-9 &amp; 10
-\end{array}\right]=\left[\begin{array}{cc}
-20 &amp; 25\\
-35 &amp; 30\\
-45 &amp; 50
-\end{array}\right]\]</span></p>
-<p>Because of this definition, it is clear that <span class="math inline">\(a\boldsymbol{X}=\boldsymbol{X}a\)</span>
-and the order does not matter. Thus when mixing scalar multiplication
-with matrices, it is acceptable to reorder scalars, but not matrices.</p>
-</div>
-<div id="determinant" class="section level3" number="1.3.7">
-<h3><span class="header-section-number">1.3.7</span> Determinant</h3>
-<p>The determinant is defined only for square matrices and can be thought
-of as the matrix equivalent of the absolute value or magnitude (i.e.
-<span class="math inline">\(|-6|=6\)</span>). The determinant gives a measure of the multi-dimensional
-size of a matrix (say the matrix <span class="math inline">\(\boldsymbol{A}\)</span>) and as such is
-denoted <span class="math inline">\(\det\left(\boldsymbol{A}\right)\)</span> or <span class="math inline">\(\left|\boldsymbol{A}\right|\)</span>.
-Generally this is a very tedious thing to calculate by hand and for
-completeness sake, we will give a definition and small examples.</p>
-<p>For a <span class="math inline">\(2\times2\)</span> matrix
-<span class="math display">\[\left|\begin{array}{cc}
-a &amp; c\\
-b &amp; d
-\end{array}\right|=ad-cb\]</span></p>
-<p>So a simple example of a determinant is</p>
-<p><span class="math display">\[\left|\begin{array}{cc}
-5 &amp; 2\\
-3 &amp; 10
-\end{array}\right|=50-6=44\]</span></p>
-<p>The determinant can be thought of as the area of the parallelogram
-created by the row or column vectors of the matrix.</p>
-<p><img src="External_Images/determinant.png" width="250" style="display: block; margin: auto;" /></p>
-</div>
-<div id="inverse" class="section level3" number="1.3.8">
-<h3><span class="header-section-number">1.3.8</span> Inverse</h3>
-<p>In regular algebra, we are often interested in solving equations such
-as
-<span class="math display">\[ 5x=15 \]</span>
-for <span class="math inline">\(x\)</span>. To do so, we multiply each side of the equation by the inverse
-of 5, which is <span class="math inline">\(1/5\)</span>.</p>
+<div id="likelihood-function" class="section level2" number="13.3">
+<h2><span class="header-section-number">13.3</span> Likelihood Function</h2>
+<p>As a researcher, I am not particularly interested in saying "If <span class="math inline">\(\mu=3\)</span> and <span class="math inline">\(\sigma=2\)</span> then I’m likely to observe approximately 95% of my data between <span class="math inline">\(-1\)</span> and <span class="math inline">\(7\)</span>. Instead, I want to make an inference about what values for <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma\)</span> are the most concordant with observed data that I’ve collected. However, the probability density function <span class="math inline">\(f(x|\mu,\sigma)\)</span> is still the mathematical link between the data and parameter and we will continue to use that function, but we’ll re-interpret which is <em>known</em>.</p>
+<p>The <em>Likelihood</em> function is just the probability density (or mass) function <span class="math inline">\(f(x|\theta)\)</span> re-interpreted to be a function where the data is the known quantity and we are looking to see what parameter values are consistent with the data.</p>
+<div id="poisson-1" class="section level3" number="13.3.1">
+<h3><span class="header-section-number">13.3.1</span> Poisson</h3>
+<p>Suppose that we have observed a single data point drawn from a Poisson(<span class="math inline">\(\lambda\)</span>) and we don’t know what <span class="math inline">\(\lambda\)</span> is. We first write down the likelihood function</p>
 <p><span class="math display">\[\begin{aligned}
-5x &amp; =  15\\
-\frac{1}{5}\cdot5\cdot x &amp;=  \frac{1}{5}\cdot15\\
-1\cdot x &amp;=  3\\
-x &amp;=  3
+\mathcal{L}(\lambda|x) = f(x|\lambda) = \frac{e^{-\lambda} \lambda^x}{x!}
 \end{aligned}\]</span></p>
-<p>For scalars, we know that the inverse of scalar <span class="math inline">\(a\)</span> is the value
-that when multiplied by <span class="math inline">\(a\)</span> is 1. That is we see to find <span class="math inline">\(a^{-1}\)</span>
-such that <span class="math inline">\(aa^{-1}=1\)</span>.</p>
-<p>In the matrix case, I am interested in finding <span class="math inline">\(\boldsymbol{A}^{-1}\)</span>
-such that <span class="math inline">\(\boldsymbol{A}^{-1}\boldsymbol{A}=\boldsymbol{I}\)</span> and
-<span class="math inline">\(\boldsymbol{A}\boldsymbol{A}^{-1}=\boldsymbol{I}\)</span>. For both of these
-multiplications to be defined, <span class="math inline">\(\boldsymbol{A}\)</span> must be a square
-matrix and so the inverse is only defined for square matrices.</p>
-<p>For a <span class="math inline">\(2\times2\)</span> matrix
-<span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
-a &amp; b\\
-c &amp; d
-\end{array}\right]\]</span>
-the inverse is given by:</p>
-<p><span class="math display">\[\boldsymbol{W}^{-1}=\frac{1}{\det\boldsymbol{W}}\;\left[\begin{array}{cc}
-d &amp; -b\\
--c &amp; a
-\end{array}\right]\]</span></p>
-<p>For example, suppose
-<span class="math display">\[\boldsymbol{W}=\left[\begin{array}{cc}
-1 &amp; 2\\
-5 &amp; 3
-\end{array}\right]\]</span></p>
-<p>then <span class="math inline">\(\det W=3-10=-7\)</span> and
-<span class="math display">\[\begin{aligned}
-\boldsymbol{W}^{-1} &amp;=  \frac{1}{-7}\;\left[\begin{array}{cc}
-3 &amp; -2\\
--5 &amp; 1
-\end{array}\right]\\ \\
- &amp;=  \left[\begin{array}{cc}
--\frac{3}{7} &amp; \frac{2}{7}\\
-\frac{5}{7} &amp; -\frac{1}{7}
-\end{array}\right]
+<p>If we have observed <span class="math inline">\(x=4\)</span>, then <span class="math inline">\(\mathcal{L}(\lambda|x=4)\)</span> is the following function
+<img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-316-1.png" width="672" /></p>
+<p>Our best estimate for <span class="math inline">\(\lambda\)</span> is the value that maximizes <span class="math inline">\(\mathcal{L}(\lambda|x)\)</span>. We could do this two different ways. First we could mathematically solve by taking the derivative, setting it equal to zero, and then solving for lambda. Often this process is made mathematically simpler (and computationally more stable) by instead maximizing the log of the Likelihood function. This is equivalent because the log function is monotonically increasing and if <span class="math inline">\(a &lt; b\)</span> then <span class="math inline">\(\log(a) &lt; \log(b)\)</span>. It is simpler because taking logs makes everything 1 operation simpler and reduces the need for using the chain rule while taking derivatives. We could also find the value of <span class="math inline">\(\lambda\)</span> that maximizes the likelihood using numerical methods. Again because the log function makes everything nicer, in practice we’ll always maximize the log likelihood. Many optimization functions are designed around finding function minimums, so to use those, we’ll actually seek to minimize the <em>negative</em> log likelihood which is simply <span class="math inline">\(-1* \log \mathcal{L}()\)</span>.</p>
+<p>Numerical solvers are convenient, but are only accurate to machine tolerance you specify. In this case where <span class="math inline">\(x=4\)</span>, the actual maximum likelihood value is <span class="math inline">\(\hat{\lambda}=4\)</span>.</p>
+<div class="sourceCode" id="cb561"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb561-1"><a href="13-maximum-likelihood-estimation.html#cb561-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb561-2"><a href="13-maximum-likelihood-estimation.html#cb561-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb561-3"><a href="13-maximum-likelihood-estimation.html#cb561-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb561-4"><a href="13-maximum-likelihood-estimation.html#cb561-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st">     </span><span class="co"># take the log</span></span>
+<span id="cb561-5"><a href="13-maximum-likelihood-estimation.html#cb561-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># multiply by -1</span></span>
+<span id="cb561-6"><a href="13-maximum-likelihood-estimation.html#cb561-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()      </span>
+<span id="cb561-7"><a href="13-maximum-likelihood-estimation.html#cb561-7" aria-hidden="true"></a>}</span>
+<span id="cb561-8"><a href="13-maximum-likelihood-estimation.html#cb561-8" aria-hidden="true"></a></span>
+<span id="cb561-9"><a href="13-maximum-likelihood-estimation.html#cb561-9" aria-hidden="true"></a><span class="co"># Optimize function will find the maximum of the Likelihood function</span></span>
+<span id="cb561-10"><a href="13-maximum-likelihood-estimation.html#cb561-10" aria-hidden="true"></a><span class="co"># over the range of lambda values [0, 20]. By default, the optimize function</span></span>
+<span id="cb561-11"><a href="13-maximum-likelihood-estimation.html#cb561-11" aria-hidden="true"></a><span class="co"># finds the minimum, but has an option to find the maximum. Alternatively</span></span>
+<span id="cb561-12"><a href="13-maximum-likelihood-estimation.html#cb561-12" aria-hidden="true"></a><span class="co"># we could find the minimum of the -logL function.</span></span>
+<span id="cb561-13"><a href="13-maximum-likelihood-estimation.html#cb561-13" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 3.999993
+## 
+## $objective
+## [1] 1.632876</code></pre>
+<p>But what if we have multiple observations from this Poisson distribution? If the observations are <em>independent</em>, then the probability mass or probability density functions <span class="math inline">\(f(x_i|\theta)\)</span> can just be multiplied together.</p>
+<p><span class="math display">\[\begin{aligned}
+\mathcal{L}(\lambda|\textbf{x}) = \prod_{i=1}^{n}f(x_i|\lambda) = \prod_{i=1}^n\frac{e^{-\lambda} \lambda^x_i}{x_i!}
 \end{aligned}\]</span></p>
-<p>and thus
-<span class="math display">\[\begin{aligned}
-\boldsymbol{W}\boldsymbol{W}^{-1} &amp;=  \left[\begin{array}{cc}
-1 &amp; 2\\
-5 &amp; 3
-\end{array}\right]\left[\begin{array}{cc}
--\frac{3}{7} &amp; \frac{2}{7}\\
-\frac{5}{7} &amp; -\frac{1}{7}
-\end{array}\right]\\
-\\ \\
- &amp;=  \left[\begin{array}{cc}
--\frac{3}{7}+\frac{10}{7}\;\;\; &amp; \frac{2}{7}-\frac{2}{7}\\
-\\
--\frac{15}{7}+\frac{15}{7}\;\;\; &amp; \frac{10}{7}-\frac{3}{7}
-\end{array}\right]\\
-\\
- &amp;=  \left[\begin{array}{cc}
-1 &amp; 0\\
-0 &amp; 1
-\end{array}\right]=\boldsymbol{I}_{2}
-\end{aligned}\]</span></p>
-<p>Not every square matrix has an inverse. If the determinant of the
-matrix (which we think of as some measure of the magnitude or <em>size</em>
-of the matrix) is zero, then the formula would require us to divide
-by zero. Just as we cannot find the inverse of zero (i.e. solve <span class="math inline">\(0x=1\)</span>
-for <span class="math inline">\(x\)</span>), a matrix with zero determinate is said to have no inverse.</p>
+<p>So, suppose we have observed <span class="math inline">\(\textbf{x} = \{4,6,3,3,2,4,3,2\}\)</span>. We could maximize this function either using calculus methods or numerical methods this function and discover that the maximum occurs at <span class="math inline">\(\hat{\lambda} = \bar{x} = 3.375\)</span>.</p>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-318-1.png" width="672" /></p>
+<p>If we are using the log-Likelihood, then the multiplication is equivalent to summing and we’ll define and subsequently optimize our log-Likelihood function like this:</p>
+<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="13-maximum-likelihood-estimation.html#cb563-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">2</span>)</span>
+<span id="cb563-2"><a href="13-maximum-likelihood-estimation.html#cb563-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb563-3"><a href="13-maximum-likelihood-estimation.html#cb563-3" aria-hidden="true"></a>  <span class="kw">dpois</span>(x, <span class="dt">lambda=</span>param) <span class="op">%&gt;%</span></span>
+<span id="cb563-4"><a href="13-maximum-likelihood-estimation.html#cb563-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb563-5"><a href="13-maximum-likelihood-estimation.html#cb563-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb563-6"><a href="13-maximum-likelihood-estimation.html#cb563-6" aria-hidden="true"></a>}</span>
+<span id="cb563-7"><a href="13-maximum-likelihood-estimation.html#cb563-7" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">20</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 3.37499
+## 
+## $objective
+## [1] 13.85426</code></pre>
+</div>
+<div id="exponential-example" class="section level3" number="13.3.2">
+<h3><span class="header-section-number">13.3.2</span> Exponential Example</h3>
+<p>We next consider data sampled from the exponential distribution. Recall the exponential distribution can be parametrized by a single parameter, <span class="math inline">\(\beta\)</span> and which is the expectation of the distribution and variance is <span class="math inline">\(\beta^2\)</span>. We might consider using as an estimator <em>either</em> the sample mean or the sample standard deviation. It turns out that the sample mean is the maximum likelihood estimator in this case. For a concrete example, suppose that we had observed <span class="math inline">\(\textbf{x}=\{15.6, 2.03, 9.12, 1.54, 3.69\}\)</span></p>
+<p>The likelihood is
+<span class="math display">\[\mathcal{L}(\beta | \textbf{x}) =  \prod_{i=1}^n \beta e^{\beta x_i}\]</span></p>
+<p>A bit of calculus will show that this is maximized at <span class="math inline">\(\hat{\beta} = \bar{x} = 6.39\)</span>. We can numerically see this following the same process as previously seen.</p>
+<pre><code>## [1] 6.396</code></pre>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-320-1.png" width="672" /></p>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="13-maximum-likelihood-estimation.html#cb566-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">15.6</span>, <span class="fl">2.03</span>, <span class="fl">9.12</span>, <span class="fl">1.54</span>, <span class="fl">3.69</span>)</span>
+<span id="cb566-2"><a href="13-maximum-likelihood-estimation.html#cb566-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb566-3"><a href="13-maximum-likelihood-estimation.html#cb566-3" aria-hidden="true"></a>  <span class="kw">dexp</span>(x, <span class="dt">rate=</span><span class="dv">1</span><span class="op">/</span>param, <span class="dt">log =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># We defined beta as 1/rate</span></span>
+<span id="cb566-4"><a href="13-maximum-likelihood-estimation.html#cb566-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb566-5"><a href="13-maximum-likelihood-estimation.html#cb566-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb566-6"><a href="13-maximum-likelihood-estimation.html#cb566-6" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb566-7"><a href="13-maximum-likelihood-estimation.html#cb566-7" aria-hidden="true"></a>}</span>
+<span id="cb566-8"><a href="13-maximum-likelihood-estimation.html#cb566-8" aria-hidden="true"></a><span class="kw">optimize</span>(neglogL, <span class="dt">interval=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">30</span>) )</span></code></pre></div>
+<pre><code>## $minimum
+## [1] 6.396004
+## 
+## $objective
+## [1] 14.27836</code></pre>
+</div>
+<div id="normal-1" class="section level3" number="13.3.3">
+<h3><span class="header-section-number">13.3.3</span> Normal</h3>
+<p>We finally consider the case where we have observation coming from a distribution that has multiple parameters. The normal distribution is parameterized by a mean <span class="math inline">\(\mu\)</span> and spread <span class="math inline">\(\sigma\)</span>. Suppose that we had observed <span class="math inline">\(x_i \stackrel{iid}{\sim} N(\mu, \sigma^2)\)</span> and saw <span class="math inline">\(\textbf{x} = \{5, 8, 9, 7, 11, 9\}\)</span>.</p>
+<p>As usual we can calculate the likelihood function</p>
+<p><span class="math display">\[\mathcal{L}(\mu,\sigma | \textbf{x}) = \prod_{i=1}^n f(x_i|\mu,\sigma) = \prod_{i=1}^n \frac{1}{\sqrt{2\pi}\sigma} \exp \left[ -\frac{1}{2}\frac{(x_i-\mu)^2}{\sigma^2} \right]\]</span></p>
+<p>Again using calculus, it can be shown that the maximum likelihood estimators in this model are
+<span class="math display">\[\hat{\mu} = \bar{x} = 8.16666\]</span>
+<span class="math display">\[\hat{\sigma}_{mle} = \sqrt{ \frac{1}{n}\sum_{i=1}^n (x_i-\bar{x})^2 } = 1.8634\]</span>
+which is somewhat unexpected because the typical estimator we use has a <span class="math inline">\(\frac{1}{n-1}\)</span> multiplier.</p>
+<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="13-maximum-likelihood-estimation.html#cb568-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb568-2"><a href="13-maximum-likelihood-estimation.html#cb568-2" aria-hidden="true"></a>xbar &lt;-<span class="st"> </span><span class="kw">mean</span>(x)</span>
+<span id="cb568-3"><a href="13-maximum-likelihood-estimation.html#cb568-3" aria-hidden="true"></a>s2 &lt;-<span class="st"> </span><span class="kw">sum</span>( (x <span class="op">-</span><span class="st"> </span>xbar)<span class="op">^</span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span><span class="dv">6</span> )</span>
+<span id="cb568-4"><a href="13-maximum-likelihood-estimation.html#cb568-4" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">sqrt</span>(s2)</span></code></pre></div>
+<p><img src="Statistical-Methods-II_files/figure-html/unnamed-chunk-323-1.png" width="672" /></p>
+<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb569-1"><a href="13-maximum-likelihood-estimation.html#cb569-1" aria-hidden="true"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">11</span>, <span class="dv">9</span>)</span>
+<span id="cb569-2"><a href="13-maximum-likelihood-estimation.html#cb569-2" aria-hidden="true"></a>neglogL &lt;-<span class="st"> </span><span class="cf">function</span>(param){</span>
+<span id="cb569-3"><a href="13-maximum-likelihood-estimation.html#cb569-3" aria-hidden="true"></a>  <span class="kw">dnorm</span>(x, <span class="dt">mean=</span>param[<span class="dv">1</span>], <span class="dt">sd=</span>param[<span class="dv">2</span>]) <span class="op">%&gt;%</span></span>
+<span id="cb569-4"><a href="13-maximum-likelihood-estimation.html#cb569-4" aria-hidden="true"></a><span class="st">    </span><span class="kw">log</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">prod</span>(<span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span></span>
+<span id="cb569-5"><a href="13-maximum-likelihood-estimation.html#cb569-5" aria-hidden="true"></a><span class="st">    </span><span class="kw">return</span>()</span>
+<span id="cb569-6"><a href="13-maximum-likelihood-estimation.html#cb569-6" aria-hidden="true"></a>}</span>
+<span id="cb569-7"><a href="13-maximum-likelihood-estimation.html#cb569-7" aria-hidden="true"></a></span>
+<span id="cb569-8"><a href="13-maximum-likelihood-estimation.html#cb569-8" aria-hidden="true"></a><span class="co"># Bivariate optimization uses the optim function that only can search</span></span>
+<span id="cb569-9"><a href="13-maximum-likelihood-estimation.html#cb569-9" aria-hidden="true"></a><span class="co"># for a minimum. The first argument is an initial guess to start the algorithm.</span></span>
+<span id="cb569-10"><a href="13-maximum-likelihood-estimation.html#cb569-10" aria-hidden="true"></a><span class="co"># So long as the start point isn&#39;t totally insane, the numerical algorithm should</span></span>
+<span id="cb569-11"><a href="13-maximum-likelihood-estimation.html#cb569-11" aria-hidden="true"></a><span class="co"># be fine.</span></span>
+<span id="cb569-12"><a href="13-maximum-likelihood-estimation.html#cb569-12" aria-hidden="true"></a><span class="kw">optim</span>(<span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">2</span>), neglogL )  </span></code></pre></div>
+<pre><code>## $par
+## [1] 8.166924 1.863391
+## 
+## $value
+## [1] 12.24802
+## 
+## $counts
+## function gradient 
+##       71       NA 
+## 
+## $convergence
+## [1] 0
+## 
+## $message
+## NULL</code></pre>
 </div>
 </div>
-<div id="Exercises_MatrixTheory" class="section level2" number="1.4">
-<h2><span class="header-section-number">1.4</span> Exercises</h2>
-<p>Consider the following matrices:
-<span class="math display">\[\mathbf{A}=\left[\begin{array}{ccc}
-1 &amp; 2 &amp; 3\\
-6 &amp; 5 &amp; 4
-\end{array}\right]\;\;\;\;\;\;\;\mathbf{B}=\left[\begin{array}{ccc}
-6 &amp; 4 &amp; 3\\
-8 &amp; 7 &amp; 6
-\end{array}\right]\;\;\;\;\;\;\;\mathbf{c}=\left[\begin{array}{c}
-1\\
-2\\
-3
-\end{array}\right]\;\;\;\;\;\;\;\mathbf{d}=\left[\begin{array}{c}
-4\\
-5\\
-6
-\end{array}\right]\;\;\;\;\;\;\;\mathbf{E}=\left[\begin{array}{cc}
-1 &amp; 2\\
-2 &amp; 6
-\end{array}\right]\]</span></p>
+<div id="discussion" class="section level2" number="13.4">
+<h2><span class="header-section-number">13.4</span> Discussion</h2>
 <ol style="list-style-type: decimal">
-<li>Find <span class="math inline">\(\mathbf{Bc}\)</span></li>
-<li>Find <span class="math inline">\(\mathbf{AB}^{T}\)</span></li>
-<li>Find <span class="math inline">\(\mathbf{c}^{T}\mathbf{d}\)</span></li>
-<li>Find <span class="math inline">\(\mathbf{cd}^{T}\)</span></li>
-<li>Confirm that <span class="math display">\[\mathbf{E}^{-1}=\left[\begin{array}{cc}
-   3 &amp; -1\\
-   -1 &amp; 1/2 \end{array}\right]\]</span>
-is the inverse of <span class="math inline">\(\mathbf{E}\)</span> by calculating <span class="math inline">\(\mathbf{E}\mathbf{E}^{-1}=\mathbf{I}\)</span>.</li>
+<li><p>How could the numerical maximization happen? Assume we have a 1-dimensional parameter space, we have a reasonable starting estimate, and the function to be maximized is continuous, smooth, and <span class="math inline">\(\ge 0\)</span> for all <span class="math inline">\(x\)</span>. <em>While knowing the derivative function <span class="math inline">\(f&#39;(x)\)</span> would allow us to be much more clever, lets think about how to do the maximization by just evaluating <span class="math inline">\(f(x)\)</span> for different values of <span class="math inline">\(x\)</span>.</em></p></li>
+<li><p>Convince yourself that if <span class="math inline">\(x_0\)</span> is the value of <span class="math inline">\(x\)</span> that maximizes <span class="math inline">\(f(x)\)</span>, then it is also the value that maximizes <span class="math inline">\(log( f( x ) )\)</span>. This will rest on the idea that <span class="math inline">\(log()\)</span> is a strictly increasing function.</p></li>
+</ol>
+</div>
+<div id="exercises-1" class="section level2" number="13.5">
+<h2><span class="header-section-number">13.5</span> Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>The <span class="math inline">\(\chi^2\)</span> distribution is parameterized by its degrees of freedom parameter <span class="math inline">\(\nu\)</span> which corresponds to the mean of the distribution (<span class="math inline">\(\nu\)</span> must be <span class="math inline">\(&gt;0\)</span>). The density function <span class="math inline">\(f(x|\nu)\)</span> can be accessed R using the <code>dchisq(x, df=nu)</code>.
+<ol style="list-style-type: lower-alpha">
+<li>For different values of <span class="math inline">\(\nu\)</span>, plot the distribution function of <span class="math inline">\(f(x|\nu)\)</span>. You might consider <span class="math inline">\(\nu = 5, 10,\)</span> and <span class="math inline">\(20\)</span>. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,\infty)\)</span> so select the</li>
+<li>Suppose that we’ve observed <span class="math inline">\(x = \{9,7,7,6,10,7,9)\)</span>. Calculate the sample mean and standard deviation.</li>
+<li>Graphically show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span>.</li>
+<li>Show that the maximum likelihood estimator of <span class="math inline">\(\nu\)</span> is <span class="math inline">\(\bar{x} = 7.857\)</span> using a numerical maximization function.</li>
+</ol></li>
+<li>The Beta distribution is often used when dealing with data that are proportions. It is parameterized by <em>two</em> parameters, usually called <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> (both of which must be greater than zero). The mean of this distribution is by <span class="math display">\[E[X]=\frac{\alpha}{\alpha+\beta}\]</span>
+while the spread of the distribution is inversely related to the magnitude of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>. The density function <span class="math inline">\(f(x|\alpha,\beta)\)</span> can be accessed in R using the <code>dbeta(x, alpha, beta)</code> function.
+<ol style="list-style-type: lower-alpha">
+<li>For different values of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>, plot the distribution function <span class="math inline">\(f(x|\alpha, \beta)\)</span>. You might consider keeping the ratio between <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> constant and just increase their magnitude. The valid range of <span class="math inline">\(x\)</span> values is <span class="math inline">\([0,1]\)</span>.</li>
+<li>Suppose that we’ve observed <span class="math inline">\(x = \{0.25, 0.42, 0.45, 0.50, 0.55\}\)</span>. Calculate the sample mean and standard deviation.</li>
+<li>Graphically show that the maximum likelihood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
+<li>Show that the maximum likelihood estimators of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are approximately <span class="math inline">\(9.5\)</span> and <span class="math inline">\(12.5\)</span>.</li>
+</ol></li>
 </ol>
 
 </div>
@@ -876,8 +585,8 @@ is the inverse of <span class="math inline">\(\mathbf{E}\)</span> by calculating
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="2-parameter-estimation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="12-block-designs-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="project-appendix.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -910,7 +619,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/dereksonderegger/571/blob/master/00_Matrix_Operations.Rmd",
+"link": "https://github.com/dereksonderegger/571/blob/master/90_Maximum_Likelihood.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -918,7 +627,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/dereksonderegger/571/raw/master/00_Matrix_Operations.Rmd",
+"link": "https://github.com/dereksonderegger/571/raw/master/90_Maximum_Likelihood.Rmd",
 "text": null
 },
 "download": [["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.pdf", "PDF"], ["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.epub", "E-Pub"]],

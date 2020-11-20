@@ -1,7 +1,7 @@
 
-# Maximum Likelihood Principle
+# Maximum Likelihood Estimation
 ```{r, echo=FALSE}
-# Unattach any packages that happen to already be loaded. In general this is unecessary
+# Unattach any packages that happen to already be loaded. In general this is unnecessary
 # but is important for the creation of the book to not have package namespaces
 # fighting unexpectedly.
 pkgs = names(sessionInfo()$otherPkgs)

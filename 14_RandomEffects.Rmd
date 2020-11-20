@@ -116,7 +116,7 @@ However it would be pretty sloppy to not do the analysis correctly because our b
 
 <!-- Many of the designs mentioned in the Block Designs section could be similarly modeled using Mixed Effects Models.  -->
 
-In many respects, the random effects structure provides a more flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.
+Once correct way to model these data are using hierarchical models which are created by having multiple error terms that can be introduced. In many respects, the random effects structure provides an extremely flexible framework to consider many of the traditional experimental designs as well as many non-traditional designs with the benefit of more easily assessing variability at each hierarchical level.
 
 Mixed effects models combine what we call "fixed" and "random" effects. 
 
@@ -134,7 +134,7 @@ Mixed effects models combine what we call "fixed" and "random" effects.
 
 For example, in a rabbit study that examined the effect of diet on the growth of domestic rabbits and we had 10 litters of rabbits and used the 3 most similar from each litter to test 6 different diets. Here, the 6 different diets are fixed effects because they are not randomly selected from a population, these exact same diets can be further studied, and these are the diets we are interested it. The litters of rabbits and the individual rabbits are randomly selected from populations, cannot be exactly replicated in future studies, and we are not interested in the individual litters but rather what the variability is between individuals and between litters. 
 
-Often random effects are not of primary interest to the researcher, but must be considered. Often blocking variables are random effects because the arise from a random sample of possible blocks that are potentially available to the researcher.
+Often random effects are not of primary interest to the researcher, but must be considered. Blocking variables are random effects because the arise from a random sample of possible blocks that are potentially available to the researcher.
 
 Mixed effects models are models that have both fixed and random effects. We will first concentrate on understanding how to address a model with two sources error and then complicate the matter with fixed effects.
 
@@ -254,7 +254,7 @@ To fit the random effects model we will use the package `lmerTest` which is a ni
 
 ```{r, warning=FALSE, message=FALSE}
 m2 <- lmer( bright ~ 1 + (1|operator), data=pulp )
-summary(m2)  # because there are no fixed effects, lmerTest bailed out to lme4.
+summary(m2)  
 ```
 
 Notice that the estimate of the fixed effect (the overall mean) is the same in the fixed-effects ANOVA and in the mixed model. However the fixed effects ANOVA estimates the effect of each operator while the mixed model is interested in estimating the variance between operators. In the model statement the (1|operator) denotes the random effect and this notation tells us to fit a model with a random intercept term for each operator. Here the variance associated with the operators is $\sigma_{\gamma}^{2}=0.068$ while the “pure error” is $\sigma_{\epsilon}^{2}=0.106$. The column for standard deviation is not the variability associated with our estimate, but is simply the square-root of the variance terms $\sigma_{\gamma}$ and $\sigma_{\epsilon}$. This was fit using the REML method. 
@@ -283,40 +283,51 @@ ggplot(oatvar, aes(y=yield, x= variety)) +
   facet_wrap(~block, labeller=label_both)
 ```
 
-In this case, we don't really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment.
+In this case, we don't really care about these particular fields (blocks) and would prefer to think about these as a random sample of fields that we might have used in our experiment. The analysis to compare these simple model (without variety) to the complex model it should use ML because the fixed effects are different between the two models and thus the $\boldsymbol{K}$ matrix used in REML fits are different.
 
 ```{r}
 model.0 <- lmer( yield ~ (1|block), data=oatvar)
 model.1 <- lmer( yield ~ variety + (1|block), data=oatvar)
-anova(model.0, model.1)
+
+# By default anova() will always refit the models using ML assuming you want to
+# compare models with different fixed effects. Use refit=FALSE to suppress this.
+anova(model.0, model.1) 
 ```
 
 Notice that this is doing a Likelihood Ratio Test 
 $$-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24$$
 
-This shows that the variety matters, though this is pretty annoying.  We'd prefer to use the `anova` command with just model and see the p-values for each covariate. 
+Recall that we don't really like to trust Likelihood Ratio Tests because they depend on the asymptotic distribution of the statistic (as sample size increases) and that convergence is pretty slow. Another, and usually better option, is to perform an F-test with the numerator degrees of freedom estimated using either the *Satterthwaite* or *Kenward-Roger* methods. To do this, we'll use the `anova()` command with just a single model.
 
 ```{r}
 # Do an F test for the fixed effects using the similar degree of freedom
 # approximations done by SAS
-anova(model.1)
+# 
+# anova(model.1, ddf='lme4')  # don't return the p-value because we don't trust it!
+# anova(model.1, ddf='Satterthwaite')  # Use Satterthwaite
+# anova(model.1, ddf='Kenward-Roger')  # Use Kenward-Roger
+anova(model.1)   # default is Satterthwaite's degrees of freedom
 ```
 
-There is quite a bit of debate among statisticians about which test should be recommended in different scenarios using random effects and this is an active area of research. In this case, instead of performing a LRT, the `lmerTest` package opted to use a Satterthwaite approximation.
+Unsurprisingly given our initial thoughts about the data, it looks like `variety` is a statistically significant covariate.
 
-To consider if the random effect should be included in the model, we can again turn to the Likelihood Ratio test.
+There is quite a bit of debate among statisticians about how to calculate the denominator degrees of freedom and which method is preferred in different scenarios. By default, `lmerTest` uses Satterthwaite's method, but 'Kenward-Roger' is also allowed. In this case, the two methods produces the same estimated denominator degrees of freedom and the same p-value. 
+
+To consider if the random effect should be included in the model, we will turn to the Likelihood Ratio test. The following examines all single term deletions to the random effects structure. In our case, this is just considering removing `(1|block)`
 ```{r}
+# Each line tests if a random effect can be removed or reduced to a simpler random effect.
+# Something like (1|Group) will be tested if it can be removed.
+# Something like (1+Trt | Group) will be tested if it can be reduced to (1 | Group)
 ranova(model.1)
 ```
 Here, both the AIC and LRT suggest that the random effect of block is appropriate to include in the model.
-
 
 Now that we have chosen our model, we can examine is model.
 ```{r}
 summary(model.1)
 ```
 
-We start with the Random effects.  This section shows us the *block-to-block* variability (and the square root of that, the Standard Deviation) as well as the "pure-error", labeled residuals, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted *within* the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.
+We start with the Random effects.  This section shows us the *block-to-block* variability (and the square root of that, the Standard Deviation) as well as the "pure-error", labeled `residuals`, which is an estimate of the variability associated with two different observations (after the difference in variety is accounted for) planted *within* the same block. For this we see that block-to-block variability is only slightly smaller than the within block variability.
 
 Why do we care about this? This actually tells us quite a lot about the spatial variability.  Because yield is affected by soil nutrients, micro-climate, soil water availability, etc, I expect that two identical seedlings planted in slightly different conditions will have slightly different yields. By examining how the yield changes over small distances (the residual within block variability) vs how it changes over long distances (block to block variability) we can get a sense as to the scale at which these background lurking processes operate.  
 
@@ -360,26 +371,25 @@ It looks like there is definitely a `Blend` effect (e.g. Blend1 is much better t
 ```{r}
 model.0 <- lmer(yield ~  1    + (1 | blend), data=penicillin)
 model.1 <- lmer(yield ~ treat + (1 | blend), data=penicillin)
-anova(model.0, model.1)  # Analysis using a LRT
-```
-
-```{r}
+# anova(model.0, model.1)  # Analysis using a LRT. Not my preference for analysis
 anova(model.1)  # Tests using an F-test with an approximated degrees of freedom
 ```
 
 It looks like we don't have a significant effect of the treatments. Next we'll examine the simple model to understand the variability.
 
 ```{r}
+# Test if we should remove the (1|blend) term using either AIC or Likelihood Ratio Test.
 ranova(model.1)
 ```
 
 Blend looks marginally significant, but it might still be interesting to compare the variability between blends to variability within blends.
 
 ```{r}
-summary(model.0)   # the lack of fixed effects caused lmerTest to revert to lme4
+# summary(model.0)              # Shows everything...
+summary(model.0)[['varcor']]    # Just the sigma terms for each random term
 ```
 
-We see that the noise is more in the within blend rather than the between blends.  If my job were to understand the variability and figure out how to improve production, this suggests that understanding the both how variability is introduced at the blend level *and* at the run level.  The run level has slightly more variability, so I might start there.
+We see that the noise is more in the within blend (labeled residual here) rather than the between blends.  If my job were to understand the variability and figure out how to improve production, this suggests that variability is introduced at the blend level *and* at the run level, but the run level is more important.
 
 
 ## Nested Effects
@@ -415,11 +425,20 @@ anova(model)
 ```
 As we saw before, the effect of irrigation is not significant and the fertilizer effect is highly significant. We'll remove the irrigation covariate and refit the model.
 
+We designed our experiment assuming that both `plot` and `subplot` were possibly important. Many statisticians would argue that because that was how we designed the experiment, we should necessarily keep that structure when analyzing the data. This is particularly compelling considering that the Irrigation and Fertilizer were applied on different scales. However it is still fun to look at the statistical significance of the random effects.
+
 ```{r}
 model <- lmer(yield ~ Fertilizer + (1|plot/subplot), data=AgData)
+ranova(model)
+```
+
+Each row (except the `none`) is testing the exclusion of a random effect. The first being the 32 subplots, and the second being the 8 plots. Both are highly statistically significant. To assess the practical significance of subplots and plots, we need to look at the variance terms:
+
+```{r}
 summary(model)
 ```
-Notice the plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot.
+Notice the standard deviation plant-to-plant noise is about 1/3 of the noise associated with subplot-to-subplot or even plot-to-plot. Finally the effect of increasing the fertilizer level is to increase yield by about 4.6.
+
 
 
 **********************************
@@ -514,9 +533,35 @@ We interpret the random effect of Ring as a perturbation to expected value of th
 
 ********************************
 
-We'll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and each lab would receive 4 samples, two labeled H and two labeled G. The labs are instructed to give two samples to two different technicians who are to divide each sample into two sub-samples and measures the fat content twice within a sub sample. So our hierarchy is that observations are nested within sub-samples which are nested within technicians which are nested in labs.
+We'll now consider an example with a somewhat ridiculous amount of nesting. We will consider an experiment run to test the consistency between laboratories. A large jar of dried egg power was fully homogenized and divided into a number of samples and the fat content between the samples should be the same. Six laboratories were randomly selected and instructed to have two technicians analyze what they thought were different all different samples. Each technician received two separate samples (labeled H and G) and were instructed to measure each sample twice. So our hierarchy is that observations are nested within samples which are nested within technicians which are nested in labs.
 
-In terms of notation, we will refer to the 6 labs as $L_{i}$ and the lab technicians as $T_{ij}$ and we note that $j$ is either 1 or 2 which doesn't uniquely identify the technician unless we include the lab subscript as well. Finally the sub-samples are nested within the technicians and we denote them as $S_{ijk}$. Finally our “pure” error is the two measurements from the same sub-sample. So the model we wish to fit is:
+
+--------------------------------------------
+ &nbsp;    Fat    Lab   Technician   Sample 
+--------- ------ ----- ------------ --------
+  **1**    0.62    I       one         G    
+
+  **2**    0.55    I       one         G    
+
+  **3**    0.34    I       one         H    
+
+  **4**    0.24    I       one         H    
+
+   ...     ...    ...      ...         ...  
+
+ **45**    0.18   VI       two         G    
+
+ **46**    0.2    VI       two         G    
+
+ **47**    0.26   VI       two         H    
+
+ **48**    0.06   VI       two         H    
+--------------------------------------------
+
+
+Notice in the data, the technicians are always labeled as 'one' and 'two' regardless of the lab. Likewise the two samples given to each technician are always labeled 'G' and 'H' even though the actual physical samples are different for each technician.
+
+In terms of notation, we will refer to the 6 labs as $L_{i}$ and the lab technicians as $T_{ij}$ and we note that $j$ is either 1 or 2 which doesn't uniquely identify the technician unless we include the lab subscript as well. Finally the sub-samples are nested within the technicians and we denote them as $S_{ijk}$. Finally our “pure” error is the two observations from the same sample. So the model we wish to fit is:
 $$y_{ijkl}=\mu+L_{i}+T_{ij}+S_{ijk}+\epsilon_{ijkl}$$
 where $L_{i}\stackrel{iid}{\sim}N\left(0,\sigma_{L}^{2}\right)$, $T_{ij}\stackrel{iid}{\sim}N\left(0,\sigma_{T}^{2}\right)$, $S_{ijk}\stackrel{iid}{\sim}N\left(0,\sigma_{S}^{2}\right)$, $\epsilon_{ijkl}\stackrel{iid}{\sim}N\left(0,\sigma_{\epsilon}^{2}\right)$. 
 
@@ -570,15 +615,15 @@ ggplot(eggs, aes(x=Sample, y=Fat)) +
   ggtitle('Average With Lab + Technician + Sample Offset')
 ```
 
-Now that we have an idea of how things vary, we can look at the summary table.
+Now that we have an idea of how things vary, we can look at the $\sigma$ terms.
 ```{r}
-summary(model)
+summary(model)[['varcor']]
 ```
 It looks like there is still plenty of unexplained variability, but the next largest source of variability is in the technician and also the lab.  Is the variability lab-to-lab large enough for us to convincingly argue that it is statistically significant?
 ```{r}
 ranova(model)
 ```
-It looks like the technician effect is at the edge of statistically significant, but the lab-to-lab effect is smaller than the pure error and not statistically significant. I'm not thrilled with the repeatability, but the technicians are a bigger concern than the individual labs.
+It looks like the technician effect is at the edge of statistically significant, but the lab-to-lab effect is smaller than the pure error and not statistically significant. I'm not thrilled with the repeatability, but the technicians are a bigger concern than the individual labs. These data aren't strong evidence of big differences between labs, but I would need to know if the size of the error is practically important before we just pick the most convenient lab to send our samples to.
 
 
 ## Crossed Effects
@@ -617,25 +662,23 @@ emmeans(m, specs= ~material) %>%
 So material D is in between materials B and C for abrasion resistance.
 
 ```{r}
-summary(m)
+summary(m)[['varcor']]
 ```
-Notice that run and the pure error have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.
+Notice that run and the pure error standard deviation have about the same magnitude, but position is more substantial. Lets see what happens if we remove the run random effect.
 
 ```{r}
-m2 <- lmer( wear ~ material + (1|position), data=abrasion)
-m3 <- lmer( wear ~ material + (1|run), data=abrasion)
-anova(m, m2)  # Run is important; Notice refitting using ML!  Wrong!
-anova(m, m3)  # Position is really important; Notice refitting using ML! Wrong!
-```
+m2 <- lmer( wear ~ material + (1|position), data=abrasion) # Run is marginally significant
+# anova(m, m2)             # This would be wrong because it would refit the model by default.
+anova(m, m2, refit=FALSE)  # refit=FALSE keeps it using REML instead of refitting using ML! 
 
-Notice that R is refitting the model to make comparisons between fixed effects. But in the two models we are comparing, there is no difference in fixed effects so this is actually inappropriate! 
+m3 <- lmer( wear ~ material + (1|run), data=abrasion) # Position is mildly significant
+anova(m, m3, refit=FALSE)  # 
 
-```{r}
-# Now do a similar test, but using the REML estimates of the variance components
-# Recall that REML estimates are unbiased and should be used!
+# Now do a similar test, but all at once.
 ranova(m)
 ```
-This results in slightly different inference and LRTs. Notice the likelihood values are different because of the difference in fitting using REML vs ML. Using this analysis (which is more correct than the previous version), we see that while position continues to be statistically significant, the run has dropped down to marginal significance.
+
+We see that while position continues to be weakly statistically significant, the run has dropped down to marginal significance.
 
 
 ## Repeated Measures / Longitudinal Studies
@@ -691,8 +734,12 @@ ggplot(sleepstudy, aes(y=Reaction, x=Days)) +
 
 This appears to fit the observed data quite a bit better, but it is useful to test this.
 ```{r}
-# anova(m2, m1)  # the ML analysis, which is not preferred
+# This is the first time the ranova() table has considered a reduction. Here we
+# consider reducing the random term from (1+Days|Subject) to (1|Subject)
 ranova(m2)
+
+# We get the same analysis directly specifying which Simple/Complex model to compare
+anova(m2, m1, refit=FALSE)  
 ```
 
 Here we see that indeed the random effect for each subject in both y-intercept and in slope is a better model that just a random offset in y-intercept.
