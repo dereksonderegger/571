@@ -245,6 +245,8 @@ emtrends( model, ~ poly(Girth,2), 'Girth',
           at=list(Girth=c(10,11,12)) )
 ```
 
+<!-- I need to show emmeans graphs for effect sizes. There is a strong preference for -->
+<!-- doing that compared to doing the multcomp stuff. -->
 
 ### 1-way ANOVA {#Contrasts_OneWayAnova}
 To consider the pairwise contrasts between different levels we will consider the college student hostility data again. A clinical psychologist wished to compare three methods for reducing hostility levels in university students, and used a certain test (HLT) to measure the degree of hostility. A high score on the test indicated great hostility. The psychologist used $24$ students who obtained high and nearly equal scores in the experiment. Eight subjects were selected at random from among the $24$ problem cases and were treated with method 1, seven of the remaining $16$ students were selected at random and treated with method 2 while the remaining nine students were treated with method 3. All treatments were continued for a one-semester period. Each student was given the HLT test at the end of the semester, with the results show in the following table.

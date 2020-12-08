@@ -21,6 +21,7 @@ library(tidyverse)  # dplyr, tidyr, ggplot
 library(stringr)    # string manipulation stuff
 library(latex2exp)  # for LaTeX mathematical notation
 
+library(ggfortify)   # For model diagnostic plots
 library(lme4)        # Our primary analysis routine
 library(lmerTest)    # A user friendly interface to lme4 that produces p-values
 library(emmeans)     # For all of my pairwise contrasts
@@ -293,6 +294,8 @@ model.1 <- lmer( yield ~ variety + (1|block), data=oatvar)
 # compare models with different fixed effects. Use refit=FALSE to suppress this.
 anova(model.0, model.1) 
 ```
+
+<!-- I need to introduce some model diagnostics around here to check for non-constant variance! -->
 
 Notice that this is doing a Likelihood Ratio Test 
 $$-2 * \log \left( \frac{L_0}{L_a} \right) = -2 \left( \log(L_0) - \log(L_a) \right) = -2*(-220.47 - -200.56) = 39.24$$
