@@ -11,8 +11,8 @@ bookdown::gitbook:
     view: https://github.com/dereksonderegger/571/raw/master/%s
     edit: https://github.com/dereksonderegger/571/blob/master/%s
     download:
-      - ["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.pdf",  "PDF"]
-      - ["https://github.com/dereksonderegger/571/raw/master/docs/Statistical-Methods-II.epub",  "E-Pub"]
+      - ["https://bookdown.org/dereksonderegger/571/Statistical-Methods-II.pdf",  "PDF"]
+      - ["https://bookdown.org/dereksonderegger/571/Statistical-Methods-II.pdf",  "E-Pub"]
     search: yes
     fontsettings:
       theme: white
